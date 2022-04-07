@@ -1,13 +1,10 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Floor1 : FuncFloor
+    class Floor1 : FuncFloor
 	{
 		static int VIF_POSIT=63;
 
-		override internal void pack(Object i, csBuffer opb)
+		override internal void pack(object i, csBuffer opb)
 		{
 			InfoFloor1 info=(InfoFloor1)i;
 
@@ -55,10 +52,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			}
 		}
 
-		override internal Object unpack(Info vi , csBuffer opb)
+		override internal object unpack(Info vi , csBuffer opb)
 		{
 			int count=0,maxclass=-1,rangebits;
-			InfoFloor1 info=new InfoFloor1();
+			InfoFloor1 info=new();
 
 			/* read partitions */
 			info.partitions=opb.read(5);            /* only 0 to 31 legal */
@@ -129,7 +126,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			//    return(null);
 		}
 
-		override internal Object look(DspState vd, InfoMode mi, Object i)
+		override internal object look(DspState vd, InfoMode mi, object i)
 		{
 			int _n=0;
 
@@ -138,7 +135,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			//    Info vi=vd.vi;
 
 			InfoFloor1 info=(InfoFloor1)i;
-			LookFloor1 look=new LookFloor1();
+			LookFloor1 look=new();
 			look.vi=info;
 			look.n=info.postlist[1];
 
@@ -244,13 +241,13 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			return look;
 		}
 
-		override internal void free_info(Object i){}
-		override internal void free_look(Object i){}
-		override internal void free_state(Object vs){}
+		override internal void free_info(object i){}
+		override internal void free_look(object i){}
+		override internal void free_state(object vs){}
 
-		override internal int forward(Block vb, Object i,  float[] fin, float[] fout, Object vs){return 0;}
+		override internal int forward(Block vb, object i,  float[] fin, float[] fout, object vs){return 0;}
 
-		override internal Object inverse1(Block vb, Object ii, Object memo)
+		override internal object inverse1(Block vb, object ii, object memo)
 		{
 			LookFloor1 look=(LookFloor1)ii;
 			InfoFloor1 info=look.vi;
@@ -382,13 +379,13 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			int ady=Math.Abs(dy);
 			int err=ady*(x-x0);
     
-			int off=(int)(err/adx);
+			int off= err / adx;
 			if(dy<0)return(y0-off);
 			return(y0+off);
 		}
 		}
 
-		override internal int inverse2(Block vb, Object i, Object memo, float[] fout)
+		override internal int inverse2(Block vb, object i, object memo, float[] fout)
 		{
 			LookFloor1 look=(LookFloor1)i;
 			InfoFloor1 info=look.vi;
@@ -601,10 +598,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			postlist=null;
 		}
 
-		internal Object copy_info()
+		internal object copy_info()
 		{
 			InfoFloor1 info=this;
-			InfoFloor1 ret=new InfoFloor1();
+			InfoFloor1 ret=new();
 
 			ret.partitions=info.partitions;
 			Array.Copy(info.partitionclass, 0, ret.partitionclass, 0, VIF_PARTS);

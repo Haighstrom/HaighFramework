@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace HaighFramework
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Matrix2<T>
-        where T : struct, INumber<T>
+    public struct Matrix2
     {
         //Matrix Layout
         //(0  2)
@@ -15,41 +11,35 @@ namespace HaighFramework
 
         #region Static
         #region Premade Matrices
-        public static Matrix2<T> Identity = new(T.One, T.Zero, T.Zero, T.One);
-        public static Matrix2<T> Zero = new();
+        public static Matrix2 Identity => new(1, 0, 0, 1);
+        public static Matrix2 Zero => new();
 
-        public static Matrix2<T> CreateRotation(float angleInDegrees)
+        public static Matrix2 CreateRotation(float angleInDegrees)
         {
             double radians = Math.PI * angleInDegrees / 180.0;
-            return new Matrix2<T>((T)(object)Math.Cos(radians), (T)(object)Math.Sin(radians), -(T)(object)Math.Sin(radians), (T)(object)Math.Cos(radians));
+            return new Matrix2((float)Math.Cos(radians), (float)Math.Sin(radians), -(float)Math.Sin(radians), (float)Math.Cos(radians));
         }
 
-        public static Matrix2<T> CreateScale(T scaleX, T scaleY)
+        public static Matrix2 CreateScale(float scaleX, float scaleY)
         {
-            return new Matrix2<T>(scaleX, T.Zero, T.Zero, scaleY);
+            return new Matrix2(scaleX, 0, 0, scaleY);
         }
         #endregion
 
         #region Add
-        public static Matrix2<T> Add(ref Matrix2<T> mat1, ref Matrix2<T> mat2)
+        public static Matrix2 Add(ref Matrix2 mat1, ref Matrix2 mat2)
         {
-            T[] values = mat1._values.Zip(mat2._values, (a, b) => a + b).ToArray();
-            return new Matrix2<T>(values);
+            float[] values = mat1._values.Zip(mat2._values, (a, b) => a + b).ToArray();
+            return new Matrix2(values);
         }
         #endregion
 
-        #region Subtract
-        public static Matrix2<T> Subtract(ref Matrix2<T> mat1, ref Matrix2<T> mat2)
-        {
-            T[] values = mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray();
-            return new Matrix2<T>(values);
-        }
-        #endregion
+        public static Matrix2 Subtract(ref Matrix2 mat1, ref Matrix2 mat2) => new Matrix2(mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray());
 
         #region Multiply
-        public static Matrix2<T> Multiply(ref Matrix2<T> mat1, ref Matrix2<T> mat2)
+        public static Matrix2 Multiply(ref Matrix2 mat1, ref Matrix2 mat2)
         {
-            return new Matrix2<T>
+            return new Matrix2
                 (
                     mat1._values[0] * mat2._values[0] + mat1._values[2] * mat2._values[1],
                     mat1._values[1] * mat2._values[0] + mat1._values[3] * mat2._values[1], 
@@ -65,9 +55,9 @@ namespace HaighFramework
         /// <param name="mat"></param>
         /// <param name="f"></param>
         /// <returns></returns>
-        public static Matrix2<T> Multiply(ref Matrix2<T> mat, T f)
+        public static Matrix2 Multiply(ref Matrix2 mat, float f)
         {
-            return new Matrix2<T>
+            return new Matrix2
                 (
                     mat._values[0] * f,
                     mat._values[1] * f,
@@ -82,9 +72,9 @@ namespace HaighFramework
         /// <param name="mat"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        public static IPoint<T> Multiply(ref Matrix2<T> mat, IPoint<T> p)
+        public static Point Multiply(ref Matrix2 mat, Point p)
         {
-            return new Point<T>
+            return new Point
                 (
                     p.X * mat._values[0] + p.Y * mat._values[2],
                     p.X * mat._values[1] + p.Y * mat._values[3]
@@ -93,32 +83,32 @@ namespace HaighFramework
         #endregion                         
 
         #region Rotate
-        public static Matrix2<T> RotateAroundZ(ref Matrix2<T> mat, float angleInDegrees)
+        public static Matrix2 RotateAroundZ(ref Matrix2 mat, float angleInDegrees)
         {
-            Matrix2<T> rotMat = Matrix2<T>.CreateRotation(angleInDegrees);
-            return Matrix2<T>.Multiply(ref mat, ref rotMat);
+            Matrix2 rotMat = Matrix2.CreateRotation(angleInDegrees);
+            return Matrix2.Multiply(ref mat, ref rotMat);
         }        
         #endregion
 
         #region Scale
-        public static Matrix2<T> ScaleAroundOrigin(ref Matrix2<T> mat, T scaleX, T scaleY)
+        public static Matrix2 ScaleAroundOrigin(ref Matrix2 mat, float scaleX, float scaleY)
         {
-            Matrix2<T> scaleMat = Matrix2<T>.CreateScale(scaleX, scaleY);
+            Matrix2 scaleMat = Matrix2.CreateScale(scaleX, scaleY);
             return Multiply(ref mat, ref scaleMat);
         }
         #endregion
 
         #region Invert
-        public static Matrix2<T> Inverse(ref Matrix2<T> mat)
+        public static Matrix2 Inverse(ref Matrix2 mat)
         {
-            T det = mat.Determinant;
+            float det = mat.Determinant;
 
-            if (det == T.Zero)
+            if (det == 0)
                 return mat;
-            
-            T invDet = T.One / det;
 
-            return new Matrix2<T>
+            float invDet = 1 / det;
+
+            return new Matrix2
                 (
                     mat._values[3] * invDet,
                     -mat._values[1] * invDet,
@@ -130,15 +120,15 @@ namespace HaighFramework
         #endregion
 
         #region Fields
-        private T[] _values;
+        private float[] _values;
         #endregion
 
         #region Constructors
-        public Matrix2(T m0, T m1, T m2, T m3)
+        public Matrix2(float m0, float m1, float m2, float m3)
         {
-            _values = new T[4] { m0, m1, m2, m3 };
+            _values = new float[4] { m0, m1, m2, m3 };
         }
-        public Matrix2(T[] values)
+        public Matrix2(float[] values)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
@@ -151,7 +141,7 @@ namespace HaighFramework
         #endregion
 
         #region Indexers
-        public T this[int x, int y]
+        public float this[int x, int y]
         {
             get
             {
@@ -174,7 +164,7 @@ namespace HaighFramework
         /// (0 2)
         /// (1 3)
         /// </summary>
-        public T[] Values
+        public float[] Values
         {
             get => _values;
             set => _values = value;
@@ -183,13 +173,7 @@ namespace HaighFramework
         /// <summary>
         /// Gets the determinant of this matrix
         /// </summary>
-        public T Determinant
-        {
-            get
-            {
-                return _values[0] * _values[3] - _values[1] * _values[2];
-            }
-        }
+        public float Determinant => _values[0] * _values[3] - _values[1] * _values[2];
         #endregion
 
         #region Methods
@@ -198,9 +182,9 @@ namespace HaighFramework
         /// Returns the transpose of this Matrix2 - all elements mirrored in [1 1] diagonal. The values of this instance will not be altered, returns a new matrix.
         /// </summary>
         /// <returns></returns>
-        public Matrix2<T> Transpose()
+        public Matrix2 Transpose()
         {
-            return new Matrix2<T>
+            return new Matrix2
                 (
                     _values[0],
                     _values[2],
@@ -218,7 +202,7 @@ namespace HaighFramework
         /// <param name="left">left-hand operand</param>
         /// <param name="right">right-hand operand</param>
         /// <returns>A new Matrix2 which holds the result of the multiplication</returns>
-        public static Matrix2<T> operator *(T left, Matrix2<T> right) => Multiply(ref right, left);
+        public static Matrix2 operator *(float left, Matrix2 right) => Multiply(ref right, left);
 
         /// <summary>
         /// Scalar multiplication.
@@ -226,9 +210,9 @@ namespace HaighFramework
         /// <param name="left">left-hand operand</param>
         /// <param name="right">right-hand operand</param>
         /// <returns>A new Matrix2 which holds the result of the multiplication</returns>
-        public static Matrix2<T> operator *(Matrix2<T> left, T right) => Multiply(ref left, right);
+        public static Matrix2 operator *(Matrix2 left, float right) => Multiply(ref left, right);
 
-        public static IPoint<T> operator *(Matrix2<T> left, IPoint<T> right) => Multiply(ref left, right);
+        public static Point operator *(Matrix2 left, Point right) => Multiply(ref left, right);
 
         /// <summary>
         /// Matrix multiplication
@@ -236,7 +220,7 @@ namespace HaighFramework
         /// <param name="left">left-hand operand</param>
         /// <param name="right">right-hand operand</param>
         /// <returns>A new Matrix2 which holds the result of the multiplication</returns>
-        public static Matrix2<T> operator *(Matrix2<T> left, Matrix2<T> right) => Multiply(ref left, ref right);
+        public static Matrix2 operator *(Matrix2 left, Matrix2 right) => Multiply(ref left, ref right);
 
         /// <summary>
         /// Matrix addition
@@ -244,7 +228,7 @@ namespace HaighFramework
         /// <param name="left">left-hand operand</param>
         /// <param name="right">right-hand operand</param>
         /// <returns>A new Matrix2 which holds the result of the addition</returns>
-        public static Matrix2<T> operator +(Matrix2<T> left, Matrix2<T> right) => Add(ref left, ref right);
+        public static Matrix2 operator +(Matrix2 left, Matrix2 right) => Add(ref left, ref right);
 
         /// <summary>
         /// Matrix subtraction
@@ -252,7 +236,7 @@ namespace HaighFramework
         /// <param name="left">left-hand operand</param>
         /// <param name="right">right-hand operand</param>
         /// <returns>A new Matrix2 which holds the result of the subtraction</returns>
-        public static Matrix2<T> operator -(Matrix2<T> left, Matrix2<T> right) => Subtract(ref left, ref right);
+        public static Matrix2 operator -(Matrix2 left, Matrix2 right) => Subtract(ref left, ref right);
         #endregion
     }
 }

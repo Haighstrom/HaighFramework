@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using HaighFramework.Win32API;
 
 namespace HaighFramework.DisplayDevices
@@ -135,7 +132,7 @@ namespace HaighFramework.DisplayDevices
                 Settings = targetSettings;
                 return;
             }
-            else throw new Exception(String.Format("DisplayDevice: {0} failed to change settings to: {1}.", this, targetSettings));
+            else throw new Exception(string.Format("DisplayDevice: {0} failed to change settings to: {1}.", this, targetSettings));
         }
 
 
@@ -147,7 +144,7 @@ namespace HaighFramework.DisplayDevices
                 Settings = OriginalSettings;
                 OriginalSettings = null;
             }
-            else throw new Exception(String.Format("DisplayDevice: {0} failed to restore settings.", this));
+            else throw new Exception(string.Format("DisplayDevice: {0} failed to restore settings.", this));
         }
 
         public Point Centre
@@ -178,7 +175,7 @@ namespace HaighFramework.DisplayDevices
         {
             get
             {
-                List<DisplayDeviceSettings> ret = new List<DisplayDeviceSettings>();
+                List<DisplayDeviceSettings> ret = new();
                 foreach (DisplayDeviceSettings s1 in _availableSettings)
                 {
                     //bad settings - SHOO
@@ -209,7 +206,7 @@ namespace HaighFramework.DisplayDevices
         #region Overrides
         public override string ToString()
         {
-            return String.Format("Device {0}{1} \n\nWindows ID: {2} \n{3} \n{4} settings available", DeviceIndex, IsPrimary ? " (Primary Display)" : "", DeviceID, Settings.ToString(), AvailableSettings.Count);
+            return string.Format("Device {0}{1} \n\nWindows ID: {2} \n{3} \n{4} settings available", DeviceIndex, IsPrimary ? " (Primary Display)" : "", DeviceID, Settings.ToString(), AvailableSettings.Count);
         }
         #endregion
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using HaighFramework.Win32API;
 using Microsoft.Win32;
 
@@ -11,10 +7,10 @@ namespace HaighFramework.Input
     public sealed class MouseManager : IMouseManager
     {
         #region Fields
-        private readonly List<MouseState> _mice = new List<MouseState>();
-        private readonly List<string> _names = new List<string>();
-        private readonly Dictionary<IntPtr, int> _regdDevices = new Dictionary<IntPtr, int>();
-        private readonly object _syncRoot = new object();
+        private readonly List<MouseState> _mice = new();
+        private readonly List<string> _names = new();
+        private readonly Dictionary<IntPtr, int> _regdDevices = new();
+        private readonly object _syncRoot = new();
         private readonly IntPtr _msgWindowHandle;
         #endregion
 
@@ -80,7 +76,7 @@ namespace HaighFramework.Input
         private void RegisterRawDevice(IntPtr window, string device)
         {
             // Mouse is 1/2 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
-            RawInputDevice rid = new RawInputDevice();
+            RawInputDevice rid = new();
             rid.UsagePage = 1;
             rid.Usage = 2;
             rid.Flags = RawInputDeviceFlags.INPUTSINK;
@@ -108,12 +104,12 @@ namespace HaighFramework.Input
             {
                 lock (_syncRoot)
                 {
-                    MouseState consolidated = new MouseState();
+                    MouseState consolidated = new();
                     foreach (MouseState m in _mice)
                     {
                         consolidated.MergeBits(m);
                     }
-                    POINT p = new POINT();
+                    POINT p = new();
                     User32.GetCursorPos(ref p);
                     consolidated.ScreenX = p.X;
                     consolidated.ScreenY = p.Y;
@@ -191,23 +187,23 @@ namespace HaighFramework.Input
                             RegistryKey classGUIDKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\" + deviceClassGUID);
                             deviceClass = classGUIDKey != null ? (string)classGUIDKey.GetValue("Class") : string.Empty;
                         }
-                        if (String.IsNullOrEmpty(deviceDesc))
+                        if (string.IsNullOrEmpty(deviceDesc))
                             deviceDesc = "Windows Mouse " + _mice.Count;
                         else
                             deviceDesc = deviceDesc.Substring(deviceDesc.LastIndexOf(';') + 1);
 
-                        if (!String.IsNullOrEmpty(deviceClass) && deviceClass.ToLower().Equals("mouse"))
+                        if (!string.IsNullOrEmpty(deviceClass) && deviceClass.ToLower().Equals("mouse"))
                         {
                             if (!_regdDevices.ContainsKey(d.Device))
                             {
                                 // Register the device:
-                                RawInputDeviceInfo info = new RawInputDeviceInfo();
+                                RawInputDeviceInfo info = new();
                                 int devInfoSize = info.Size;
                                 User32.GetRawInputDeviceInfo(d.Device, RawInputDeviceInfoEnum.DEVICEINFO,
                                         info, ref devInfoSize);
 
                                 RegisterRawDevice(_msgWindowHandle, deviceDesc);
-                                MouseState state = new MouseState();
+                                MouseState state = new();
                                 state.IsConnected = true;
                                 _mice.Add(state);
                                 _names.Add(deviceDesc);
@@ -243,7 +239,7 @@ namespace HaighFramework.Input
             MouseState state = _mice[mouseID];
 
             //set mouse on screen X,Y
-            POINT p = new POINT();
+            POINT p = new();
             User32.GetCursorPos(ref p);
             state.ScreenX = p.X;
             state.ScreenY = p.Y;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
 
 namespace HaighFramework.Input
 {
@@ -20,7 +15,7 @@ namespace HaighFramework.Input
         public MouseEventArgs(int x, int y)
             : this()
         {
-            POINT p = new POINT();
+            POINT p = new();
             User32.GetCursorPos(ref p);
             _state.ScreenX = p.X;
             _state.ScreenY = p.Y;

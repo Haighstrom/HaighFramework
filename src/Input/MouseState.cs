@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HaighFramework.Win32API;
-
-namespace HaighFramework.Input
+﻿namespace HaighFramework.Input
 {
     public struct MouseState : IEquatable<MouseState>
     {
@@ -199,9 +193,9 @@ namespace HaighFramework.Input
         public override string ToString()
         {
             string buttons = Convert.ToString(_buttons, 2).PadLeft(MaxButtons, '0');
-            string scroll = String.Format("[X={0:0.00},Y={1:0.00}]", _scroll.X, _scroll.Y);
+            string scroll = string.Format("[X={0:0.00},Y={1:0.00}]", _scroll.X, _scroll.Y);
             string connected = IsConnected ? "Connected" : "Disconnected";
-            return String.Format("[X={0},Y={1},Scroll:{2},Buttons={3},{4}]", ScreenX, ScreenY, scroll, buttons, connected);
+            return string.Format("[X={0},Y={1},Scroll:{2},Buttons={3},{4}]", ScreenX, ScreenY, scroll, buttons, connected);
         }
         #endregion
         #endregion

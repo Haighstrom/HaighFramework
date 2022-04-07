@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HaighFramework.Audio.OpenAL
+﻿namespace HaighFramework.Audio.OpenAL
 {
     #region Alc Enums
     /// <summary>

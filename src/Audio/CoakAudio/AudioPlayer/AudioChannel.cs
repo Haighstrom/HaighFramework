@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework.Audio.OpenAL.Wav;
+﻿using HaighFramework.Audio.OpenAL.Wav;
 using HaighFramework.Audio.OpenAL.OggVorbis;
 
 

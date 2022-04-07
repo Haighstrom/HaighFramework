@@ -1,15 +1,11 @@
 ﻿namespace HaighFramework.Window;
 
 using System.Runtime.InteropServices;
+using HaighFramework.Input;
 using HaighFramework.OpenGL4;
-using HaighFramework.DisplayDevices;
-using System.Drawing;
 using HaighFramework.Win32API;
 
-using Point = Point; //hack because apparently File-scoped namespaces is broken
-using System.Diagnostics;
-
-public class Win32Window2 : IWindow2
+public class Win32Window2 : IWindow
 {
     #region Consts
     private const WindowClassStyle DEFAULT_CLASS_STYLE = 0;
@@ -33,12 +29,13 @@ public class Win32Window2 : IWindow2
         return rect;
     }
     #endregion
+
     #region GetClientSize
     /// <summary>
     /// How big the child window should be (based on the parent)
     /// </summary>
     /// <returns></returns>
-    private static IPoint<float> GetClientSize(IntPtr parentWindowHandle)
+    private static Point GetClientSize(IntPtr parentWindowHandle)
     {
         User32.GetClientRect(parentWindowHandle, out RECT r);
         return new Point(r.Width, r.Height);
@@ -114,11 +111,11 @@ public class Win32Window2 : IWindow2
     private readonly ExtendedWindowStyle _parentExStyle;
     private bool _disposed = false;
     private MSG _lpMsg;
-    private IRect<float> _userPosition; //100% DPI visible Window Position
-    private RECT _actualPosition; //DPI-considered visible Window Position
+    private IRect _userPosition; //100% DPI visible Window Position
+    private RECT _actualPosition; //DPI-adjusted visible Window Position
     private RECT _reportedPosition; //The position SetWindowRect/GetWindowRect uses - includes invisible borders on Win10 (FU Win10)
-    private IPoint<float> _userClientSize; //100% DPI visible Client Size
-    private RECT _actualClientPosition; //DPI-considered visible Client Position
+    private Point _userClientSize; //100% DPI visible Client Size
+    private RECT _actualClientPosition; //DPI-adjusted visible Client Position
     private BorderStyle _border = BorderStyle.SizingBorder;
     private BorderStyle _prevBorder; //used when de-fullscreening
     private RECT _prevPosition; //used when restoring a borderless full screen window
@@ -129,18 +126,18 @@ public class Win32Window2 : IWindow2
     private bool _cursorLockedToWindow = false;
     private bool _resizingWindow = false;
     private int _leftInvisBorder, _topInvisBorder, _rightInvisBorder, _bottomInvisBorder;
-    private float _DPI;
+    private readonly IntPtr _deviceContext;
     #endregion
 
     #region Constructors
     public Win32Window2(WindowSettings settings)
     {
         _userPosition = new Rect();//just to shut up the nullable warnings
-        _userClientSize = new Point();//just to shut up the nullable warnings
+        _userClientSize = new Point(settings.Width, settings.Height);//just to shut up the nullable warnings
 
         ExitOnClose = settings.ExitOnClose;
         _cursor = settings.Cursor;
-        _prevBorder = _border = settings.Border;
+        _prevBorder = _border = BorderStyle.SizingBorder; //do this initially else WM_Resize screws up due to clientrect being empty
         _icon = settings.Icon;
         _wndProc = StandardWindowProcedure;
 
@@ -153,7 +150,7 @@ public class Win32Window2 : IWindow2
         else
             User32.SetProcessDPIAware();
 
-        _DPI = GDI32.GetDeviceCaps(User32.GetDC(IntPtr.Zero), DeviceCaps.LogPixelsX) / 96f;
+        DPI = GDI32.GetDeviceCaps(User32.GetDC(IntPtr.Zero), DeviceCaps.LogPixelsX) / 96f;
         #endregion
 
         #region Min/Max Client Sizes
@@ -199,27 +196,22 @@ public class Win32Window2 : IWindow2
         #endregion
 
         #region Create Parent Window
-        _parentStyle = _border switch
-        {
-            BorderStyle.NoBorder => WS_PARENT_NO_BORDER,
-            BorderStyle.Border => WS_PARENT_BORDER,
-            BorderStyle.SizingBorder => WS_PARENT_SIZING_BORDER,
-            _ => throw new NotImplementedException(),
-        };
+        _parentStyle = WS_PARENT_SIZING_BORDER;
+
         if (Visible)
             _parentStyle |= WindowStyle.WS_VISIBLE;
 
         _parentExStyle = EWS_PARENT;
 
-        RECT rect = new() { right = (int)(settings.Width * _DPI), bottom = (int)(settings.Height * _DPI) };
+        RECT rect = new() { right = (int)(settings.Width * DPI), bottom = (int)(settings.Height * DPI) };
 
         User32.AdjustWindowRectEx(ref rect, _parentStyle, false, _parentExStyle); //Note on Win10 this gives the wrong answer due to invis border...
 
         //shift so x,y are correct but w/h preserved
-        rect.right += (int)(settings.X * _DPI) - rect.left;
-        rect.left = (int)(settings.X * _DPI);
-        rect.bottom += (int)(settings.Y * _DPI) - rect.top;
-        rect.top = (int)(settings.Y * _DPI);
+        rect.right += (int)(settings.X * DPI) - rect.left;
+        rect.left = (int)(settings.X * DPI);
+        rect.bottom += (int)(settings.Y * DPI) - rect.top;
+        rect.top = (int)(settings.Y * DPI);
 
         IntPtr windowName = Marshal.StringToHGlobalAuto(settings.Title);
 
@@ -233,7 +225,7 @@ public class Win32Window2 : IWindow2
         WindowStyle style = WS_CHILD;
         ExtendedWindowStyle exStyle = EWS_CHILD;
 
-        _childWindowHandle = User32.CreateWindowEx(exStyle, _windowClassName, IntPtr.Zero, style, 0, 0, (int)(settings.Width * _DPI), (int)(settings.Height * _DPI), hWndParent: _windowHandle, hMenu: IntPtr.Zero, _instance, lpParam: IntPtr.Zero);
+        _childWindowHandle = User32.CreateWindowEx(exStyle, _windowClassName, IntPtr.Zero, style, 0, 0, (int)(settings.Width * DPI), (int)(settings.Height * DPI), hWndParent: _windowHandle, hMenu: IntPtr.Zero, _instance, lpParam: IntPtr.Zero);
 
         if (_childWindowHandle == IntPtr.Zero)
             throw new Exception(string.Format("Failed to create window. Error: {0}", Marshal.GetLastWin32Error()));
@@ -250,7 +242,7 @@ public class Win32Window2 : IWindow2
         //hack for invisible windows - consider making window visible off screen temporarily?
         //Win11 ??
         if (!settings.Visible && Environment.OSVersion.Version.Major == 10)
-            _leftInvisBorder = _rightInvisBorder = _bottomInvisBorder = (int)(7 * _DPI);
+            _leftInvisBorder = _rightInvisBorder = _bottomInvisBorder = (int)(7 * DPI);
 
         rect.left -= _leftInvisBorder;
         rect.right -= _leftInvisBorder;
@@ -259,6 +251,8 @@ public class Win32Window2 : IWindow2
 
         User32.SetWindowPos(_windowHandle, rect, SetWindowPosFlags.NOREDRAW);
         #endregion
+
+        Border = settings.Border;
 
         #region Centre Window
         if (settings.Centre)
@@ -272,17 +266,18 @@ public class Win32Window2 : IWindow2
         #endregion
 
         #region Set Up OpenGL
-        IntPtr dc = User32.GetDC(_childWindowHandle);
+        _deviceContext = User32.GetDC(_childWindowHandle);
 
-        SetPixelFormat(dc);
+        SetPixelFormat(_deviceContext);
         
-        IntPtr rc = CreateRenderContext(4, 0, dc);
+        IntPtr rc = CreateRenderContext(4, 0, _deviceContext);
 
-        OpenGL.WGLMakeCurrent(dc, rc);
+        OpenGL.WGLMakeCurrent(_deviceContext, rc);
 
         string version = OpenGL.GetString(GetStringEnum.Version).Remove(9);
         HConsole.Log("Successfully set up OpenGL v:{0}, GLSL: {1}", version, OpenGL.GetString(GetStringEnum.ShadingLanguageVersion));
         HConsole.Log("Graphics Vendor: {0}", OpenGL.GetString(GetStringEnum.Vendor));
+        HConsole.Log("Graphics Card: {0}", OpenGL.GetString(GetStringEnum.Renderer));
         HConsole.Log("Graphics Card: {0}", OpenGL.GetString(GetStringEnum.Renderer));
         #endregion
     }
@@ -296,7 +291,7 @@ public class Win32Window2 : IWindow2
         {
             #region WM_DPICHANGED
             case WindowMessage.WM_DPICHANGED:
-                _DPI = wParam.ToHIWORD() / 96f;
+                DPI = wParam.ToHIWORD() / 96f;
                 var proposedRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
                 User32.SetWindowPos(_windowHandle, proposedRect, SetWindowPosFlags.NOZORDER | SetWindowPosFlags.NOACTIVATE);
                 return IntPtr.Zero;
@@ -323,10 +318,10 @@ public class Win32Window2 : IWindow2
                 RECT borderSize = new();
                 User32.AdjustWindowRectEx(ref borderSize, _parentStyle, false, _parentExStyle);
 
-                Point<int> targetWindowSize = new()
+                Point targetWindowSize = new()
                 {
-                    X = Maths.Clamp(plannedWindowR.Width - borderSize.Width, (int)Math.Round(MinClientSize.X * _DPI), MaxClientSize.X == 0 ? plannedWindowR.Width : (int)Math.Round(MaxClientSize.X * _DPI)) + borderSize.Width,
-                    Y = Maths.Clamp(plannedWindowR.Height - borderSize.Height, (int)Math.Round(MinClientSize.Y * _DPI), MaxClientSize.Y == 0 ? plannedWindowR.Height : (int)Math.Round(MaxClientSize.Y * _DPI)) + borderSize.Height,
+                    X = Maths.Clamp(plannedWindowR.Width - borderSize.Width, (int)Math.Round(MinClientSize.X * DPI), MaxClientSize.X == 0 ? plannedWindowR.Width : (int)Math.Round(MaxClientSize.X * DPI)) + borderSize.Width,
+                    Y = Maths.Clamp(plannedWindowR.Height - borderSize.Height, (int)Math.Round(MinClientSize.Y * DPI), MaxClientSize.Y == 0 ? plannedWindowR.Height : (int)Math.Round(MaxClientSize.Y * DPI)) + borderSize.Height,
                 };
 
                 if (plannedWindowR.Width == targetWindowSize.X && plannedWindowR.Height == targetWindowSize.Y)
@@ -334,15 +329,15 @@ public class Win32Window2 : IWindow2
 
                 if (plannedWindowR.Width != targetWindowSize.X)
                     if (border == WM_SIZING_wParam.WMSZ_LEFT || border == WM_SIZING_wParam.WMSZ_TOPLEFT || border == WM_SIZING_wParam.WMSZ_BOTTOMLEFT)
-                        plannedWindowR.left = plannedWindowR.right - targetWindowSize.X;
+                        plannedWindowR.left = plannedWindowR.right - (int)targetWindowSize.X;
                     else if (border == WM_SIZING_wParam.WMSZ_RIGHT || border == WM_SIZING_wParam.WMSZ_TOPRIGHT || border == WM_SIZING_wParam.WMSZ_BOTTOMRIGHT)
-                        plannedWindowR.right = plannedWindowR.left + targetWindowSize.X;
+                        plannedWindowR.right = plannedWindowR.left + (int)targetWindowSize.X;
 
                 if (plannedWindowR.Height != targetWindowSize.Y)
                     if (border == WM_SIZING_wParam.WMSZ_TOP || border == WM_SIZING_wParam.WMSZ_TOPLEFT || border == WM_SIZING_wParam.WMSZ_TOPRIGHT)
-                        plannedWindowR.top = plannedWindowR.bottom - targetWindowSize.Y;
+                        plannedWindowR.top = plannedWindowR.bottom - (int)targetWindowSize.Y;
                     else if (border == WM_SIZING_wParam.WMSZ_BOTTOM || border == WM_SIZING_wParam.WMSZ_BOTTOMLEFT || border == WM_SIZING_wParam.WMSZ_BOTTOMRIGHT)
-                        plannedWindowR.bottom = plannedWindowR.top + targetWindowSize.Y;
+                        plannedWindowR.bottom = plannedWindowR.top + (int)targetWindowSize.Y;
 
                 Marshal.StructureToPtr(plannedWindowR, lParam, true);
                 break;
@@ -352,7 +347,7 @@ public class Win32Window2 : IWindow2
             case WindowMessage.WM_SIZE:
                 SetWindowPositionValues();
 
-                IPoint<float> desiredUserClientSize = new Point
+                Point desiredUserClientSize = new Point
                 {
                     X = Maths.Clamp(_userClientSize.X, MinClientSize.X, MaxClientSize.X == 0 ? _userClientSize.X : MaxClientSize.X),
                     Y = Maths.Clamp(_userClientSize.Y, MinClientSize.Y, MaxClientSize.Y == 0 ? _userClientSize.Y : MaxClientSize.Y)
@@ -370,7 +365,7 @@ public class Win32Window2 : IWindow2
                 if (!_resizingWindow && _cursorLockedToWindow)
                     ConfineCursor();
 
-                Resized?.Invoke(this, new SizeEventArgs(_userClientSize.X, _userClientSize.Y));
+                Resized?.Invoke(this, new SizeEventArgs(_actualClientPosition.Width, _actualClientPosition.Height));
                 break;
             #endregion
 
@@ -396,6 +391,44 @@ public class Win32Window2 : IWindow2
                     return IntPtr.Zero;
                 }
             break;
+            #endregion
+
+
+            #region WM_CHAR/WM_KEYDOWN/WM_SYSKEYDOWN/WM_KEYUP/WM_SYSKEYUP
+            case WindowMessage.WM_CHAR:
+                char c;
+                if (IntPtr.Size == 4) //Environment.Is64Bit?
+                    c = (char)wParam.ToInt32();
+                else
+                    c = (char)wParam.ToInt64();
+
+                if (!char.IsControl(c))
+                    CharEntered?.Invoke(this, new KeyboardCharEventArgs(c));
+                break;
+
+            case WindowMessage.WM_KEYDOWN:
+            case WindowMessage.WM_SYSKEYDOWN:
+                bool extended = (lParam.ToInt64() & 1 << 24) != 0;
+                short scancode = (short)((lParam.ToInt64() >> 16) & 0xff);
+                VirtualKeys vkey = (VirtualKeys)wParam;
+
+                Key key = KeyMap.TranslateKey(scancode, vkey, extended);
+
+                if (key != Key.Unknown)
+                    KeyDown?.Invoke(this, new KeyboardKeyEventArgs(key));
+                break;
+
+            case WindowMessage.WM_KEYUP:
+            case WindowMessage.WM_SYSKEYUP:
+                extended = (lParam.ToInt64() & 1 << 24) != 0;      //TODO - theres something called extended1 as well...
+                scancode = (short)((lParam.ToInt64() >> 16) & 0xff);
+                vkey = (VirtualKeys)wParam;
+
+                key = KeyMap.TranslateKey(scancode, vkey, extended);
+
+                if (key != Key.Unknown)
+                    KeyUp?.Invoke(this, new Input.KeyboardKeyEventArgs(key));
+                break;
             #endregion
 
             #region Focus
@@ -466,10 +499,15 @@ public class Win32Window2 : IWindow2
         DWMAPI.DwmGetWindowAttribute(_windowHandle, out _actualPosition);
         _userPosition = UserParentRect_From_ActualParentRect(_actualPosition);
         User32.GetClientRect(_windowHandle, out _actualClientPosition);
+        POINT tl = new() { X = _actualClientPosition.left, Y = _actualClientPosition.top };
+        User32.ClientToScreen(_windowHandle, ref tl);
+        POINT br = new() { X = _actualClientPosition.right, Y = _actualClientPosition.bottom };
+        User32.ClientToScreen(_windowHandle, ref br);
+        _actualClientPosition.left = tl.X;
+        _actualClientPosition.top = tl.Y;;
+        _actualClientPosition.right = br.X;
+        _actualClientPosition.bottom = br.Y;
         _userClientSize = UserClientPoint_From_ActualClientRect(_actualClientPosition);
-
-        //if (_userClientSize.X < 400)
-        //    throw new Exception();
 
         _leftInvisBorder = _actualPosition.left - _reportedPosition.left;
         _topInvisBorder = _actualPosition.top - _reportedPosition.top;
@@ -484,14 +522,14 @@ public class Win32Window2 : IWindow2
     /// We need to add DPI and invisible borders.
     /// _DPI, _leftInvisBorder, _topInvisBorder, _rightInvisBorder, _bottomInvisBorder must have all been set
     /// </summary>
-    private RECT ReportedParentRect_From_UserParentRect(IRect<float> requested)
+    private RECT ReportedParentRect_From_UserParentRect(IRect requested)
     {
         RECT answer = new() { left = (int)requested.Left, top = (int)requested.Top, right = (int)requested.Right, bottom = (int)requested.Bottom };
 
-        answer.left = (int)Math.Round(answer.left * _DPI) - _leftInvisBorder;
-        answer.top = (int)Math.Round(answer.top * _DPI) - _topInvisBorder;
-        answer.right = (int)Math.Round(answer.right * _DPI) + _rightInvisBorder;
-        answer.bottom = (int)Math.Round(answer.bottom * _DPI) + _bottomInvisBorder;
+        answer.left = (int)Math.Round(answer.left * DPI) - _leftInvisBorder;
+        answer.top = (int)Math.Round(answer.top * DPI) - _topInvisBorder;
+        answer.right = (int)Math.Round(answer.right * DPI) + _rightInvisBorder;
+        answer.bottom = (int)Math.Round(answer.bottom * DPI) + _bottomInvisBorder;
 
         return answer;
     }
@@ -501,13 +539,13 @@ public class Win32Window2 : IWindow2
     /// <summary>
     /// Transform the parent rect down to the user coordinations by scaling down by DPI
     /// </summary>
-    private IRect<float> UserParentRect_From_ActualParentRect(RECT rect)
+    private IRect UserParentRect_From_ActualParentRect(RECT rect)
     {
         return new Rect(
-            (int)Math.Round(rect.left / _DPI),
-            (int)Math.Round(rect.top / _DPI),
-            (int)Math.Round(rect.Width / _DPI),
-            (int)Math.Round(rect.Height / _DPI));
+            (int)Math.Round(rect.left / DPI),
+            (int)Math.Round(rect.top / DPI),
+            (int)Math.Round(rect.Width / DPI),
+            (int)Math.Round(rect.Height / DPI));
     }
     #endregion
 
@@ -515,21 +553,21 @@ public class Win32Window2 : IWindow2
     /// <summary>
     /// Transform the parent rect down to the user coordinations by scaling down by DPI
     /// </summary>
-    private IPoint<float> UserClientPoint_From_ActualClientRect(RECT actualClientRect)
+    private Point UserClientPoint_From_ActualClientRect(RECT actualClientRect)
     {
         return new Point(
-            (int)Math.Round(actualClientRect.Width / _DPI),
-            (int)Math.Round(actualClientRect.Height / _DPI));
+            (int)Math.Round(actualClientRect.Width / DPI),
+            (int)Math.Round(actualClientRect.Height / DPI));
     }
     #endregion
 
     #region ActualClientRect_From_UserClientPoint
-    private RECT ActualClientRect_From_UserClientPoint(IPoint<float> userClientPoint)
+    private RECT ActualClientRect_From_UserClientPoint(Point userClientPoint)
     {
         return new()
         {
-            right = (int)Math.Round(userClientPoint.X * _DPI),
-            bottom = (int)Math.Round(userClientPoint.Y * _DPI),
+            right = (int)Math.Round(userClientPoint.X * DPI),
+            bottom = (int)Math.Round(userClientPoint.Y * DPI),
         };
     }
     #endregion
@@ -602,7 +640,7 @@ public class Win32Window2 : IWindow2
     }
     #endregion
 
-    public void SwapBuffers() => GDI32.SwapBuffers(User32.GetDC(_childWindowHandle));
+    public void SwapBuffers() => GDI32.SwapBuffers(_deviceContext);
     public bool ExitOnClose { get; set; }
 
     public event EventHandler? CloseAttempted;
@@ -677,15 +715,16 @@ public class Win32Window2 : IWindow2
             User32.SetWindowLong(_windowHandle, GWL.GWL_STYLE, new IntPtr((int)newStyle));
 
             //preserve client size
-            RECT clientRect = new() { right = (int)ClientSize.X, bottom = (int)ClientSize.Y };
-            User32.AdjustWindowRectEx(ref clientRect, newStyle, false, _parentExStyle);
-            User32.SetWindowPos(_windowHandle, IntPtr.Zero, 0, 0, clientRect.Width, clientRect.Height, SetWindowPosFlags.NOMOVE | SetWindowPosFlags.NOZORDER | SetWindowPosFlags.FRAMECHANGED);
+            RECT newWinRect = new() { right = _actualClientPosition.Width, bottom = _actualClientPosition.Height };
+            User32.AdjustWindowRectEx(ref newWinRect, newStyle, false, _parentExStyle);
+            User32.SetWindowPos(_windowHandle, IntPtr.Zero, 0, 0, newWinRect.Width, newWinRect.Height, SetWindowPosFlags.NOMOVE | SetWindowPosFlags.NOZORDER | SetWindowPosFlags.FRAMECHANGED);
 
             _border = value;
         }
     }
     #endregion
 
+    #region State
     public WindowState State
     {
         get => _windowState;
@@ -739,10 +778,13 @@ public class Win32Window2 : IWindow2
         }
     }
     #endregion
+    #endregion
 
     #region Position
+    public float DPI { get; private set; }
+
     #region Position
-    public IRect<float> Position
+    public IRect Position
     {
         get => _userPosition;
         set
@@ -787,7 +829,7 @@ public class Win32Window2 : IWindow2
     #endregion
 
     #region ClientSize
-    public IPoint<float> ClientSize
+    public Point ClientSize
     {
         get => _userClientSize;
         set
@@ -799,8 +841,9 @@ public class Win32Window2 : IWindow2
     }
     #endregion
 
-    public IPoint<int> MinClientSize { get; set; }
-    public IPoint<int> MaxClientSize { get; set; }
+    public IRect Viewport => new Rect(0, 0, _actualClientPosition.Width, _actualClientPosition.Height);
+    public Point MinClientSize { get; set; }
+    public Point MaxClientSize { get; set; }
 
     #region Centre
     public void Centre()
@@ -826,9 +869,11 @@ public class Win32Window2 : IWindow2
     }
     #endregion
 
+    public Point ScreenToClient(Point screenPosition) => new Point((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));
+
     public event EventHandler? Moved;
 
-    public event EventHandler<SizeEventArgs>? Resized;
+    public event EventHandler? Resized;
     #endregion
 
     #region Focus
@@ -901,6 +946,23 @@ public class Win32Window2 : IWindow2
     }
     #endregion
     #endregion
+
+    /// <summary>
+    /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
+    /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
+    /// Use for eg text box input, rather than for controlling a game character (Use Input.GetKeyboardState)
+    /// </summary>
+    public event EventHandler<KeyboardCharEventArgs> CharEntered;
+
+    /// <summary>
+    /// Called whenever a keyboard key is pressed
+    /// </summary>
+    public event EventHandler<KeyboardKeyEventArgs> KeyDown;
+
+    /// <summary>
+    /// Called whenever a keyboard key is released
+    /// </summary>
+    public event EventHandler<KeyboardKeyEventArgs> KeyUp;
     #endregion
 
     #region IDisposable

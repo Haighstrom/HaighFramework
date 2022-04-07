@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-
-namespace HaighFramework.Input
+﻿namespace HaighFramework.Input
 {
     public struct GamePadState : IEquatable<GamePadState>
     {

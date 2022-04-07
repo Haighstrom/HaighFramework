@@ -1,9 +1,6 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class InfoMode
+    class InfoMode
 	{
 		internal int blockflag;
 		internal int windowtype;

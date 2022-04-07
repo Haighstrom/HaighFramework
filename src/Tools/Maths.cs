@@ -2,18 +2,18 @@
 
 public static class Maths
 {
-    public static T Min<T>(T first, T second)
-        where T : IComparisonOperators<T, T>
+    public static float Min(float first, float second) => first < second ? first : second;
+    public static float Max(float first, float second) => first > second ? first : second;
+    public static float Clamp(float value, float min, float max)
     {
-        return first < second ? first : second;
+        if (min > max)
+            throw new ArgumentOutOfRangeException(nameof(min), $"min value ({min}) was greater than max ({max})");
+
+        return value < min ? min : value > max ? max : value;
     }
-    public static T Max<T>(T first, T second)
-        where T : IComparisonOperators<T, T>
-    {
-        return first > second ? first : second;
-    }
-    public static T Clamp<T>(T value, T min, T max)
-        where T : IComparisonOperators<T, T>
+    public static int Min(int first, int second) => first < second ? first : second;
+    public static int Max(int first, int second) => first > second ? first : second;
+    public static int Clamp(int value, int min, int max)
     {
         if (min > max)
             throw new ArgumentOutOfRangeException(nameof(min), $"min value ({min}) was greater than max ({max})");

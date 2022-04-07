@@ -1,16 +1,13 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Residue1 : Residue0
+    class Residue1 : Residue0
 	{
-		new int forward(Block vb,Object vl, float[][] fin, int ch)
+		new int forward(Block vb, object vl, float[][] fin, int ch)
 		{
 			return 0;
 		}
 
-		override internal int inverse(Block vb, Object vl, float[][] fin, int[] nonzero, int ch)
+		override internal int inverse(Block vb, object vl, float[][] fin, int[] nonzero, int ch)
 		{
 			int used=0;
 			for(int i=0; i<ch; i++)

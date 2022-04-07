@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HaighFramework
+﻿namespace HaighFramework
 {
     public class HException : Exception
     {
@@ -14,6 +7,7 @@ namespace HaighFramework
         /// </summary>
         public static bool LogExceptions { get; set; } = true;
 
+        //todo: remove this class
         public HException(string exceptionMessage, params object[] args)
             : base(string.Format(exceptionMessage, args))
         {

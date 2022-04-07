@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HaighFramework
+﻿namespace HaighFramework
 {
     public class BiDictionary<T1, T2>
     {
-        Dictionary<T1, T2> _forwardDict = new Dictionary<T1, T2>();
-        Dictionary<T2, T1> _backwardDict = new Dictionary<T2, T1>();
+        Dictionary<T1, T2> _forwardDict = new();
+        Dictionary<T2, T1> _backwardDict = new();
 
         public List<T1> FirstElements { get; private set; } = new List<T1>();
 

@@ -1,25 +1,24 @@
-using System;
 using System.Diagnostics;
 
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Mapping0 : FuncMapping
+    class Mapping0 : FuncMapping
 	{
 		//static int seq=0;
-		override internal void free_info(Object imap){}
-		override internal void free_look(Object imap){}
+		override internal void free_info(object imap){}
+		override internal void free_look(object imap){}
 
-		override internal Object look(DspState vd, InfoMode vm, Object m)
+		override internal object look(DspState vd, InfoMode vm, object m)
 		{
 			Info vi=vd.vi;
-			LookMapping0 looks=new LookMapping0();
+			LookMapping0 looks=new();
 			InfoMapping0 info=looks.map=(InfoMapping0)m;
 			looks.mode=vm;
   
-			looks.time_look=new Object[info.submaps];
-			looks.floor_look=new Object[info.submaps];
-			looks.residue_look=new Object[info.submaps];
+			looks.time_look=new object[info.submaps];
+			looks.floor_look=new object[info.submaps];
+			looks.residue_look=new object[info.submaps];
 
 			looks.time_func=new FuncTime[info.submaps];
 			looks.floor_func=new FuncFloor[info.submaps];
@@ -52,7 +51,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			return(looks);
 		}
 
-		override internal void pack(Info vi, Object imap, csBuffer opb)
+		override internal void pack(Info vi, object imap, csBuffer opb)
 		{
 			InfoMapping0 info=(InfoMapping0)imap;
 
@@ -104,10 +103,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			}
 		}
 
-		override internal Object unpack(Info vi, csBuffer opb)
+		override internal object unpack(Info vi, csBuffer opb)
 		{
 			// also responsible for range checking
-			InfoMapping0 info=new InfoMapping0();
+			InfoMapping0 info=new();
 
 			// !!!!
 			if(opb.read(1)!=0)
@@ -196,9 +195,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		float[][] pcmbundle=null;
 		int[] zerobundle=null;
 		int[] nonzero=null;
-		Object[] floormemo=null;
+        object[] floormemo=null;
 
-		override internal int inverse(Block vb, Object l)
+		override internal int inverse(Block vb, object l)
 		{
 #if DEBUG
             Debug.Assert(l != null);
@@ -222,7 +221,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 					pcmbundle=new float[vi.channels][];
 					nonzero=new int[vi.channels];
 					zerobundle=new int[vi.channels];
-					floormemo=new Object[vi.channels];
+					floormemo=new object[vi.channels];
 				}
   
 				// time domain information decode (note that applying the
@@ -419,10 +418,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 	{
 		internal InfoMode mode;
 		internal InfoMapping0 map;
-		internal Object[] time_look;
-		internal Object[] floor_look;
+		internal object[] time_look;
+		internal object[] floor_look;
 		//Object[] floor_state;
-		internal Object[] residue_look; 
+		internal object[] residue_look; 
 		//PsyLook[] psy_look;
 
 		internal FuncTime[] time_func; 

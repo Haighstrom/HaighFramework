@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
+﻿using System.IO;
 
 namespace HaighFramework.Audio.OpenAL.Wav
 {
@@ -21,21 +18,21 @@ namespace HaighFramework.Audio.OpenAL.Wav
             : base()
         {
             Stream stream = File.OpenRead(filePath);
-            using (BinaryReader reader = new BinaryReader(stream))
+            using (BinaryReader reader = new(stream))
             {
                 // RIFF header
-                string signature = new string(reader.ReadChars(4));
+                string signature = new(reader.ReadChars(4));
                 if (signature != "RIFF")
                     throw new NotSupportedException("Specified stream is not a wave file.");
 
                 int riff_chunck_size = reader.ReadInt32();
 
-                string format = new string(reader.ReadChars(4));
+                string format = new(reader.ReadChars(4));
                 if (format != "WAVE")
                     throw new NotSupportedException("Specified stream is not a wave file.");
 
                 // WAVE header
-                string format_signature = new string(reader.ReadChars(4));
+                string format_signature = new(reader.ReadChars(4));
                 if (format_signature != "fmt ")
                     throw new NotSupportedException("Specified wave file is not supported.");
 
@@ -48,7 +45,7 @@ namespace HaighFramework.Audio.OpenAL.Wav
                 Bits_per_sample = reader.ReadInt16();
                 Format_AL = GetSoundFormat(num_channels, Bits_per_sample);
 
-                string data_signature = new string(reader.ReadChars(4));
+                string data_signature = new(reader.ReadChars(4));
                 if (data_signature != "data")
                     throw new NotSupportedException("Specified wave file is not supported.");
 

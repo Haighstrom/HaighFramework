@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-
-namespace HaighFramework.Audio.OpenAL
+﻿namespace HaighFramework.Audio.OpenAL
 {
     internal static class AudioDeviceEnumerator
     {
         #region All device strings
 
-        private static readonly List<string> available_playback_devices = new List<string>();
-        private static readonly List<string> available_recording_devices = new List<string>();
+        private static readonly List<string> available_playback_devices = new();
+        private static readonly List<string> available_recording_devices = new();
 
         internal static IList<string> AvailablePlaybackDevices
         {
@@ -92,7 +88,7 @@ namespace HaighFramework.Audio.OpenAL
 
                 // need a dummy context for correct results
                 dummy_device = Alc.OpenDevice(null);
-                dummy_context = Alc.CreateContext(dummy_device, (int[])null);   //this line prints error message
+                dummy_context = Alc.CreateContext(dummy_device, null);   //this line prints error message
 
                 bool dummy_success = Alc.MakeContextCurrent(dummy_context);
                 AlcError dummy_error = Alc.GetError(dummy_device);

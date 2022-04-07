@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-
-namespace HaighFramework.Audio.OpenAL
+﻿namespace HaighFramework.Audio.OpenAL
 {
     /// <summary>
     /// Provides methods to instantiate, use and destroy an audio context for playback.
@@ -19,8 +15,8 @@ namespace HaighFramework.Audio.OpenAL
         bool context_exists;
 
         string device_name;
-        static object audio_context_lock = new object();
-        static Dictionary<IntPtr, AudioContext> available_contexts = new Dictionary<IntPtr, AudioContext>();
+        static object audio_context_lock = new();
+        static Dictionary<IntPtr, AudioContext> available_contexts = new();
 
         #endregion
 
@@ -71,7 +67,7 @@ namespace HaighFramework.Audio.OpenAL
             if (refresh < 0) throw new ArgumentOutOfRangeException("refresh", refresh, "Should be greater than zero.");
 
 
-            if (!String.IsNullOrEmpty(device))
+            if (!string.IsNullOrEmpty(device))
             {
                 device_name = device;
                 device_handle = Alc.OpenDevice(device); // try to open device by name
@@ -89,13 +85,13 @@ namespace HaighFramework.Audio.OpenAL
             if (device_handle == IntPtr.Zero)
             {
                 device_name = "None";
-                throw new HException("Audio device '{0}' does not exist or is tied up by another application.", String.IsNullOrEmpty(device) ? "default" : device);
+                throw new HException("Audio device '{0}' does not exist or is tied up by another application.", string.IsNullOrEmpty(device) ? "default" : device);
             }
 
             CheckErrors();
 
             // Build the attribute list
-            List<int> attributes = new List<int>();
+            List<int> attributes = new();
 
             if (freq != 0)
             {
@@ -164,7 +160,7 @@ namespace HaighFramework.Audio.OpenAL
             lock (audio_context_lock)
             {
                 if (!Alc.MakeContextCurrent(context != null ? context.context_handle : IntPtr.Zero))
-                    throw new HException("ALC {0} error detected at {1}.", Alc.GetError(context != null ? (IntPtr)context.context_handle : IntPtr.Zero).ToString(),  context != null ? context.ToString() : "null");
+                    throw new HException("ALC {0} error detected at {1}.", Alc.GetError(context != null ? context.context_handle : IntPtr.Zero).ToString(),  context != null ? context.ToString() : "null");
             }
         }
 
@@ -462,12 +458,12 @@ namespace HaighFramework.Audio.OpenAL
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that desrcibes this instance.
+        /// Returns a <see cref="string"/> that desrcibes this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that desrcibes this instance.</returns>
+        /// <returns>A <see cref="string"/> that desrcibes this instance.</returns>
         public override string ToString()
         {
-            return String.Format("{0} (handle: {1}, device: {2})",
+            return string.Format("{0} (handle: {1}, device: {2})",
                                  this.device_name, this.context_handle, this.device_handle);
         }
 

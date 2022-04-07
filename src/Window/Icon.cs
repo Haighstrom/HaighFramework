@@ -2,6 +2,7 @@
 
 using HaighFramework.Win32API;
 using System.Drawing;
+using System.IO;
 
 public class Icon : IDisposable
 {
@@ -16,7 +17,7 @@ public class Icon : IDisposable
     {
         HIcon = User32.LoadImage(icon);
     }
-    public Icon(Bitmap icon, Point<int>? size = null)
+    public Icon(Bitmap icon, Point? size = null)
     {
         _bitmap = icon;
 
@@ -25,7 +26,7 @@ public class Icon : IDisposable
 
         HIcon = _bitmap.GetHicon();
     }
-    public Icon(string filePath, int xHotspot = 0, int yHotspot = 0, Point<int>? size = null)
+    public Icon(string filePath, int xHotspot = 0, int yHotspot = 0, Point? size = null)
     {
         if (!File.Exists(filePath))
             throw new FileNotFoundException($"Could not find file at {filePath}");

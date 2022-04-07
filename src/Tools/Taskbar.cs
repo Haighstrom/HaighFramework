@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
 
 namespace HaighFramework
 {
@@ -24,7 +19,7 @@ namespace HaighFramework
         {
             IntPtr taskbarHandle = User32.FindWindow(Taskbar.CLASS_NAME, null);
 
-            APPBARDATA data = new APPBARDATA();
+            APPBARDATA data = new();
             data.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA));
             data.hWnd = taskbarHandle;
             IntPtr result = Shell32.SHAppBarMessage(ABM.GetTaskbarPos, ref data);
@@ -32,7 +27,7 @@ namespace HaighFramework
                 throw new InvalidOperationException();
 
             Position = (TaskbarPosition)data.uEdge;
-            R = new Rect<int>(data.rc.left, data.rc.top, data.rc.right - data.rc.left, data.rc.bottom - data.rc.top);
+            R = new Rect(data.rc.left, data.rc.top, data.rc.right - data.rc.left, data.rc.bottom - data.rc.top);
 
             data.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA));
             result = Shell32.SHAppBarMessage(ABM.GetState, ref data);
@@ -41,17 +36,17 @@ namespace HaighFramework
             AutoHide = (state & (int)ABS.Autohide) == (int)ABS.Autohide;
         }
 
-        public static IRect<int> R { get; set; }
+        public static IRect R { get; set; }
         public static TaskbarPosition Position { get; set; }
         public static bool AlwaysOnTop { get; set; }
         public static bool AutoHide { get; set; }
 
-        public static IPoint<int> P => R.P;
-        public static int X => R.X;
-        public static int Y => R.Y;
-        public static int W => R.W;
-        public static int H => R.H;
-        public static IPoint<int> Centre => R.Centre;
-        public static IPoint<int> Size => R.Size;
+        public static Point P => R.P;
+        public static int X => (int)R.X;
+        public static int Y => (int)R.Y;
+        public static int W => (int)R.W;
+        public static int H => (int)R.H;
+        public static Point Centre => R.Centre;
+        public static Point Size => R.Size;
     }
 }

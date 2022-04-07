@@ -1,8 +1,6 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class EncodeAuxNearestMatch
+    class EncodeAuxNearestMatch
     {
 #pragma warning disable 649
         internal int[] ptr0;

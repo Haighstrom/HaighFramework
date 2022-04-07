@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
 
 namespace HaighFramework.Audio.OpenAL
@@ -253,7 +250,7 @@ namespace HaighFramework.Audio.OpenAL
         internal static string GetString(IntPtr device, AlcGetString param)
         {
             IntPtr pstr = GetStringPrivate(device, param);
-            string str = String.Empty;
+            string str = string.Empty;
             if (pstr != IntPtr.Zero)
             {
                 str = Marshal.PtrToStringAnsi(pstr);
@@ -272,7 +269,7 @@ namespace HaighFramework.Audio.OpenAL
         /// <returns>A List of strings containing the names of the Devices.</returns>
         internal static IList<string> GetString(IntPtr device, AlcGetStringList param)
         {
-            List<string> result = new List<string>();
+            List<string> result = new();
 
             // We cannot use Marshal.PtrToStringAnsi(),
             //  because alcGetString is defined to return either a nul-terminated string,
@@ -283,7 +280,7 @@ namespace HaighFramework.Audio.OpenAL
             IntPtr t = GetStringPrivate(device, (AlcGetString)param);
             if (t != IntPtr.Zero)
             {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                System.Text.StringBuilder sb = new();
                 byte b;
                 int offset = 0;
                 do

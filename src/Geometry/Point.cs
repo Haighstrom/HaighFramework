@@ -1,12 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace HaighFramework
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Point : IPoint<float>, IPosition
+    public struct Point : IPosition, IEquatable<Point>
     {
         #region Static
         public static readonly Point Zero = new();
@@ -16,7 +15,7 @@ namespace HaighFramework
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <returns></returns>
-        public static float DotProduct(IPoint<float> p1, IPoint<float> p2) => p1.DotProduct(p2);
+        public static float DotProduct(Point p1, Point p2) => p1.DotProduct(p2);
         #endregion
 
         #region Fields
@@ -26,7 +25,7 @@ namespace HaighFramework
         #endregion
 
         #region Constructors
-        public Point(System.Drawing.Point point) 
+        public Point(System.Drawing.Point point)
             : this(point.X, point.Y)
         {
         }
@@ -70,7 +69,7 @@ namespace HaighFramework
         #region Normal
         [JsonIgnore]
         [XmlIgnore]
-        public IPoint<float> Normal => (X == 0 && Y == 0) ? new Point() : new Point(X / Length, Y / Length);
+        public Point Normal => (X == 0 && Y == 0) ? new Point() : new Point(X / Length, Y / Length);
         #endregion
 
         #region Perpendicular
@@ -79,7 +78,7 @@ namespace HaighFramework
         /// <summary>
         /// Returns a vector of equal magnitude at right angle to this point
         /// </summary>
-        public IPoint<float> Perpendicular => new Point(-Y, X);
+        public Point Perpendicular => new Point(-Y, X);
         #endregion
         #endregion
 
@@ -88,7 +87,7 @@ namespace HaighFramework
         /// <summary>
         /// Preserves direction of the point but clamps its magnitude between the values specified (inclusive)
         /// </summary>
-        public IPoint<float> Clamp(float minLength, float maxLength)
+        public Point Clamp(float minLength, float maxLength)
         {
             Point point = new(X, Y);
 
@@ -96,7 +95,7 @@ namespace HaighFramework
 
             point.X *= scale;
             point.Y *= scale;
-            
+
             return point;
         }
         #endregion
@@ -105,7 +104,7 @@ namespace HaighFramework
         /// <summary>
         /// Returns dot (scalar) product with another point
         /// </summary>
-        public float DotProduct(IPoint<float> other) => X * other.X + Y * other.Y;
+        public float DotProduct(Point other) => X * other.X + Y * other.Y;
         #endregion
 
         #region Rotate
@@ -115,21 +114,23 @@ namespace HaighFramework
         /// <param name="RotationCentre"></param>
         /// <param name="RotationAngleInDegrees"></param>
         /// <returns></returns>
-        public IPoint<float> Rotate(float RotationAngleInDegrees, IPoint<float> RotationCentre)
+        public Point Rotate(float RotationAngleInDegrees, Point RotationCentre)
         {
-            IPoint<float> answer = new Point<float>(X - RotationCentre.X, Y - RotationCentre.Y);
-            answer = Matrix2<float>.CreateRotation(-RotationAngleInDegrees) * answer;
+            Point answer = new Point(X - RotationCentre.X, Y - RotationCentre.Y);
+            answer = Matrix2.CreateRotation(-RotationAngleInDegrees) * answer;
             answer.X += RotationCentre.X;
             answer.Y += RotationCentre.Y;
             return answer;
         }
         #endregion
 
-        public IPoint<float> Scale(float xScale, float yScale) => new Point(X * xScale, Y * yScale);
+        public Point Scale(float xScale, float yScale) => new Point(X * xScale, Y * yScale);
 
-        public IPoint<float> Shift(float x, float y = 0) => new Point(X + x, Y + y);
+        public Point Shift(float x, float y = 0) => new Point(X + x, Y + y);
 
-        public bool Equals(IPoint<float>? other) => X == other?.X && Y == other.Y;
+        public bool Equals(Point other) => X == other.X && Y == other.Y;
+
+        public bool Equals(IPosition? other) => X == other?.X && Y == other?.Y;
         #endregion
 
         #region Overloads / Overrides
@@ -152,7 +153,7 @@ namespace HaighFramework
         #region Equals
         public override bool Equals(object? o)
         {
-            if (o is not IPoint <float>)
+            if (o is not Point)
                 return false;
 
             return Equals((Point)o);
@@ -163,25 +164,7 @@ namespace HaighFramework
 
         public override string ToString() => $"(X:{X},Y:{Y})";
 
-        public IPoint<float> Add(IPoint<float> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint<float> Multiply(float value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRect<float> ToRect()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IPoint<float> Subtract(IPoint<float> other)
-        {
-            throw new NotImplementedException();
-        }
+        public Rect ToRect() => new(X, Y);
         #endregion
     }
 }

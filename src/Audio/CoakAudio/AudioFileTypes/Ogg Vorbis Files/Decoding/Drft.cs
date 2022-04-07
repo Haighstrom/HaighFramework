@@ -1,8 +1,6 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Drft
+    class Drft
 	{
 		int n;
 		float[] trigcache;    
@@ -91,7 +89,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 				{
 					ld+=l1;
 					i=iis;
-					argld=(float)ld*argh;
+					argld= ld * argh;
 					fi=0.0f;
 					for (ii=2;ii<ido;ii+=2)
 					{
@@ -286,7 +284,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			float dcp=0,arg,dsp=0,ar1h,ar2h;
 			int idp2,ipp2;
   
-			arg=tpi/(float)ip;
+			arg=tpi/ ip;
 			dcp=(float)Math.Cos(arg);
 			dsp=(float)Math.Sin(arg);
 			ipph=(ip+1)>>1;
@@ -898,7 +896,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
 			t10=ip*ido;
 			t0=l1*ido;
-			arg=tpi/(float)ip;
+			arg=tpi/ ip;
 			dcp=(float)Math.Cos(arg);
 			dsp=(float)Math.Sin(arg);
 			nbd=(int)((uint)(ido-1)>>1);

@@ -1,11 +1,9 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	/// <summary>
-	/// Summary description for csBuffer.
-	/// </summary>
-	internal class csBuffer
+    /// <summary>
+    /// Summary description for csBuffer.
+    /// </summary>
+    internal class csBuffer
 	{
 		private static int BUFFER_INCREMENT = 256;
 

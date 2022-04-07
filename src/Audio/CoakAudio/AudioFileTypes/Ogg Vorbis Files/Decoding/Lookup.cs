@@ -1,9 +1,6 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Lookup
+    class Lookup
 	{
 		static int COS_LOOKUP_SZ=128;
 		static float[] COS_LOOKUP={
@@ -65,7 +62,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		internal static float invsqlook(float a)
 		{
 			// System.out.println(a);
-			double d=a*(2.0f*(float)INVSQ_LOOKUP_SZ)-(float)INVSQ_LOOKUP_SZ;
+			double d=a*(2.0f* INVSQ_LOOKUP_SZ) - INVSQ_LOOKUP_SZ;
 			int i=(int)d;
 			return INVSQ_LOOKUP[i]+ ((float)(d-i))*(INVSQ_LOOKUP[i+1]-INVSQ_LOOKUP[i]);
 		}
@@ -126,7 +123,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		/* interpolated lookup based fromdB function, domain -140dB to 0dB only */
 		internal static float fromdBlook(float a)
 		{
-			int i=(int)(a*((float)(-(1<<FROMdB2_SHIFT))));
+			int i=(int)(a* -(1 << FROMdB2_SHIFT));
 			return (i<0)?1.0f:
 				((i>=(FROMdB_LOOKUP_SZ<<FROMdB_SHIFT))?0.0f:
 				FROMdB_LOOKUP[(uint)i>>FROMdB_SHIFT]*FROMdB2_LOOKUP[i&FROMdB2_MASK]);

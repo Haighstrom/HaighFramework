@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using HaighFramework.Win32API;
 
 namespace HaighFramework.Window
@@ -7,8 +6,8 @@ namespace HaighFramework.Window
     internal class MessageOnlyWindow
     {
         #region Static
-        private static readonly object _syncRoot = new object();
-        public static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
+        private static readonly object _syncRoot = new();
+        public static readonly IntPtr HWND_MESSAGE = new(-3);
         #endregion
 
         #region Fields
@@ -65,7 +64,7 @@ namespace HaighFramework.Window
 
                 ushort atom = User32.RegisterClassEx(ref wc);
 
-                if (atom == 0) throw new Exception(String.Format("Failed to register window class. Error: {0}", Marshal.GetLastWin32Error()));
+                if (atom == 0) throw new Exception(string.Format("Failed to register window class. Error: {0}", Marshal.GetLastWin32Error()));
 
                 _classRegistered = true;
             }
@@ -73,7 +72,7 @@ namespace HaighFramework.Window
             IntPtr handle = User32.CreateWindowEx(0, _className, IntPtr.Zero, 0, x, y, width, height, HWND_MESSAGE, IntPtr.Zero, _instance, IntPtr.Zero);
 
             if (handle == IntPtr.Zero)
-                throw new Exception(String.Format("Failed to create window. Error: {0}", Marshal.GetLastWin32Error()));
+                throw new Exception(string.Format("Failed to create window. Error: {0}", Marshal.GetLastWin32Error()));
 
             return handle;
         }
@@ -106,7 +105,7 @@ namespace HaighFramework.Window
                 int ret = User32.GetMessage(ref _msg, Handle, 0, 0);
 
                 if (ret == -1)
-                    throw new Exception(String.Format("Error getting InputDevice Message: {0}", Marshal.GetLastWin32Error()));
+                    throw new Exception(string.Format("Error getting InputDevice Message: {0}", Marshal.GetLastWin32Error()));
 
                 User32.TranslateMessage(ref _msg);
                 User32.DispatchMessage(ref _msg);

@@ -1,19 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using HaighFramework.Win32API;
 using System.Diagnostics;
-using HaighFramework.DisplayDevices;
 using System.Collections;
+using System.IO;
 
 namespace HaighFramework
 {
     public static class HConsole
     {
-        private static readonly IntPtr InvalidHandleValue = new IntPtr(-1);
+        private static readonly IntPtr InvalidHandleValue = new(-1);
 
         public static IntPtr Handle => Kernal32.GetConsoleWindow();
 
@@ -23,7 +18,7 @@ namespace HaighFramework
         private const string LOG_FILE_PATH = "Log.txt";
 
         //Timers dictionary
-        private static BiDictionary<string, Stopwatch> _timersDict = new BiDictionary<string, Stopwatch>();
+        private static BiDictionary<string, Stopwatch> _timersDict = new();
 
         /// <summary>
         /// Set to false in eg release copies of programs to disable more verbose logging and blocking execution 
@@ -36,7 +31,7 @@ namespace HaighFramework
         public static bool ThrowErrorsOnWarnings { get; set; } = false;
 
         #region HandleOpenGLOutput
-        public static void HandleOpenGLOutput(OpenGL4.DebugSource source, OpenGL4.DebugType type, uint id, OpenGL4.DebugSeverity severity, Int32 length, IntPtr message, IntPtr userParam)
+        public static void HandleOpenGLOutput(OpenGL4.DebugSource source, OpenGL4.DebugType type, uint id, OpenGL4.DebugSeverity severity, int length, IntPtr message, IntPtr userParam)
         {
             Log("");
             Log("-------------------");
@@ -220,7 +215,7 @@ namespace HaighFramework
             if (!DebugMode)
                 return;
 
-            Stopwatch t = new Stopwatch();
+            Stopwatch t = new();
             t.Start();
             
             Log("--> " + operationName + " started..");

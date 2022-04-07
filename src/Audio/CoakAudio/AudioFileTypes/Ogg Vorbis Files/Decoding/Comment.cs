@@ -1,14 +1,13 @@
-using System;
 using System.Text;
 
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	// the comments are not part of vorbis_info so that vorbis_info can be
-	// static storage
-	internal class Comment
+    // the comments are not part of vorbis_info so that vorbis_info can be
+    // static storage
+    internal class Comment
 	{
-		private static String _vorbis="vorbis";
+		private static string _vorbis ="vorbis";
 
 		//private static int OV_EFAULT=-129;
 		private static int OV_EIMPL=-130;
@@ -27,7 +26,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			vendor=null;
 		}
 
-		internal void add(String comment)
+		internal void add(string comment)
 		{
 			Encoding AE = Encoding.UTF8;
 			byte[] comment_byt = AE.GetBytes(comment);
@@ -58,7 +57,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			user_comments[comments]=null;
 		}
 
-		internal void add_tag(String tag, String contents)
+		internal void add_tag(string tag, string contents)
 		{
 			if(contents==null) contents="";
 			add(tag+"="+contents);
@@ -82,12 +81,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			return true;
 		}
 
-		internal String query(String tag)
+		internal string query(string tag)
 		{
 			return query(tag, 0);
 		}
 
-		internal String query(String tag, int count)
+		internal string query(string tag, int count)
 		{
 			Encoding AE = Encoding.UTF8;
 			byte[] tag_byt = AE.GetBytes(tag);
@@ -100,7 +99,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 				if(comment[i]=='=')
 				{
 					char[] comment_uni = AE.GetChars(comment);
-					return new String(comment_uni, i+1, comment_lengths[foo]-(i+1));
+					return new string(comment_uni, i+1, comment_lengths[foo]-(i+1));
 				}
 			}
 			return null;
@@ -180,7 +179,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
 		int pack(csBuffer opb)
 		{
-			String temp="Xiphophorus libVorbis I 20000508";
+            string temp ="Xiphophorus libVorbis I 20000508";
 
 			Encoding AE = Encoding.UTF8;
 			byte[] temp_byt = AE.GetBytes(temp);
@@ -218,7 +217,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
 		internal int header_out(Packet op)
 		{
-			csBuffer opb=new csBuffer();
+			csBuffer opb=new();
 			opb.writeinit();
 
 			if(pack(opb)!=0) return OV_EIMPL;
@@ -241,29 +240,29 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			vendor=null;
 		}
 
-		internal String getVendor()
+		internal string getVendor()
 		{
 			Encoding AE = Encoding.UTF8;
 			char[] vendor_uni = AE.GetChars(vendor);
-			return new String(vendor_uni);
+			return new string(vendor_uni);
 		}
 
-		internal String getComment(int i)
+		internal string getComment(int i)
 		{
 			Encoding AE = Encoding.UTF8;
 			if(comments<=i)return null;
 			
 			char[] user_comments_uni = AE.GetChars(user_comments[i]);
-			return new String(user_comments_uni);
+			return new string(user_comments_uni);
 		}
 
-		internal String toString()
+		internal string toString()
 		{
 			Encoding AE = Encoding.UTF8;
-			String long_string = "Vendor: " + new String(AE.GetChars(vendor));
+            string long_string = "Vendor: " + new string(AE.GetChars(vendor));
 
 			for(int i=0; i < comments; i++)
-				long_string = long_string + "\nComment: " + new String(AE.GetChars(user_comments[i]));
+				long_string = long_string + "\nComment: " + new string(AE.GetChars(user_comments[i]));
 			
 			long_string = long_string + "\n";
 

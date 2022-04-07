@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework.Win32API;
-
-namespace HaighFramework.Input
+﻿namespace HaighFramework.Input
 {
     public interface IKeyboardManager
     {

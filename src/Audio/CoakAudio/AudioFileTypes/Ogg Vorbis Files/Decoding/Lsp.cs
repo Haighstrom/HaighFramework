@@ -1,10 +1,9 @@
-using System;
 using System.Runtime.InteropServices;
 
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	/*
+    /*
 	  function: LSP (also called LSF) conversion routines
 
 	  The LSP generation code is taken (with minimal modification) from
@@ -14,7 +13,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 	  http://www2.xtdl.com/~rothwlr/lsfpaper/lsfpage.html 
 	 ********************************************************************/
 
-	class Lsp
+    class Lsp
 	{
 
 		[StructLayout(LayoutKind.Explicit, Size=32, CharSet=CharSet.Ansi)]
@@ -38,7 +37,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			i=0;
 			while(i<n)
 			{
-				FloatHack fh = new FloatHack();
+				FloatHack fh = new();
 				int k=map[i];
 				float p=.7071067812f;
 				float q=.7071067812f;

@@ -1,7 +1,4 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
 using Microsoft.Win32;
 using System.Runtime.InteropServices;
 
@@ -11,14 +8,11 @@ namespace HaighFramework.Input
     public class KeyboardManager : IKeyboardManager
     {
         #region Fields
-        private readonly List<KeyboardState> _keyboards = new List<KeyboardState>();
-        private readonly List<string> _names = new List<string>();
-        private readonly Dictionary<IntPtr, int> _regdDevices = new Dictionary<IntPtr, int>();
-        private readonly object _syncRoot = new object();
+        private readonly List<KeyboardState> _keyboards = new();
+        private readonly List<string> _names = new();
+        private readonly Dictionary<IntPtr, int> _regdDevices = new();
+        private readonly object _syncRoot = new();
         private readonly IntPtr _msgWindowHandle;
-        #endregion
-
-        #region Properties
         #endregion
 
         #region Constructors
@@ -110,7 +104,7 @@ namespace HaighFramework.Input
             {
                 lock (_syncRoot)
                 {
-                    KeyboardState consolidated = new KeyboardState();
+                    KeyboardState consolidated = new();
                     foreach (KeyboardState k in _keyboards)
                     {
                         consolidated.MergeBits(k);
@@ -190,23 +184,23 @@ namespace HaighFramework.Input
                             RegistryKey classGUIDKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\" + deviceClassGUID);
                             deviceClass = classGUIDKey != null ? (string)classGUIDKey.GetValue("Class") : string.Empty;
                         }
-                        if (String.IsNullOrEmpty(deviceDesc))
+                        if (string.IsNullOrEmpty(deviceDesc))
                             deviceDesc = "Windows Mouse " + _keyboards.Count;
                         else
                             deviceDesc = deviceDesc.Substring(deviceDesc.LastIndexOf(';') + 1);
 
-                        if (!String.IsNullOrEmpty(deviceClass) && deviceClass.ToLower().Equals("keyboard"))
+                        if (!string.IsNullOrEmpty(deviceClass) && deviceClass.ToLower().Equals("keyboard"))
                         {
                             if (!_regdDevices.ContainsKey(d.Device))
                             {
                                 // Register the device:
-                                RawInputDeviceInfo info = new RawInputDeviceInfo();
+                                RawInputDeviceInfo info = new();
                                 int devInfoSize = info.Size;
                                 User32.GetRawInputDeviceInfo(d.Device, RawInputDeviceInfoEnum.DEVICEINFO,
                                         info, ref devInfoSize);
 
                                 RegisterRawDevice(_msgWindowHandle, deviceDesc);
-                                KeyboardState state = new KeyboardState();
+                                KeyboardState state = new();
                                 state.IsConnected = true;
                                 _keyboards.Add(state);
                                 _names.Add(deviceDesc);
@@ -263,6 +257,23 @@ namespace HaighFramework.Input
         }
 
         #endregion
+
+        /// <summary>
+        /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
+        /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
+        /// Use for eg text box input, rather than for controlling a game character (Use Input.GetKeyboardState)
+        /// </summary>
+        public event EventHandler<KeyboardCharEventArgs> CharEntered;
+
+        /// <summary>
+        /// Called whenever a keyboard key is pressed
+        /// </summary>
+        public event EventHandler<KeyboardKeyEventArgs> KeyDown;
+
+        /// <summary>
+        /// Called whenever a keyboard key is released
+        /// </summary>
+        public event EventHandler<KeyboardKeyEventArgs> KeyUp;
         #endregion
     }
 }

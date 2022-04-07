@@ -1,9 +1,6 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	internal class DspState
+    internal class DspState
 	{
 		static float M_PI=3.1415926539f;
 		static int VI_TRANSFORMB=1;
@@ -36,14 +33,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		//float                **window[2][2][2]; // block, leadin, leadout, type
 		internal float[][][][][] wnd;                 // block, leadin, leadout, type
 		//vorbis_look_transform **transform[2];    // block, type 
-		internal Object[][] transform;
+		internal object[][] transform;
 		internal CodeBook[] fullbooks;
 		// backend lookups are tied to the mode, not the backend or naked mapping
-		internal Object[] mode;
+		internal object[] mode;
 
 		internal DspState()
 		{
-			transform=new Object[2][];
+			transform=new object[2][];
 			wnd=new float[2][][][][];
 			wnd[0]=new float[2][][][];
 			wnd[0][0]=new float[2][][];
@@ -126,8 +123,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			this.vi=vi;
 			modebits=ilog2(vi.modes);
 
-			transform[0]=new Object[VI_TRANSFORMB];
-			transform[1]=new Object[VI_TRANSFORMB];
+			transform[0]=new object[VI_TRANSFORMB];
+			transform[1]=new object[VI_TRANSFORMB];
 
 			// MDCT is tranform 0
 
@@ -205,7 +202,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			pcm_current=centerW;
 
 			// initialize all the mapping/backend lookups
-			mode=new Object[vi.modes];
+			mode=new object[vi.modes];
 
 			for(int i=0;i<vi.modes;i++)
 			{

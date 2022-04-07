@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-
-namespace HaighFramework.Audio.OpenAL.OggVorbis
+﻿namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
     internal class VorbisFileInstance : AudioFile
     {
@@ -59,7 +55,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
         int process_packet(int readp)
         {
-            Page og = new Page();
+            Page og = new();
 
             // handle one packet.  Try to fetch it from current stream state
             // extract packets from page
@@ -69,7 +65,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
                 // neither is a page
                 if (decode_ready)
                 {
-                    Packet op = new Packet();
+                    Packet op = new();
                     int result = os.packetout(op);
                     long granulepos;
                     // if(result==-1)return(-1); // hole in the data. For now, swallow
@@ -347,7 +343,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
                 long begin = vorbisFile.offsets[link];
                 int best = (int)begin;
 
-                Page og = new Page();
+                Page og = new();
                 while (begin < end)
                 {
                     long bisect;

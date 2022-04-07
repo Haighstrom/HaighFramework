@@ -1,9 +1,8 @@
 ﻿namespace HaighFramework.Window;
-
-using HaighFramework.Win32API;
-
 public class WindowSettings
 {
+    public static readonly WindowSettings Default = new();
+
     #region Basic
     /// <summary>
     /// Whether the window is created initially visible. True by default.
@@ -11,8 +10,9 @@ public class WindowSettings
     public bool Visible { get; set; } = true;
 
     /// <summary>
-    /// Whether when Close events happen (e.g. X pressed, Close() called) the window will be destroyed. True by default.
+    /// Whether when the window starts to close (e.g. X pressed, Close() called) the window will be destroyed. True by default.
     /// Change this to false to allow custom behaviour when closing the window (e.g. popup saying there are unsaved changes).
+    /// Use Window.Exit to finally destroy the window, and hook onto the Window.Closing event to replace the default Close() functionality.
     /// </summary>
     public bool ExitOnClose { get; set; } = true;
     #endregion
@@ -43,15 +43,15 @@ public class WindowSettings
     /// <summary>
     /// The desired position of the window (X,Y are the top left of the window, W, H are the size of the client)
     /// </summary>
-    public IRect<int> Position
+    public IRect Position
     {
-        get => new Rect<int>(X, Y, Width, Height);
+        get => new Rect(X, Y, Width, Height);
         set
         {
-            X = value.X;
-            Y = value.Y;
-            Width = value.W;
-            Height = value.H;
+            X = (int)value.X;
+            Y = (int)value.Y;
+            Width = (int)value.W;
+            Height = (int)value.H;
         }
     }
 
@@ -78,12 +78,12 @@ public class WindowSettings
     /// <summary>
     /// Restricts the minimum size of the Window
     /// </summary>
-    public Point<int> MinClientSize { get; set; } = new();
+    public Point MinClientSize { get; set; } = new();
 
     /// <summary>
     /// Restricts the maximum size of the Window
     /// </summary>
-    public Point<int> MaxClientSize { get; set; } = new();
+    public Point MaxClientSize { get; set; } = new();
 
     /// <summary>
     /// Whether the window should be created centred on the screen on creation - ignores X,Y

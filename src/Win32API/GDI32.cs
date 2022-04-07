@@ -84,16 +84,16 @@ internal static class GDI32
 
     #region SetTextColor
     [DllImport("gdi32.dll")]
-    internal static extern UInt32 SetTextColor(IntPtr hdc, Int32 crColor);
+    internal static extern uint SetTextColor(IntPtr hdc, int crColor);
     #endregion
 
     #region SwapBuffers
     [DllImport("gdi32.dll")]
-    internal static extern Boolean SwapBuffers(IntPtr dc);
+    internal static extern bool SwapBuffers(IntPtr dc);
     #endregion
 
     #region TextOut
     [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
-    internal static extern Boolean TextOut(IntPtr hdc, Int32 nXStart, Int32 nYStart, String lpString, Int32 cbString);
+    internal static extern bool TextOut(IntPtr hdc, int nXStart, int nYStart, string lpString, int cbString);
     #endregion
 }

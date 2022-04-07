@@ -2,13 +2,13 @@
 
 using HaighFramework.Win32API;
 using System.Drawing;
+using System.IO;
 
 public class Cursor : IDisposable
 {
     private static readonly List<string> _cursorTypes = new() { ".cur", ".ani" };
     private static readonly List<string> _bmpTypes = new() { ".bmp", ".gif", ".exif", ".jpg", ".png", ".tiff" };
     private static readonly Cursor _default = new(PredefinedCursors.IDC_ARROW);
-
 
     public static Cursor Default => _default;
 
@@ -21,7 +21,7 @@ public class Cursor : IDisposable
         HCursor = User32.LoadImage(cursor);
         _sharedCursor = true;
     }
-    public Cursor(Bitmap cursor, int xHotspot = 0, int yHotspot = 0, Point<int>? size = null)
+    public Cursor(Bitmap cursor, int xHotspot = 0, int yHotspot = 0, Point? size = null)
     {
         if (size != null)
             cursor = new Bitmap(cursor, size.Value.X, size.Value.Y);
@@ -38,7 +38,7 @@ public class Cursor : IDisposable
         HCursor = User32.CreateIconIndirect(ref ii);
         _sharedCursor = false;
     }
-    public Cursor(string filePath, int xHotspot = 0, int yHotspot = 0, Point<int>? size = null)
+    public Cursor(string filePath, int xHotspot = 0, int yHotspot = 0, Point? size = null)
     {
         if (!File.Exists(filePath))
             throw new FileNotFoundException($"Could not find file at {filePath}");
@@ -52,7 +52,7 @@ public class Cursor : IDisposable
         }
         else if (_bmpTypes.Contains(fileExt))
         {
-            Bitmap img = new Bitmap(filePath);
+            Bitmap img = new(filePath);
 
             if (size != null)
                 img = new Bitmap(img, size.Value.X, size.Value.Y);

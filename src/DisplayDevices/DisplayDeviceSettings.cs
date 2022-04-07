@@ -1,7 +1,4 @@
-﻿using System;
-using HaighFramework;
-
-namespace HaighFramework.DisplayDevices
+﻿namespace HaighFramework.DisplayDevices
 {
     public sealed class DisplayDeviceSettings
     {
@@ -40,7 +37,7 @@ namespace HaighFramework.DisplayDevices
         #region Overrides
         public override string ToString()
         {
-            return String.Format("Bounds: {0} \nColour Depth: {1} bits \nRefresh Rate: {2} hz", _boundingRect, _colourDepth, _refreshRate);
+            return string.Format("Bounds: {0} \nColour Depth: {1} bits \nRefresh Rate: {2} hz", _boundingRect, _colourDepth, _refreshRate);
         }
         public override bool Equals(object obj)
         {

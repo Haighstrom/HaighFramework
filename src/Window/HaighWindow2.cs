@@ -1,16 +1,10 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using HaighFramework;
-using HaighFramework.Win32API;
-using HaighFramework.OpenGL4;
-using HaighFramework.DisplayDevices;
-using System.Drawing;
+﻿using HaighFramework.Input;
 
 namespace HaighFramework.Window
 {
-    public class HaighWindow2 : IWindow2
+    public class HaighWindow2 : IWindow
     {
-        private IWindow2 _implementation;
+        private IWindow _implementation;
 
         public HaighWindow2(WindowSettings settings)
         {
@@ -65,7 +59,8 @@ namespace HaighFramework.Window
         #endregion
 
         #region Position
-        public IRect<float> Position
+        public float DPI { get => _implementation.DPI; }
+        public IRect Position
         {
             get => _implementation.Position;
             set => _implementation.Position = value;
@@ -90,28 +85,30 @@ namespace HaighFramework.Window
             get => _implementation.Height;
             set => _implementation.Height = value;
         }
-        public IPoint<float> ClientSize
+        public Point ClientSize
         {
             get => _implementation.ClientSize;
             set => _implementation.ClientSize = value;
         }
-        public IPoint<int> MinClientSize
+        public IRect Viewport => _implementation.Viewport;
+        public Point MinClientSize
         {
             get => _implementation.MinClientSize;
             set => _implementation.MinClientSize = value;
         }
-        public IPoint<int> MaxClientSize
+        public Point MaxClientSize
         {
             get => _implementation.MaxClientSize;
             set => _implementation.MaxClientSize = value;
         }
         public void Centre() => _implementation.Centre();
+        public Point ScreenToClient(Point screenPosition) => _implementation.ScreenToClient(screenPosition);
         public event EventHandler Moved
         {
             add => _implementation.Moved += value;
             remove => _implementation.Moved -= value;
         }
-        public event EventHandler<SizeEventArgs> Resized
+        public event EventHandler Resized
         {
             add => _implementation.Resized += value;
             remove => _implementation.Resized -= value;
@@ -146,6 +143,22 @@ namespace HaighFramework.Window
             set => _implementation.CursorLockedToWindow = value;
         }
         #endregion
+
+        public event EventHandler<KeyboardCharEventArgs> CharEntered
+        {
+            add => _implementation.CharEntered += value;
+            remove => _implementation.CharEntered -= value;
+        }
+        public event EventHandler<KeyboardKeyEventArgs> KeyDown
+        {
+            add => _implementation.KeyDown += value;
+            remove => _implementation.KeyDown -= value;
+        }
+        public event EventHandler<KeyboardKeyEventArgs> KeyUp
+        {
+            add => _implementation.KeyUp += value;
+            remove => _implementation.KeyUp -= value;
+        }
 
         #region IDisposable
         public void Dispose() => _implementation.Dispose();

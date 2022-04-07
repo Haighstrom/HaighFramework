@@ -146,7 +146,7 @@ internal static class User32
     {
         int StringMaxLength = 512;
         int key = (int)(extendedScanCode);
-        StringBuilder s = new StringBuilder(StringMaxLength);
+        StringBuilder s = new(StringMaxLength);
         int result = GetKeyNameText(key, s, StringMaxLength);
 
         return s.ToString();
@@ -156,7 +156,7 @@ internal static class User32
     {
         int StringMaxLength = 512;
         int key = (int)((scanCode << 16) | ((isE0 ? 1 : (uint)0) << 24));
-        StringBuilder s = new StringBuilder(StringMaxLength);
+        StringBuilder s = new(StringMaxLength);
         int result = GetKeyNameText(key, s, StringMaxLength);
 
         return s.ToString();
@@ -504,7 +504,7 @@ internal static class User32
     #region SetCapture
     /// <summary>
     /// Sets the mouse capture to the specified window belonging to the current thread. SetCapture captures mouse input either when the mouse is over the capturing window, or when the mouse button was pressed while the mouse was over the capturing window and the button is still down. Only one window at a time can capture the mouse.
-    /// If the mouse cursor is over a window created by another thread, the system will dIRect<float> mouse input to the specified window only if a mouse button is down.
+    /// If the mouse cursor is over a window created by another thread, the system will dRect mouse input to the specified window only if a mouse button is down.
     /// </summary>
     /// <param name="hWnd">A handle to the window in the current thread that is to capture the mouse.</param>
     /// <returns>The return value is a handle to the window that had previously captured the mouse. If there is no such window, the return value is NULL.</returns>
@@ -624,7 +624,7 @@ internal static class User32
 
     #region BringWindowToTop
     [DllImport("user32.dll")]
-    internal static extern Boolean BringWindowToTop(IntPtr hWnd);
+    internal static extern bool BringWindowToTop(IntPtr hWnd);
     #endregion
 
     #region CallWindowProc
@@ -651,7 +651,7 @@ internal static class User32
 
     #region ChangeDisplaySettingsEx
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern DisplayDeviceSettingsChangedResult ChangeDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] String lpszDeviceName,
+    internal static extern DisplayDeviceSettingsChangedResult ChangeDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName,
         DeviceMode lpDevMode, IntPtr hwnd, ChangeDisplaySettingsEnum dwflags, IntPtr lParam);
     #endregion
 
@@ -662,7 +662,9 @@ internal static class User32
     /// <param name="hWnd">Handle to the window whose client area will be used for the conversion.</param>
     /// <param name="point">Pointer to a POINT structure that contains the client coordinates to be converted. The new screen coordinates are copied into this structure if the function succeeds.</param>
     [DllImport("user32.dll", SetLastError = true), SuppressUnmanagedCodeSecurity]
-    internal static extern Boolean ClientToScreen(IntPtr hWnd, ref System.Drawing.Point point);
+    internal static extern bool ClientToScreen(IntPtr hWnd, ref System.Drawing.Point point);
+    [DllImport("user32.dll", SetLastError = true), SuppressUnmanagedCodeSecurity]
+    internal static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
     #endregion
 
     #region ClipCursor
@@ -680,23 +682,23 @@ internal static class User32
 
     #region DestroyIcon
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern Boolean DestroyIcon(IntPtr hIcon);
+    public static extern bool DestroyIcon(IntPtr hIcon);
     #endregion
 
     #region EnumDisplayDevices
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern Boolean EnumDisplayDevices([MarshalAs(UnmanagedType.LPTStr)] String lpDevice,
-        Int32 iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, Int32 dwFlags);
+    internal static extern bool EnumDisplayDevices([MarshalAs(UnmanagedType.LPTStr)] string lpDevice,
+        int iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, int dwFlags);
     #endregion
 
     #region EnumDisplaySettingsEx
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern Boolean EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] String lpszDeviceName, DisplayModeSettingsEnum iModeNum,
-        [In, Out] DeviceMode lpDevMode, Int32 dwFlags);
+    internal static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DisplayModeSettingsEnum iModeNum,
+        [In, Out] DeviceMode lpDevMode, int dwFlags);
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern Boolean EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] String lpszDeviceName, Int32 iModeNum,
-        [In, Out] DeviceMode lpDevMode, Int32 dwFlags);
+    internal static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, int iModeNum,
+        [In, Out] DeviceMode lpDevMode, int dwFlags);
     #endregion
 
     #region FindWindow
@@ -716,7 +718,7 @@ internal static class User32
     /// <param name="windowHandle">Handle to the window whose client coordinates are to be retrieved.</param>
     /// <param name="clientRectangle">Pointer to a RECT structure that receives the client coordinates. The left and top members are zero. The right and bottom members contain the width and height of the window.</param>
     [DllImport("user32.dll")]
-    internal extern static Boolean GetClientRect(IntPtr windowHandle, out RECT clientRectangle);
+    internal extern static bool GetClientRect(IntPtr windowHandle, out RECT clientRectangle);
 
     #endregion
 
@@ -742,7 +744,7 @@ internal static class User32
     /// </summary>
     internal static bool GetCursorInfo()
     {
-        CURSORINFO pci = new CURSORINFO()
+        CURSORINFO pci = new()
         {
             cbSize = Marshal.SizeOf(typeof(CURSORINFO))
         };
@@ -777,7 +779,7 @@ internal static class User32
 
     #region GetMonitorInfo
     [DllImport("user32.dll")]
-    internal static extern Boolean GetMonitorInfo(IntPtr hMonitor, ref MonitorInfo lpmi);
+    internal static extern bool GetMonitorInfo(IntPtr hMonitor, ref MonitorInfo lpmi);
     #endregion
 
     #region GetMouseMovePointsEx
@@ -803,12 +805,12 @@ internal static class User32
     /// <param name="Size">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
     /// <param name="SizeHeader">Size, in bytes, of RawInputHeader.</param>
     [DllImport("user32.dll")]
-    internal static extern Int32 GetRawInputData(
+    internal static extern int GetRawInputData(
         IntPtr RawInput,
         GetRawInputDataEnum Command,
         [Out] IntPtr Data,
-        [In, Out] ref Int32 Size,
-        Int32 SizeHeader
+        [In, Out] ref int Size,
+        int SizeHeader
     );
 
     /// <summary>
@@ -833,12 +835,12 @@ internal static class User32
     /// GetRawInputData gets the raw input one RawInput structure at a time. In contrast, GetRawInputBuffer gets an array of RawInput structures.
     /// </remarks>
     [DllImport("user32.dll")]
-    internal static extern Int32 GetRawInputData(
+    internal static extern int GetRawInputData(
         IntPtr RawInput,
         GetRawInputDataEnum Command,
         /*[MarshalAs(UnmanagedType.LPStruct)]*/ [Out] out RawInput Data,
-        [In, Out] ref Int32 Size,
-        Int32 SizeHeader
+        [In, Out] ref int Size,
+        int SizeHeader
     );
 
 
@@ -872,19 +874,19 @@ internal static class User32
     /// Pointer to a variable that contains the size, in bytes, of the data in Data.
     /// </param>
     [DllImport("user32.dll")]
-    internal static extern UInt32 GetRawInputDeviceInfo(
+    internal static extern uint GetRawInputDeviceInfo(
         IntPtr Device,
         [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
         [In, Out] IntPtr Data,
-        [In, Out] ref UInt32 Size
+        [In, Out] ref uint Size
     );
 
     [DllImport("user32.dll")]
-    internal static extern Int32 GetRawInputDeviceInfo(
+    internal static extern int GetRawInputDeviceInfo(
         IntPtr Device,
         [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
         [In, Out] IntPtr Data,
-        [In, Out] ref Int32 Size
+        [In, Out] ref int Size
     );
 
     /// <summary>
@@ -919,20 +921,20 @@ internal static class User32
     /// <para>Call GetLastError to identify any other errors.</para>
     /// </returns>
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern UInt32 GetRawInputDeviceInfo(
+    internal static extern uint GetRawInputDeviceInfo(
         IntPtr Device,
         [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
         [In, Out] RawInputDeviceInfo Data,
-        [In, Out] ref UInt32 Size
+        [In, Out] ref uint Size
     );
 
     [System.Security.SuppressUnmanagedCodeSecurity]
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern Int32 GetRawInputDeviceInfo(
+    internal static extern int GetRawInputDeviceInfo(
         IntPtr Device,
         [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
         [In, Out] RawInputDeviceInfo Data,
-        [In, Out] ref Int32 Size
+        [In, Out] ref int Size
     );
 
 
@@ -958,17 +960,17 @@ internal static class User32
     /// Size of a RawInputDeviceList structure.
     /// </param>
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern UInt32 GetRawInputDeviceList(
+    private static extern uint GetRawInputDeviceList(
         [In, Out] RawInputDeviceList[] RawInputDeviceList,
-        [In, Out] ref UInt32 NumDevices,
-        UInt32 Size
+        [In, Out] ref uint NumDevices,
+        uint Size
     );
 
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern Int32 GetRawInputDeviceList(
+    internal static extern int GetRawInputDeviceList(
         [In, Out] RawInputDeviceList[] RawInputDeviceList,
-        [In, Out] ref Int32 NumDevices,
-        Int32 Size
+        [In, Out] ref int NumDevices,
+        int Size
     );
 
 
@@ -1001,17 +1003,17 @@ internal static class User32
     /// On any other error, the function returns (UINT) -1 and GetLastError returns the error indication.
     /// </returns>
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern UInt32 GetRawInputDeviceList(
+    internal static extern uint GetRawInputDeviceList(
         [In, Out] IntPtr RawInputDeviceList,
-        [In, Out] ref UInt32 NumDevices,
-        UInt32 Size
+        [In, Out] ref uint NumDevices,
+        uint Size
     );
 
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern Int32 GetRawInputDeviceList(
+    internal static extern int GetRawInputDeviceList(
         [In, Out] IntPtr RawInputDeviceList,
-        [In, Out] ref Int32 NumDevices,
-        Int32 Size
+        [In, Out] ref int NumDevices,
+        int Size
     );
 
     #endregion
@@ -1023,7 +1025,7 @@ internal static class User32
     /// <param name="windowHandle">Handle to the window whose client coordinates are to be retrieved.</param>
     /// <param name="windowRectangle"> Pointer to a structure that receives the screen coordinates of the upper-left and lower-right corners of the window.</param>
     [DllImport("user32.dll")]
-    internal extern static Boolean GetWindowRect(IntPtr windowHandle, out RECT windowRectangle);
+    internal extern static bool GetWindowRect(IntPtr windowHandle, out RECT windowRectangle);
     #endregion
 
     [DllImport("user32.dll")]
@@ -1032,17 +1034,17 @@ internal static class User32
 
     #region IsWindowVisible
     [DllImport("user32.dll")]
-    internal static extern Boolean IsWindowVisible(IntPtr intPtr);
+    internal static extern bool IsWindowVisible(IntPtr intPtr);
     #endregion
 
     #region LoadCursorFromFile       
     [DllImport("user32.dll")]
-    internal static extern IntPtr LoadCursorFromFile(String lpCursorName);
+    internal static extern IntPtr LoadCursorFromFile(string lpCursorName);
     #endregion
 
     #region KillTimer
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern Boolean KillTimer(IntPtr hWnd, UIntPtr uIDEvent);
+    internal static extern bool KillTimer(IntPtr hWnd, UIntPtr uIDEvent);
     #endregion
 
     #region MapVirtualKey
@@ -1086,7 +1088,7 @@ internal static class User32
     /// <param name="flags">What action to take on messages after processing</param>
     [DllImport("User32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern Boolean PeekMessage(ref MSG msg, IntPtr hWnd, Int32 messageFilterMin, Int32 messageFilterMax, PM flags);
+    internal static extern bool PeekMessage(ref MSG msg, IntPtr hWnd, int messageFilterMin, int messageFilterMax, PM flags);
     #endregion
 
     #region RegisterDeviceNotification
@@ -1109,10 +1111,10 @@ internal static class User32
     /// </param>
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern Boolean RegisterRawInputDevices(
+    private static extern bool RegisterRawInputDevices(
         RawInputDevice[] RawInputDevices,
-        Int32 NumDevices,
-        Int32 Size
+        int NumDevices,
+        int Size
     );
     internal static bool RegisterRawInputDevices(RawInputDevice[] rawInputDevices)
     {
@@ -1128,7 +1130,7 @@ internal static class User32
     #region ReleaseDC
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern Boolean ReleaseDC(IntPtr hwnd, IntPtr DC);
+    internal static extern bool ReleaseDC(IntPtr hwnd, IntPtr DC);
     #endregion
 
     #region ScreenToClient
@@ -1139,7 +1141,7 @@ internal static class User32
     /// <param name="point">Pointer to a POINT structure that specifies the screen coordinates to be converted.</param>
     [DllImport("user32.dll")]
     //internal static extern BOOL ScreenToClient(HWND hWnd, ref POINT point);
-    internal static extern Boolean ScreenToClient(IntPtr hWnd, ref System.Drawing.Point point);
+    internal static extern bool ScreenToClient(IntPtr hWnd, ref System.Drawing.Point point);
     #endregion
 
     #region SendMessage
@@ -1169,19 +1171,19 @@ internal static class User32
 
     #region SetParent
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern Boolean SetParent(IntPtr child, IntPtr newParent);
+    public static extern bool SetParent(IntPtr child, IntPtr newParent);
     #endregion
 
     #region SetWindowPos
     [DllImport("user32.dll")]
-    internal static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, Int32 X, Int32 Y, Int32 cx, Int32 cy, SetWindowPosFlags uFlags);
+    internal static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
 
     internal static bool SetWindowPos(IntPtr hWnd, RECT position, SetWindowPosFlags uFlags) => SetWindowPos(hWnd, IntPtr.Zero, position.left, position.top, position.Width, position.Height, uFlags);
     #endregion
 
     #region ShowCursor
     [DllImport("user32.dll")]
-    internal static extern Int32 ShowCursor(Boolean show);
+    internal static extern int ShowCursor(bool show);
     #endregion
 
     #region ShowWindow
@@ -1191,16 +1193,16 @@ internal static class User32
     /// <param name="hWnd">[in] Handle to the window.</param>
     /// <param name="nCmdShow">[in] Specifies how the window is to be shown. This parameter is ignored the first time an application calls ShowWindow, if the program that launched the application provides a STARTUPINFO structure. Otherwise, the first time ShowWindow is called, the value should be the value obtained by the WinMain function in its nCmdShow parameter. In subsequent calls, this parameter can be one of the ShowWindowEnum values.</param>
     [DllImport("user32.dll")]
-    internal static extern Boolean ShowWindow(IntPtr hWnd, ShowWindowCommand nCmdShow);
+    internal static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommand nCmdShow);
     #endregion
 
     #region SetClassLong
     [DllImport("user32.dll")]
-    private static extern IntPtr SetClassLong(IntPtr hInstance, Int32 nIndex, IntPtr value);
+    private static extern IntPtr SetClassLong(IntPtr hInstance, int nIndex, IntPtr value);
 
     internal static IntPtr SetClassLong(IntPtr windowHandle, NIndex nIndex, IntPtr value)
     {
-        return SetClassLong(windowHandle, (Int32)nIndex, value);
+        return SetClassLong(windowHandle, (int)nIndex, value);
     }
     #endregion
 
@@ -1245,29 +1247,29 @@ internal static class User32
 
     #region SetForegroundWindow
     [DllImport("user32.dll")]
-    internal static extern Boolean SetForegroundWindow(IntPtr hWnd);
+    internal static extern bool SetForegroundWindow(IntPtr hWnd);
     #endregion
 
     #region SetTimer
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, UInt32 uElapse, TimerProc lpTimerFunc);
+    internal static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TimerProc lpTimerFunc);
     #endregion
 
     #region TrackMouseEvent
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern Boolean TrackMouseEvent(ref TrackMouseEventStructure lpEventTrack);
+    internal static extern bool TrackMouseEvent(ref TrackMouseEventStructure lpEventTrack);
     #endregion
 
     #region UnregisterClass
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern Int16 UnregisterClass([MarshalAs(UnmanagedType.LPTStr)] String className, IntPtr instance);
+    internal static extern short UnregisterClass([MarshalAs(UnmanagedType.LPTStr)] string className, IntPtr instance);
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern Int16 UnregisterClass(IntPtr className, IntPtr instance);
+    internal static extern short UnregisterClass(IntPtr className, IntPtr instance);
     #endregion
 
     #region UnregisterDeviceNotification
     [DllImport("user32.dll")]
-    internal static extern Boolean UnregisterDeviceNotification(IntPtr handle);
+    internal static extern bool UnregisterDeviceNotification(IntPtr handle);
     #endregion
 }

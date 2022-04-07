@@ -1,12 +1,9 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Floor0 : FuncFloor
+    class Floor0 : FuncFloor
 	{
 
-		override internal void pack(Object i, csBuffer opb)
+		override internal void pack(object i, csBuffer opb)
 		{
 			InfoFloor0 info=(InfoFloor0)i;
 			opb.write(info.order,8);
@@ -19,9 +16,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 				opb.write(info.books[j],8);
 		}
 
-		override internal Object unpack(Info vi , csBuffer opb)
+		override internal object unpack(Info vi , csBuffer opb)
 		{
-			InfoFloor0 info=new InfoFloor0();
+			InfoFloor0 info=new();
 			info.order=opb.read(8);
 			info.rate=opb.read(16);
 			info.barkmap=opb.read(16);
@@ -52,13 +49,13 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			//    free_info(info);
 			//    return(NULL);
 		}
-		override internal Object look(DspState vd, InfoMode mi, Object i)
+		override internal object look(DspState vd, InfoMode mi, object i)
 		{
 			float scale;
 
 			Info vi=vd.vi;
 			InfoFloor0 info=(InfoFloor0)i;
-			LookFloor0 look=new LookFloor0();
+			LookFloor0 look=new();
 			look.m=info.order;
 			look.n=vi.blocksizes[mi.blockflag]/2;
 			look.ln=info.barkmap;
@@ -100,7 +97,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
 		private object state(object i)
 		{
-			EchstateFloor0 state=new EchstateFloor0();
+			EchstateFloor0 state=new();
 			InfoFloor0 info=(InfoFloor0)i;
 
 			// a safe size if usually too big (dim==1)
@@ -109,13 +106,13 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			state.frameno=-1;
 			return(state);
 		}
-		override internal void free_info(Object i){}
-		override internal void free_look(Object i){}
-		override internal void free_state(Object vs){}
-		override internal int forward(Block vb, Object i,  float[] fin, float[] fout, Object vs){return 0;}
+		override internal void free_info(object i){}
+		override internal void free_look(object i){}
+		override internal void free_state(object vs){}
+		override internal int forward(Block vb, object i,  float[] fin, float[] fout, object vs){return 0;}
 
 		float[] lsp=null;    
-		int inverse(Block vb, Object i, float[] fout)
+		int inverse(Block vb, object i, float[] fout)
 		{
 			//System.err.println("Floor0.inverse "+i.getClass()+"]");
 			LookFloor0 look=(LookFloor0)i;
@@ -182,7 +179,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			return(0);
 		}
 
-		override internal Object inverse1(Block vb, Object i, Object memo)
+		override internal object inverse1(Block vb, object i, object memo)
 		{
 			//System.err.println("Floor0.inverse "+i.getClass()+"]");
 			LookFloor0 look=(LookFloor0)i;
@@ -236,7 +233,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			return(null);
 		}
 
-		override internal int inverse2(Block vb, Object i, Object memo, float[] fout)
+		override internal int inverse2(Block vb, object i, object memo, float[] fout)
 		{
 			//System.err.println("Floor0.inverse "+i.getClass()+"]");
 			LookFloor0 look=(LookFloor0)i;
@@ -329,7 +326,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		}
 
 		static void lpc_to_curve(float[] curve, float[] lpc,float amp,
-			LookFloor0 l, String name, int frameno)
+			LookFloor0 l, string name, int frameno)
 		{
 			// l->m+1 must be less than l->ln, but guard in case we get a bad stream
 			float[] lcurve=new float[Math.Max(l.ln*2,l.m*2+2)];
@@ -367,7 +364,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		internal int[] linearmap;
 
 		internal InfoFloor0 vi;
-		internal Lpc lpclook=new Lpc();
+		internal Lpc lpclook=new();
 	}
 
 	class EchstateFloor0

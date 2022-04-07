@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Win32;
-using HaighFramework.Win32API;
-using System.Drawing;
+﻿using HaighFramework.Win32API;
 
 namespace HaighFramework.DisplayDevices
 {
     public sealed class DisplayDeviceManager : IDisplayDeviceManager
     {
         #region Fields
-        private readonly List<IDisplayDevice> _availableDevices = new List<IDisplayDevice>();
+        private readonly List<IDisplayDevice> _availableDevices = new();
         private IDisplayDevice _primaryDevice;
         #endregion
 
@@ -17,7 +13,8 @@ namespace HaighFramework.DisplayDevices
         public DisplayDeviceManager() 
         {
             RefreshDevices();
-            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+            //todo: get this working again
+            //SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
         }
         #endregion
 
@@ -41,16 +38,16 @@ namespace HaighFramework.DisplayDevices
 
             IDisplayDevice device;
             DisplayDeviceSettings curSettings = null;
-            List<DisplayDeviceSettings> availableSettings = new List<DisplayDeviceSettings>();
+            List<DisplayDeviceSettings> availableSettings = new();
             bool isPrimary = false;
             int deviceCount = 0, settingsCount = 0;
-            DISPLAY_DEVICE win32DisplayDevice = new DISPLAY_DEVICE();
+            DISPLAY_DEVICE win32DisplayDevice = new();
 
             while (User32.EnumDisplayDevices(null, deviceCount++, win32DisplayDevice, 0))
             {
                 if ((win32DisplayDevice.StateFlags & DisplayDeviceStateFlags.AttachedToDesktop) == 0) continue;
 
-                DeviceMode dm = new DeviceMode();
+                DeviceMode dm = new();
 
                 if (User32.EnumDisplaySettingsEx(win32DisplayDevice.DeviceName, DisplayModeSettingsEnum.CurrentSettings, dm, 0) || User32.EnumDisplaySettingsEx(win32DisplayDevice.DeviceName, DisplayModeSettingsEnum.RegistrySettings, dm, 0))
                 {
@@ -65,7 +62,7 @@ namespace HaighFramework.DisplayDevices
                 while (User32.EnumDisplaySettingsEx(win32DisplayDevice.DeviceName, settingsCount++, dm, 0))
                 {
                     //todo: DPI
-                    DisplayDeviceSettings settings = new DisplayDeviceSettings(dm.Position.X, dm.Position.Y, dm.PelsWidth, dm.PelsHeight, dm.BitsPerPel, dm.DisplayFrequency);
+                    DisplayDeviceSettings settings = new(dm.Position.X, dm.Position.Y, dm.PelsWidth, dm.PelsHeight, dm.BitsPerPel, dm.DisplayFrequency);
 
                     availableSettings.Add(settings);
                 }
@@ -175,8 +172,10 @@ namespace HaighFramework.DisplayDevices
         }
         private void Dispose(bool calledFromDispose)
         {
-            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
-            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+            //todo: why was this called twice?
+            //todo: get this working again
+            //SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+            //SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
             RestoreSettings();
         }
         ~DisplayDeviceManager()

@@ -1,10 +1,9 @@
-using System;
 using System.Runtime.CompilerServices;
 
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Mdct
+    class Mdct
 	{        
 		int n;
 		int log2n;

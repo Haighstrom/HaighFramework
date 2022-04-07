@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using HaighFramework.Audio.OpenAL.Wav;
+﻿using HaighFramework.Audio.OpenAL.Wav;
 using HaighFramework.Audio.OpenAL.OggVorbis;
+using System.Threading;
 
-
-namespace HaighFramework.Audio.OpenAL 
+namespace HaighFramework.Audio.OpenAL
 {
     /// <summary>
     /// A manager for audio clips and audio channels.  Puts audio clips into

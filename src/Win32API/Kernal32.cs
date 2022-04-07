@@ -83,12 +83,12 @@ internal static class Kernal32
 
     #region FreeLibrary
     [DllImport("kernel32.dll")]
-    internal static extern Boolean FreeLibrary(IntPtr handle);
+    internal static extern bool FreeLibrary(IntPtr handle);
     #endregion
 
     #region GetConsoleScreenBufferInfo
     [DllImport("kernel32.dll")]
-    internal static extern Boolean GetConsoleScreenBufferInfo(
+    internal static extern bool GetConsoleScreenBufferInfo(
         IntPtr hConsoleOutput,
         out CONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo
         );

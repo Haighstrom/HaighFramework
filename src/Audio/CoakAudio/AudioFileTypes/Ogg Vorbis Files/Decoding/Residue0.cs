@@ -1,12 +1,11 @@
-using System;
 using System.Runtime.CompilerServices;
 
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Residue0 : FuncResidue
+    class Residue0 : FuncResidue
 	{
-		override internal void pack(Object vr, csBuffer opb)
+		override internal void pack(object vr, csBuffer opb)
 		{
 			InfoResidue0 info=(InfoResidue0)vr;
 			int acc=0;
@@ -42,10 +41,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			}
 		}
 
-		override internal Object unpack(Info vi, csBuffer opb)
+		override internal object unpack(Info vi, csBuffer opb)
 		{
 			int acc=0;
-			InfoResidue0 info=new InfoResidue0();
+			InfoResidue0 info=new();
 
 			info.begin=opb.read(24);
 			info.end=opb.read(24);
@@ -90,10 +89,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			//    return(NULL);
 		}
 
-		override internal Object look(DspState vd, InfoMode vm, Object vr)
+		override internal object look(DspState vd, InfoMode vm, object vr)
 		{
 			InfoResidue0 info=(InfoResidue0)vr;
-			LookResidue0 look=new LookResidue0();
+			LookResidue0 look=new();
 			int acc=0;
 			int dim;
 			int maxstage=0;
@@ -145,9 +144,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			return(look);
 		}
 
-		override internal void free_info(Object i){}
-		override internal void free_look(Object i){}
-		override internal int forward(Block vb,Object vl, float[][] fin, int ch)
+		override internal void free_info(object i){}
+		override internal void free_look(object i){}
+		override internal int forward(Block vb, object vl, float[][] fin, int ch)
 		{
 			return 0;
 		}
@@ -155,7 +154,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		static int[][][] partword=new int[2][][];
 	
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		internal static int _01inverse(Block vb, Object vl, float[][] fin, int ch, int decodepart)
+		internal static int _01inverse(Block vb, object vl, float[][] fin, int ch, int decodepart)
 		{
 			{
 				int i,j,k,l,s;
@@ -249,7 +248,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			}
 		}
 
-		internal static int _2inverse(Block vb, Object vl, float[][] fin, int ch)
+		internal static int _2inverse(Block vb, object vl, float[][] fin, int ch)
 		{
 			int i,k,l,s;
 			LookResidue0 look=(LookResidue0 )vl;
@@ -309,7 +308,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			return(0);
 		}
 
-		override internal int inverse(Block vb, Object vl, float[][] fin, int[] nonzero, int ch)
+		override internal int inverse(Block vb, object vl, float[][] fin, int[] nonzero, int ch)
 		{
 			//System.err.println("Residue0.inverse");
 			int used=0;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
 using Microsoft.Win32;
 using System.Runtime.InteropServices;
 
@@ -11,10 +8,10 @@ namespace HaighFramework.Input
     public class GamePadManager : IGamePadManager
     {
         #region Fields
-        private readonly List<GamePadState> _gamePadStates = new List<GamePadState>();
-        private readonly List<string> _names = new List<string>();
-        private readonly Dictionary<IntPtr, int> _regdDevices = new Dictionary<IntPtr, int>();
-        private readonly object _syncRoot = new object();
+        private readonly List<GamePadState> _gamePadStates = new();
+        private readonly List<string> _names = new();
+        private readonly Dictionary<IntPtr, int> _regdDevices = new();
+        private readonly object _syncRoot = new();
         private readonly IntPtr _msgWindowHandle;
         #endregion
 
@@ -133,7 +130,7 @@ namespace HaighFramework.Input
                             RegistryKey classGUIDKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\" + deviceClassGUID);
                             deviceClass = classGUIDKey != null ? (string)classGUIDKey.GetValue("Class") : string.Empty;
                         }
-                        if (String.IsNullOrEmpty(deviceDesc))
+                        if (string.IsNullOrEmpty(deviceDesc))
                             deviceDesc = "Windows Mouse " + _gamePadStates.Count;
                         else
                             deviceDesc = deviceDesc.Substring(deviceDesc.LastIndexOf(';') + 1);
@@ -141,18 +138,18 @@ namespace HaighFramework.Input
                      //   HConsole.Log(deviceClass.ToLower());
 
 
-                        if (!String.IsNullOrEmpty(deviceClass) && deviceClass.ToLower().Equals("keyboard"))
+                        if (!string.IsNullOrEmpty(deviceClass) && deviceClass.ToLower().Equals("keyboard"))
                         {
                             if (!_regdDevices.ContainsKey(d.Device))
                             {
                                 // Register the device:
-                                RawInputDeviceInfo info = new RawInputDeviceInfo();
+                                RawInputDeviceInfo info = new();
                                 int devInfoSize = info.Size;
                                 User32.GetRawInputDeviceInfo(d.Device, RawInputDeviceInfoEnum.DEVICEINFO,
                                         info, ref devInfoSize);
 
                                 RegisterRawDevice(_msgWindowHandle, deviceDesc);
-                                GamePadState state = new GamePadState();
+                                GamePadState state = new();
                                 state.IsConnected = true;
                                 _gamePadStates.Add(state);
                                 _names.Add(deviceDesc);

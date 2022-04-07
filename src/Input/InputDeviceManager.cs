@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
 using System.Runtime.InteropServices;
 using HaighFramework.Window;
+using System.Threading;
 
 namespace HaighFramework.Input
 {
     public class InputDeviceManager : IInputDeviceManager
     {
         #region Static Fields
-        private static RawInput _rawInput = new RawInput(); 
-        static readonly Guid DeviceInterfaceHid = new Guid("4D1E55B2-F16F-11CF-88CB-001111000030");
+        private static RawInput _rawInput = new(); 
+        static readonly Guid DeviceInterfaceHid = new("4D1E55B2-F16F-11CF-88CB-001111000030");
         #endregion
 
         #region Fields
@@ -23,7 +19,7 @@ namespace HaighFramework.Input
 
         private MessageOnlyWindow _inputWindow;
         private readonly Thread _thread;
-        private readonly AutoResetEvent _ready = new AutoResetEvent(false);
+        private readonly AutoResetEvent _ready = new(false);
 
         private IntPtr _registrationHandle;
         #endregion
@@ -65,13 +61,13 @@ namespace HaighFramework.Input
         }
         private void RegisterForRawInput()
         {
-            DevBroadcastHDR dbHdr = new DevBroadcastHDR();
+            DevBroadcastHDR dbHdr = new();
             dbHdr.Size = Marshal.SizeOf(dbHdr);
             dbHdr.DeviceType = DeviceBroadcastType.INTERFACE;
             dbHdr.ClassGuid = DeviceInterfaceHid;
             unsafe
             {
-                _registrationHandle = User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr((void*)&dbHdr), DeviceNotification.WINDOW_HANDLE);
+                _registrationHandle = User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr(&dbHdr), DeviceNotification.WINDOW_HANDLE);
             }
             if (_registrationHandle == IntPtr.Zero)
             {
@@ -80,11 +76,12 @@ namespace HaighFramework.Input
         }
 
         #region WindowProcedure
-        private IntPtr _unhandled = new IntPtr(-1);
+        private IntPtr _unhandled = new(-1);
         private IntPtr WindowProcedure(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
         {
             switch (message)
             {
+                #region WM_INPUT
                 case WindowMessage.WM_INPUT:
                     int size = 0;
                     User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
@@ -110,6 +107,9 @@ namespace HaighFramework.Input
                         }
                     }
                     break;
+                #endregion
+
+                #region WM_DEVICECHANGE
                 case WindowMessage.WM_DEVICECHANGE:
                     Console.WriteLine("Input Devices Change detected. Identifying new devices...");
 
@@ -117,6 +117,7 @@ namespace HaighFramework.Input
                     _keyboardManager.RefreshDevices();
 
                     break;
+                #endregion
             }
             return _unhandled;
         }

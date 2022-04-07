@@ -1,9 +1,6 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class StaticCodeBook
+    class StaticCodeBook
 	{
 		internal int   dim;            // codebook dimensions (elements per vector)
 		internal int   entries;        // codebook entries
@@ -40,10 +37,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		internal StaticCodeBook(int dim, int entries, int[] lengthlist,
 			int maptype, int q_min, int q_delta, 
 			int q_quant, int q_sequencep, int[] quantlist,
-			//EncodeAuxNearestmatch nearest_tree,
-			Object nearest_tree,
-			// EncodeAuxThreshmatch thresh_tree,
-			Object thresh_tree
+            //EncodeAuxNearestmatch nearest_tree,
+            object nearest_tree,
+            // EncodeAuxThreshmatch thresh_tree,
+            object thresh_tree
 			) : this()
 		{
 			this.dim=dim; this.entries=entries; this.lengthlist=lengthlist;

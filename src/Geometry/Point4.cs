@@ -1,6 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 
@@ -10,7 +9,7 @@ namespace HaighFramework
     public struct Point4 : IEquatable<Point4>
     {
         #region Static
-        public static readonly Point4 Zero = new Point4();
+        public static readonly Point4 Zero = new();
 
         #region DotProduct
         /// <summary>

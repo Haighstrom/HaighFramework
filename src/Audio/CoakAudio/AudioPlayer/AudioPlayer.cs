@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework.Audio.OpenAL;
+﻿using HaighFramework.Audio.OpenAL;
 
 
 namespace HaighFramework.Audio
@@ -27,7 +24,7 @@ namespace HaighFramework.Audio
         public static bool ShuffleMusic { get { return _shuffleMusic; } set { _shuffleMusic = value; } }
         private static bool _shuffleMusic = true;
 
-        private static List<MusicClip> _playlist = new List<MusicClip>();
+        private static List<MusicClip> _playlist = new();
         private static int _playlistIndex = 0;
         private static MusicClip _lastPlayedMusicClip;
 
@@ -68,7 +65,7 @@ namespace HaighFramework.Audio
         {
             try
             {
-                AudioContext ac = new AudioContext();
+                AudioContext ac = new();
                 AudioManager.Manager = new AudioManager(Channels, BuffersPerChannel, BytesPerBuffer, true);
                 Rand = new Random();
             }
@@ -106,7 +103,7 @@ namespace HaighFramework.Audio
             if (!AudioInitialisedSuccessfully)
                 return null;
 
-            MusicClip clip = new MusicClip(filePath);
+            MusicClip clip = new(filePath);
             return clip;
         }
 
@@ -115,7 +112,7 @@ namespace HaighFramework.Audio
             if (!AudioInitialisedSuccessfully)
                 return null;
 
-            SFXClip clip = new SFXClip(filePath);
+            SFXClip clip = new(filePath);
             return clip;
         }
 

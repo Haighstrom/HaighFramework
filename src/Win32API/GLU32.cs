@@ -11,16 +11,16 @@ internal static class GLU32
 
     #region gluBuild2DMipmaps
     [DllImport("glu32.dll")]
-    internal extern static Int32 gluBuild2DMipmaps(Int32 target, Int32 internalFormat, Int32 width, Int32 height, Int32 format, Int32 type, IntPtr data);
+    internal extern static int gluBuild2DMipmaps(int target, int internalFormat, int width, int height, int format, int type, IntPtr data);
     #endregion
 
     #region gluLookAt
     [DllImport("glu32.dll")]
-    internal static extern void gluLookAt(Double eyex, Double eyey, Double eyez, Double centerx, Double centery, Double centerz, Double upx, Double upy, Double upz);
+    internal static extern void gluLookAt(double eyex, double eyey, double eyez, double centerx, double centery, double centerz, double upx, double upy, double upz);
     #endregion
 
     #region gluPerspective
     [DllImport("glu32.dll")]
-    internal static extern void gluPerspective(Double fovy, Double aspect, Double zNear, Double zFar);
+    internal static extern void gluPerspective(double fovy, double aspect, double zNear, double zFar);
     #endregion
 }

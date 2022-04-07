@@ -1,12 +1,10 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	internal class csorbisException : Exception 
+    internal class csorbisException : Exception 
 	{
 		internal csorbisException ()
 			:base(){}
-		internal csorbisException (String s)
+		internal csorbisException (string s)
 			:base("csorbis: "+s){}
 	}
 }

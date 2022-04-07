@@ -1,11 +1,9 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	/// <summary>
-	/// Summary description for Packet.
-	/// </summary>
-	internal class Packet
+    /// <summary>
+    /// Summary description for Packet.
+    /// </summary>
+    internal class Packet
 	{
 		internal byte[] packet_base;
 		internal int packet;

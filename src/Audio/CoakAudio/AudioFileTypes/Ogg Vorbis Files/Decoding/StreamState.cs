@@ -1,12 +1,11 @@
-using System;
 using System.Text;
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	/// <summary>
-	/// Summary description for StreamState.
-	/// </summary>
-	internal class StreamState
+    /// <summary>
+    /// Summary description for StreamState.
+    /// </summary>
+    internal class StreamState
 	{
 		byte[] body_data;    /* bytes from packet bodies */
 		int body_storage;    /* storage elements allocated */
@@ -425,9 +424,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 				}
 			}
 
-			/* construct the header in temp storage */
+            /* construct the header in temp storage */
 
-		    String oggs_str = "OggS";
+            string oggs_str = "OggS";
 			Encoding AE = Encoding.UTF8;
 			byte[] oggs_byt = AE.GetBytes(oggs_str);
 			Array.Copy(oggs_byt, 0, header, 0, oggs_byt.Length);

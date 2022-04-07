@@ -1,10 +1,9 @@
-using System;
 using System.Text;
 
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	internal class Info
+    internal class Info
 	{
 		private static int OV_EBADPACKET=-136;
 		private static int OV_ENOTAUDIO=-135;
@@ -60,16 +59,16 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
         internal InfoMode[] mode_param=null;
 
 		internal int[] map_type=null;
-		internal Object[] map_param=null;
+		internal object[] map_param=null;
 
 		internal int[] time_type=null;
-		internal Object[] time_param=null;
+		internal object[] time_param=null;
 
 		internal int[] floor_type=null;
-		internal Object[] floor_param=null;
+		internal object[] floor_param=null;
 
 		internal int[] residue_type=null;
-		internal Object[] residue_param=null;
+		internal object[] residue_param=null;
 
 		internal StaticCodeBook[] book_param=null;
 
@@ -188,7 +187,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			times=opb.read(6)+1;
 			if(time_type==null || time_type.Length!=times) time_type=new int[times];
 			if(time_param==null || time_param.Length!=times)
-				time_param=new Object[times];
+				time_param=new object[times];
 			for(int i=0;i<times;i++)
 			{
 				time_type[i]=opb.read(16);
@@ -212,7 +211,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			if(floor_type==null || floor_type.Length!=floors)
 				floor_type=new int[floors];
 			if(floor_param==null || floor_param.Length!=floors)
-				floor_param=new Object[floors];
+				floor_param=new object[floors];
 
 			for(int i=0;i<floors;i++)
 			{
@@ -240,7 +239,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 				residue_type=new int[residues];
 
 			if(residue_param==null || residue_param.Length!=residues)
-				residue_param=new Object[residues];
+				residue_param=new object[residues];
 
 			for(int i=0;i<residues;i++)
 			{
@@ -263,7 +262,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			// map backend settings
 			maps=opb.read(6)+1;
 			if(map_type==null || map_type.Length!=maps)  map_type=new int[maps];
-			if(map_param==null || map_param.Length!=maps)  map_param=new Object[maps];
+			if(map_param==null || map_param.Length!=maps)  map_param=new object[maps];
 			for(int i=0;i<maps;i++)
 			{
 				map_type[i]=opb.read(16);
@@ -324,7 +323,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
 		internal int synthesis_headerin(Comment vc, Packet op)
 		{
-			csBuffer opb=new csBuffer();
+			csBuffer opb=new();
 
 			if(op!=null)
 			{  
@@ -490,7 +489,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		internal int blocksize(Packet op)
 		{
 			//codec_setup_info     *ci=vi->codec_setup;
-			csBuffer opb=new csBuffer();
+			csBuffer opb=new();
 			//    synchronized(opb_blocksize){
 			int mode;
  
@@ -530,7 +529,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 			return(ret);
 		}
 
-		internal String toString()
+		internal string toString()
 		{
 			return "version:"+ version.ToString() +
 				", channels:"+ channels.ToString() +

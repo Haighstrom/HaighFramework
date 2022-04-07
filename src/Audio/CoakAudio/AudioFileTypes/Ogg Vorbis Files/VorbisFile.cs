@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
@@ -46,7 +44,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		{
 		}
 
-		internal VorbisFile(String file) : this()
+		internal VorbisFile(string file) : this()
 		{
 			FileStream inst=null;
 			
@@ -156,7 +154,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		{
 			long endsearched=end;
 			long next=end;
-			Page page=new Page();
+			Page page=new();
 			int ret;
 
 			while(searched<endsearched)
@@ -208,8 +206,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
         internal int fetch_headers(Info vi, Comment vc, int[] serialno, Page og_ptr, VorbisFileInstance instance)
 		{
 			//System.err.println("fetch_headers");
-			Page og=new Page();
-			Packet op=new Packet();
+			Page og=new();
+			Packet op=new();
 			int ret;
 
 			if(og_ptr==null)
@@ -279,7 +277,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
         internal void prefetch_all_headers(Info first_i, Comment first_c, int dataoffset,
             VorbisFileInstance instance)
 		{
-			Page og=new Page();
+			Page og=new();
 			int ret;
   
 			vi=new Info[links];
@@ -346,14 +344,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
 		int open_seekable()
 		{
-            VorbisFileInstance instance = (VorbisFileInstance)makeInstance();
-			Info initial_i=new Info();
-			Comment initial_c=new Comment();
+            VorbisFileInstance instance = makeInstance();
+			Info initial_i=new();
+			Comment initial_c=new();
 			int serialno;
 			long end;
 			int ret;
 			int dataoffset;
-			Page og=new Page();
+			Page og=new();
 			// is this even vorbis...?
 			int[] foo=new int[1];
             ret = fetch_headers(initial_i, initial_c, foo, null, instance);
@@ -398,7 +396,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
         internal VorbisFileInstance makeInstance()
         {
-            VorbisFileInstance instance = new VorbisFileInstance(this);
+            VorbisFileInstance instance = new(this);
             return instance;
         }
 

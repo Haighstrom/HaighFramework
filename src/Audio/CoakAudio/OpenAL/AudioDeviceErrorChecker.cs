@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-
-namespace HaighFramework.Audio.OpenAL
+﻿namespace HaighFramework.Audio.OpenAL
 {
     struct AudioDeviceErrorChecker : IDisposable
     {
@@ -33,7 +29,7 @@ namespace HaighFramework.Audio.OpenAL
             switch (err)
             {
                 case AlcError.OutOfMemory:
-                    throw new OutOfMemoryException(String.Format(ErrorString, Device, err));
+                    throw new OutOfMemoryException(string.Format(ErrorString, Device, err));
 
                 case AlcError.InvalidValue:
                     throw new HException(ErrorString, Device, err);

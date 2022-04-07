@@ -1,14 +1,13 @@
-using System;
 using System.Runtime.CompilerServices;
 
 
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class CodeBook
+    class CodeBook
 	{
 		internal int dim;            // codebook dimensions (elements per vector)
 		internal int entries;        // codebook entries
-		internal StaticCodeBook c=new StaticCodeBook();
+		internal StaticCodeBook c=new();
 
 		internal float[] valuelist; // list of dim*entries actual entry values
 #pragma warning disable 649
@@ -508,7 +507,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		internal DecodeAux make_decode_tree()
 		{
 			int top=0;
-			DecodeAux t=new DecodeAux();
+			DecodeAux t=new();
 			int[] ptr0=t.ptr0=new int[entries*2];
 			int[] ptr1=t.ptr1=new int[entries*2];
 			int[] codelist=make_words(c.lengthlist, c.entries);

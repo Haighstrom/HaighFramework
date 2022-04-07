@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
 
 
@@ -761,7 +760,7 @@ namespace HaighFramework.Audio.OpenAL
         /// <param name="buffer">The name of the buffer to be queued.</param>
         internal static void SourceQueueBuffer(uint source, uint buffer)
         {
-            unsafe { SourceQueueBuffers(source, 1, (uint*)&buffer); }
+            unsafe { SourceQueueBuffers(source, 1, &buffer); }
         }
         #endregion
 

@@ -1,9 +1,7 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	// psychoacoustic setup
-	class PsyInfo
+    // psychoacoustic setup
+    class PsyInfo
 	{ 
 		float[] toneatt_125Hz=new float[5];
 		float[] toneatt_250Hz=new float[5];

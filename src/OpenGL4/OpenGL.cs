@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using HaighFramework.Win32API;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
 
 namespace HaighFramework.OpenGL4
 {
@@ -296,11 +292,18 @@ namespace HaighFramework.OpenGL4
         #region GetInt
         public static int GetInt(GLEnumPName pname)
         {
-            int i;
-
-            OpenGL32.glGetIntegerv((int)pname, out i);
+            OpenGL32.glGetIntegerv((int)pname, out int i);
 
             return i;
+        }
+        #endregion
+
+        #region GetViewport
+        public static Rect GetViewport()
+        {
+            int[] ints = new int[4];
+            OpenGL32.glGetIntegerv((int)GLEnumPName.Viewport, ints);
+            return new Rect(ints[0], ints[1], ints[2], ints[3]);
         }
         #endregion
 
@@ -543,7 +546,7 @@ namespace HaighFramework.OpenGL4
         {
             OpenGL32.glViewport(x, y, w, h);
         }
-        public static void Viewport(IRect<float> viewport)
+        public static void Viewport(IRect viewport)
         {
             OpenGL32.glViewport((int)viewport.X, (int)viewport.Y, (int)viewport.W, (int)viewport.H);
         }
@@ -561,16 +564,16 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region wglGetPixelFormatAttribivARB
-        private delegate bool wglGetPixelFormatAttribivARB(IntPtr hdc, int iPixelFormat, int iLayerPlane, Int32 nAttributes, int[] piAttributes, [Out] int[] piValues);
+        private delegate bool wglGetPixelFormatAttribivARB(IntPtr hdc, int iPixelFormat, int iLayerPlane, int nAttributes, int[] piAttributes, [Out] int[] piValues);
         private static wglGetPixelFormatAttribivARB _wglGetPixelFormatAttribivARB;
-        public static bool GetPixelFormatAttribivARB(IntPtr hdc, int iPixelFormat, int iLayerPlane, Int32 nAttributes, int[] piAttributes, [Out] int[] piValues)
+        public static bool GetPixelFormatAttribivARB(IntPtr hdc, int iPixelFormat, int iLayerPlane, int nAttributes, int[] piAttributes, [Out] int[] piValues)
             => _wglGetPixelFormatAttribivARB(hdc, iPixelFormat, iLayerPlane, nAttributes, piAttributes, piValues);
         #endregion
 
         #region wglChoosePixelFormatARB
-        private delegate bool wglChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, Single[] pfAttribFList, Int32 nMaxFormats, [Out] int[] piFormats, out int nNumFormats);
+        private delegate bool wglChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, float[] pfAttribFList, int nMaxFormats, [Out] int[] piFormats, out int nNumFormats);
         private static wglChoosePixelFormatARB _wglChoosePixelFormatARB;
-        public static bool ChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, Single[] pfAttribFList, Int32 nMaxFormats, [Out] int[] piFormats, out int nNumFormats)
+        public static bool ChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, float[] pfAttribFList, int nMaxFormats, [Out] int[] piFormats, out int nNumFormats)
             => _wglChoosePixelFormatARB(hdc, piAttribIList, pfAttribFList, nMaxFormats, piFormats, out nNumFormats);
         #endregion
 
@@ -584,7 +587,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region wglSwapIntervalEXT
-        private delegate bool wglSwapIntervalEXT(Int32 value);
+        private delegate bool wglSwapIntervalEXT(int value);
         private static wglSwapIntervalEXT _wglSwapIntervalEXT;
         /// <summary>
         /// Set VSync options, -1, 0 or 1
@@ -595,7 +598,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region wglGetSwapIntervalEXT
-        private delegate Int32 wglGetSwapIntervalEXT();
+        private delegate int wglGetSwapIntervalEXT();
         private static wglGetSwapIntervalEXT _wglGetSwapIntervalEXT;
         public static int GetSwapIntervalEXT() => _wglGetSwapIntervalEXT();
         #endregion
@@ -603,7 +606,7 @@ namespace HaighFramework.OpenGL4
 
         #region --- OpenGL 3.0 Extension Functions ---
         #region ActiveTexture / glActiveTexture
-        private delegate void DEL_glActiveTexture(Int32 unit);
+        private delegate void DEL_glActiveTexture(int unit);
         private static DEL_glActiveTexture _glActiveTexture;
         /// <summary>
         /// glActiveTexture
@@ -615,7 +618,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region AttachShader / glAttachShader
-        private delegate void DEL_glAttachShader(UInt32 program, Int32 shader);
+        private delegate void DEL_glAttachShader(uint program, int shader);
         private static DEL_glAttachShader _glAttachShader;
         /// <summary>
         /// glAttachShader
@@ -627,7 +630,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region BindBuffer / glBindBuffer
-        private delegate void DEL_glBindBuffer(Int32 target, uint buffer);
+        private delegate void DEL_glBindBuffer(int target, uint buffer);
         private static DEL_glBindBuffer _glBindBuffer;
         /// <summary>
         /// glBindBuffer
@@ -639,19 +642,19 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region BindFramebuffer / glBindFramebuffer
-        private delegate void DEL_glBindFramebuffer(Int32 target, UInt32 frameBuffer);
+        private delegate void DEL_glBindFramebuffer(int target, uint frameBuffer);
         private static DEL_glBindFramebuffer _glBindFramebuffer;
         /// <summary>
         /// glBindFramebuffer
         /// </summary>
-        public static void BindFramebuffer(FramebufferTarget target, UInt32 frameBuffer)
+        public static void BindFramebuffer(FramebufferTarget target, uint frameBuffer)
         {
             _glBindFramebuffer((int)target, frameBuffer);
         }
         #endregion
 
         #region BindSampler / glBindSampler
-        private delegate void DEL_glBindSampler(Int32 unit, Int32 sampler);
+        private delegate void DEL_glBindSampler(int unit, int sampler);
         private static DEL_glBindSampler _glBindSampler;
         /// <summary>
         /// glBindSampler
@@ -663,7 +666,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region BlendFuncSeperate
-        private delegate void DEL_glBlendFuncSeparate(Int32 srcRGB, Int32 dstRGB, Int32 srcAlpha, Int32 dstAlpha);
+        private delegate void DEL_glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha);
         private static DEL_glBlendFuncSeparate glBlendFuncSeparate;
 
         public static void BlendFuncSeperate(BlendingFactorSrc srcRGB, BlendingFactorDest dstRGB, BlendingFactorSrc srcAlpha, BlendingFactorDest dstAlpha)
@@ -673,7 +676,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region BufferData / glBufferData
-        private delegate void DEL_glBufferData(Int32 target, IntPtr size, IntPtr data, Int32 usage);
+        private delegate void DEL_glBufferData(int target, IntPtr size, IntPtr data, int usage);
         private static DEL_glBufferData _glBufferData;
         /// <summary>
         /// glBufferData
@@ -691,7 +694,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region CompileShader / glCompileShader
-        private delegate void DEL_glCompileShader(Int32 program);
+        private delegate void DEL_glCompileShader(int program);
         private static DEL_glCompileShader _glCompileShader;
         /// <summary>
         /// glCompileShader
@@ -703,7 +706,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region CreateProgram / glCreateProgram
-        private delegate UInt32 DEL_glCreateProgram();
+        private delegate uint DEL_glCreateProgram();
         private static DEL_glCreateProgram _glCreateProgram;
         /// <summary>
         /// glCreateProgram
@@ -715,7 +718,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region CreateShader / glCreateShader
-        private delegate int DEL_glCreateShader(Int32 shaderType);
+        private delegate int DEL_glCreateShader(int shaderType);
         private static DEL_glCreateShader _glCreateShader;
         /// <summary>
         /// glCreateShader
@@ -735,14 +738,14 @@ namespace HaighFramework.OpenGL4
         }
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void DebugMessageDelegate(DebugSource source, DebugType type, uint id, DebugSeverity severity, Int32 length, IntPtr message, IntPtr userParam);
+        public delegate void DebugMessageDelegate(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, IntPtr message, IntPtr userParam);
         #endregion
 
         #region DebugMessageControl
-        private delegate void DEL_glDebugMessageControl(Int32 source, Int32 type, Int32 severity, Int32 count, UInt32[] ids, bool enabled);
+        private delegate void DEL_glDebugMessageControl(int source, int type, int severity, int count, uint[] ids, bool enabled);
         private static DEL_glDebugMessageControl _glDebugMessageControl;
 
-        public static void DebugMessageControl(DebugSource source, DebugType type, DebugSeverity severity, int count, UInt32[] ids, bool enabled)
+        public static void DebugMessageControl(DebugSource source, DebugType type, DebugSeverity severity, int count, uint[] ids, bool enabled)
         {
             _glDebugMessageControl((int)source, (int)type, (int)severity, count, ids, enabled);
         }
@@ -754,7 +757,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region DeleteBuffer(s) / glDeleteBuffers
-        private delegate void DEL_glDeleteBuffers(Int32 n, UInt32[] buffers);
+        private delegate void DEL_glDeleteBuffers(int n, uint[] buffers);
         private static DEL_glDeleteBuffers _glDeleteBuffers;
         /// <summary>
         /// glDeleteBuffers
@@ -777,7 +780,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region DeleteFramebuffers(s) / glDeleteFramebuffers
-        private delegate void DEL_glDeleteFramebuffers(Int32 n, UInt32[] framebuffers);
+        private delegate void DEL_glDeleteFramebuffers(int n, uint[] framebuffers);
         private static DEL_glDeleteFramebuffers _glDeleteFramebuffers;
         /// <summary>
         /// glDeleteFramebuffers
@@ -800,7 +803,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region DeleteShader / glDeleteShader
-        private delegate void DEL_glDeleteShader(Int32 shader);
+        private delegate void DEL_glDeleteShader(int shader);
         private static DEL_glDeleteShader _glDeleteShader;
         /// <summary>
         /// glDeleteShader
@@ -812,7 +815,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region DeleteProgram / glDeleteProgram
-        private delegate void DEL_glDeleteProgram(UInt32 program);
+        private delegate void DEL_glDeleteProgram(uint program);
         private static DEL_glDeleteProgram _glDeleteProgram;
         /// <summary>
         /// glDeleteProgram
@@ -824,7 +827,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region DetachShader / glDetachShader
-        private delegate void DEL_glDetachShader(UInt32 program, Int32 shader);
+        private delegate void DEL_glDetachShader(uint program, int shader);
         private static DEL_glDetachShader _glDetachShader;
         /// <summary>
         /// glDetachShader
@@ -836,31 +839,31 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region DisableVertexAttribArray / glDisableVertexAttribArray
-        private delegate void DEL_glDisableVertexAttribArray(UInt32 index);
+        private delegate void DEL_glDisableVertexAttribArray(uint index);
         private static DEL_glDisableVertexAttribArray _glDisableVertexAttribArray;
         /// <summary>
         /// glDisableVertexAttribArray
         /// </summary>
         public static void DisableVertexAttribArray(int index)
         {
-            _glDisableVertexAttribArray((UInt32)index);
+            _glDisableVertexAttribArray((uint)index);
         }
         #endregion
 
         #region EnableVertexArray / glEnableVertexAttribArray
-        private delegate void DEL_glEnableVertexAttribArray(UInt32 index);
+        private delegate void DEL_glEnableVertexAttribArray(uint index);
         private static DEL_glEnableVertexAttribArray _glEnableVertexAttribArray;
         /// <summary>
         /// glEnableVertexAttribArray
         /// </summary>
         public static void EnableVertexAttribArray(int index)
         {
-            _glEnableVertexAttribArray((UInt32)index);
+            _glEnableVertexAttribArray((uint)index);
         }
         #endregion
 
         #region FramebufferTexture2D / glFramebufferTexture2D
-        private delegate void DEL_glFramebufferTexture2D(Int32 target, Int32 attachment, Int32 texTarget, UInt32 texture, Int32 level);
+        private delegate void DEL_glFramebufferTexture2D(int target, int attachment, int texTarget, uint texture, int level);
         private static DEL_glFramebufferTexture2D _glFramebufferTexture2D;
         /// <summary>
         /// glFramebufferTexture2D
@@ -872,7 +875,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region GenBuffer(s) / glGenBuffers
-        private delegate void DEL_glGenBuffers(Int32 n, UInt32[] buffers);
+        private delegate void DEL_glGenBuffers(int n, uint[] buffers);
         private static DEL_glGenBuffers _glGenBuffers;
         /// <summary>
         /// glGenBuffers
@@ -899,7 +902,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region GenFramebuffer(s) / glGenFramebuffers
-        private delegate void DEL_glGenFrameBuffers(Int32 n, UInt32[] buffers);
+        private delegate void DEL_glGenFrameBuffers(int n, uint[] buffers);
         private static DEL_glGenFrameBuffers _glGenFramebuffers;
 
         public static uint[] GenFramebuffers(int n)
@@ -921,7 +924,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region GetAttribLocation / glGetAttribLocation
-        private delegate int DEL_glGetAttribLocation(UInt32 programObj, String name);
+        private delegate int DEL_glGetAttribLocation(uint programObj, string name);
         private static DEL_glGetAttribLocation _glGetAttribLocation;
         /// <summary>
         /// glGetAttribLocation
@@ -933,14 +936,14 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region GetProgramInfoLog / glGetProgramInfoLog
-        private unsafe delegate void DEL_glGetProgramInfoLog(UInt32 program, Int32 bufSize, out Int32 length, StringBuilder infoLog);
+        private unsafe delegate void DEL_glGetProgramInfoLog(uint program, int bufSize, out int length, StringBuilder infoLog);
         private static DEL_glGetProgramInfoLog _glGetProgramInfoLog;
         /// <summary>
         /// glGetProgramInfoLog
         /// </summary>
         public static string GetProgramInfoLog(uint program)
         {
-            StringBuilder stringPtr = new StringBuilder(255);
+            StringBuilder stringPtr = new(255);
             int count;
             _glGetProgramInfoLog(program, 255, out count, stringPtr);
 
@@ -949,7 +952,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region GetShader / glGetShaderiv
-        private unsafe delegate void DEL_glGetShaderiv(UInt32 shader, Int32 pname, Int32* @params);
+        private unsafe delegate void DEL_glGetShaderiv(uint shader, int pname, int* @params);
         private static DEL_glGetShaderiv _glGetShaderiv;
         /// <summary>
         /// glGetShaderiv
@@ -966,23 +969,23 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region GetShaderInfoLog / glGetShaderInfoLog
-        private unsafe delegate void DEL_glGetShaderInfoLog(UInt32 shader, Int32 bufSize, out Int32 length, StringBuilder infoLog);
+        private unsafe delegate void DEL_glGetShaderInfoLog(uint shader, int bufSize, out int length, StringBuilder infoLog);
         private static DEL_glGetShaderInfoLog _glGetShaderInfoLog;
         /// <summary>
         /// glGetShaderInfoLog
         /// </summary>
         public static string GetShaderInfoLog(int shader)
         {
-            StringBuilder stringPtr = new StringBuilder(255);
+            StringBuilder stringPtr = new(255);
             int count;
-            _glGetShaderInfoLog((UInt32)shader, 255, out count, stringPtr);
+            _glGetShaderInfoLog((uint)shader, 255, out count, stringPtr);
 
             return stringPtr.ToString();
         }
         #endregion
 
         #region GetUniformLocation / glGetUniformLocation
-        private delegate int DEL_glGetUniformLocation(UInt32 program, String name);
+        private delegate int DEL_glGetUniformLocation(uint program, string name);
         private static DEL_glGetUniformLocation _glGetUniformLocation;
         /// <summary>
         /// glGetUniformLocation
@@ -994,7 +997,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region LinkProgram / glLinkProgram
-        private delegate void DEL_glLinkProgram(UInt32 program);
+        private delegate void DEL_glLinkProgram(uint program);
         private static DEL_glLinkProgram _glLinkProgram;
         /// <summary>
         /// glLinkProgram
@@ -1006,21 +1009,21 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region ShaderSource / glShaderSource
-        private delegate int DEL_glShaderSource(Int32 shader, Int32 count, String[] strings, Int32[] lengths);
+        private delegate int DEL_glShaderSource(int shader, int count, string[] strings, int[] lengths);
         private static DEL_glShaderSource _glShaderSource;
         /// <summary>
         /// glShaderSource
         /// </summary>
-        public static int ShaderSource(Int32 shader, string source)
+        public static int ShaderSource(int shader, string source)
         {
-            String[] strings = new String[1] { source };
+            string[] strings = new string[1] { source };
 
             return _glShaderSource(shader, 1, strings, null);
         }
         #endregion
 
         #region TexImage2DMultisample / glTexImage2DMultisample
-        private delegate int DEL_glTexImage2DMultisample(Int32 target, Int32 samples, Int32 internalformat, Int32 width, Int32 height, Boolean fixedsamplelocations);
+        private delegate int DEL_glTexImage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations);
         private static DEL_glTexImage2DMultisample _glTexImage2DMultisample;
         /// <summary>
         /// glTexImage2DMultisample
@@ -1036,20 +1039,20 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region TexStorage2D / glTexStorage2D
-        private delegate void DEL_glTexStorage2D(UInt32 target, Int32 levels, Int32 internalFormat, Int32 width, Int32 height);
+        private delegate void DEL_glTexStorage2D(uint target, int levels, int internalFormat, int width, int height);
         private static DEL_glTexStorage2D _glTexStorage2D;
 
-        public static void TexStorage2D(TextureTarget target, Int32 levels, TexInternalFormat internalFormat, Int32 width, Int32 height)
+        public static void TexStorage2D(TextureTarget target, int levels, TexInternalFormat internalFormat, int width, int height)
         {
             _glTexStorage2D((uint)target, levels, (int)internalFormat, width, height);
         }
         #endregion
 
         #region Uniform / glUniform1f / glUniform1i
-        private delegate void DEL_glUniform1f(Int32 location, Single v0);
+        private delegate void DEL_glUniform1f(int location, float v0);
         private static DEL_glUniform1f _glUniform1f;
 
-        private delegate void DEL_glUniform1i(Int32 location, Int32 v0);
+        private delegate void DEL_glUniform1i(int location, int v0);
         private static DEL_glUniform1i _glUniform1i;
 
         /// <summary>
@@ -1069,10 +1072,10 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region Uniform2 / glUniform2f / glUniform2i
-        private delegate void DEL_glUniform2f(Int32 location, Single v0, Single v1);
+        private delegate void DEL_glUniform2f(int location, float v0, float v1);
         private static DEL_glUniform2f _glUniform2f;
 
-        private delegate void DEL_glUniform2i(Int32 location, Int32 v0, Int32 v1);
+        private delegate void DEL_glUniform2i(int location, int v0, int v1);
         private static DEL_glUniform2i _glUniform2i;
 
         /// <summary>
@@ -1085,10 +1088,10 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region Uniform3 / glUniform3f / glUniform3i
-        private delegate void DEL_glUniform3f(Int32 location, Single v0, Single v1, Single v2);
+        private delegate void DEL_glUniform3f(int location, float v0, float v1, float v2);
         private static DEL_glUniform3f _glUniform3f;
 
-        private delegate void DEL_glUniform3i(Int32 location, Int32 v0, Int32 v1, Int32 v2);
+        private delegate void DEL_glUniform3i(int location, int v0, int v1, int v2);
         private static DEL_glUniform3i _glUniform3i;
 
         /// <summary>
@@ -1101,10 +1104,10 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region Uniform4 / glUniform4f / glUniform4i
-        private delegate void DEL_glUniform4f(Int32 location, Single v0, Single v1, Single v2, Single v3);
+        private delegate void DEL_glUniform4f(int location, float v0, float v1, float v2, float v3);
         private static DEL_glUniform4f _glUniform4f;
 
-        private delegate void DEL_glUniform4i(Int32 location, Int32 v0, Int32 v1, Int32 v2, Int32 v3);
+        private delegate void DEL_glUniform4i(int location, int v0, int v1, int v2, int v3);
         private static DEL_glUniform4i _glUniform4i;
 
         /// <summary>
@@ -1121,7 +1124,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region UniformMatrix3 / glUniformMatrix3fv
-        private unsafe delegate void DEL_glUniformMatrix3fv(Int32 location, Int32 count, Boolean transpose, Single* value);
+        private unsafe delegate void DEL_glUniformMatrix3fv(int location, int count, bool transpose, float* value);
         private static DEL_glUniformMatrix3fv _glUniformMatrix3fv;
         /// <summary>
         /// glUniformMatrix4fv
@@ -1147,7 +1150,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region UniformMatrix4 / glUniformMatrix4fv
-        private unsafe delegate void DEL_glUniformMatrix4fv(Int32 location, Int32 count, Boolean transpose, Single* value);
+        private unsafe delegate void DEL_glUniformMatrix4fv(int location, int count, bool transpose, float* value);
         private static DEL_glUniformMatrix4fv _glUniformMatrix4fv;
         /// <summary>
         /// glUniformMatrix4fv
@@ -1173,7 +1176,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region UseProgram / glUseProgram
-        private delegate void DEL_glUseProgram(UInt32 program);
+        private delegate void DEL_glUseProgram(uint program);
         private static DEL_glUseProgram _glUseProgram;
         /// <summary>
         /// glUseProgram
@@ -1185,7 +1188,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region ValidateProgram / glValidateProgram
-        private delegate void DEL_glValidateProgram(UInt32 program);
+        private delegate void DEL_glValidateProgram(uint program);
         private static DEL_glValidateProgram _glValidateProgram;
         /// <summary>
         /// glValidateProgram
@@ -1197,7 +1200,7 @@ namespace HaighFramework.OpenGL4
         #endregion
 
         #region VertexAttribPointer / glVertexAttribPointer
-        private delegate void DEL_glVertexAttribPointer(UInt32 index, Int32 size, Int32 type, Boolean normalized, Int32 stride, IntPtr pointer);
+        private delegate void DEL_glVertexAttribPointer(uint index, int size, int type, bool normalized, int stride, IntPtr pointer);
         private static DEL_glVertexAttribPointer _glVertexAttribPointer;
         /// <summary>
         /// glVertexAttribPointer
@@ -1255,7 +1258,7 @@ namespace HaighFramework.OpenGL4
 
         #region --- GLU32 Functions ---
         #region GLUBuild2DMipmaps
-        public static Int32 GLUBuild2DMipmaps(TextureTarget target, Int32 internalFormat, Int32 width, Int32 height, PixelFormat pixelFormat, PixelType type, IntPtr data)
+        public static int GLUBuild2DMipmaps(TextureTarget target, int internalFormat, int width, int height, PixelFormat pixelFormat, PixelType type, IntPtr data)
         {
             return GLU32.gluBuild2DMipmaps((int)target, internalFormat, width, height, (int)pixelFormat, (int)type, data);
         }

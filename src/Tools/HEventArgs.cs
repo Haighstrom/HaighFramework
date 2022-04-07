@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HaighFramework
+﻿namespace HaighFramework
 {
     public class SizeEventArgs : EventArgs
     {
@@ -17,17 +11,17 @@ namespace HaighFramework
             Height = height;
         }
 
-        public Point Size => new Point(Width, Height);
+        public Point Size => new(Width, Height);
 
-        public override string ToString() => String.Format("(W:{0},H:{1})", Width, Height);
+        public override string ToString() => string.Format("(W:{0},H:{1})", Width, Height);
 
     }
 
     public class ResizeEventArgs:EventArgs
     {
-        public IPoint<float> OldSize, NewSize;
+        public Point OldSize, NewSize;
 
-        public ResizeEventArgs(IPoint<float> oldSize, IPoint<float> newSize)
+        public ResizeEventArgs(Point oldSize, Point newSize)
         {
             OldSize = oldSize;
             NewSize = newSize;

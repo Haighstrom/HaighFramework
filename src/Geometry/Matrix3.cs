@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace HaighFramework
+﻿namespace HaighFramework
 {
     public struct Matrix3
     {
@@ -14,13 +10,13 @@ namespace HaighFramework
         #region Static
 
         #region Premade Matrices
-        public static Matrix3 Identity = new Matrix3(1, 0, 0, 0, 1, 0, 0, 0, 1);
-        public static Matrix3 Zero = new Matrix3(0, 0, 0, 0, 0, 0, 0, 0, 0);
-        public static Matrix3 FlipXMatrix = new Matrix3(-1, 0, 0, 0, 1, 0, 0, 0, 1);
-        public static Matrix3 FlipYMatrix = new Matrix3(1, 0, 0, 0, -1, 0, 0, 0, 1);
+        public static Matrix3 Identity = new(1, 0, 0, 0, 1, 0, 0, 0, 1);
+        public static Matrix3 Zero = new(0, 0, 0, 0, 0, 0, 0, 0, 0);
+        public static Matrix3 FlipXMatrix = new(-1, 0, 0, 0, 1, 0, 0, 0, 1);
+        public static Matrix3 FlipYMatrix = new(1, 0, 0, 0, -1, 0, 0, 0, 1);
         #endregion
 
-        public static Matrix3 CreateTranslation(float x, float y) => new Matrix3(1, 0, 0, 0, 1, 0, x, y, 1);
+        public static Matrix3 CreateTranslation(float x, float y) => new(1, 0, 0, 0, 1, 0, x, y, 1);
        
         public static Matrix3 CreateRotationAroundZAxis(float angleInDegrees)
         {
@@ -28,7 +24,7 @@ namespace HaighFramework
             return new Matrix3((float)Math.Cos(radians), (float)Math.Sin(radians), 0, -(float)Math.Sin(radians), (float)Math.Cos(radians), 0, 0, 0, 1);
         }
 
-        public static Matrix3 CreateScale(float scaleX, float scaleY) => new Matrix3(scaleX, 0, 0, 0, scaleY, 0, 0, 0, 1);
+        public static Matrix3 CreateScale(float scaleX, float scaleY) => new(scaleX, 0, 0, 0, scaleY, 0, 0, 0, 1);
 
         #region CreateOrtho
         public static Matrix3 CreateOrtho(float width, float height)
@@ -56,11 +52,11 @@ namespace HaighFramework
         #endregion
 
         #region Add
-        public static Matrix3 Add(ref Matrix3 mat1, ref Matrix3 mat2) => new Matrix3(mat1._values.Zip(mat2._values, (a, b) => a + b).ToArray());
+        public static Matrix3 Add(ref Matrix3 mat1, ref Matrix3 mat2) => new(mat1._values.Zip(mat2._values, (a, b) => a + b).ToArray());
         #endregion
 
         #region Subtract
-        public static Matrix3 Subtract(ref Matrix3 mat1, ref Matrix3 mat2) => new Matrix3(mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray());
+        public static Matrix3 Subtract(ref Matrix3 mat1, ref Matrix3 mat2) => new(mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray());
         #endregion
 
         #region Multiply

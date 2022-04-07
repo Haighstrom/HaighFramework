@@ -1,11 +1,8 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class Lpc
+    class Lpc
 	{
-		Drft fft=new Drft();
+		Drft fft=new();
 
 		int ln;
 		int m;
@@ -138,7 +135,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 
 		// One can do this the long way by generating the transfer function in
 		// the time domain and taking the forward FFT of the result.  The
-		// results from dIRect<float> calculation are cleaner and faster. 
+		// results from dRect calculation are cleaner and faster. 
 		//
 		// This version does a linear curve generation and then later
 		// interpolates the log curve from the linear curve.

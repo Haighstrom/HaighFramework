@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HaighFramework.Input
+﻿namespace HaighFramework.Input
 {
     public enum Key : int
     {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Media;
+﻿using System.Media;
 
 namespace HaighFramework.Audio.MediaPlayer
 {
@@ -21,7 +18,7 @@ namespace HaighFramework.Audio.MediaPlayer
         {
             if (!_sounds.ContainsKey(soundFile))
             {
-                SoundPlayer sp = new SoundPlayer(soundFile);
+                SoundPlayer sp = new(soundFile);
                 sp.Load();
                 _sounds.Add(soundFile, sp);
             }
@@ -33,7 +30,7 @@ namespace HaighFramework.Audio.MediaPlayer
                 _sounds[soundFile].Play();
             else
             {
-                SoundPlayer sp = new SoundPlayer(soundFile);
+                SoundPlayer sp = new(soundFile);
                 sp.Load();
                 _sounds.Add(soundFile, sp);
                 sp.Play();

@@ -3199,32 +3199,32 @@ internal struct CreateStruct
     /// <summary>
     /// Specifies the height of the new window, in pixels.
     /// </summary>
-    internal Int32 cy;
+    internal int cy;
     /// <summary>
     /// Specifies the width of the new window, in pixels.
     /// </summary>
-    internal Int32 cx;
+    internal int cx;
     /// <summary>
     /// Specifies the y-coordinate of the upper left corner of the new window.
     /// If the new window is a child window, coordinates are relative to the parent window.
     /// Otherwise, the coordinates are relative to the screen origin.
     /// </summary>
-    internal Int32 y;
+    internal int y;
     /// <summary>
     /// Specifies the x-coordinate of the upper left corner of the new window.
     /// If the new window is a child window, coordinates are relative to the parent window.
     /// Otherwise, the coordinates are relative to the screen origin.
     /// </summary>
-    internal Int32 x;
+    internal int x;
     /// <summary>
     /// Specifies the style for the new window.
     /// </summary>
-    internal Int32 style;
+    internal int style;
     /// <summary>
     /// Pointer to a null-terminated string that specifies the name of the new window.
     /// </summary>
     [MarshalAs(UnmanagedType.LPTStr)]
-    internal String lpszName;
+    internal string lpszName;
     /// <summary>
     /// Either a pointer to a null-terminated string or an atom that specifies the class name
     /// of the new window.
@@ -3234,11 +3234,11 @@ internal struct CreateStruct
     /// </remarks>
     /// </summary>
     [MarshalAs(UnmanagedType.LPTStr)]
-    internal String lpszClass;
+    internal string lpszClass;
     /// <summary>
     /// Specifies the extended window style for the new window.
     /// </summary>
-    internal Int32 dwExStyle;
+    internal int dwExStyle;
 }
 #endregion
 
@@ -3258,7 +3258,7 @@ internal struct CONSOLE_SCREEN_BUFFER_INFO
 {
     public COORD dwSize;
     public COORD dwCursorPosition;
-    public Int16 wAttributes;
+    public short wAttributes;
     public SMALL_RECT srWindow;
     public COORD dwMaximumWindowSize;
 }
@@ -3281,9 +3281,9 @@ internal struct COORD
 [StructLayout(LayoutKind.Sequential)]
 struct CURSORINFO
 {
-    public Int32 cbSize;        // Specifies the size, in bytes, of the structure.
+    public int cbSize;        // Specifies the size, in bytes, of the structure.
                                 // The caller must set this to Marshal.SizeOf(typeof(CURSORINFO)).
-    public Int32 flags;         // Specifies the cursor state. This parameter can be one of the following values:
+    public int flags;         // Specifies the cursor state. This parameter can be one of the following values:
                                 //    0             The cursor is hidden.
                                 //    CURSOR_SHOWING    The cursor is showing.
     public IntPtr hCursor;          // Handle to the cursor.
@@ -3306,9 +3306,9 @@ internal enum DesiredAccess : uint
 #pragma warning disable 0649, 0169
 internal struct DevBroadcastHDR
 {
-    internal Int32 Size;
+    internal int Size;
     internal DeviceBroadcastType DeviceType;
-    Int32 dbcc_reserved;
+    int dbcc_reserved;
     internal Guid ClassGuid;
     internal char dbcc_name;
 }
@@ -3519,8 +3519,8 @@ internal class DeviceMode
     //internal short PrintQuality;
 
     internal POINT Position;
-    internal Int32 DisplayOrientation;
-    internal Int32 DisplayFixedOutput;
+    internal int DisplayOrientation;
+    internal int DisplayFixedOutput;
 
     internal short Color;
     internal short Duplex;
@@ -3577,7 +3577,7 @@ internal class DISPLAY_DEVICE
     {
         size = (short)Marshal.SizeOf(this);
     }
-    readonly Int32 size;
+    readonly int size;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
     internal string DeviceName;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
@@ -3880,10 +3880,10 @@ internal enum MonitorFrom
 #pragma warning disable 0649
 internal struct MonitorInfo
 {
-    internal Int32 Size;
+    internal int Size;
     internal RECT Monitor;
     internal RECT Work;
-    internal Int32 Flags;
+    internal int Flags;
 
     internal static readonly int UnmanagedSize = Marshal.SizeOf(default(MonitorInfo));
 }
@@ -3993,8 +3993,8 @@ internal struct PixelFormatDescriptor
         SUPPORT_COMPOSITION = 0x8000,
 
         // PixelFormatDescriptor flags for use in ChoosePixelFormat only
-        DEPTH_DONTCARE = unchecked((int)0x20000000),
-        DOUBLEBUFFER_DONTCARE = unchecked((int)0x40000000),
+        DEPTH_DONTCARE = unchecked(0x20000000),
+        DOUBLEBUFFER_DONTCARE = unchecked(0x40000000),
         STEREO_DONTCARE = unchecked((int)0x80000000)
     }
 
@@ -4122,12 +4122,12 @@ internal struct RawInputDevice
     /// Top level collection Usage page for the raw input device.
     /// </summary>
     //internal UInt16 UsagePage;
-    internal Int16 UsagePage;
+    internal short UsagePage;
     /// <summary>
     /// Top level collection Usage for the raw input device.
     /// </summary>
     //internal UInt16 Usage;
-    internal Int16 Usage;
+    internal short Usage;
     /// <summary>
     /// Mode flag that specifies how to interpret the information provided by UsagePage and Usage.
     /// It can be zero (the default) or one of the following values.
@@ -4209,7 +4209,7 @@ internal class RawInputDeviceInfo
     /// <summary>
     /// Size, in bytes, of the RawInputDeviceInfo structure.
     /// </summary>
-    internal Int32 Size = Marshal.SizeOf(typeof(RawInputDeviceInfo));
+    internal int Size = Marshal.SizeOf(typeof(RawInputDeviceInfo));
     /// <summary>
     /// Type of raw input data.
     /// </summary>
@@ -4277,7 +4277,7 @@ internal struct RawInputHeader
     /// <summary>
     /// Size, in bytes, of the entire input packet of data. This includes the RawInput struct plus possible extra input reports in the RAWHID variable length array.
     /// </summary>
-    internal Int32 Size;
+    internal int Size;
     /// <summary>
     /// Handle to the device generating the raw input data.
     /// </summary>
@@ -4301,25 +4301,25 @@ internal struct RawInputHIDDeviceInfo
     /// <summary>
     /// Vendor ID for the HID.
     /// </summary>
-    internal Int32 VendorId;
+    internal int VendorId;
     /// <summary>
     /// Product ID for the HID.
     /// </summary>
-    internal Int32 ProductId;
+    internal int ProductId;
     /// <summary>
     /// Version number for the HID.
     /// </summary>
-    internal Int32 VersionNumber;
+    internal int VersionNumber;
     /// <summary>
     /// Top-level collection Usage Page for the device.
     /// </summary>
     //internal UInt16 UsagePage;
-    internal Int16 UsagePage;
+    internal short UsagePage;
     /// <summary>
     /// Top-level collection Usage for the device.
     /// </summary>
     //internal UInt16 Usage;
-    internal Int16 Usage;
+    internal short Usage;
 }
 #endregion
 
@@ -4349,27 +4349,27 @@ internal struct RawInputKeyboardDeviceInfo
     /// <summary>
     /// Type of the keyboard.
     /// </summary>
-    internal Int32 Type;
+    internal int Type;
     /// <summary>
     /// Subtype of the keyboard.
     /// </summary>
-    internal Int32 SubType;
+    internal int SubType;
     /// <summary>
     /// Scan code mode.
     /// </summary>
-    internal Int32 KeyboardMode;
+    internal int KeyboardMode;
     /// <summary>
     /// Number of function keys on the keyboard.
     /// </summary>
-    internal Int32 NumberOfFunctionKeys;
+    internal int NumberOfFunctionKeys;
     /// <summary>
     /// Number of LED indicators on the keyboard.
     /// </summary>
-    internal Int32 NumberOfIndicators;
+    internal int NumberOfIndicators;
     /// <summary>
     /// Total number of keys on the keyboard.
     /// </summary>
-    internal Int32 NumberOfKeysTotal;
+    internal int NumberOfKeysTotal;
 }
 
 #endregion
@@ -4387,22 +4387,22 @@ internal struct RawInputMouseDeviceInfo
     /// <summary>
     /// ID for the mouse device.
     /// </summary>
-    internal Int32 Id;
+    internal int Id;
     /// <summary>
     /// Number of buttons for the mouse.
     /// </summary>
-    internal Int32 NumberOfButtons;
+    internal int NumberOfButtons;
     /// <summary>
     /// Number of data points per second. This information may not be applicable for every mouse device.
     /// </summary>
-    internal Int32 SampleRate;
+    internal int SampleRate;
     /// <summary>
     /// TRUE if the mouse has a wheel for horizontal scrolling; otherwise, FALSE.
     /// </summary>
     /// <remarks>
     /// This member is only supported under Microsoft Windows Vista and later versions.
     /// </remarks>
-    internal Boolean HasHorizontalWheel;
+    internal bool HasHorizontalWheel;
 }
 
 #endregion
@@ -4444,7 +4444,7 @@ internal struct RawKeyboard
     /// Scan code from the key depression. The scan code for keyboard overrun is KEYBOARD_OVERRUN_MAKE_CODE.
     /// </summary>
     //internal UInt16 MakeCode;
-    internal Int16 MakeCode;
+    internal short MakeCode;
     /// <summary>
     /// Flags for scan code information. It can be one or more of the following.
     /// RI_KEY_MAKE
@@ -4458,7 +4458,7 @@ internal struct RawKeyboard
     /// <summary>
     /// Reserved; must be zero.
     /// </summary>
-    UInt16 Reserved;
+    ushort Reserved;
     /// <summary>
     /// Microsoft Windows message compatible virtual-key code. For more information, see Virtual-Key Codes.
     /// </summary>
@@ -4468,12 +4468,12 @@ internal struct RawKeyboard
     /// Corresponding window message, for example WM_KEYDOWN, WM_SYSKEYDOWN, and so forth.
     /// </summary>
     //internal UInt32 Message;
-    internal Int32 Message;
+    internal int Message;
     /// <summary>
     /// Device-specific additional information for the event.
     /// </summary>
     //internal ULONG ExtraInformation;
-    internal Int32 ExtraInformation;
+    internal int ExtraInformation;
 }
 #endregion
 
@@ -4502,31 +4502,31 @@ internal struct RawMouse
     /// If usButtonFlags is RI_MOUSE_WHEEL, this member is a signed value that specifies the wheel delta.
     /// </summary>
     [FieldOffset(6)]
-    internal UInt16 ButtonData;
+    internal ushort ButtonData;
 
     /// <summary>
     /// Raw state of the mouse buttons.
     /// </summary>
     [FieldOffset(8)]
-    internal UInt32 RawButtons;
+    internal uint RawButtons;
 
     /// <summary>
     /// Motion in the X direction. This is signed relative motion or absolute motion, depending on the value of usFlags.
     /// </summary>
     [FieldOffset(12)]
-    internal Int32 LastX;
+    internal int LastX;
 
     /// <summary>
     /// Motion in the Y direction. This is signed relative motion or absolute motion, depending on the value of usFlags.
     /// </summary>
     [FieldOffset(16)]
-    internal Int32 LastY;
+    internal int LastY;
 
     /// <summary>
     /// Device-specific additional information for the event.
     /// </summary>
     [FieldOffset(20)]
-    internal UInt32 ExtraInformation;
+    internal uint ExtraInformation;
 }
 #endregion
 
@@ -4710,9 +4710,9 @@ internal enum SizeMessage
 [StructLayout(LayoutKind.Sequential)]
 internal struct SMALL_RECT
 {
-    public Int16 Left, Top, Right, Bottom;
-    internal Int32 Width => Right - Left;
-    internal Int32 Height => Bottom - Top;
+    public short Left, Top, Right, Bottom;
+    internal int Width => Right - Left;
+    internal int Height => Bottom - Top;
 }
 #endregion
 
@@ -4755,12 +4755,12 @@ internal enum SystemErrorCode : uint
 
 #region TimerProc
 [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-internal delegate void TimerProc(IntPtr hwnd, WindowMessage uMsg, UIntPtr idEvent, Int32 dwTime);
+internal delegate void TimerProc(IntPtr hwnd, WindowMessage uMsg, UIntPtr idEvent, int dwTime);
 #endregion
 
 #region TrackMouseEventFlags
 [Flags]
-internal enum TrackMouseEventFlags : UInt32
+internal enum TrackMouseEventFlags : uint
 {
     HOVER = 0x00000001,
     LEAVE = 0x00000002,
@@ -4774,10 +4774,10 @@ internal enum TrackMouseEventFlags : UInt32
 #pragma warning disable 0649
 internal struct TrackMouseEventStructure
 {
-    internal Int32 Size;
+    internal int Size;
     internal TrackMouseEventFlags Flags;
     internal IntPtr TrackWindowHandle;
-    internal Int32 HoverTime;
+    internal int HoverTime;
 
     internal static readonly int SizeInBytes = Marshal.SizeOf(typeof(TrackMouseEventStructure));
 }
@@ -4785,7 +4785,7 @@ internal struct TrackMouseEventStructure
 #endregion
 
 #region VirtualKeys
-internal enum VirtualKeys : Int16
+internal enum VirtualKeys : short
 {
     /*
         * Virtual Key, Standard Set
@@ -5092,19 +5092,19 @@ internal struct WindowPosition
     /// <summary>
     /// Specifies the position of the left edge of the window.
     /// </summary>
-    internal Int32 x;
+    internal int x;
     /// <summary>
     /// Specifies the position of the top edge of the window.
     /// </summary>
-    internal Int32 y;
+    internal int y;
     /// <summary>
     /// Specifies the window width, in pixels.
     /// </summary>
-    internal Int32 cx;
+    internal int cx;
     /// <summary>
     /// Specifies the window height, in pixels.
     /// </summary>
-    internal Int32 cy;
+    internal int cy;
     /// <summary>
     /// Specifies the window position.
     /// </summary>

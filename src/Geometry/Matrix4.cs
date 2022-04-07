@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace HaighFramework
+﻿namespace HaighFramework
 {
     public struct Matrix4
     {
@@ -14,11 +10,11 @@ namespace HaighFramework
 
         #region Static
         #region Premade Matrices
-        public static Matrix4 Identity = new Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-        public static Matrix4 Zero = new Matrix4(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        public static Matrix4 FlipXMatrix = new Matrix4(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-        public static Matrix4 FlipYMatrix = new Matrix4(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-        public static Matrix4 FlipZMatrix = new Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
+        public static Matrix4 Identity = new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        public static Matrix4 Zero = new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        public static Matrix4 FlipXMatrix = new(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        public static Matrix4 FlipYMatrix = new(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        public static Matrix4 FlipZMatrix = new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
 
         /// <summary>
         /// 
@@ -48,7 +44,7 @@ namespace HaighFramework
             return new Matrix4((float)Math.Cos(radians), (float)Math.Sin(radians), 0, 0, -(float)Math.Sin(radians), (float)Math.Cos(radians), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
         }
 
-        public static Matrix4 CreateScale(float scaleX, float scaleY, float scaleZ = 1) => new Matrix4(scaleX, 0, 0, 0, 0, scaleY, 0, 0, 0, 0, scaleZ, 0, 0, 0, 0, 1);
+        public static Matrix4 CreateScale(float scaleX, float scaleY, float scaleZ = 1) => new(scaleX, 0, 0, 0, 0, scaleY, 0, 0, 0, 0, scaleZ, 0, 0, 0, 0, 1);
 
         #region CreateOrtho
         public static Matrix4 CreateOrtho(float width, float height)
@@ -165,9 +161,9 @@ namespace HaighFramework
         /// <param name="mat"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        public static Point<float> Multiply(ref Matrix4 mat, Point<float> p)
+        public static Point Multiply(ref Matrix4 mat, Point p)
         {
-            return new Point<float>
+            return new Point
                 (
                     mat._values[0] * p.X + mat._values[4] * p.Y + mat._values[12],
                     mat._values[1] * p.X + mat._values[5] * p.Y + mat._values[13]
@@ -509,7 +505,7 @@ namespace HaighFramework
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns></returns>
-        public static IPoint<float> operator *(Matrix4 left, Point<float> right) => Multiply(ref left, right);
+        public static Point operator *(Matrix4 left, Point right) => Multiply(ref left, right);
 
         /// <summary>
         /// Matrix addition
@@ -531,7 +527,7 @@ namespace HaighFramework
         #region Overloads/Overrides
         public override string ToString()
         {
-            return String.Format("({0} {4} {8} {12})\n({1} {5} {9} {13})\n({2} {6} {10} {14})\n({3} {7} {11} {15})\n", _values[0], _values[1], _values[2], _values[3], _values[4], _values[5], _values[6], _values[7], _values[8], _values[9], _values[10], _values[11], _values[12], _values[13], _values[14], _values[15]);
+            return string.Format("({0} {4} {8} {12})\n({1} {5} {9} {13})\n({2} {6} {10} {14})\n({3} {7} {11} {15})\n", _values[0], _values[1], _values[2], _values[3], _values[4], _values[5], _values[6], _values[7], _values[8], _values[9], _values[10], _values[11], _values[12], _values[13], _values[14], _values[15]);
         }
         #endregion
     }

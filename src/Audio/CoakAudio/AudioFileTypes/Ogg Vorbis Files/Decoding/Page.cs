@@ -1,11 +1,9 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	/// <summary>
-	/// Summary description for Page.
-	/// </summary>
-	internal class Page	
+    /// <summary>
+    /// Summary description for Page.
+    /// </summary>
+    internal class Page	
 	{
 		private static uint[] crc_lookup=new uint[256];
 		

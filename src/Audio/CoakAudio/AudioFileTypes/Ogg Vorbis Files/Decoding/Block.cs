@@ -1,13 +1,10 @@
-using System;
-
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	internal class Block
+    internal class Block
 	{
 		///necessary stream state for linking to the framing abstraction
 		internal float[][] pcm=new float[0][]; // this is a pointer into local storage
-		internal csBuffer opb=new csBuffer();
+		internal csBuffer opb=new();
   
 		internal int lW;
 		internal int W;

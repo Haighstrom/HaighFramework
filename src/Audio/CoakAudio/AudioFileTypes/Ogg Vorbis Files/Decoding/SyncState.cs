@@ -1,11 +1,9 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	/// <summary>
-	/// Summary description for SyncState.
-	/// </summary>
-	internal class SyncState
+    /// <summary>
+    /// Summary description for SyncState.
+    /// </summary>
+    internal class SyncState
 	{
 		internal byte[] data;
 		int storage;
@@ -74,7 +72,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis
 		// -n) skipped n bytes
 		//  0) page not ready; more data (no bytes skipped)
 		//  n) page synced at current location; page length n bytes
-		private Page pageseek_p=new Page();
+		private Page pageseek_p=new();
 		private  byte[] chksum=new byte[4];
 		internal int pageseek(Page og)
 		{

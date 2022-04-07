@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-
-namespace HaighFramework.Input
+﻿namespace HaighFramework.Input
 {
     public class KeyboardCharEventArgs : EventArgs
     {
@@ -26,7 +21,7 @@ namespace HaighFramework.Input
 
         public override string ToString()
         {
-            return String.Format("KeyboardEventArgs: Key = {0}", Key);
+            return string.Format("KeyboardEventArgs: Key = {0}", Key);
         }
     }
 }

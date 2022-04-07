@@ -1,8 +1,6 @@
-using System;
-
 namespace HaighFramework.Audio.OpenAL.OggVorbis
 {
-	class EncodeAuxThreshMatch
+    class EncodeAuxThreshMatch
     {
 #pragma warning disable 649
         internal float[] quantthresh;
