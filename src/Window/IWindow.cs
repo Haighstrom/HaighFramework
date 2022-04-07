@@ -180,8 +180,9 @@ public interface IWindow : IDisposable
     /// Gets or sets whether the mouse cursor is locked within the window. Defaults to false.
     /// </summary>
     bool CursorLockedToWindow { get; set; }
-    #endregion    
-    
+    #endregion
+
+    #region Keyboard Input
     /// <summary>
     /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
     /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
@@ -198,4 +199,5 @@ public interface IWindow : IDisposable
     /// Called whenever a keyboard key is released
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs> KeyUp;
+    #endregion
 }
