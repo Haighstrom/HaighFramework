@@ -1217,6 +1217,8 @@ namespace HaighFramework.OpenGL4
         public static IntPtr WGLCreateContext(IntPtr deviceContext) => OpenGL32.wglCreateContext(deviceContext);
         #endregion
 
+        public static bool WGLShareLists(IntPtr renderContext1, IntPtr renderContext2) => OpenGL32.wglShareLists(renderContext1, renderContext2);
+
         public static bool WGLDeleteContext(IntPtr renderContext) => OpenGL32.wglDeleteContext(renderContext);
 
         #region WGLDescribePixelFormat
