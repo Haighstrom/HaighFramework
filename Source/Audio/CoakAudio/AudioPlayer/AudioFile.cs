@@ -1,17 +1,16 @@
 ﻿using System.IO;
 
-namespace HaighFramework.Audio.OpenAL
+namespace HaighFramework.Audio.OpenAL;
+
+internal abstract class AudioFile 
 {
-    internal abstract class AudioFile 
+    internal Stream datasource;
+
+    internal AudioFile()
+        : base()
     {
-        internal Stream datasource;
 
-        internal AudioFile()
-            : base()
-        {
-
-        }
-
-        internal abstract void Dispose();
     }
+
+    internal abstract void Dispose();
 }

@@ -1,8 +1,8 @@
-﻿namespace HaighFramework.Win32API;
-
-using System.IO;
+﻿using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
+
+namespace HaighFramework.Win32API;
 
 [SuppressUnmanagedCodeSecurity]
 internal static class Kernal32

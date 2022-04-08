@@ -3,170 +3,169 @@ using System.Runtime.InteropServices;
 using HaighFramework.Window;
 using System.Threading;
 
-namespace HaighFramework.Input
+namespace HaighFramework.Input;
+
+public class InputDeviceManager : IInputDeviceManager
 {
-    public class InputDeviceManager : IInputDeviceManager
+    #region Static Fields
+    private static RawInput _rawInput = new(); 
+    static readonly Guid DeviceInterfaceHid = new("4D1E55B2-F16F-11CF-88CB-001111000030");
+    #endregion
+
+    #region Fields
+    private MouseManager _mouseManager;
+    private KeyboardManager _keyboardManager;
+    private GamePadManager _gamePadManager;
+
+    private MessageOnlyWindow _inputWindow;
+    private readonly Thread _thread;
+    private readonly AutoResetEvent _ready = new(false);
+
+    private IntPtr _registrationHandle;
+    #endregion
+
+    #region Constructors
+    public InputDeviceManager()
     {
-        #region Static Fields
-        private static RawInput _rawInput = new(); 
-        static readonly Guid DeviceInterfaceHid = new("4D1E55B2-F16F-11CF-88CB-001111000030");
-        #endregion
+        _thread = new Thread(ProcessInputData);
+        _thread.Name = "InputDeviceManager Thread";
+        _thread.SetApartmentState(ApartmentState.STA);
+        _thread.IsBackground = true;
+        _thread.Start();
 
-        #region Fields
-        private MouseManager _mouseManager;
-        private KeyboardManager _keyboardManager;
-        private GamePadManager _gamePadManager;
+        _ready.WaitOne();
+    }
+    #endregion
 
-        private MessageOnlyWindow _inputWindow;
-        private readonly Thread _thread;
-        private readonly AutoResetEvent _ready = new(false);
+    #region Methods
+    private void ProcessInputData()
+    {
+        _inputWindow = new MessageOnlyWindow(WindowProcedure);
 
-        private IntPtr _registrationHandle;
-        #endregion
+        CreateDrivers();
 
-        #region Constructors
-        public InputDeviceManager()
+        _ready.Set();
+
+        //n.b. call Dispose or DestroyWindow to stop this loop
+        _inputWindow.ProcessEventsUntilDestroyed();
+    }
+    private void CreateDrivers()
+    {
+        Console.WriteLine("--------Input Devices--------\n");
+        _mouseManager = new MouseManager(_inputWindow.Handle);
+        _keyboardManager = new KeyboardManager(_inputWindow.Handle);
+        _gamePadManager = new GamePadManager(_inputWindow.Handle);
+        Console.WriteLine("\n-----------------------------\n");
+
+        RegisterForRawInput();
+    }
+    private void RegisterForRawInput()
+    {
+        DevBroadcastHDR dbHdr = new();
+        dbHdr.Size = Marshal.SizeOf(dbHdr);
+        dbHdr.DeviceType = DeviceBroadcastType.INTERFACE;
+        dbHdr.ClassGuid = DeviceInterfaceHid;
+        unsafe
         {
-            _thread = new Thread(ProcessInputData);
-            _thread.Name = "InputDeviceManager Thread";
-            _thread.SetApartmentState(ApartmentState.STA);
-            _thread.IsBackground = true;
-            _thread.Start();
-
-            _ready.WaitOne();
+            _registrationHandle = User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr(&dbHdr), DeviceNotification.WINDOW_HANDLE);
         }
-        #endregion
-
-        #region Methods
-        private void ProcessInputData()
+        if (_registrationHandle == IntPtr.Zero)
         {
-            _inputWindow = new MessageOnlyWindow(WindowProcedure);
-
-            CreateDrivers();
-
-            _ready.Set();
-
-            //n.b. call Dispose or DestroyWindow to stop this loop
-            _inputWindow.ProcessEventsUntilDestroyed();
+            //todo: warnings
         }
-        private void CreateDrivers()
+    }
+
+    #region WindowProcedure
+    private IntPtr _unhandled = new(-1);
+    private IntPtr WindowProcedure(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
+    {
+        switch (message)
         {
-            Console.WriteLine("--------Input Devices--------\n");
-            _mouseManager = new MouseManager(_inputWindow.Handle);
-            _keyboardManager = new KeyboardManager(_inputWindow.Handle);
-            _gamePadManager = new GamePadManager(_inputWindow.Handle);
-            Console.WriteLine("\n-----------------------------\n");
+            #region WM_INPUT
+            case WindowMessage.WM_INPUT:
+                int size = 0;
+                User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
 
-            RegisterForRawInput();
-        }
-        private void RegisterForRawInput()
-        {
-            DevBroadcastHDR dbHdr = new();
-            dbHdr.Size = Marshal.SizeOf(dbHdr);
-            dbHdr.DeviceType = DeviceBroadcastType.INTERFACE;
-            dbHdr.ClassGuid = DeviceInterfaceHid;
-            unsafe
-            {
-                _registrationHandle = User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr(&dbHdr), DeviceNotification.WINDOW_HANDLE);
-            }
-            if (_registrationHandle == IntPtr.Zero)
-            {
-                //todo: warnings
-            }
-        }
-
-        #region WindowProcedure
-        private IntPtr _unhandled = new(-1);
-        private IntPtr WindowProcedure(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
-        {
-            switch (message)
-            {
-                #region WM_INPUT
-                case WindowMessage.WM_INPUT:
-                    int size = 0;
-                    User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
-
-                    if (size == User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, out _rawInput, ref size, RawInputHeader.SIZE))
-                    {
-                        switch (_rawInput.Header.Type)
-                        {
-                            case RawInputDeviceType.KEYBOARD:
-                                if (_keyboardManager.ProcessInput(_rawInput))
-                                {
-                                    return IntPtr.Zero;
-                                }
-                                break;
-                            case RawInputDeviceType.MOUSE:
-                                if (_mouseManager.ProcessInput(_rawInput))
-                                {
-                                    return IntPtr.Zero;
-                                }
-                                break;
-                            case RawInputDeviceType.HID:
-                                break;
-                        }
-                    }
-                    break;
-                #endregion
-
-                #region WM_DEVICECHANGE
-                case WindowMessage.WM_DEVICECHANGE:
-                    Console.WriteLine("Input Devices Change detected. Identifying new devices...");
-
-                    _mouseManager.RefreshDevices();
-                    _keyboardManager.RefreshDevices();
-
-                    break;
-                #endregion
-            }
-            return _unhandled;
-        }
-        #endregion
-
-        #endregion
-
-        #region IInputDeviceManager
-        public IMouseManager MouseManager => _mouseManager;
-
-        public IKeyboardManager KeyboardManager => _keyboardManager;
-        #endregion
-
-        #region IDisposable
-
-        private bool _disposed;
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool manual)
-        {
-            if (!_disposed)
-            {
-                if (manual)
+                if (size == User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, out _rawInput, ref size, RawInputHeader.SIZE))
                 {
-                    if (_inputWindow != null)
+                    switch (_rawInput.Header.Type)
                     {
-                        _inputWindow.Close();
-                        _inputWindow.Dispose();
-                    }
-                    else
-                    {
-                        //todo: warnings
+                        case RawInputDeviceType.KEYBOARD:
+                            if (_keyboardManager.ProcessInput(_rawInput))
+                            {
+                                return IntPtr.Zero;
+                            }
+                            break;
+                        case RawInputDeviceType.MOUSE:
+                            if (_mouseManager.ProcessInput(_rawInput))
+                            {
+                                return IntPtr.Zero;
+                            }
+                            break;
+                        case RawInputDeviceType.HID:
+                            break;
                     }
                 }
-                _disposed = true;
-            }
-        }
+                break;
+            #endregion
 
-        ~InputDeviceManager()
-        {
-            //todo: warning for leakage
-            Dispose(false);
-        }
+            #region WM_DEVICECHANGE
+            case WindowMessage.WM_DEVICECHANGE:
+                Console.WriteLine("Input Devices Change detected. Identifying new devices...");
 
-        #endregion
+                _mouseManager.RefreshDevices();
+                _keyboardManager.RefreshDevices();
+
+                break;
+            #endregion
+        }
+        return _unhandled;
     }
+    #endregion
+
+    #endregion
+
+    #region IInputDeviceManager
+    public IMouseManager MouseManager => _mouseManager;
+
+    public IKeyboardManager KeyboardManager => _keyboardManager;
+    #endregion
+
+    #region IDisposable
+
+    private bool _disposed;
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    private void Dispose(bool manual)
+    {
+        if (!_disposed)
+        {
+            if (manual)
+            {
+                if (_inputWindow != null)
+                {
+                    _inputWindow.Close();
+                    _inputWindow.Dispose();
+                }
+                else
+                {
+                    //todo: warnings
+                }
+            }
+            _disposed = true;
+        }
+    }
+
+    ~InputDeviceManager()
+    {
+        //todo: warning for leakage
+        Dispose(false);
+    }
+
+    #endregion
 }

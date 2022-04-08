@@ -1,4 +1,5 @@
 ﻿namespace HaighFramework.Window;
+
 public class WindowSettings
 {
     public static readonly WindowSettings Default = new();

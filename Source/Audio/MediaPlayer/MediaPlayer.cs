@@ -1,46 +1,45 @@
 ﻿using System.Media;
 
-namespace HaighFramework.Audio.MediaPlayer
+namespace HaighFramework.Audio.MediaPlayer;
+
+/// <summary>
+/// Simple lightweight media player that uses built in Windows SoundPlayer - no OpenAL calls. WAV files only.
+/// </summary>
+public class MediaPlayer : IDisposable
 {
-    /// <summary>
-    /// Simple lightweight media player that uses built in Windows SoundPlayer - no OpenAL calls. WAV files only.
-    /// </summary>
-    public class MediaPlayer : IDisposable
+    private Dictionary<string, SoundPlayer> _sounds;
+
+    public MediaPlayer()
     {
-        private Dictionary<string, SoundPlayer> _sounds;
+        _sounds = new Dictionary<string, SoundPlayer>();
+    }
 
-        public MediaPlayer()
+    public void LoadSound(string soundFile)
+    {
+        if (!_sounds.ContainsKey(soundFile))
         {
-            _sounds = new Dictionary<string, SoundPlayer>();
+            SoundPlayer sp = new(soundFile);
+            sp.Load();
+            _sounds.Add(soundFile, sp);
         }
+    }
 
-        public void LoadSound(string soundFile)
+    public void PlaySound(string soundFile)
+    {
+        if (_sounds.ContainsKey(soundFile)) 
+            _sounds[soundFile].Play();
+        else
         {
-            if (!_sounds.ContainsKey(soundFile))
-            {
-                SoundPlayer sp = new(soundFile);
-                sp.Load();
-                _sounds.Add(soundFile, sp);
-            }
+            SoundPlayer sp = new(soundFile);
+            sp.Load();
+            _sounds.Add(soundFile, sp);
+            sp.Play();
         }
+    }
 
-        public void PlaySound(string soundFile)
-        {
-            if (_sounds.ContainsKey(soundFile)) 
-                _sounds[soundFile].Play();
-            else
-            {
-                SoundPlayer sp = new(soundFile);
-                sp.Load();
-                _sounds.Add(soundFile, sp);
-                sp.Play();
-            }
-        }
-
-        public void Dispose()
-        { 
-            foreach (SoundPlayer sp in _sounds.Values)
-                sp.Dispose();
-        }
+    public void Dispose()
+    { 
+        foreach (SoundPlayer sp in _sounds.Values)
+            sp.Dispose();
     }
 }

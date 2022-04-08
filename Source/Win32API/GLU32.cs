@@ -1,7 +1,7 @@
-﻿namespace HaighFramework.Win32API;
-
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
+
+namespace HaighFramework.Win32API;
 
 [SuppressUnmanagedCodeSecurity]
 internal static class GLU32

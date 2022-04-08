@@ -1,8 +1,8 @@
-﻿namespace HaighFramework.Window;
-
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
 using System.Drawing;
 using System.IO;
+
+namespace HaighFramework.Window;
 
 public class Icon : IDisposable
 {
@@ -22,11 +22,11 @@ public class Icon : IDisposable
         _bitmap = icon;
 
         if (size != null)
-            _bitmap = new Bitmap(_bitmap, size.Value.X, size.Value.Y);
+            _bitmap = new Bitmap(_bitmap, (int)size.Value.X, (int)size.Value.Y);
 
         HIcon = _bitmap.GetHicon();
     }
-    public Icon(string filePath, int xHotspot = 0, int yHotspot = 0, Point? size = null)
+    public Icon(string filePath)
     {
         if (!File.Exists(filePath))
             throw new FileNotFoundException($"Could not find file at {filePath}");
@@ -37,9 +37,6 @@ public class Icon : IDisposable
             throw new ArgumentException($"filePath ({filePath})'s extension ({fileExt}) is not valid as a Bitmap", nameof(filePath));
 
         _bitmap = new(filePath);
-
-        if (size != null)
-            _bitmap = new Bitmap(_bitmap, size.Value.X, size.Value.Y);
 
         HIcon = _bitmap.GetHicon();
     }

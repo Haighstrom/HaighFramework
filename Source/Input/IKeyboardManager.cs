@@ -1,9 +1,8 @@
-﻿namespace HaighFramework.Input
+﻿namespace HaighFramework.Input;
+
+public interface IKeyboardManager
 {
-    public interface IKeyboardManager
-    {
-        KeyboardState State { get; }
-        KeyboardState GetState(int index);
-        void RefreshDevices();
-    }
+    KeyboardState State { get; }
+    KeyboardState GetState(int index);
+    void RefreshDevices();
 }

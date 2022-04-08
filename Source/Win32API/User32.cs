@@ -1,8 +1,8 @@
-﻿namespace HaighFramework.Win32API; 
-
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+
+namespace HaighFramework.Win32API;
 
 [SuppressUnmanagedCodeSecurity]
 internal static class User32

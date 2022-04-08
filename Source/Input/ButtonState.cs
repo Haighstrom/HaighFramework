@@ -1,8 +1,7 @@
-﻿namespace HaighFramework.Input
+﻿namespace HaighFramework.Input;
+
+public enum ButtonState
 {
-    public enum ButtonState
-    {
-        Up = 0,
-        Down = 1
-    }
+    Up = 0,
+    Down = 1
 }

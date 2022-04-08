@@ -1,6 +1,5 @@
-﻿namespace HaighFramework.Input
+﻿namespace HaighFramework.Input;
+
+public interface IGamePadManager
 {
-    public interface IGamePadManager
-    {
-    }
 }

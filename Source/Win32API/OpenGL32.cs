@@ -1,7 +1,7 @@
-﻿namespace HaighFramework.Win32API;
-
-using System.Security;
+﻿using System.Security;
 using System.Runtime.InteropServices;
+
+namespace HaighFramework.Win32API;
 
 [SuppressUnmanagedCodeSecurity]
 internal static class OpenGL32

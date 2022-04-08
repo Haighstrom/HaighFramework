@@ -1,13 +1,12 @@
-﻿namespace HaighFramework.DisplayDevices
+﻿namespace HaighFramework.DisplayDevices;
+
+public enum DisplayDeviceIndex
 {
-    public enum DisplayDeviceIndex
-    {
-        Primary = -1,
-        One = 0,
-        Two = 1,
-        Three = 2,
-        Four = 3,
-        Five = 4,
-        Six = 5
-    }
+    Primary = -1,
+    One = 0,
+    Two = 1,
+    Three = 2,
+    Four = 3,
+    Five = 4,
+    Six = 5
 }

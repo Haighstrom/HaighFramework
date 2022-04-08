@@ -1,15 +1,14 @@
-﻿namespace HaighFramework.Input
+﻿namespace HaighFramework.Input;
+
+/// <summary>
+/// Enumerates modifier keys.
+/// </summary>
+[Flags]
+public enum KeyModifiers : byte
 {
-    /// <summary>
-    /// Enumerates modifier keys.
-    /// </summary>
-    [Flags]
-    public enum KeyModifiers : byte
-    {
-        Alt = 1 << 0,
+    Alt = 1 << 0,
 
-        Control = 1 << 1,
+    Control = 1 << 1,
 
-        Shift = 1 << 2
-    }
+    Shift = 1 << 2
 }

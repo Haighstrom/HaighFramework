@@ -1,7 +1,7 @@
-﻿namespace HaighFramework.Win32API;
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+
+namespace HaighFramework.Win32API;
 
 #region DLLResources
 #region User32Cursors

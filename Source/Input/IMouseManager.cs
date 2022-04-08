@@ -1,9 +1,8 @@
-﻿namespace HaighFramework.Input
+﻿namespace HaighFramework.Input;
+
+public interface IMouseManager
 {
-    public interface IMouseManager
-    {
-        MouseState State { get; }
-        MouseState GetState(int index);
-        void RefreshDevices();
-    }
+    MouseState State { get; }
+    MouseState GetState(int index);
+    void RefreshDevices();
 }

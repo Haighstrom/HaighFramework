@@ -1,9 +1,9 @@
-﻿namespace HaighFramework.Window;
-
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using HaighFramework.Input;
 using HaighFramework.OpenGL4;
 using HaighFramework.Win32API;
+
+namespace HaighFramework.Window;
 
 public class Win32Window : IWindow
 {

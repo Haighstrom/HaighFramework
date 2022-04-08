@@ -1,6 +1,6 @@
-﻿namespace HaighFramework.Win32API;
+﻿using System.Runtime.InteropServices;
 
-using System.Runtime.InteropServices;
+namespace HaighFramework.Win32API;
 
 internal static class DWMAPI
 {

@@ -1,14 +1,13 @@
-﻿namespace HaighFramework.Input
+﻿namespace HaighFramework.Input;
+
+public struct GamePadState : IEquatable<GamePadState>
 {
-    public struct GamePadState : IEquatable<GamePadState>
+    public bool IsConnected { get; internal set; }
+
+
+    public bool Equals(GamePadState other)
     {
-        public bool IsConnected { get; internal set; }
-
-
-        public bool Equals(GamePadState other)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
-
 }
+

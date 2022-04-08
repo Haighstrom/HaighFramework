@@ -1,8 +1,8 @@
-﻿namespace HaighFramework.Window;
-
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
 using System.Drawing;
 using System.IO;
+
+namespace HaighFramework.Window;
 
 public class Cursor : IDisposable
 {
@@ -24,7 +24,7 @@ public class Cursor : IDisposable
     public Cursor(Bitmap cursor, int xHotspot = 0, int yHotspot = 0, Point? size = null)
     {
         if (size != null)
-            cursor = new Bitmap(cursor, size.Value.X, size.Value.Y);
+            cursor = new Bitmap(cursor, (int)size.Value.X, (int)size.Value.Y);
 
         IntPtr imgHandle = cursor.GetHicon();
 
@@ -55,7 +55,7 @@ public class Cursor : IDisposable
             Bitmap img = new(filePath);
 
             if (size != null)
-                img = new Bitmap(img, size.Value.X, size.Value.Y);
+                img = new Bitmap(img, (int)size.Value.X, (int)size.Value.Y);
 
             IntPtr imgHandle = img.GetHicon();
 

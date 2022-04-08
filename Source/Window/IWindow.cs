@@ -1,6 +1,4 @@
-﻿
-
-using HaighFramework.Input;
+﻿using HaighFramework.Input;
 
 namespace HaighFramework.Window;
 

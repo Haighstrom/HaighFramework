@@ -1,9 +1,8 @@
-﻿namespace HaighFramework.Window
+﻿namespace HaighFramework.Window;
+
+public enum BorderStyle
 {
-    public enum BorderStyle
-    {
-        NoBorder,
-        Border,
-        SizingBorder,
-    }
+    NoBorder,
+    Border,
+    SizingBorder,
 }
