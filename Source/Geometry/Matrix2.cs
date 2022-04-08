@@ -34,7 +34,7 @@ namespace HaighFramework
         }
         #endregion
 
-        public static Matrix2 Subtract(ref Matrix2 mat1, ref Matrix2 mat2) => new Matrix2(mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray());
+        public static Matrix2 Subtract(ref Matrix2 mat1, ref Matrix2 mat2) => new(mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray());
 
         #region Multiply
         public static Matrix2 Multiply(ref Matrix2 mat1, ref Matrix2 mat2)

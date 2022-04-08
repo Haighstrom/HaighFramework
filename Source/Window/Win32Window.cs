@@ -308,7 +308,7 @@ public class Win32Window : IWindow
             case WindowMessage.WM_SIZE:
                 SetWindowPositionValues();
 
-                Point desiredUserClientSize = new Point
+                Point desiredUserClientSize = new()
                 {
                     X = Maths.Clamp(_userClientSize.X, MinClientSize.X, MaxClientSize.X == 0 ? _userClientSize.X : MaxClientSize.X),
                     Y = Maths.Clamp(_userClientSize.Y, MinClientSize.Y, MaxClientSize.Y == 0 ? _userClientSize.Y : MaxClientSize.Y)
@@ -830,7 +830,7 @@ public class Win32Window : IWindow
     }
     #endregion
 
-    public Point ScreenToClient(Point screenPosition) => new Point((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));
+    public Point ScreenToClient(Point screenPosition) => new((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));
 
     public event EventHandler? Moved;
 

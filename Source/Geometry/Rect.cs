@@ -144,7 +144,7 @@ namespace HaighFramework
         [XmlIgnore]
         public Point P
         {
-            get => new Point(X, Y);
+            get => new(X, Y);
             set
             {
                 X = value.X;
@@ -204,7 +204,7 @@ namespace HaighFramework
         #region Size
         [JsonIgnore]
         [XmlIgnore]
-        public Point Size => new Point(W, H);
+        public Point Size => new(W, H);
         #endregion
 
         #region SmallestSide
@@ -228,49 +228,49 @@ namespace HaighFramework
         #region TopCentre
         [JsonIgnore]
         [XmlIgnore]
-        public Point TopCentre => new Point(X + W * 0.5f, Y);
+        public Point TopCentre => new(X + W * 0.5f, Y);
         #endregion
 
         #region TopRight
         [JsonIgnore]
         [XmlIgnore]
-        public Point TopRight => new Point(X + W, Y);
+        public Point TopRight => new(X + W, Y);
         #endregion
 
         #region CentreLeft
         [JsonIgnore]
         [XmlIgnore]
-        public Point CentreLeft => new Point(X, Y + H * 0.5f);
+        public Point CentreLeft => new(X, Y + H * 0.5f);
         #endregion
 
         #region Centre
         [JsonIgnore]
         [XmlIgnore]
-        public Point Centre => new Point(X + W * 0.5f, Y + H * 0.5f);
+        public Point Centre => new(X + W * 0.5f, Y + H * 0.5f);
         #endregion
 
         #region CentreRight
         [JsonIgnore]
         [XmlIgnore]
-        public Point CentreRight => new Point(X + W, Y + H * 0.5f);
+        public Point CentreRight => new(X + W, Y + H * 0.5f);
         #endregion
 
         #region BottomLeft
         [JsonIgnore]
         [XmlIgnore]
-        public Point BottomLeft => new Point(X, Y + H);
+        public Point BottomLeft => new(X, Y + H);
         #endregion
 
         #region BottomCentre
         [JsonIgnore]
         [XmlIgnore]
-        public Point BottomCentre => new Point(X + W * 0.5f, Y + H);
+        public Point BottomCentre => new(X + W * 0.5f, Y + H);
         #endregion
 
         #region BottomRight
         [JsonIgnore]
         [XmlIgnore]
-        public Point BottomRight => new Point(X + W, Y + H);
+        public Point BottomRight => new(X + W, Y + H);
         #endregion
         #endregion
 

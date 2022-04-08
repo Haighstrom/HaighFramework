@@ -78,7 +78,7 @@ namespace HaighFramework
         /// <summary>
         /// Returns a vector of equal magnitude at right angle to this point
         /// </summary>
-        public Point Perpendicular => new Point(-Y, X);
+        public Point Perpendicular => new(-Y, X);
         #endregion
         #endregion
 
@@ -128,9 +128,9 @@ namespace HaighFramework
         }
         #endregion
 
-        public Point Scale(float xScale, float yScale) => new Point(X * xScale, Y * yScale);
+        public Point Scale(float xScale, float yScale) => new(X * xScale, Y * yScale);
 
-        public Point Shift(float x, float y = 0) => new Point(X + x, Y + y);
+        public Point Shift(float x, float y = 0) => new(X + x, Y + y);
 
         public bool Equals(Point other) => X == other.X && Y == other.Y;
 
