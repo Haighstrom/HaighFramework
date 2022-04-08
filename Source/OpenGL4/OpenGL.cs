@@ -1217,7 +1217,7 @@ namespace HaighFramework.OpenGL4
         public static IntPtr WGLCreateContext(IntPtr deviceContext) => OpenGL32.wglCreateContext(deviceContext);
         #endregion
 
-        internal static bool WGLDeleteContext(IntPtr renderContext) => OpenGL32.wglDeleteContext(renderContext);
+        public static bool WGLDeleteContext(IntPtr renderContext) => OpenGL32.wglDeleteContext(renderContext);
 
         #region WGLDescribePixelFormat
         internal static int WGLDescribePixelFormat(IntPtr hdc, int ipfd, uint cjpfd, PIXELFORMATDESCRIPTOR ppfd)
@@ -1226,7 +1226,7 @@ namespace HaighFramework.OpenGL4
         }
         #endregion
 
-        internal static IntPtr WGLGetCurrentContext() => OpenGL32.wglGetCurrentContext();
+        public static IntPtr WGLGetCurrentContext() => OpenGL32.wglGetCurrentContext();
 
         #region WGLGetProcAddress
         internal static IntPtr WGLGetProcAddress(string lpszProc)
