@@ -109,17 +109,21 @@ namespace HaighFramework
 
         #region Rotate
         /// <summary>
+        /// Rotate this Point around 0,0
+        /// </summary>
+        /// <param name="rotationAngleInDegrees"></param>
+        public Point Rotate(float rotationAngleInDegrees) => Rotate(rotationAngleInDegrees, Zero);
+        /// <summary>
         /// Rotate this Point around a rotation axis given by Point RotationCentre
         /// </summary>
-        /// <param name="RotationCentre"></param>
-        /// <param name="RotationAngleInDegrees"></param>
-        /// <returns></returns>
-        public Point Rotate(float RotationAngleInDegrees, Point RotationCentre)
+        /// <param name="rotationAngleInDegrees"></param>
+        /// <param name="rotationCentre"></param>
+        public Point Rotate(float rotationAngleInDegrees, Point rotationCentre)
         {
-            Point answer = new Point(X - RotationCentre.X, Y - RotationCentre.Y);
-            answer = Matrix2.CreateRotation(-RotationAngleInDegrees) * answer;
-            answer.X += RotationCentre.X;
-            answer.Y += RotationCentre.Y;
+            Point answer = new(X - rotationCentre.X, Y - rotationCentre.Y);
+            answer = Matrix2.CreateRotation(-rotationAngleInDegrees) * answer;
+            answer.X += rotationCentre.X;
+            answer.Y += rotationCentre.Y;
             return answer;
         }
         #endregion
