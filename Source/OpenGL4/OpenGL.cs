@@ -1214,10 +1214,7 @@ namespace HaighFramework.OpenGL4
 
         #region --- WGL Functions ---
         #region WGLCreateContext
-        public static IntPtr WGLCreateContext(IntPtr deviceContext)
-        {
-            return OpenGL32.wglCreateContext(deviceContext);
-        }
+        public static IntPtr WGLCreateContext(IntPtr deviceContext) => OpenGL32.wglCreateContext(deviceContext);
         #endregion
 
         internal static bool WGLDeleteContext(IntPtr renderContext) => OpenGL32.wglDeleteContext(renderContext);

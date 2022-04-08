@@ -139,10 +139,13 @@ namespace HaighFramework
         public static Point operator -(Point p1, Point p2) => new(p1.X - p2.X, p1.Y - p2.Y);
 
         public static Point operator *(float f, Point p) => new(p.X * f, p.Y * f);
+        public static Point operator *(double f, Point p) => new((float)(p.X * f), (float)(p.Y * f));
 
         public static Point operator *(Point p, float f) => new(p.X * f, p.Y * f);
+        public static Point operator *(Point p, double f) => new((float)(p.X * f), (float)(p.Y * f));
 
         public static Point operator /(Point p, float f) => new(p.X / f, p.Y / f);
+        public static Point operator /(Point p, double f) => new((float)(p.X / f), (float)(p.Y / f));
 
         public static bool operator ==(Point p1, Point p2) => p1.X == p2.X && p1.Y == p2.Y;
 

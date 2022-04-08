@@ -5,7 +5,7 @@ using HaighFramework.Input;
 using HaighFramework.OpenGL4;
 using HaighFramework.Win32API;
 
-public class Win32Window2 : IWindow
+public class Win32Window : IWindow
 {
     #region Consts
     private const WindowClassStyle DEFAULT_CLASS_STYLE = 0;
@@ -62,49 +62,11 @@ public class Win32Window2 : IWindow
             throw new Exception($"Failed to set pixel format: {Marshal.GetLastWin32Error()}");
     }
     #endregion
-
-    #region CreateRenderContext
-    public static IntPtr CreateRenderContext(int major, int minor, IntPtr deviceContext)
-    {
-        IntPtr renderContext;
-
-        if (major < 1 || minor < 0)
-            throw new HException("invalid GL version to create: {0}.{1}.", major, minor);
-
-        HConsole.Log("Creating GL Context: Requested Version {0}.{1}", major, minor);
-
-        //create temp context to be able to call wglGetProcAddress
-        IntPtr tempContext = OpenGL32.wglCreateContext(deviceContext);
-        if (tempContext == IntPtr.Zero)
-            throw new Exception("tempContext failed to create.");
-        if (!OpenGL32.wglMakeCurrent(deviceContext, tempContext))
-            throw new Exception("wglMakeCurrent Failed");
-
-        OpenGL.LoadWGLExtensions();
-
-        int[] attribs = {
-                    (int)ArbCreateContext.MajorVersion, major,
-                    (int)ArbCreateContext.MinorVersion, minor,
-                    (int)ArbCreateContext.ProfileMask, (int)ArbCreateContext.ForwardCompatibleBit,
-                    0 };
-
-        renderContext = OpenGL.CreateContextAttribsARB(deviceContext, IntPtr.Zero, attribs);
-        if (renderContext == IntPtr.Zero)
-            throw new HException("Something went wrong with wglCreateContextAttribsARB: {0}", Marshal.GetLastWin32Error());
-
-        OpenGL.LoadOpenGL3Extensions();
-
-        OpenGL32.wglDeleteContext(tempContext);
-
-        return renderContext;
-    }
-
-    #endregion
     #endregion
 
     #region Fields
     private readonly IntPtr _windowClassName = Marshal.StringToHGlobalAuto(Guid.NewGuid().ToString());
-    private readonly IntPtr _instance = Marshal.GetHINSTANCE(typeof(Win32Window2).Module);
+    private readonly IntPtr _instance = Marshal.GetHINSTANCE(typeof(Win32Window).Module);
     private readonly WNDPROC _wndProc; //need to reference this so it doesn't get garbage collected
     private readonly IntPtr _windowHandle, _childWindowHandle;
     private readonly WindowStyle _parentStyle;
@@ -126,11 +88,10 @@ public class Win32Window2 : IWindow
     private bool _cursorLockedToWindow = false;
     private bool _resizingWindow = false;
     private int _leftInvisBorder, _topInvisBorder, _rightInvisBorder, _bottomInvisBorder;
-    private readonly IntPtr _deviceContext;
     #endregion
 
     #region Constructors
-    public Win32Window2(WindowSettings settings)
+    public Win32Window(WindowSettings settings)
     {
         _userPosition = new Rect();//just to shut up the nullable warnings
         _userClientSize = new Point(settings.Width, settings.Height);//just to shut up the nullable warnings
@@ -266,13 +227,13 @@ public class Win32Window2 : IWindow
         #endregion
 
         #region Set Up OpenGL
-        _deviceContext = User32.GetDC(_childWindowHandle);
+        DeviceContext = User32.GetDC(_childWindowHandle);
 
-        SetPixelFormat(_deviceContext);
+        SetPixelFormat(DeviceContext);
         
-        IntPtr rc = CreateRenderContext(4, 0, _deviceContext);
+        IntPtr rc = CreateRenderContext(4, 0);
 
-        OpenGL.WGLMakeCurrent(_deviceContext, rc);
+        OpenGL.WGLMakeCurrent(DeviceContext, rc);
 
         string version = OpenGL.GetString(GetStringEnum.Version).Remove(9);
         HConsole.Log("Successfully set up OpenGL v:{0}, GLSL: {1}", version, OpenGL.GetString(GetStringEnum.ShadingLanguageVersion));
@@ -615,7 +576,7 @@ public class Win32Window2 : IWindow
         if (IsOpen)
             User32.PostMessage(_windowHandle, WindowMessage.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
         else
-            HConsole.Warning($"Called Close on a {typeof(Win32Window2).Name} window that was already destroyed.");
+            HConsole.Warning($"Called Close on a {typeof(Win32Window).Name} window that was already destroyed.");
     }
     #endregion
 
@@ -625,7 +586,7 @@ public class Win32Window2 : IWindow
         if (IsOpen)
             User32.DestroyWindow(_windowHandle);
         else
-            HConsole.Warning($"Called Exit on a {typeof(Win32Window2).Name} window that was already destroyed.");
+            HConsole.Warning($"Called Exit on a {typeof(Win32Window).Name} window that was already destroyed.");
     }
     #endregion
 
@@ -640,7 +601,7 @@ public class Win32Window2 : IWindow
     }
     #endregion
 
-    public void SwapBuffers() => GDI32.SwapBuffers(_deviceContext);
+    public void SwapBuffers() => GDI32.SwapBuffers(DeviceContext);
     public bool ExitOnClose { get; set; }
 
     public event EventHandler? CloseAttempted;
@@ -947,6 +908,7 @@ public class Win32Window2 : IWindow
     #endregion
     #endregion
 
+    #region Keyboard Input
     /// <summary>
     /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
     /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
@@ -963,6 +925,46 @@ public class Win32Window2 : IWindow
     /// Called whenever a keyboard key is released
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs> KeyUp;
+    #endregion
+
+    #region OpenGL
+    public IntPtr DeviceContext { get; }
+    public IntPtr RenderContext { get; }
+    public IntPtr CreateRenderContext(int major, int minor)
+    {
+        IntPtr renderContext;
+
+        if (major < 1 || minor < 0)
+            throw new HException("invalid GL version to create: {0}.{1}.", major, minor);
+
+        HConsole.Log("Creating GL Context: Requested Version {0}.{1}", major, minor);
+
+        //create temp context to be able to call wglGetProcAddress
+        IntPtr tempContext = OpenGL32.wglCreateContext(DeviceContext);
+        if (tempContext == IntPtr.Zero)
+            throw new Exception("tempContext failed to create.");
+        if (!OpenGL32.wglMakeCurrent(DeviceContext, tempContext))
+            throw new Exception("wglMakeCurrent Failed");
+
+        OpenGL.LoadWGLExtensions();
+
+        int[] attribs = {
+                    (int)ArbCreateContext.MajorVersion, major,
+                    (int)ArbCreateContext.MinorVersion, minor,
+                    (int)ArbCreateContext.ProfileMask, (int)ArbCreateContext.ForwardCompatibleBit,
+                    0 };
+
+        renderContext = OpenGL.CreateContextAttribsARB(DeviceContext, IntPtr.Zero, attribs);
+        if (renderContext == IntPtr.Zero)
+            throw new HException("Something went wrong with wglCreateContextAttribsARB: {0}", Marshal.GetLastWin32Error());
+
+        OpenGL.LoadOpenGL3Extensions();
+
+        OpenGL32.wglDeleteContext(tempContext);
+
+        return renderContext;
+    }
+    #endregion
     #endregion
 
     #region IDisposable
@@ -986,7 +988,7 @@ public class Win32Window2 : IWindow
     }
 
     // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-    ~Win32Window2()
+    ~Win32Window()
     {
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposedCorrectly: false);

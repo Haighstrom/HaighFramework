@@ -2,13 +2,13 @@
 
 namespace HaighFramework.Window
 {
-    public class HaighWindow2 : IWindow
+    public class HaighWindow : IWindow
     {
         private IWindow _implementation;
 
-        public HaighWindow2(WindowSettings settings)
+        public HaighWindow(WindowSettings settings)
         {
-            _implementation = new Win32Window2(settings);
+            _implementation = new Win32Window(settings);
         }
 
         #region Basic
@@ -144,6 +144,7 @@ namespace HaighFramework.Window
         }
         #endregion
 
+        #region Keyboard Input
         public event EventHandler<KeyboardCharEventArgs> CharEntered
         {
             add => _implementation.CharEntered += value;
@@ -159,6 +160,13 @@ namespace HaighFramework.Window
             add => _implementation.KeyUp += value;
             remove => _implementation.KeyUp -= value;
         }
+        #endregion
+
+        #region OpenGL
+        public IntPtr DeviceContext => _implementation.DeviceContext;
+        public IntPtr RenderContext => _implementation.RenderContext;
+        public IntPtr CreateRenderContext(int major, int minor) => _implementation.CreateRenderContext(major, minor);
+        #endregion
 
         #region IDisposable
         public void Dispose() => _implementation.Dispose();

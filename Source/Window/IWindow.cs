@@ -200,4 +200,10 @@ public interface IWindow : IDisposable
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs> KeyUp;
     #endregion
+
+    #region OpenGL
+    IntPtr DeviceContext { get; }
+    IntPtr RenderContext { get; }
+    IntPtr CreateRenderContext(int major, int minor);
+    #endregion
 }
