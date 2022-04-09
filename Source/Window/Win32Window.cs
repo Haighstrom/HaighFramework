@@ -231,9 +231,9 @@ public class Win32Window : IWindow
 
         SetPixelFormat(DeviceContext);
 
-        IntPtr rc = CreateRenderContext(settings.OpenGLVersion.Item1, settings.OpenGLVersion.Item2);
+        RenderContext = CreateRenderContext(settings.OpenGLVersion.Item1, settings.OpenGLVersion.Item2);
 
-        OpenGL.WGLMakeCurrent(DeviceContext, rc);
+        OpenGL.WGLMakeCurrent(DeviceContext, RenderContext);
 
         string version = OpenGL.GetString(GetStringEnum.Version).Remove(9);
         HConsole.Log("Successfully set up OpenGL v:{0}, GLSL: {1}", version, OpenGL.GetString(GetStringEnum.ShadingLanguageVersion));
