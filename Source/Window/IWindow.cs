@@ -186,22 +186,21 @@ public interface IWindow : IDisposable
     /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
     /// Use for eg text box input, rather than for controlling a game character (Use Input.GetKeyboardState)
     /// </summary>
-    public event EventHandler<KeyboardCharEventArgs> CharEntered;
+    public event EventHandler<KeyboardCharEventArgs>? CharEntered;
 
     /// <summary>
     /// Called whenever a keyboard key is pressed
     /// </summary>
-    public event EventHandler<KeyboardKeyEventArgs> KeyDown;
+    public event EventHandler<KeyboardKeyEventArgs>? KeyDown;
 
     /// <summary>
     /// Called whenever a keyboard key is released
     /// </summary>
-    public event EventHandler<KeyboardKeyEventArgs> KeyUp;
+    public event EventHandler<KeyboardKeyEventArgs>? KeyUp;
     #endregion
 
     #region OpenGL
     IntPtr DeviceContext { get; }
     IntPtr RenderContext { get; }
-    IntPtr CreateRenderContext(int major, int minor);
     #endregion
 }

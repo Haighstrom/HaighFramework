@@ -105,6 +105,6 @@ public class WindowSettings
     #endregion
 
     #region OpenGL
-    public (int, int) OpenGLVersion = (4, 5);
+    public (int major, int minor) OpenGLVersion = (4, 5);
     #endregion
 }

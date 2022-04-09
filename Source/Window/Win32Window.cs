@@ -231,7 +231,7 @@ public class Win32Window : IWindow
 
         SetPixelFormat(DeviceContext);
 
-        RenderContext = CreateRenderContext(settings.OpenGLVersion.Item1, settings.OpenGLVersion.Item2);
+        RenderContext = CreateRenderContext(settings.OpenGLVersion.major, settings.OpenGLVersion.minor);
 
         OpenGL.WGLMakeCurrent(DeviceContext, RenderContext);
 
@@ -450,6 +450,33 @@ public class Win32Window : IWindow
         }
 
         return User32.DefWindowProc(handle, message, wParam, lParam);
+    }
+    #endregion
+
+    #region CreateRenderContext
+    private IntPtr CreateRenderContext(int major, int minor)
+    {
+        if (major < 1 || minor < 0)
+            throw new HException("invalid GL version to create: {0}.{1}.", major, minor);
+
+        HConsole.Log("Creating GL Context: Requested Version {0}.{1}", major, minor);
+
+        //create temp context to be able to call wglGetProcAddress
+        IntPtr tempContext = OpenGL32.wglCreateContext(DeviceContext);
+        if (tempContext == IntPtr.Zero)
+            throw new Exception("tempContext failed to create.");
+        if (!OpenGL32.wglMakeCurrent(DeviceContext, tempContext))
+            throw new Exception("wglMakeCurrent Failed");
+
+        OpenGL.LoadWGLExtensions();
+
+        var renderContext = OpenGL.CreateRenderContext(DeviceContext, (major, minor));
+
+        OpenGL.LoadOpenGL3Extensions();
+
+        OpenGL32.wglDeleteContext(tempContext);
+
+        return renderContext;
     }
     #endregion
 
@@ -914,56 +941,22 @@ public class Win32Window : IWindow
     /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
     /// Use for eg text box input, rather than for controlling a game character (Use Input.GetKeyboardState)
     /// </summary>
-    public event EventHandler<KeyboardCharEventArgs> CharEntered;
+    public event EventHandler<KeyboardCharEventArgs>? CharEntered;
 
     /// <summary>
     /// Called whenever a keyboard key is pressed
     /// </summary>
-    public event EventHandler<KeyboardKeyEventArgs> KeyDown;
+    public event EventHandler<KeyboardKeyEventArgs>? KeyDown;
 
     /// <summary>
     /// Called whenever a keyboard key is released
     /// </summary>
-    public event EventHandler<KeyboardKeyEventArgs> KeyUp;
+    public event EventHandler<KeyboardKeyEventArgs>? KeyUp;
     #endregion
 
     #region OpenGL
     public IntPtr DeviceContext { get; }
     public IntPtr RenderContext { get; }
-    public IntPtr CreateRenderContext(int major, int minor)
-    {
-        IntPtr renderContext;
-
-        if (major < 1 || minor < 0)
-            throw new HException("invalid GL version to create: {0}.{1}.", major, minor);
-
-        HConsole.Log("Creating GL Context: Requested Version {0}.{1}", major, minor);
-
-        //create temp context to be able to call wglGetProcAddress
-        IntPtr tempContext = OpenGL32.wglCreateContext(DeviceContext);
-        if (tempContext == IntPtr.Zero)
-            throw new Exception("tempContext failed to create.");
-        if (!OpenGL32.wglMakeCurrent(DeviceContext, tempContext))
-            throw new Exception("wglMakeCurrent Failed");
-
-        OpenGL.LoadWGLExtensions();
-
-        int[] attribs = {
-                    (int)ArbCreateContext.MajorVersion, major,
-                    (int)ArbCreateContext.MinorVersion, minor,
-                    (int)ArbCreateContext.ProfileMask, (int)ArbCreateContext.ForwardCompatibleBit,
-                    0 };
-
-        renderContext = OpenGL.CreateContextAttribsARB(DeviceContext, IntPtr.Zero, attribs);
-        if (renderContext == IntPtr.Zero)
-            throw new HException("Something went wrong with wglCreateContextAttribsARB: {0}", Marshal.GetLastWin32Error());
-
-        OpenGL.LoadOpenGL3Extensions();
-
-        OpenGL32.wglDeleteContext(tempContext);
-
-        return renderContext;
-    }
     #endregion
     #endregion
 

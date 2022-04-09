@@ -145,17 +145,17 @@ public class HaighWindow : IWindow
     #endregion
 
     #region Keyboard Input
-    public event EventHandler<KeyboardCharEventArgs> CharEntered
+    public event EventHandler<KeyboardCharEventArgs>? CharEntered
     {
         add => _implementation.CharEntered += value;
         remove => _implementation.CharEntered -= value;
     }
-    public event EventHandler<KeyboardKeyEventArgs> KeyDown
+    public event EventHandler<KeyboardKeyEventArgs>? KeyDown
     {
         add => _implementation.KeyDown += value;
         remove => _implementation.KeyDown -= value;
     }
-    public event EventHandler<KeyboardKeyEventArgs> KeyUp
+    public event EventHandler<KeyboardKeyEventArgs>? KeyUp
     {
         add => _implementation.KeyUp += value;
         remove => _implementation.KeyUp -= value;
@@ -165,7 +165,6 @@ public class HaighWindow : IWindow
     #region OpenGL
     public IntPtr DeviceContext => _implementation.DeviceContext;
     public IntPtr RenderContext => _implementation.RenderContext;
-    public IntPtr CreateRenderContext(int major, int minor) => _implementation.CreateRenderContext(major, minor);
     #endregion
 
     #region IDisposable

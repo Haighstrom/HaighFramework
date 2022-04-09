@@ -126,6 +126,24 @@ public static class OpenGL
         return s == null ? new List<string>() : s.Split(' ').ToList();
     }
     #endregion
+
+    #region CreateRenderContext
+    public static IntPtr CreateRenderContext(IntPtr deviceContext, (int major, int minor) openGLversion)
+    {
+        int[] attribs = {
+            (int)ArbCreateContext.MajorVersion, openGLversion.major,
+            (int)ArbCreateContext.MinorVersion, openGLversion.minor,
+            (int)ArbCreateContext.ProfileMask, (int)ArbCreateContext.ForwardCompatibleBit,
+            0 };
+
+        var rC = CreateContextAttribsARB(deviceContext, sharedContext:IntPtr.Zero, attribs);
+
+        if (rC == IntPtr.Zero)
+            throw new HException("Something went wrong with wglCreateContextAttribsARB: {0}", Marshal.GetLastWin32Error());
+
+        return rC;
+    }
+    #endregion
     #endregion
 
     #region --- OpenGL Core Functions ---
