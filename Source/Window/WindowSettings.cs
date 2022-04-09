@@ -103,4 +103,8 @@ public class WindowSettings
     /// </summary>
     public bool CursorLockedToWindow { get; set; } = false;
     #endregion
+
+    #region OpenGL
+    public (int, int) OpenGLVersion = (4, 5);
+    #endregion
 }

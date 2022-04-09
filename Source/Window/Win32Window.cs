@@ -230,8 +230,8 @@ public class Win32Window : IWindow
         DeviceContext = User32.GetDC(_childWindowHandle);
 
         SetPixelFormat(DeviceContext);
-        
-        IntPtr rc = CreateRenderContext(4, 0);
+
+        IntPtr rc = CreateRenderContext(settings.OpenGLVersion.Item1, settings.OpenGLVersion.Item2);
 
         OpenGL.WGLMakeCurrent(DeviceContext, rc);
 
