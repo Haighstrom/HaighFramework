@@ -2,6 +2,9 @@
 
 public static class Maths
 {
+    public static readonly double Sqrt2 = Math.Sqrt(2);
+    public static readonly double Sqrt2Reciprocal = 1 / Math.Sqrt(2);
+
     public static float Min(float first, float second) => first < second ? first : second;
     public static float Max(float first, float second) => first > second ? first : second;
     public static float Clamp(float value, float min, float max)

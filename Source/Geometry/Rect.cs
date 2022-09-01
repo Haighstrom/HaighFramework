@@ -33,7 +33,7 @@ public struct Rect : IRect
     {
     }
 
-    public Rect(Rect rect)
+    public Rect(IRect rect)
         : this(rect.X, rect.Y, rect.W, rect.H)
     {
     }

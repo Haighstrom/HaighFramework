@@ -25,7 +25,10 @@ public struct Matrix4
     /// <returns></returns>
     public static Matrix4 CreateTranslation(float x, float y, float z)
     {
-        return new Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1);
+        return new Matrix4( 1, 0, 0, 0, 
+                            0, 1, 0, 0, 
+                            0, 0, 1, 0, 
+                            x, y, z, 1);
     }
     /// <summary>
     /// 
@@ -185,6 +188,7 @@ public struct Matrix4
         Matrix4 rotMat = CreateRotationAroundZAxis(angleInDegrees);
         return Multiply(ref mat, ref rotMat);
     }
+    public static Matrix4 RotateAroundPoint(ref Matrix4 mat, float angleInDegrees, Point p) => RotateAroundPoint(ref mat, angleInDegrees, p.X, p.Y);
     public static Matrix4 RotateAroundPoint(ref Matrix4 mat, float angleInDegrees, float x, float y)
     {
         Matrix4 translate1 = CreateTranslation(x, y, 0);
@@ -196,10 +200,6 @@ public struct Matrix4
         result = Multiply(ref result, ref translate2);
 
         return result;
-    }
-    public static Matrix4 RotateAroundPoint(ref Matrix4 mat, float angleInDegrees, Point p)
-    {
-        return RotateAroundPoint(ref mat, angleInDegrees, p.X, p.Y);
     }
     #endregion
 
