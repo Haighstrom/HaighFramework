@@ -6,6 +6,7 @@ public class MouseEventArgs : EventArgs
 {
     protected MouseState _state;
 
+    #region Constructors
     public MouseEventArgs()
     {
         _state.IsConnected = true;
@@ -28,8 +29,9 @@ public class MouseEventArgs : EventArgs
         DeltaX = xDelta;
         DeltaY = yDelta;
     }
-    
+    #endregion
 
+    #region Properties
     public MouseState State { get { return _state; } internal set { _state = value;} }
     public int ScreenX { get { return State.ScreenX; } }
     public int ScreenY { get { return State.ScreenY; } }
@@ -42,8 +44,9 @@ public class MouseEventArgs : EventArgs
     public Point DeltaXY { get { return new Point(DeltaX, DeltaY); } }
     public MouseButton Button { get; internal set; }
     public bool Pressed { get { return GetButton(Button) == ButtonState.Down; } set { SetButton(Button, value ? ButtonState.Down : ButtonState.Up); } }
-    
+    #endregion
 
+    #region Methods
     internal void SetButton(MouseButton button, ButtonState state)
     {
         if (button < 0 || button > MouseButton.LastButton)
@@ -52,10 +55,10 @@ public class MouseEventArgs : EventArgs
         switch (state)
         {
             case ButtonState.Down:
-                State.EnableBit((int)button);
+                this.State.EnableBit((int)button);
                 break;
             case ButtonState.Up:
-                State.DisableBit((int)button);
+                this.State.DisableBit((int)button);
                 break;
         }
     }
@@ -65,9 +68,9 @@ public class MouseEventArgs : EventArgs
             throw new ArgumentOutOfRangeException();
 
         if (pressed)
-            State.EnableBit((int)button);
+            this.State.EnableBit((int)button);
         else
-            State.DisableBit((int)button);
+            this.State.DisableBit((int)button);
     }
     internal ButtonState GetButton(MouseButton button)
     {
@@ -76,7 +79,7 @@ public class MouseEventArgs : EventArgs
 
         return State.ReadBit((int)button) ? ButtonState.Down : ButtonState.Up;
     }
-    
+    #endregion
 
 }
 
@@ -84,6 +87,7 @@ public class MouseWheelEventArgs : MouseEventArgs
 {
     float _delta;
 
+    #region Constructors
     public MouseWheelEventArgs() { }
     public MouseWheelEventArgs(int x, int y, int value, int delta)
         : base(x, y)
@@ -91,8 +95,9 @@ public class MouseWheelEventArgs : MouseEventArgs
         _state.SetScrollAbsolute(_state.Scroll.X, value);
         _delta = delta;
     }
-    
+    #endregion
 
+    #region Properties
     public int Value { get { return _state.Wheel; } }
 
     public int Delta { get { return (int)Math.Round(_delta, MidpointRounding.AwayFromZero); } }
@@ -100,5 +105,5 @@ public class MouseWheelEventArgs : MouseEventArgs
     public float ValuePrecise { get { return _state.WheelPrecise; } }
 
     public float DeltaPrecise { get { return _delta; } internal set { _delta = value; } }
-    
+    #endregion
 }

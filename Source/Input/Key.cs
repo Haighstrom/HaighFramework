@@ -21,14 +21,16 @@ public enum Key : int
     ScrollLock,
     NumLock, 
 
+    #region Modifiers
     LeftControl,
     RightControl,
     LeftShift,
     RightShift,
     LeftAlt,
     RightAlt,
-    
+    #endregion
 
+    #region F-Keys
     F1,
     F2,
     F3,
@@ -41,8 +43,9 @@ public enum Key : int
     F10,
     F11,
     F12,
-    
+    #endregion
 
+    #region Numbers
     Num1,
     Num2,
     Num3,
@@ -53,8 +56,9 @@ public enum Key : int
     Num8,
     Num9,
     Num0,
-    
+    #endregion
 
+    #region Keypad
     Keypad0,
     Keypad1,
     Keypad2,
@@ -71,8 +75,9 @@ public enum Key : int
     KeypadAdd,
     KeypadPeriod,
     KeypadEnter,
-    
+    #endregion
 
+    #region Letters
     A,
     B,
     C,
@@ -99,18 +104,21 @@ public enum Key : int
     X,
     Y,
     Z,
-    
+    #endregion
 
+    #region Arrow keys
     Up,
     Down,
     Left,
     Right,
-    
+    #endregion
 
+    #region Windows Keys
     LeftWindows,
     Menu,
-    
+    #endregion
 
+    #region Symbol Keys
     Minus,
     Equals,
     LeftBracket,
@@ -124,7 +132,7 @@ public enum Key : int
     Hash,
     Pause,
     GraveAccent,
-    
+    #endregion
     
     LastKey            
 }
@@ -145,6 +153,6 @@ public static class KeyExtensions
         }
 
 
-        return HaighFramework.Win32API.User32.GetKeyNameText(KeyMap.GetExtendedScanCodeFromKey(k));
+        return Win32API.User32.GetKeyNameText(KeyMap.GetExtendedScanCodeFromKey(k));
     }
 }
