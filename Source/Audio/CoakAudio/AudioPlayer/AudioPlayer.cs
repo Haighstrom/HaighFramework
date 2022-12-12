@@ -71,9 +71,8 @@ public static class AudioPlayer
         }
         catch(Exception e)  //Catch any errors during initialisation - these will mean it failed, so return, keeping AudioInitialisedSuccessfully set to false.
         {
-            HConsole.Warning("Audio Error (HaighFramework AudioPlayer.Initialise): " + e.Message);
-            if(VerboseLogging)
-                HConsole.Log(e);
+            Log.Warning("Audio Error (HaighFramework AudioPlayer.Initialise): " + e.Message);
+            Log.Verbose(e);
             return;
         }
 
@@ -90,10 +89,9 @@ public static class AudioPlayer
     internal static void OpenALFoundNotSupported(Exception e)
     {
         //We should do something here later - like install OpenAL on the computer running this
-        HConsole.Warning("OpenAL not installed correctly on this PC (HaighFramework AudioPlayer.OpenALFoundNotSupported) - " + e.GetType() + " : " + e.Message);
-
-        if (VerboseLogging)
-            HConsole.Log(e);
+        Log.Warning("OpenAL not installed correctly on this PC (HaighFramework AudioPlayer.OpenALFoundNotSupported) - " + e.GetType() + " : " + e.Message);
+        
+        Log.Verbose(e);
 
         OpenALSupported = false;
     }
@@ -312,7 +310,7 @@ public static class AudioPlayer
         }
         catch (Exception e)
         {
-            HConsole.Warning("Audio dispose error: " + e.Message);
+            Log.Warning("Audio dispose error: " + e.Message);
         }
     }
 }
