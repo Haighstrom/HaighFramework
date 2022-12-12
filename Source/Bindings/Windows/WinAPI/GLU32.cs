@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security;
 
-namespace HaighFramework.Win32API;
+namespace HaighFramework.WinAPI;
 
 /// <summary>
 /// Graphics Library Utilities https://registry.khronos.org/OpenGL-Refpages/gl2.1/

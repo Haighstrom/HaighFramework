@@ -1,4 +1,4 @@
-﻿using HaighFramework.Win32API;
+﻿using HaighFramework.WinAPI;
 
 namespace HaighFramework;
 

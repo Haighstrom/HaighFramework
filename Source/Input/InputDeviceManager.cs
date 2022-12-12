@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Threading;
-using HaighFramework.Win32API;
+using HaighFramework.WinAPI;
 using HaighFramework.Window;
 
 namespace HaighFramework.Input;

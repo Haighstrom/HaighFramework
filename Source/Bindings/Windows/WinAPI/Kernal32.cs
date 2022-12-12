@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security;
 
-namespace HaighFramework.Win32API;
+namespace HaighFramework.WinAPI;
 
 /// <summary>
 /// Low-level operating system functions for memory management and resource handling.

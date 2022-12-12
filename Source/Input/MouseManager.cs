@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-using HaighFramework.Win32API;
+using HaighFramework.WinAPI;
 using Microsoft.Win32;
 
 namespace HaighFramework.Input;

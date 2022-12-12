@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace HaighFramework.Win32API;
+namespace HaighFramework.WinAPI;
 
 internal static class Shell32
 {

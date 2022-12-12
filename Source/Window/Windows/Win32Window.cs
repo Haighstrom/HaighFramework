@@ -1,18 +1,26 @@
 ﻿using System.Runtime.InteropServices;
 using HaighFramework.Input;
 using HaighFramework.OpenGL;
-using HaighFramework.Win32API;
+using HaighFramework.WinAPI;
 
 namespace HaighFramework.Window;
 
 public class Win32Window : IWindow
 {
-    public static float Clamp(float value, float min, float max)
+    private static float Clamp(float value, float min, float max)
     {
         if (min > max)
             throw new ArgumentOutOfRangeException(nameof(min), $"min value ({min}) was greater than max ({max})");
 
         return value < min ? min : value > max ? max : value;
+    }
+
+    private static string GetString(GetStringEnum name)
+    {
+        unsafe
+        {
+            return new string(OpenGL32.glGetString(name));
+        }
     }
 
     private const WindowClassStyle DEFAULT_CLASS_STYLE = 0;
@@ -208,11 +216,11 @@ public class Win32Window : IWindow
 
         OpenGL32.wglMakeCurrent(DeviceContext, RenderContext.Handle);
 
-        string version = OpenGL32.GetString(GetStringEnum.Version).Remove(9);
-        Log.Information($"Successfully set up OpenGL v:{version}, GLSL: {OpenGL32.GetString(GetStringEnum.ShadingLanguageVersion)}");
-        Log.Information($"Graphics Vendor: {OpenGL32.GetString(GetStringEnum.Vendor)}");
-        Log.Information($"Graphics Card: {OpenGL32.GetString(GetStringEnum.Renderer)}");
-        Log.Information($"Graphics Card: {OpenGL32.GetString(GetStringEnum.Renderer)}");
+        string version = GetString(GetStringEnum.Version).Remove(9);
+        Log.Information($"Successfully set up OpenGL v:{version}, GLSL: {GetString(GetStringEnum.ShadingLanguageVersion)}");
+        Log.Information($"Graphics Vendor: {GetString(GetStringEnum.Vendor)}");
+        Log.Information($"Graphics Card: {GetString(GetStringEnum.Renderer)}");
+        Log.Information($"Graphics Card: {GetString(GetStringEnum.Renderer)}");
     }
 
     internal IntPtr StandardWindowProcedure(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)

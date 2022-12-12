@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace HaighFramework.Win32API;
+namespace HaighFramework.WinAPI;
 
 /// <summary>
 /// Desktop Window Manager https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/

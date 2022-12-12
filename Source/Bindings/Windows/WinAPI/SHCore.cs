@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security;
 
-namespace HaighFramework.Win32API;
+namespace HaighFramework.WinAPI;
 
 [SuppressUnmanagedCodeSecurity]
 internal static class SHCore

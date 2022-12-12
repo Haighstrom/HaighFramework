@@ -2,7 +2,7 @@
 using System.Security;
 using System.Text;
 
-namespace HaighFramework.Win32API;
+namespace HaighFramework.WinAPI;
 
 /// <summary>
 /// Windows management functions for message handling, timers, menus, and communications.
