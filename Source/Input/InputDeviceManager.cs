@@ -1,16 +1,18 @@
-﻿using System.Runtime.InteropServices;
-using System.Threading;
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
+using System.Runtime.InteropServices;
 using HaighFramework.Window;
+using System.Threading;
 
 namespace HaighFramework.Input;
 
 public class InputDeviceManager : IInputDeviceManager
 {
+    #region Static Fields
     private static RawInput _rawInput = new(); 
     static readonly Guid DeviceInterfaceHid = new("4D1E55B2-F16F-11CF-88CB-001111000030");
-    
+    #endregion
 
+    #region Fields
     private MouseManager _mouseManager;
     private KeyboardManager _keyboardManager;
     private GamePadManager _gamePadManager;
@@ -20,8 +22,9 @@ public class InputDeviceManager : IInputDeviceManager
     private readonly AutoResetEvent _ready = new(false);
 
     private IntPtr _registrationHandle;
-    
+    #endregion
 
+    #region Constructors
     public InputDeviceManager()
     {
         _thread = new Thread(ProcessInputData);
@@ -32,7 +35,9 @@ public class InputDeviceManager : IInputDeviceManager
 
         _ready.WaitOne();
     }
+    #endregion
 
+    #region Methods
     private void ProcessInputData()
     {
         _inputWindow = new MessageOnlyWindow(WindowProcedure);
@@ -46,11 +51,11 @@ public class InputDeviceManager : IInputDeviceManager
     }
     private void CreateDrivers()
     {
-        Log.Information("--------Input Devices--------\n");
+        Console.WriteLine("--------Input Devices--------\n");
         _mouseManager = new MouseManager(_inputWindow.Handle);
         _keyboardManager = new KeyboardManager(_inputWindow.Handle);
         _gamePadManager = new GamePadManager(_inputWindow.Handle);
-        Log.Information("\n-----------------------------\n");
+        Console.WriteLine("\n-----------------------------\n");
 
         RegisterForRawInput();
     }
@@ -62,7 +67,7 @@ public class InputDeviceManager : IInputDeviceManager
         dbHdr.ClassGuid = DeviceInterfaceHid;
         unsafe
         {
-            _registrationHandle = User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr(&dbHdr), DEVICENOTIFYFLAGS.DEVICE_NOTIFY_WINDOW_HANDLE);
+            _registrationHandle = User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr(&dbHdr), DeviceNotification.WINDOW_HANDLE);
         }
         if (_registrationHandle == IntPtr.Zero)
         {
@@ -70,16 +75,18 @@ public class InputDeviceManager : IInputDeviceManager
         }
     }
 
+    #region WindowProcedure
     private IntPtr _unhandled = new(-1);
-    private IntPtr WindowProcedure(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)
+    private IntPtr WindowProcedure(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
     {
         switch (message)
         {
-            case WINDOWMESSAGE.WM_INPUT:
+            #region WM_INPUT
+            case WindowMessage.WM_INPUT:
                 int size = 0;
-                User32.GetRawInputData(lParam, RAWINPUTDATAFLAG.RID_INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
+                User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
 
-                if (size == User32.GetRawInputData(lParam, RAWINPUTDATAFLAG.RID_INPUT, out _rawInput, ref size, RawInputHeader.SIZE))
+                if (size == User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, out _rawInput, ref size, RawInputHeader.SIZE))
                 {
                     switch (_rawInput.Header.Type)
                     {
@@ -100,27 +107,31 @@ public class InputDeviceManager : IInputDeviceManager
                     }
                 }
                 break;
-            
+            #endregion
 
-            case WINDOWMESSAGE.WM_DEVICECHANGE:
-                Log.Information("Input Devices Change detected. Identifying new devices...");
+            #region WM_DEVICECHANGE
+            case WindowMessage.WM_DEVICECHANGE:
+                Console.WriteLine("Input Devices Change detected. Identifying new devices...");
 
                 _mouseManager.RefreshDevices();
                 _keyboardManager.RefreshDevices();
 
                 break;
-            
+            #endregion
         }
         return _unhandled;
     }
-    
+    #endregion
 
+    #endregion
 
+    #region IInputDeviceManager
     public IMouseManager MouseManager => _mouseManager;
 
     public IKeyboardManager KeyboardManager => _keyboardManager;
-    
+    #endregion
 
+    #region IDisposable
 
     private bool _disposed;
 
@@ -156,5 +167,5 @@ public class InputDeviceManager : IInputDeviceManager
         Dispose(false);
     }
 
-    
+    #endregion
 }

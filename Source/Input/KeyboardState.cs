@@ -2,22 +2,26 @@
 
 public struct KeyboardState : IEquatable<KeyboardState>
 {
+    #region Constants
     //allocate enough ints to store all keys
     const int IntSize = sizeof(int);
     const int NumInts = ((int)Key.LastKey + IntSize - 1) / IntSize;
-    
+    #endregion
 
+    #region Static
     private static void ValidateOffset(int offset)
     {
         if (offset < 0 || offset >= NumInts * IntSize)
             throw new ArgumentOutOfRangeException("offset");
     }
-    
+    #endregion
 
+    #region Fields
     //fixed sized buffer
     unsafe fixed int _keys[NumInts];
-    
+    #endregion
 
+    #region Indexers
     public bool this[Key key]
     {
         get { return IsKeyDown(key); }
@@ -27,11 +31,15 @@ public struct KeyboardState : IEquatable<KeyboardState>
     {
         get { return IsKeyDown((Key)code); }
     }
-    
+    #endregion
 
+    #region Properties
     public bool IsConnected { get; internal set; }
-    
+    #endregion
 
+    #region Methods
+    #region Public
+    #region IsKeyDown
     public bool IsKeyDown(Key key)
     {
         return ReadBit((int)key);
@@ -40,8 +48,9 @@ public struct KeyboardState : IEquatable<KeyboardState>
     {
         return code >= 0 && code < (short)Key.LastKey && ReadBit(code);
     }
-    
+    #endregion
 
+    #region IsKeyUp
     public bool IsKeyUp(Key key)
     {
         return !ReadBit((int)key);
@@ -50,9 +59,11 @@ public struct KeyboardState : IEquatable<KeyboardState>
     {
         return !IsKeyDown(code);
     }
-    
-    
+    #endregion
+    #endregion
 
+    #region Internal
+    #region SetKeyState
     internal void SetKeyState(Key key, bool down)
     {
         if (down)
@@ -60,8 +71,9 @@ public struct KeyboardState : IEquatable<KeyboardState>
         else
             DisableBit((int)key);
     }
-    
+    #endregion
 
+    #region ReadBit
     internal bool ReadBit(int offset)
     {
         ValidateOffset(offset);
@@ -75,8 +87,9 @@ public struct KeyboardState : IEquatable<KeyboardState>
             }
         }
     }
-    
+    #endregion
 
+    #region EnableBit
     internal void EnableBit(int offset)
     {
         ValidateOffset(offset);
@@ -90,8 +103,9 @@ public struct KeyboardState : IEquatable<KeyboardState>
             }
         }
     }
-    
+    #endregion
 
+    #region DisableBit
     internal void DisableBit(int offset)
     {
         ValidateOffset(offset);
@@ -105,8 +119,9 @@ public struct KeyboardState : IEquatable<KeyboardState>
             }
         }
     }
-    
+    #endregion
 
+    #region MergeBits
     internal void MergeBits(KeyboardState other)
     {
         unsafe
@@ -122,10 +137,11 @@ public struct KeyboardState : IEquatable<KeyboardState>
             IsConnected |= other.IsConnected;
         }
     }
-    
-    
-    
+    #endregion
+    #endregion
+    #endregion
 
+    #region IEquatable<KeyboardState>
     public bool Equals(KeyboardState other)
     {
         bool equal = true;
@@ -140,20 +156,24 @@ public struct KeyboardState : IEquatable<KeyboardState>
         }
         return equal;
     }
-    
+    #endregion
 
+    #region Overloads / Overrides
+    #region ==
     public static bool operator ==(KeyboardState left, KeyboardState right)
     {
         return left.Equals(right);
     }
-    
+    #endregion
 
+    #region !=
     public static bool operator !=(KeyboardState left, KeyboardState right)
     {
         return !left.Equals(right);
     }
-    
+    #endregion
 
+    #region Equals
     public override bool Equals(object obj)
     {
         if (obj is KeyboardState)
@@ -163,11 +183,11 @@ public struct KeyboardState : IEquatable<KeyboardState>
         else
             return false;
     }
-    
+    #endregion
 
     public override int GetHashCode()
     {
         return base.GetHashCode();
     }
-    
+    #endregion
 }

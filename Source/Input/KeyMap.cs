@@ -4,6 +4,7 @@ namespace HaighFramework.Input;
 
 internal static class KeyMap
 {
+    #region GetKey
     //Deprecated
     public static Key GetKey(uint scancode)
     {
@@ -116,18 +117,20 @@ internal static class KeyMap
             default: return Key.Unknown;
         }
     }
-    
+    #endregion
 
     private static Key GetExtendedKey(uint scancode)
     {
         switch (scancode)
         {
+            #region Arrow Keys
             case (22020096): return Key.Down;
             case (21692416): return Key.Left;
             case (21823488): return Key.Right;
             case (21495808): return Key.Up;
-            
+            #endregion
 
+            #region Function Keys
             case (3866624): return Key.F1;
             case (3932160): return Key.F2;
             case (3997696): return Key.F3;
@@ -140,8 +143,9 @@ internal static class KeyMap
             case (4456448): return Key.F10;
             case (5701632): return Key.F11;
             case (5767168): return Key.F12;
-            
+            #endregion
 
+            #region Letter Keys
             case (1966080): return Key.A;
             case (3145728): return Key.B;
             case (3014656): return Key.C;
@@ -168,8 +172,9 @@ internal static class KeyMap
             case (2949120): return Key.X;
             case (1376256): return Key.Y;
             case (2883584): return Key.Z;
-            
+            #endregion
 
+            #region Modifier Keys
             case (3801088): return Key.CapsLock;
             case (3670016): return Key.LeftAlt;
             case (1900544): return Key.LeftControl;
@@ -179,8 +184,9 @@ internal static class KeyMap
             case (20447232): return Key.RightAlt;
             case (18677760): return Key.RightControl;
            // case (21299200): return Key.RightShift;
-            
+            #endregion
 
+            #region Numpad/Keypad keys 
             case (5373952): return Key.Keypad0;
             case (5177344): return Key.Keypad1;
             case (5242880): return Key.Keypad2;
@@ -197,8 +203,9 @@ internal static class KeyMap
             case (3604480): return Key.KeypadMultiply;
             case (5439488): return Key.KeypadPeriod;
             case (4849664): return Key.KeypadSubtract;
-            
+            #endregion
 
+            #region Number keys - along the top of the keyboard
             case (720896): return Key.Num0;
             case (131072): return Key.Num1;
             case (196608): return Key.Num2;
@@ -209,8 +216,9 @@ internal static class KeyMap
             case (524288): return Key.Num7;
             case (589824): return Key.Num8;
             case (655360): return Key.Num9;
-            
+            #endregion
 
+            #region Special Keys
             case (917504): return Key.Backspace;
             case (22216704): return Key.Delete;
             case (65536): return Key.ESC;
@@ -224,8 +232,9 @@ internal static class KeyMap
             case (5505024): return Key.PrintScreen; //this one is haigh's keyboard apparently?
             case (3735552): return Key.Space;
             case (983040): return Key.Tab;
-            
+            #endregion
 
+            #region SymbolKeys
             case (5636096): return Key.BackSlash;
             case (3342336): return Key.Comma;
             case (851968): return Key.Equals;
@@ -242,10 +251,10 @@ internal static class KeyMap
             case (4587520): return Key.ScrollLock;
             case (2555904): return Key.Semicolon;
             case (3473408): return Key.Slash;
-            
+            #endregion
 
             default:
-                Log.Warning($"Unknown extended Key Scancode {scancode}");
+                HConsole.Warning("Unknown extended Key Scancode {0}", scancode);
                 return Key.Unknown;
         }
     }
@@ -254,12 +263,14 @@ internal static class KeyMap
     {
         switch (key)
         {
+            #region Arrow Keys
             case (Key.Down):            return 22020096;
             case (Key.Left):            return 21692416;
             case (Key.Right):           return 21823488;
             case (Key.Up):              return 21495808;
-            
+            #endregion
 
+            #region Function Keys
             case (Key.F1):              return 3866624;
             case (Key.F2):              return 3932160;
             case (Key.F3):              return 3997696;
@@ -272,8 +283,9 @@ internal static class KeyMap
             case (Key.F10):             return 4456448;
             case (Key.F11):             return 5701632;
             case (Key.F12):             return 5767168;
-            
+            #endregion
 
+            #region Letter Keys
             case (Key.A):               return 1966080;
             case (Key.B):               return 3145728;
             case (Key.C):               return 3014656;
@@ -300,8 +312,9 @@ internal static class KeyMap
             case (Key.X):               return 2949120;
             case (Key.Y):               return 1376256;
             case (Key.Z):               return 2883584;
-            
+            #endregion
 
+            #region Modifier Keys
             case (Key.CapsLock):        return 3801088;
             case (Key.LeftAlt):         return 3670016;
             case (Key.LeftControl):     return 1900544;
@@ -311,8 +324,9 @@ internal static class KeyMap
             case (Key.RightAlt):        return 20447232;
             case (Key.RightControl):    return 18677760;
             case (Key.RightShift):      return 99999999;    //Not a real value, this is a hack and is explictly handled
-            
+            #endregion
 
+            #region Numpad/Keypad keys 
             case (Key.Keypad0):         return 5373952;
             case (Key.Keypad1):         return 5177344;
             case (Key.Keypad2):         return 5242880;
@@ -329,8 +343,9 @@ internal static class KeyMap
             case (Key.KeypadMultiply):  return 3604480;
             case (Key.KeypadPeriod):    return 5439488;
             case (Key.KeypadSubtract):  return 4849664;
-            
+            #endregion
 
+            #region Number keys - along the top of the keyboard
             case (Key.Num0):            return 720896;
             case (Key.Num1):            return 131072;
             case (Key.Num2):            return 196608;
@@ -341,8 +356,9 @@ internal static class KeyMap
             case (Key.Num7):            return 524288;
             case (Key.Num8):            return 589824;
             case (Key.Num9):            return 655360;
-            
+            #endregion
 
+            #region Special Keys
             case (Key.Backspace):       return 917504;
             case (Key.Delete):          return 22216704;
             case (Key.ESC):             return 65536;
@@ -354,8 +370,9 @@ internal static class KeyMap
             case (Key.PrintScreen):     return 22282240;
             case (Key.Space):           return 3735552;
             case (Key.Tab):             return 983040;
-            
+            #endregion
 
+            #region SymbolKeys
             case (Key.BackSlash):       return 5636096;
             case (Key.Comma):           return 3342336;
             case (Key.Equals):          return 851968;
@@ -372,7 +389,7 @@ internal static class KeyMap
             case (Key.ScrollLock):      return 4587520;
             case (Key.Semicolon):       return 2555904;
             case (Key.Slash):           return 3473408;
-            
+            #endregion
              
             default:
                 return 0;
@@ -380,348 +397,348 @@ internal static class KeyMap
     }        
 
     //[Deprecated]  Better support for things like the numpad having Home on the 7 key, stuff like that. However different keyboard layouts, eg US may mess this up
-    private static Key GetKey(VIRTUALKEYCODE vkey)
+    private static Key GetKey(VirtualKeys vkey)
     {
         //cf https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx
 
         switch (vkey)
         {
             //Mouse - why is this even handled here?
-            case VIRTUALKEYCODE.LBUTTON:
+            case VirtualKeys.LBUTTON:
                 return Key.None;
-            case VIRTUALKEYCODE.RBUTTON:
+            case VirtualKeys.RBUTTON:
                 return Key.None;
-            case VIRTUALKEYCODE.CANCEL:
+            case VirtualKeys.CANCEL:
                 return Key.None;
-            case VIRTUALKEYCODE.MBUTTON:
+            case VirtualKeys.MBUTTON:
                 return Key.None;
-            case VIRTUALKEYCODE.XBUTTON1:
+            case VirtualKeys.XBUTTON1:
                 return Key.None;
-            case VIRTUALKEYCODE.XBUTTON2:
+            case VirtualKeys.XBUTTON2:
                 return Key.None;
 
-            case VIRTUALKEYCODE.BACK:
+            case VirtualKeys.BACK:
                 return Key.Backspace;
-            case VIRTUALKEYCODE.TAB:
+            case VirtualKeys.TAB:
                 return Key.Tab;
-            case VIRTUALKEYCODE.RETURN:
+            case VirtualKeys.RETURN:
                 return Key.Enter;
-            case VIRTUALKEYCODE.SHIFT:
+            case VirtualKeys.SHIFT:
                 return Key.LeftShift;
-            case VIRTUALKEYCODE.CONTROL:
+            case VirtualKeys.CONTROL:
                 return Key.LeftControl;
-            case VIRTUALKEYCODE.MENU:
+            case VirtualKeys.MENU:
                 return Key.LeftAlt;
-            case VIRTUALKEYCODE.PAUSE:
+            case VirtualKeys.PAUSE:
                 return Key.Pause;
-            case VIRTUALKEYCODE.CAPITAL:
+            case VirtualKeys.CAPITAL:
                 return Key.CapsLock;
-            case VIRTUALKEYCODE.ESCAPE:
+            case VirtualKeys.ESCAPE:
                 return Key.ESC;
-            case VIRTUALKEYCODE.SPACE:
+            case VirtualKeys.SPACE:
                 return Key.Space;
 
             //Arrow keys
-            case VIRTUALKEYCODE.LEFT:
+            case VirtualKeys.LEFT:
                 return Key.Left;
-            case VIRTUALKEYCODE.UP:
+            case VirtualKeys.UP:
                 return Key.Up;
-            case VIRTUALKEYCODE.RIGHT:
+            case VirtualKeys.RIGHT:
                 return Key.Right;
-            case VIRTUALKEYCODE.DOWN:
+            case VirtualKeys.DOWN:
                 return Key.Down;
 
-            case VIRTUALKEYCODE.SNAPSHOT:
+            case VirtualKeys.SNAPSHOT:
                 return Key.PrintScreen;
 
 
-            case VIRTUALKEYCODE.INSERT:
+            case VirtualKeys.INSERT:
                 return Key.Insert;
-            case VIRTUALKEYCODE.DELETE:
+            case VirtualKeys.DELETE:
                 return Key.Delete;
-            case VIRTUALKEYCODE.PRIOR:
+            case VirtualKeys.PRIOR:
                 return Key.PageUp;
-            case VIRTUALKEYCODE.NEXT:
+            case VirtualKeys.NEXT:
                 return Key.PageDown;
-            case VIRTUALKEYCODE.END:
+            case VirtualKeys.END:
                 return Key.End;
-            case VIRTUALKEYCODE.HOME:
+            case VirtualKeys.HOME:
                 return Key.Home;
 
             //Numbers along the top of the keyboard
-            case VIRTUALKEYCODE.NUM0:
+            case VirtualKeys.NUM0:
                 return Key.Num0;
-            case VIRTUALKEYCODE.NUM1:
+            case VirtualKeys.NUM1:
                 return Key.Num1;
-            case VIRTUALKEYCODE.NUM2:
+            case VirtualKeys.NUM2:
                 return Key.Num2;
-            case VIRTUALKEYCODE.NUM3:
+            case VirtualKeys.NUM3:
                 return Key.Num3;
-            case VIRTUALKEYCODE.NUM4:
+            case VirtualKeys.NUM4:
                 return Key.Num4;
-            case VIRTUALKEYCODE.NUM5:
+            case VirtualKeys.NUM5:
                 return Key.Num5;
-            case VIRTUALKEYCODE.NUM6:
+            case VirtualKeys.NUM6:
                 return Key.Num6;
-            case VIRTUALKEYCODE.NUM7:
+            case VirtualKeys.NUM7:
                 return Key.Num7;
-            case VIRTUALKEYCODE.NUM8:
+            case VirtualKeys.NUM8:
                 return Key.Num8;
-            case VIRTUALKEYCODE.NUM9:
+            case VirtualKeys.NUM9:
                 return Key.Num9;
 
-            case VIRTUALKEYCODE.A:
+            case VirtualKeys.A:
                 return Key.A;
-            case VIRTUALKEYCODE.B:
+            case VirtualKeys.B:
                 return Key.B;
-            case VIRTUALKEYCODE.C:
+            case VirtualKeys.C:
                 return Key.C;
-            case VIRTUALKEYCODE.D:
+            case VirtualKeys.D:
                 return Key.D;
-            case VIRTUALKEYCODE.E:
+            case VirtualKeys.E:
                 return Key.E;
-            case VIRTUALKEYCODE.F:
+            case VirtualKeys.F:
                 return Key.F;
-            case VIRTUALKEYCODE.G:
+            case VirtualKeys.G:
                 return Key.G;
-            case VIRTUALKEYCODE.H:
+            case VirtualKeys.H:
                 return Key.H;
-            case VIRTUALKEYCODE.I:
+            case VirtualKeys.I:
                 return Key.I;
-            case VIRTUALKEYCODE.J:
+            case VirtualKeys.J:
                 return Key.J;
-            case VIRTUALKEYCODE.K:
+            case VirtualKeys.K:
                 return Key.K;
-            case VIRTUALKEYCODE.L:
+            case VirtualKeys.L:
                 return Key.L;
-            case VIRTUALKEYCODE.M:
+            case VirtualKeys.M:
                 return Key.M;
-            case VIRTUALKEYCODE.N:
+            case VirtualKeys.N:
                 return Key.N;
-            case VIRTUALKEYCODE.O:
+            case VirtualKeys.O:
                 return Key.O;
-            case VIRTUALKEYCODE.P:
+            case VirtualKeys.P:
                 return Key.P;
-            case VIRTUALKEYCODE.Q:
+            case VirtualKeys.Q:
                 return Key.Q;
-            case VIRTUALKEYCODE.R:
+            case VirtualKeys.R:
                 return Key.R;
-            case VIRTUALKEYCODE.S:
+            case VirtualKeys.S:
                 return Key.S;
-            case VIRTUALKEYCODE.T:
+            case VirtualKeys.T:
                 return Key.T;
-            case VIRTUALKEYCODE.U:
+            case VirtualKeys.U:
                 return Key.U;
-            case VIRTUALKEYCODE.V:
+            case VirtualKeys.V:
                 return Key.V;
-            case VIRTUALKEYCODE.W:
+            case VirtualKeys.W:
                 return Key.W;
-            case VIRTUALKEYCODE.X:
+            case VirtualKeys.X:
                 return Key.X;
-            case VIRTUALKEYCODE.Y:
+            case VirtualKeys.Y:
                 return Key.Y;
-            case VIRTUALKEYCODE.Z:
+            case VirtualKeys.Z:
                 return Key.Z;
 
-            case VIRTUALKEYCODE.LWIN:
+            case VirtualKeys.LWIN:
                 return Key.LeftWindows;
            // case VirtualKeys.RWIN:
            //     return Key.RightWindows;
 
             //Numbers on the keypad/numpad
-            case VIRTUALKEYCODE.NUMPAD0:
+            case VirtualKeys.NUMPAD0:
                 return Key.Keypad0;
-            case VIRTUALKEYCODE.NUMPAD1:
+            case VirtualKeys.NUMPAD1:
                 return Key.Keypad1;
-            case VIRTUALKEYCODE.NUMPAD2:
+            case VirtualKeys.NUMPAD2:
                 return Key.Keypad2;
-            case VIRTUALKEYCODE.NUMPAD3:
+            case VirtualKeys.NUMPAD3:
                 return Key.Keypad3;
-            case VIRTUALKEYCODE.NUMPAD4:
+            case VirtualKeys.NUMPAD4:
                 return Key.Keypad4;
-            case VIRTUALKEYCODE.NUMPAD5:
+            case VirtualKeys.NUMPAD5:
                 return Key.Keypad5;
-            case VIRTUALKEYCODE.NUMPAD6:
+            case VirtualKeys.NUMPAD6:
                 return Key.Keypad6;
-            case VIRTUALKEYCODE.NUMPAD7:
+            case VirtualKeys.NUMPAD7:
                 return Key.Keypad7;
-            case VIRTUALKEYCODE.NUMPAD8:
+            case VirtualKeys.NUMPAD8:
                 return Key.Keypad8;
-            case VIRTUALKEYCODE.NUMPAD9:
+            case VirtualKeys.NUMPAD9:
                 return Key.Keypad9;
 
-            case VIRTUALKEYCODE.MULTIPLY:
+            case VirtualKeys.MULTIPLY:
                 return Key.KeypadMultiply;
-            case VIRTUALKEYCODE.ADD:
+            case VirtualKeys.ADD:
                 return Key.KeypadAdd;
-            case VIRTUALKEYCODE.SEPARATOR: //?
+            case VirtualKeys.SEPARATOR: //?
                 return Key.None;
-            case VIRTUALKEYCODE.SUBTRACT:
+            case VirtualKeys.SUBTRACT:
                 return Key.KeypadSubtract;
-            case VIRTUALKEYCODE.DECIMAL:
+            case VirtualKeys.DECIMAL:
                 return Key.KeypadPeriod;
-            case VIRTUALKEYCODE.DIVIDE:
+            case VirtualKeys.DIVIDE:
                 return Key.KeypadDivide;
 
             //Function keys
-            case VIRTUALKEYCODE.F1:
+            case VirtualKeys.F1:
                 return Key.F1;
-            case VIRTUALKEYCODE.F2:
+            case VirtualKeys.F2:
                 return Key.F2;
-            case VIRTUALKEYCODE.F3:
+            case VirtualKeys.F3:
                 return Key.F3;
-            case VIRTUALKEYCODE.F4:
+            case VirtualKeys.F4:
                 return Key.F4;
-            case VIRTUALKEYCODE.F5:
+            case VirtualKeys.F5:
                 return Key.F5;
-            case VIRTUALKEYCODE.F6:
+            case VirtualKeys.F6:
                 return Key.F6;
-            case VIRTUALKEYCODE.F7:
+            case VirtualKeys.F7:
                 return Key.F7;
-            case VIRTUALKEYCODE.F8:
+            case VirtualKeys.F8:
                 return Key.F8;
-            case VIRTUALKEYCODE.F9:
+            case VirtualKeys.F9:
                 return Key.F9;
-            case VIRTUALKEYCODE.F10:
+            case VirtualKeys.F10:
                 return Key.F10;
-            case VIRTUALKEYCODE.F11:
+            case VirtualKeys.F11:
                 return Key.F11;
-            case VIRTUALKEYCODE.F12:
+            case VirtualKeys.F12:
                 return Key.F12;
             
             //Modifiers
-            case VIRTUALKEYCODE.NUMLOCK:
+            case VirtualKeys.NUMLOCK:
                 return Key.NumLock;
-            case VIRTUALKEYCODE.SCROLL:
+            case VirtualKeys.SCROLL:
                 return Key.ScrollLock;
-            case VIRTUALKEYCODE.OEM_NEC_EQUAL:
+            case VirtualKeys.OEM_NEC_EQUAL:
                 return Key.Equals;
-            case VIRTUALKEYCODE.LSHIFT:
+            case VirtualKeys.LSHIFT:
                 return Key.LeftShift;
-            case VIRTUALKEYCODE.RSHIFT:
+            case VirtualKeys.RSHIFT:
                 return Key.RightShift;
-            case VIRTUALKEYCODE.LCONTROL:
+            case VirtualKeys.LCONTROL:
                 return Key.LeftControl;
-            case VIRTUALKEYCODE.RCONTROL:
+            case VirtualKeys.RCONTROL:
                 return Key.RightControl;
 
             //case VirtualKeys.OEM_PLUS:
              //   return Key.Plus;
-            case VIRTUALKEYCODE.OEM_COMMA:
+            case VirtualKeys.OEM_COMMA:
                 return Key.Comma;
-            case VIRTUALKEYCODE.OEM_MINUS:
+            case VirtualKeys.OEM_MINUS:
                 return Key.Minus;
-            case VIRTUALKEYCODE.OEM_PERIOD:
+            case VirtualKeys.OEM_PERIOD:
                 return Key.Period;
            // case VirtualKeys.APPS:
             //    return Key.List;
 
             //These can vary by keyboard layout
-            case VIRTUALKEYCODE.OEM_1:
+            case VirtualKeys.OEM_1:
                 return Key.Semicolon;
-            case VIRTUALKEYCODE.OEM_2:
+            case VirtualKeys.OEM_2:
                 return Key.Slash;
-            case VIRTUALKEYCODE.OEM_3:
+            case VirtualKeys.OEM_3:
                 return Key.Quote;   //I think this is means to be tilde on US layout
-            case VIRTUALKEYCODE.OEM_4:
+            case VirtualKeys.OEM_4:
                 return Key.LeftBracket;
-            case VIRTUALKEYCODE.OEM_5:
+            case VirtualKeys.OEM_5:
                 return Key.BackSlash;
-            case VIRTUALKEYCODE.OEM_6:
+            case VirtualKeys.OEM_6:
                 return Key.RightBracket;
-            case VIRTUALKEYCODE.OEM_7:
+            case VirtualKeys.OEM_7:
                 return Key.Hash;    //I think this is Quote on US layout
-            case VIRTUALKEYCODE.OEM_8:
+            case VirtualKeys.OEM_8:
                 return Key.GraveAccent;
 
             //Unsupported wierd keys
-            case VIRTUALKEYCODE.BROWSER_BACK:
-            case VIRTUALKEYCODE.BROWSER_FORWARD:
-            case VIRTUALKEYCODE.BROWSER_REFRESH:
-            case VIRTUALKEYCODE.BROWSER_STOP:
-            case VIRTUALKEYCODE.BROWSER_SEARCH:
-            case VIRTUALKEYCODE.BROWSER_FAVORITES:
-            case VIRTUALKEYCODE.BROWSER_HOME:
-            case VIRTUALKEYCODE.VOLUME_MUTE:
-            case VIRTUALKEYCODE.VOLUME_DOWN:
-            case VIRTUALKEYCODE.VOLUME_UP:
-            case VIRTUALKEYCODE.MEDIA_NEXT_TRACK:
-            case VIRTUALKEYCODE.MEDIA_PREV_TRACK:
-            case VIRTUALKEYCODE.MEDIA_STOP:
-            case VIRTUALKEYCODE.MEDIA_PLAY_PAUSE:
-            case VIRTUALKEYCODE.F13:
-            case VIRTUALKEYCODE.F14:
-            case VIRTUALKEYCODE.F15:
-            case VIRTUALKEYCODE.F16:
-            case VIRTUALKEYCODE.F17:
-            case VIRTUALKEYCODE.F18:
-            case VIRTUALKEYCODE.F19:
-            case VIRTUALKEYCODE.F20:
-            case VIRTUALKEYCODE.F21:
-            case VIRTUALKEYCODE.F22:
-            case VIRTUALKEYCODE.F23:
-            case VIRTUALKEYCODE.F24:
-            case VIRTUALKEYCODE.OEM_FJ_MASSHOU:
-            case VIRTUALKEYCODE.OEM_FJ_TOUROKU:
-            case VIRTUALKEYCODE.OEM_FJ_LOYA:
-            case VIRTUALKEYCODE.OEM_FJ_ROYA:
-            case VIRTUALKEYCODE.SLEEP:
-            case VIRTUALKEYCODE.HELP:
-            case VIRTUALKEYCODE.EXECUTE:
-            case VIRTUALKEYCODE.SELECT:
-            case VIRTUALKEYCODE.PRINT:
-            case VIRTUALKEYCODE.KANA:
-            case VIRTUALKEYCODE.JUNJA:
-            case VIRTUALKEYCODE.FINAL:
-            case VIRTUALKEYCODE.HANJA:
-            case VIRTUALKEYCODE.CONVERT:
-            case VIRTUALKEYCODE.NONCONVERT:
-            case VIRTUALKEYCODE.ACCEPT:
-            case VIRTUALKEYCODE.MODECHANGE:
-            case VIRTUALKEYCODE.CLEAR:
-            case VIRTUALKEYCODE.LMENU:
-            case VIRTUALKEYCODE.RMENU:
-            case VIRTUALKEYCODE.OEM_AX:
-            case VIRTUALKEYCODE.OEM_102:
-            case VIRTUALKEYCODE.ICO_HELP:
-            case VIRTUALKEYCODE.ICO_00:
-            case VIRTUALKEYCODE.PROCESSKEY:
-            case VIRTUALKEYCODE.ICO_CLEAR:
-            case VIRTUALKEYCODE.PACKET:
-            case VIRTUALKEYCODE.OEM_RESET:
-            case VIRTUALKEYCODE.OEM_JUMP:
-            case VIRTUALKEYCODE.OEM_PA1:
-            case VIRTUALKEYCODE.OEM_PA2:
-            case VIRTUALKEYCODE.OEM_PA3:
-            case VIRTUALKEYCODE.OEM_WSCTRL:
-            case VIRTUALKEYCODE.OEM_CUSEL:
-            case VIRTUALKEYCODE.OEM_ATTN:
-            case VIRTUALKEYCODE.OEM_FINISH:
-            case VIRTUALKEYCODE.OEM_COPY:
-            case VIRTUALKEYCODE.OEM_AUTO:
-            case VIRTUALKEYCODE.OEM_ENLW:
-            case VIRTUALKEYCODE.OEM_BACKTAB:
-            case VIRTUALKEYCODE.ATTN:
-            case VIRTUALKEYCODE.CRSEL:
-            case VIRTUALKEYCODE.EXSEL:
-            case VIRTUALKEYCODE.EREOF:
-            case VIRTUALKEYCODE.PLAY:
-            case VIRTUALKEYCODE.ZOOM:
-            case VIRTUALKEYCODE.NONAME:
-            case VIRTUALKEYCODE.PA1:
-            case VIRTUALKEYCODE.OEM_CLEAR:
-            case VIRTUALKEYCODE.Last:
+            case VirtualKeys.BROWSER_BACK:
+            case VirtualKeys.BROWSER_FORWARD:
+            case VirtualKeys.BROWSER_REFRESH:
+            case VirtualKeys.BROWSER_STOP:
+            case VirtualKeys.BROWSER_SEARCH:
+            case VirtualKeys.BROWSER_FAVORITES:
+            case VirtualKeys.BROWSER_HOME:
+            case VirtualKeys.VOLUME_MUTE:
+            case VirtualKeys.VOLUME_DOWN:
+            case VirtualKeys.VOLUME_UP:
+            case VirtualKeys.MEDIA_NEXT_TRACK:
+            case VirtualKeys.MEDIA_PREV_TRACK:
+            case VirtualKeys.MEDIA_STOP:
+            case VirtualKeys.MEDIA_PLAY_PAUSE:
+            case VirtualKeys.F13:
+            case VirtualKeys.F14:
+            case VirtualKeys.F15:
+            case VirtualKeys.F16:
+            case VirtualKeys.F17:
+            case VirtualKeys.F18:
+            case VirtualKeys.F19:
+            case VirtualKeys.F20:
+            case VirtualKeys.F21:
+            case VirtualKeys.F22:
+            case VirtualKeys.F23:
+            case VirtualKeys.F24:
+            case VirtualKeys.OEM_FJ_MASSHOU:
+            case VirtualKeys.OEM_FJ_TOUROKU:
+            case VirtualKeys.OEM_FJ_LOYA:
+            case VirtualKeys.OEM_FJ_ROYA:
+            case VirtualKeys.SLEEP:
+            case VirtualKeys.HELP:
+            case VirtualKeys.EXECUTE:
+            case VirtualKeys.SELECT:
+            case VirtualKeys.PRINT:
+            case VirtualKeys.KANA:
+            case VirtualKeys.JUNJA:
+            case VirtualKeys.FINAL:
+            case VirtualKeys.HANJA:
+            case VirtualKeys.CONVERT:
+            case VirtualKeys.NONCONVERT:
+            case VirtualKeys.ACCEPT:
+            case VirtualKeys.MODECHANGE:
+            case VirtualKeys.CLEAR:
+            case VirtualKeys.LMENU:
+            case VirtualKeys.RMENU:
+            case VirtualKeys.OEM_AX:
+            case VirtualKeys.OEM_102:
+            case VirtualKeys.ICO_HELP:
+            case VirtualKeys.ICO_00:
+            case VirtualKeys.PROCESSKEY:
+            case VirtualKeys.ICO_CLEAR:
+            case VirtualKeys.PACKET:
+            case VirtualKeys.OEM_RESET:
+            case VirtualKeys.OEM_JUMP:
+            case VirtualKeys.OEM_PA1:
+            case VirtualKeys.OEM_PA2:
+            case VirtualKeys.OEM_PA3:
+            case VirtualKeys.OEM_WSCTRL:
+            case VirtualKeys.OEM_CUSEL:
+            case VirtualKeys.OEM_ATTN:
+            case VirtualKeys.OEM_FINISH:
+            case VirtualKeys.OEM_COPY:
+            case VirtualKeys.OEM_AUTO:
+            case VirtualKeys.OEM_ENLW:
+            case VirtualKeys.OEM_BACKTAB:
+            case VirtualKeys.ATTN:
+            case VirtualKeys.CRSEL:
+            case VirtualKeys.EXSEL:
+            case VirtualKeys.EREOF:
+            case VirtualKeys.PLAY:
+            case VirtualKeys.ZOOM:
+            case VirtualKeys.NONAME:
+            case VirtualKeys.PA1:
+            case VirtualKeys.OEM_CLEAR:
+            case VirtualKeys.Last:
 
             default:
                 return Key.Unknown;
         }
     }
 
-     
+    #region TranslateKey
     //c.f.  https://blog.molecular-matters.com/2011/09/05/properly-handling-keyboard-input/
-    internal static Key TranslateKey(short scancode, VIRTUALKEYCODE vkey, bool extended0)
+    internal static Key TranslateKey(short scancode, VirtualKeys vkey, bool extended0)
     {
-        uint modifiedScancode = User32.MapVirtualKey(vkey, VIRTUALKEYMAPTYPE.MAPVK_VK_TO_VSC);
+        uint modifiedScancode = User32.MapVirtualKey(vkey, MapVirtualKeyType.VirtualKeyToScanCode);
         uint extendedScanCode = (modifiedScancode << 16) | ((extended0 ? 1 : (uint)0) << 24);
         
         Key key = GetExtendedKey(extendedScanCode);
@@ -740,5 +757,5 @@ internal static class KeyMap
 
         return key;
     }
-    
+    #endregion
 }

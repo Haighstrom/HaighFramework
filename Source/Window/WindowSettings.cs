@@ -2,6 +2,9 @@
 
 public class WindowSettings
 {
+    public static readonly WindowSettings Default = new();
+
+    #region Basic
     /// <summary>
     /// Whether the window is created initially visible. True by default.
     /// </summary>
@@ -13,8 +16,9 @@ public class WindowSettings
     /// Use Window.Exit to finally destroy the window, and hook onto the Window.Closing event to replace the default Close() functionality.
     /// </summary>
     public bool ExitOnClose { get; set; } = true;
-    
+    #endregion
 
+    #region Window Frame
     /// <summary>
     /// The title of the window
     /// </summary>
@@ -34,14 +38,15 @@ public class WindowSettings
     /// State of the window.
     /// </summary>
     public WindowState State { get; set; } = WindowState.Normal;
-    
+    #endregion
 
+    #region Position
     /// <summary>
     /// The desired position of the window (X,Y are the top left of the window, W, H are the size of the client)
     /// </summary>
-    public Rect Position
+    public IRect Position
     {
-        get => new(X, Y, Width, Height);
+        get => new Rect(X, Y, Width, Height);
         set
         {
             X = (int)value.X;
@@ -85,8 +90,9 @@ public class WindowSettings
     /// Whether the window should be created centred on the screen on creation - ignores X,Y
     /// </summary>
     public bool Centre { get; set; } = false;
-    
+    #endregion
 
+    #region Cursor
     public Cursor Cursor { get; set; } = Cursor.Default;
     /// <summary>
     /// Whether the mouse is initially visible. Defaults to true.
@@ -96,8 +102,9 @@ public class WindowSettings
     /// Whether the mouse cursor is locked within the window. Defaults to false.
     /// </summary>
     public bool CursorLockedToWindow { get; set; } = false;
-    
+    #endregion
 
+    #region OpenGL
     public (int major, int minor) OpenGLVersion = (4, 5);
-    
+    #endregion
 }

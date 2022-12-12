@@ -7,15 +7,18 @@ namespace HaighFramework.Input;
 
 public class GamePadManager : IGamePadManager
 {
+    #region Fields
     private readonly List<GamePadState> _gamePadStates = new();
     private readonly List<string> _names = new();
     private readonly Dictionary<IntPtr, int> _regdDevices = new();
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
-    
+    #endregion
 
-    
+    #region Properties
+    #endregion
 
+    #region Constructors
     public GamePadManager(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
@@ -25,8 +28,9 @@ public class GamePadManager : IGamePadManager
 
         RefreshDevices();
     }
-    
+    #endregion
 
+    #region FindRegistryKey
     private static RegistryKey FindRegistryKey(string name)
     {
         if (name.Length < 4)
@@ -51,24 +55,26 @@ public class GamePadManager : IGamePadManager
         RegistryKey regkey = Registry.LocalMachine.OpenSubKey(findme);
         return regkey;
     }
-    
+    #endregion
 
-    private static string GetDeviceName(RAWINPUTDEVICELIST dev)
+    #region GetDeviceName
+    private static string GetDeviceName(RawInputDeviceList dev)
     {
         // get name size
         uint size = 0;
-        User32.GetRawInputDeviceInfo(dev.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICENAME, IntPtr.Zero, ref size);
+        User32.GetRawInputDeviceInfo(dev.Device, RawInputDeviceInfoEnum.DEVICENAME, IntPtr.Zero, ref size);
 
         // get actual name
         IntPtr name_ptr = Marshal.AllocHGlobal((IntPtr)size);
-        User32.GetRawInputDeviceInfo(dev.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICENAME, name_ptr, ref size);
+        User32.GetRawInputDeviceInfo(dev.Device, RawInputDeviceInfoEnum.DEVICENAME, name_ptr, ref size);
         string name = Marshal.PtrToStringAnsi(name_ptr);
         Marshal.FreeHGlobal(name_ptr);
 
         return name;
     }
-    
+    #endregion
 
+    #region RefreshDevices()
     public void RefreshDevices()
     {
         lock (_syncRoot)
@@ -82,16 +88,16 @@ public class GamePadManager : IGamePadManager
             }
 
             int count = 0;
-            User32.GetRawInputDeviceList(null, ref count, RAWINPUTDEVICELIST.Size);
+            User32.GetRawInputDeviceList(null, ref count, RawInputDeviceList.Size);
 
-            RAWINPUTDEVICELIST[] ridl = new RAWINPUTDEVICELIST[count];
+            RawInputDeviceList[] ridl = new RawInputDeviceList[count];
             for (int i = 0; i < count; i++)
-                ridl[i] = new RAWINPUTDEVICELIST();
+                ridl[i] = new RawInputDeviceList();
 
-            User32.GetRawInputDeviceList(ridl, ref count, RAWINPUTDEVICELIST.Size);
+            User32.GetRawInputDeviceList(ridl, ref count, RawInputDeviceList.Size);
 
 
-            foreach (RAWINPUTDEVICELIST d in ridl)
+            foreach (RawInputDeviceList d in ridl)
             {
                 if (_regdDevices.ContainsKey(d.Device))
                 {
@@ -139,7 +145,7 @@ public class GamePadManager : IGamePadManager
                             // Register the device:
                             RawInputDeviceInfo info = new();
                             int devInfoSize = info.Size;
-                            User32.GetRawInputDeviceInfo(d.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICEINFO,
+                            User32.GetRawInputDeviceInfo(d.Device, RawInputDeviceInfoEnum.DEVICEINFO,
                                     info, ref devInfoSize);
 
                             RegisterRawDevice(_msgWindowHandle, deviceDesc);
@@ -156,29 +162,28 @@ public class GamePadManager : IGamePadManager
 
         }
     }
-    
+    #endregion
 
+    #region RegisterRawDevice
     private void RegisterRawDevice(IntPtr window, string device)
     {
-        RAWINPUTDEVICE[] rids = new RAWINPUTDEVICE[1];
+        RawInputDevice[] rid = new RawInputDevice[1];
         // Keyboard is 1/6 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
-        rids[0] = new()
-        {
-            usUsagePage = RAWINPUTDEVICEUSAGEPAGE.HID_USAGE_PAGE_GENERIC,
-            usUsage = RAWINPUTDEVICE_usUsage.HID_USAGE_GENERIC_KEYBOARD,
-            dwFlags = RAWINPUTDEVICEFLAGS.RIDEV_INPUTSINK,
-            hwndTarget = window
-        };
+        rid[0] = new RawInputDevice();
+        rid[0].UsagePage = 1;
+        rid[0].Usage = 6;
+        rid[0].Flags = RawInputDeviceFlags.INPUTSINK;
+        rid[0].Target = window;
 
-        if (!User32.RegisterRawInputDevices(rids, rids.Length, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
+        if (!User32.RegisterRawInputDevices(rid))
         {
             Console.WriteLine("[Warning] Raw input registration failed with error: {0}. Device: {1}",
-                Marshal.GetLastWin32Error(), rids[0].ToString());
+                Marshal.GetLastWin32Error(), rid[0].ToString());
         }
         else
         {
             Console.WriteLine("Registered GamePad {0}: {1}", _gamePadStates.Count, device);
         }
     }
-    
+    #endregion
 }
