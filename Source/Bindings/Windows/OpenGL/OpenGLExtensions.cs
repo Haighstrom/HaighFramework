@@ -12,67 +12,53 @@ namespace HaighFramework.OpenGL;
 public static partial class OpenGL32
 {
     // ***CLEANED UP ABOVE THIS LINE***
-    internal static List<string> GetAvailableExtensions()
-    {
-        string s = wglGetExtensionsStringARB(User32.GetDC(IntPtr.Zero));
-
-        return s == null ? new List<string>() : s.Split(' ').ToList();
-    }
-
-    internal static void GetProcAddress<T>(string functionName, out T functionPointer)
-    {
-        IntPtr procAddress = wglGetProcAddress(functionName);
-        if (procAddress == IntPtr.Zero)
-            throw new Win32Exception($"Failed to load entrypoint for {functionName}.");
-        functionPointer = (T)(object)Marshal.GetDelegateForFunctionPointer(procAddress, typeof(T));
-    }
 
     /// <summary>
     /// This needs to be called after an OpenGL4 render context has been created and before any of these functions are called
     /// </summary>
     public static void LoadOpenGL3Extensions()
     {
-        GetProcAddress("glActiveTexture", out _glActiveTexture);
-        GetProcAddress("glAttachShader", out _glAttachShader);
-        GetProcAddress("glBindBuffer", out _glBindBuffer);
-        GetProcAddress("glBindFramebuffer", out _glBindFramebuffer);
-        GetProcAddress("glBindSampler", out _glBindSampler);
-        GetProcAddress("glBlendFuncSeparate", out glBlendFuncSeparate);
-        GetProcAddress("glBufferData", out _glBufferData);
-        GetProcAddress("glCompileShader", out _glCompileShader);
-        GetProcAddress("glCreateProgram", out _glCreateProgram);
-        GetProcAddress("glCreateShader", out _glCreateShader);
-        GetProcAddress("glDebugMessageCallback", out _glDebugMessageCallback);
-        GetProcAddress("glDebugMessageControl", out _glDebugMessageControl);
-        GetProcAddress("glDeleteBuffers", out _glDeleteBuffers);
-        GetProcAddress("glDeleteFramebuffers", out _glDeleteFramebuffers);
-        GetProcAddress("glDeleteProgram", out _glDeleteProgram);
-        GetProcAddress("glDeleteShader", out _glDeleteShader);
-        GetProcAddress("glDetachShader", out _glDetachShader);
-        GetProcAddress("glDisableVertexAttribArray", out _glDisableVertexAttribArray);
-        GetProcAddress("glEnableVertexAttribArray", out _glEnableVertexAttribArray);
-        GetProcAddress("glFramebufferTexture2D", out _glFramebufferTexture2D);
-        GetProcAddress("glGenBuffers", out _glGenBuffers);
-        GetProcAddress("glGenFramebuffers", out _glGenFramebuffers);
-        GetProcAddress("glGetAttribLocation", out _glGetAttribLocation);
-        GetProcAddress("glGetProgramInfoLog", out _glGetProgramInfoLog);
-        GetProcAddress("glGetShaderInfoLog", out _glGetShaderInfoLog);
-        GetProcAddress("glGetShaderiv", out _glGetShaderiv);
-        GetProcAddress("glGetUniformLocation", out _glGetUniformLocation);
-        GetProcAddress("glLinkProgram", out _glLinkProgram);
-        GetProcAddress("glShaderSource", out _glShaderSource);
-        GetProcAddress("glTexImage2DMultisample", out _glTexImage2DMultisample);
-        GetProcAddress("glTexStorage2D", out _glTexStorage2D);
-        GetProcAddress("glUniform1f", out _glUniform1f);
-        GetProcAddress("glUniform1i", out _glUniform1i);
-        GetProcAddress("glUniform2f", out glUniform2f);
-        GetProcAddress("glUniform3f", out _glUniform3f);
-        GetProcAddress("glUniform4f", out _glUniform4f);
-        GetProcAddress("glUniformMatrix3fv", out _glUniformMatrix3fv);
-        GetProcAddress("glUniformMatrix4fv", out _glUniformMatrix4fv);
-        GetProcAddress("glUseProgram", out _glUseProgram);
-        GetProcAddress("glValidateProgram", out _glValidateProgram);
-        GetProcAddress("glVertexAttribPointer", out _glVertexAttribPointer);
+        GL.GetProcAddress("glActiveTexture", out _glActiveTexture);
+        GL.GetProcAddress("glAttachShader", out _glAttachShader);
+        GL.GetProcAddress("glBindBuffer", out _glBindBuffer);
+        GL.GetProcAddress("glBindFramebuffer", out _glBindFramebuffer);
+        GL.GetProcAddress("glBindSampler", out _glBindSampler);
+        GL.GetProcAddress("glBlendFuncSeparate", out glBlendFuncSeparate);
+        GL.GetProcAddress("glBufferData", out _glBufferData);
+        GL.GetProcAddress("glCompileShader", out _glCompileShader);
+        GL.GetProcAddress("glCreateProgram", out _glCreateProgram);
+        GL.GetProcAddress("glCreateShader", out _glCreateShader);
+        GL.GetProcAddress("glDebugMessageCallback", out _glDebugMessageCallback);
+        GL.GetProcAddress("glDebugMessageControl", out _glDebugMessageControl);
+        GL.GetProcAddress("glDeleteBuffers", out _glDeleteBuffers);
+        GL.GetProcAddress("glDeleteFramebuffers", out _glDeleteFramebuffers);
+        GL.GetProcAddress("glDeleteProgram", out _glDeleteProgram);
+        GL.GetProcAddress("glDeleteShader", out _glDeleteShader);
+        GL.GetProcAddress("glDetachShader", out _glDetachShader);
+        GL.GetProcAddress("glDisableVertexAttribArray", out _glDisableVertexAttribArray);
+        GL.GetProcAddress("glEnableVertexAttribArray", out _glEnableVertexAttribArray);
+        GL.GetProcAddress("glFramebufferTexture2D", out _glFramebufferTexture2D);
+        GL.GetProcAddress("glGenBuffers", out _glGenBuffers);
+        GL.GetProcAddress("glGenFramebuffers", out _glGenFramebuffers);
+        GL.GetProcAddress("glGetAttribLocation", out _glGetAttribLocation);
+        GL.GetProcAddress("glGetProgramInfoLog", out _glGetProgramInfoLog);
+        GL.GetProcAddress("glGetShaderInfoLog", out _glGetShaderInfoLog);
+        GL.GetProcAddress("glGetShaderiv", out _glGetShaderiv);
+        GL.GetProcAddress("glGetUniformLocation", out _glGetUniformLocation);
+        GL.GetProcAddress("glLinkProgram", out _glLinkProgram);
+        GL.GetProcAddress("glShaderSource", out _glShaderSource);
+        GL.GetProcAddress("glTexImage2DMultisample", out _glTexImage2DMultisample);
+        GL.GetProcAddress("glTexStorage2D", out _glTexStorage2D);
+        GL.GetProcAddress("glUniform1f", out _glUniform1f);
+        GL.GetProcAddress("glUniform1i", out _glUniform1i);
+        GL.GetProcAddress("glUniform2f", out glUniform2f);
+        GL.GetProcAddress("glUniform3f", out _glUniform3f);
+        GL.GetProcAddress("glUniform4f", out _glUniform4f);
+        GL.GetProcAddress("glUniformMatrix3fv", out _glUniformMatrix3fv);
+        GL.GetProcAddress("glUniformMatrix4fv", out _glUniformMatrix4fv);
+        GL.GetProcAddress("glUseProgram", out _glUseProgram);
+        GL.GetProcAddress("glValidateProgram", out _glValidateProgram);
+        GL.GetProcAddress("glVertexAttribPointer", out _glVertexAttribPointer);
     }
 
     private delegate void DEL_glActiveTexture(int unit);

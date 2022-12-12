@@ -14,7 +14,7 @@ internal class OpenGLWindowsRenderContext
             (int)ArbCreateContext.ProfileMask, (int)ArbCreateContext.ForwardCompatibleBit,
             0 };
 
-        var rC = OpenGL32.wglCreateContextAttribsARB(deviceContext, sharedContext: IntPtr.Zero, attribs);
+        var rC = WGLExtensions.wglCreateContextAttribsARB(deviceContext, sharedContext: IntPtr.Zero, attribs);
 
         if (rC == IntPtr.Zero)
             throw new Win32Exception($"Something went wrong with wglCreateContextAttribsARB: {Marshal.GetLastWin32Error()}");
@@ -35,7 +35,7 @@ internal class OpenGLWindowsRenderContext
             throw new Exception("tempContext failed to create.");
         if (!OpenGL32.wglMakeCurrent(deviceContext, tempContext))
             throw new Exception("wglMakeCurrent Failed");
-        OpenGL32.LoadWGLExtensions();
+        WGLExtensions.LoadWGLExtensions();
 
         Handle = CreateRenderContext(deviceContext, (glVersionMajor, glVersionMinor));
 

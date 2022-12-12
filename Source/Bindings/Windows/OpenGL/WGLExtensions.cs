@@ -1,14 +1,9 @@
-﻿using HaighFramework.Audio.OpenAL.OggVorbis;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Xml.Linq;
+﻿using System.Runtime.InteropServices;
 
 namespace HaighFramework.OpenGL;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming conventions but I'm keeping these APIs pure.")]
-public static partial class OpenGL32
+public static class WGLExtensions
 {
     private delegate bool Delegate_wglChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, float[] pfAttribFList, int nMaxFormats, [Out] int[] piFormats, out int nNumFormats);
     private delegate IntPtr Delegate_wglCreateContextAttribsARB(IntPtr hDc, IntPtr sharedContext, int[] attribList);
@@ -26,12 +21,12 @@ public static partial class OpenGL32
 
     internal static void LoadWGLExtensions()
     {
-        GetProcAddress("wglChoosePixelFormatARB", out _wglChoosePixelFormatARB);
-        GetProcAddress("wglCreateContextAttribsARB", out _wglCreateContextAttribsARB);
-        GetProcAddress("wglGetExtensionsStringARB", out _wglGetExtensionsStringARB);
-        GetProcAddress("wglGetPixelFormatAttribivARB", out _wglGetPixelFormatAttribivARB);
-        GetProcAddress("wglGetSwapIntervalEXT", out _wglGetSwapIntervalEXT);
-        GetProcAddress("wglSwapIntervalEXT", out _wglSwapIntervalEXT);
+        GL.GetProcAddress("wglChoosePixelFormatARB", out _wglChoosePixelFormatARB);
+        GL.GetProcAddress("wglCreateContextAttribsARB", out _wglCreateContextAttribsARB);
+        GL.GetProcAddress("wglGetExtensionsStringARB", out _wglGetExtensionsStringARB);
+        GL.GetProcAddress("wglGetPixelFormatAttribivARB", out _wglGetPixelFormatAttribivARB);
+        GL.GetProcAddress("wglGetSwapIntervalEXT", out _wglGetSwapIntervalEXT);
+        GL.GetProcAddress("wglSwapIntervalEXT", out _wglSwapIntervalEXT);
     }
 
     /// <summary>
