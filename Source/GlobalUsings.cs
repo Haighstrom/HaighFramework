@@ -1,3 +1,4 @@
-﻿global using System;
+﻿global using HaighFramework.Logging;
+global using System;
 global using System.Collections.Generic;
 global using System.Linq;
