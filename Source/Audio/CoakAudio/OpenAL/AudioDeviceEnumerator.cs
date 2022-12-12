@@ -93,7 +93,7 @@ internal static class AudioDeviceEnumerator
             bool dummy_success = Alc.MakeContextCurrent(dummy_context);
             AlcError dummy_error = Alc.GetError(dummy_device);
             if (!dummy_success || dummy_error != AlcError.NoError)
-                throw new Exception(string.Format("Failed to create dummy Context. Device (" + dummy_device.ToString() +") Context (" + dummy_context.ToString() + ") MakeContextCurrent " + (dummy_success ? "succeeded" : "failed") + ", Alc Error (" + dummy_error.ToString() + ") " + Alc.GetString(IntPtr.Zero, (AlcGetString)dummy_error)));
+                throw new HException("Failed to create dummy Context. Device (" + dummy_device.ToString() +") Context (" + dummy_context.ToString() + ") MakeContextCurrent " + (dummy_success ? "succeeded" : "failed") + ", Alc Error (" + dummy_error.ToString() + ") " + Alc.GetString(IntPtr.Zero, (AlcGetString)dummy_error));
           
             // Get a list of all known playback devices, using best extension available
             if (Alc.IsExtensionPresent(IntPtr.Zero, "ALC_ENUMERATION_EXT"))
@@ -120,7 +120,7 @@ internal static class AudioDeviceEnumerator
             //Check for OpenAL errors
             AlcError playback_err = Alc.GetError(dummy_device);
             if (playback_err != AlcError.NoError)
-                throw new Exception("Alc Error occured when querying available playback devices. " + playback_err.ToString());
+                throw new HException("Alc Error occured when querying available playback devices. " + playback_err.ToString());
 
             
             if (AudioPlayer.VerboseLogging)

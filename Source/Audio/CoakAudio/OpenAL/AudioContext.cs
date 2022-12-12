@@ -85,7 +85,7 @@ internal sealed class AudioContext : IDisposable
         if (device_handle == IntPtr.Zero)
         {
             device_name = "None";
-            throw new Exception(string.Format("Audio device '{0}' does not exist or is tied up by another application.", string.IsNullOrEmpty(device) ? "default" : device));
+            throw new HException("Audio device '{0}' does not exist or is tied up by another application.", string.IsNullOrEmpty(device) ? "default" : device);
         }
 
         CheckErrors();
@@ -122,7 +122,7 @@ internal sealed class AudioContext : IDisposable
         if (context_handle == IntPtr.Zero)
         {
             Alc.CloseDevice(device_handle);
-            throw new Exception("The audio context could not be created with the specified parameters.");
+            throw new HException("The audio context could not be created with the specified parameters.");
         }
 
         CheckErrors();
@@ -160,7 +160,7 @@ internal sealed class AudioContext : IDisposable
         lock (audio_context_lock)
         {
             if (!Alc.MakeContextCurrent(context != null ? context.context_handle : IntPtr.Zero))
-                throw new Exception(string.Format("ALC {0} error detected at {1}.", Alc.GetError(context != null ? context.context_handle : IntPtr.Zero).ToString(),  context != null ? context.ToString() : "null"));
+                throw new HException("ALC {0} error detected at {1}.", Alc.GetError(context != null ? context.context_handle : IntPtr.Zero).ToString(),  context != null ? context.ToString() : "null");
         }
     }
 

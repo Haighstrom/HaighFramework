@@ -14,7 +14,7 @@ struct AudioDeviceErrorChecker : IDisposable
     public AudioDeviceErrorChecker(IntPtr device)
     {
         if (device == IntPtr.Zero)
-            throw new Exception("Audio Device Error");
+            throw new HException("Audio Device Error");
 
         Device = device;
     }
@@ -32,9 +32,13 @@ struct AudioDeviceErrorChecker : IDisposable
                 throw new OutOfMemoryException(string.Format(ErrorString, Device, err));
 
             case AlcError.InvalidValue:
+                throw new HException(ErrorString, Device, err);
+
             case AlcError.InvalidDevice:
+                throw new HException(ErrorString, Device, err);
+
             case AlcError.InvalidContext:
-                throw new Exception(string.Format(ErrorString, Device, err));
+                throw new HException(ErrorString, Device, err);
 
             case AlcError.NoError:
             default:
