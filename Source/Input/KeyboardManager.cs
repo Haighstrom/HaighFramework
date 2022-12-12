@@ -7,15 +7,13 @@ namespace HaighFramework.Input;
 
 public class KeyboardManager : IKeyboardManager
 {
-    #region Fields
     private readonly List<KeyboardState> _keyboards = new();
     private readonly List<string> _names = new();
     private readonly Dictionary<IntPtr, int> _regdDevices = new();
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
-    #endregion
+    
 
-    #region Constructors
     public KeyboardManager(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
@@ -25,27 +23,24 @@ public class KeyboardManager : IKeyboardManager
 
         RefreshDevices();
     }
-    #endregion
+    
 
-    #region Methods
-    #region GetDeviceName
-    private static string GetDeviceName(RawInputDeviceList dev)
+    private static string GetDeviceName(RAWINPUTDEVICELIST dev)
     {
         // get name size
         uint size = 0;
-        User32.GetRawInputDeviceInfo(dev.Device, RawInputDeviceInfoEnum.DEVICENAME, IntPtr.Zero, ref size);
+        User32.GetRawInputDeviceInfo(dev.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICENAME, IntPtr.Zero, ref size);
 
         // get actual name
         IntPtr name_ptr = Marshal.AllocHGlobal((IntPtr)size);
-        User32.GetRawInputDeviceInfo(dev.Device, RawInputDeviceInfoEnum.DEVICENAME, name_ptr, ref size);
+        User32.GetRawInputDeviceInfo(dev.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICENAME, name_ptr, ref size);
         string name = Marshal.PtrToStringAnsi(name_ptr);
         Marshal.FreeHGlobal(name_ptr);
 
         return name;
     }
-    #endregion
+    
 
-    #region FindRegistryKey
     private static RegistryKey FindRegistryKey(string name)
     {
         if (name.Length < 4)
@@ -70,34 +65,33 @@ public class KeyboardManager : IKeyboardManager
         RegistryKey regkey = Registry.LocalMachine.OpenSubKey(findme);
         return regkey;
     }
-    #endregion
+    
 
-    #region RegisterRawDevice
     private void RegisterRawDevice(IntPtr window, string device)
     {
-        RawInputDevice[] rid = new RawInputDevice[1];
+        RAWINPUTDEVICE[] rids = new RAWINPUTDEVICE[1];
         // Keyboard is 1/6 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
-        rid[0] = new RawInputDevice();
-        rid[0].UsagePage = 1;
-        rid[0].Usage = 6;
-        rid[0].Flags = RawInputDeviceFlags.INPUTSINK;
-        rid[0].Target = window;
+        rids[0] = new()
+        {
+            usUsagePage = RAWINPUTDEVICEUSAGEPAGE.HID_USAGE_PAGE_GENERIC,
+            usUsage = RAWINPUTDEVICE_usUsage.HID_USAGE_GENERIC_KEYBOARD,
+            dwFlags = RAWINPUTDEVICEFLAGS.RIDEV_INPUTSINK,
+            hwndTarget = window
+        };
 
-        if (!User32.RegisterRawInputDevices(rid))
+        if (!User32.RegisterRawInputDevices(rids, rids.Length, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
         {
             Console.WriteLine("[Warning] Raw input registration failed with error: {0}. Device: {1}",
-                Marshal.GetLastWin32Error(), rid[0].ToString());
+                Marshal.GetLastWin32Error(), rids[0].ToString());
         }
         else
         {
             Console.WriteLine("Registered Keyboard {0}: {1}", _keyboards.Count, device);
         }
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region IKeyboardManager
-    #region State
     public KeyboardState State
     {
         get
@@ -113,9 +107,8 @@ public class KeyboardManager : IKeyboardManager
             }
         }
     }
-    #endregion
+    
 
-    #region GetState(int index)
     public KeyboardState GetState(int index)
     {
         lock (_syncRoot)
@@ -126,9 +119,8 @@ public class KeyboardManager : IKeyboardManager
                 return new KeyboardState();
         }
     }
-    #endregion
+    
 
-    #region RefreshDevices()
     public void RefreshDevices()
     {
         lock (_syncRoot)
@@ -142,16 +134,16 @@ public class KeyboardManager : IKeyboardManager
             }
 
             int count = 0;
-            User32.GetRawInputDeviceList(null, ref count, RawInputDeviceList.Size);
+            User32.GetRawInputDeviceList(null, ref count, RAWINPUTDEVICELIST.Size);
 
-            RawInputDeviceList[] ridl = new RawInputDeviceList[count];
+            RAWINPUTDEVICELIST[] ridl = new RAWINPUTDEVICELIST[count];
             for (int i = 0; i < count; i++)
-                ridl[i] = new RawInputDeviceList();
+                ridl[i] = new RAWINPUTDEVICELIST();
 
-            User32.GetRawInputDeviceList(ridl, ref count, RawInputDeviceList.Size);
+            User32.GetRawInputDeviceList(ridl, ref count, RAWINPUTDEVICELIST.Size);
 
 
-            foreach (RawInputDeviceList d in ridl)
+            foreach (RAWINPUTDEVICELIST d in ridl)
             {
                 if (_regdDevices.ContainsKey(d.Device))
                 {
@@ -196,7 +188,7 @@ public class KeyboardManager : IKeyboardManager
                             // Register the device:
                             RawInputDeviceInfo info = new();
                             int devInfoSize = info.Size;
-                            User32.GetRawInputDeviceInfo(d.Device, RawInputDeviceInfoEnum.DEVICEINFO,
+                            User32.GetRawInputDeviceInfo(d.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICEINFO,
                                     info, ref devInfoSize);
 
                             RegisterRawDevice(_msgWindowHandle, deviceDesc);
@@ -213,15 +205,14 @@ public class KeyboardManager : IKeyboardManager
 
         }
     }
-    #endregion
+    
 
-    #region ProcessInput(RawInput data)
     internal bool ProcessInput(RawInput data)
     {
         IntPtr dHandle = data.Header.Device;
         RawKeyboard kData = data.Data.Keyboard;
 
-        bool pressed = kData.Message == (int)WindowMessage.WM_KEYDOWN || kData.Message == (int)WindowMessage.WM_SYSKEYDOWN;
+        bool pressed = kData.Message == (int)WINDOWMESSAGE.WM_KEYDOWN || kData.Message == (int)WINDOWMESSAGE.WM_SYSKEYDOWN;
 
         var scancode = kData.MakeCode;
         var vkey = kData.VKey;
@@ -256,7 +247,7 @@ public class KeyboardManager : IKeyboardManager
         }
     }
 
-    #endregion
+    
 
     /// <summary>
     /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
@@ -274,5 +265,5 @@ public class KeyboardManager : IKeyboardManager
     /// Called whenever a keyboard key is released
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs> KeyUp;
-    #endregion
+    
 }
