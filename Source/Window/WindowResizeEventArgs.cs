@@ -1,8 +1,8 @@
 ﻿namespace HaighFramework;
 
-public class SizeEventArgs : EventArgs
+public class WindowResizeEventArgs : EventArgs
 {
-    public SizeEventArgs(float width, float height)
+    public WindowResizeEventArgs(float width, float height)
     {
         Width = width;
         Height = height;

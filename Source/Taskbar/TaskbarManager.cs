@@ -1,6 +1,6 @@
 ﻿using HaighFramework.Win32API;
 
-namespace HaighFramework;
+namespace HaighFramework.Taskbar;
 
 public enum TaskbarPosition
 {
@@ -11,17 +11,19 @@ public enum TaskbarPosition
     Bottom,
 }
 
-public static class Taskbar
+public static class TaskbarManager
 {
     private const string CLASS_NAME = "Shell_TrayWnd";
 
-    static Taskbar()
+    static TaskbarManager()
     {
         IntPtr taskbarHandle = User32.FindWindow(CLASS_NAME, null);
 
-        APPBARDATA data = new();
-        data.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA));
-        data.hWnd = taskbarHandle;
+        APPBARDATA data = new()
+        {
+            cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA)),
+            hWnd = taskbarHandle
+        };
         IntPtr result = Shell32.SHAppBarMessage(APPBARMESSAGE.ABM_GETTASKBARPOS, ref data);
         if (result == IntPtr.Zero)
             throw new InvalidOperationException();

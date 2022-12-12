@@ -288,7 +288,7 @@ public class Win32Window : IWindow
                 if (!_resizingWindow && _cursorLockedToWindow)
                     ConfineCursor();
 
-                Resized?.Invoke(this, new SizeEventArgs(_actualClientPosition.Width, _actualClientPosition.Height));
+                Resized?.Invoke(this, new WindowResizeEventArgs(_actualClientPosition.Width, _actualClientPosition.Height));
                 break;
 
             case WINDOWMESSAGE.WM_ENTERMENULOOP:

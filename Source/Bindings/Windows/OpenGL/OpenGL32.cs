@@ -5836,21 +5836,6 @@ public static class OpenGL32
     public static extern void glClearColor(float red, float green, float blue, float alpha);
 
     /// <summary>
-    /// Specify clear values for the color buffers. Specify the red, green, blue, and alpha values used when the color buffers are cleared. The initial values are all 0.
-    /// </summary>
-    /// <param name="red">Specify the red value [0-255].</param>
-    /// <param name="green">Specify the green value [0-255].</param>
-    /// <param name="blue">Specify the blue value [0-255].</param>
-    /// <param name="alpha">Specify the alpha value [0-255].</param>
-    public static void glClearColour(byte red, byte green, byte blue, byte alpha = 255) => glClearColor(((float)red) / 255, ((float)green) / 255, ((float)blue) / 255, ((float)alpha) / 255);
-
-    /// <summary>
-    /// Specify clear values for the color buffers. The initial values is Transparent / Black.
-    /// </summary>
-    /// <param name="colour">The new colour ([0-255] components).</param>
-    public static void glClearColour(Colour colour) => glClearColor(((float)colour.R) / 255, ((float)colour.G) / 255, ((float)colour.B) / 255, ((float)colour.A) / 255);
-
-    /// <summary>
     /// Sets the current color.
     /// </summary>
     /// <param name="red">The new red value for the current color. [0,1]</param>
@@ -6920,13 +6905,9 @@ public static class OpenGL32
     /// <summary>
     /// glUniform4f
     /// </summary>
-    public static void Uniform4(int location, Point4 value)
+    public static void glUniform4f(int location, float v0, float v1, float v2, float v3)
     {
-        _glUniform4f(location, value.x, value.y, value.z, value.w);
-    }
-    public static void Uniform4(int location, Colour value)
-    {
-        _glUniform4f(location, value.R / 255f, value.G / 255f, value.B / 255f, value.A / 255f);
+        _glUniform4f(location, v0, v1, v2, v3);
     }
     
 
