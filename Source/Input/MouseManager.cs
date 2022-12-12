@@ -6,15 +6,13 @@ namespace HaighFramework.Input;
 
 public sealed class MouseManager : IMouseManager
 {
-    #region Fields
     private readonly List<MouseState> _mice = new();
     private readonly List<string> _names = new();
     private readonly Dictionary<IntPtr, int> _regdDevices = new();
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
-    #endregion
+    
 
-    #region Constructors
     public MouseManager(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
@@ -24,28 +22,23 @@ public sealed class MouseManager : IMouseManager
 
         RefreshDevices();
     }
-    #endregion
-
-    #region Methods
-
-    #region GetDeviceName
-    static string GetDeviceName(RawInputDeviceList dev)
+    
+    static string GetDeviceName(RAWINPUTDEVICELIST dev)
     {
         // get name size
         uint size = 0;
-        User32.GetRawInputDeviceInfo(dev.Device, RawInputDeviceInfoEnum.DEVICENAME, IntPtr.Zero, ref size);
+        User32.GetRawInputDeviceInfo(dev.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICENAME, IntPtr.Zero, ref size);
 
         // get actual name
         IntPtr name_ptr = Marshal.AllocHGlobal((IntPtr)size);
-        User32.GetRawInputDeviceInfo(dev.Device, RawInputDeviceInfoEnum.DEVICENAME, name_ptr, ref size);
+        User32.GetRawInputDeviceInfo(dev.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICENAME, name_ptr, ref size);
         string name = Marshal.PtrToStringAnsi(name_ptr);
         Marshal.FreeHGlobal(name_ptr);
 
         return name;
     }
-    #endregion
+    
 
-    #region FindRegistryKey
     static private RegistryKey FindRegistryKey(string name)
     {
         if (name.Length < 4)
@@ -70,19 +63,20 @@ public sealed class MouseManager : IMouseManager
         RegistryKey regkey = Registry.LocalMachine.OpenSubKey(findme);
         return regkey;
     }
-    #endregion
+    
 
-    #region RegisterRawDevice
     private void RegisterRawDevice(IntPtr window, string device)
     {
         // Mouse is 1/2 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
-        RawInputDevice rid = new();
-        rid.UsagePage = 1;
-        rid.Usage = 2;
-        rid.Flags = RawInputDeviceFlags.INPUTSINK;
-        rid.Target = window;
+        RAWINPUTDEVICE rid = new();
+        rid.usUsagePage = RAWINPUTDEVICEUSAGEPAGE.HID_USAGE_PAGE_GENERIC;
+        rid.usUsage = RAWINPUTDEVICE_usUsage.HID_USAGE_GENERIC_MOUSE;
+        rid.dwFlags = RAWINPUTDEVICEFLAGS.RIDEV_INPUTSINK;
+        rid.hwndTarget = window;
 
-        if (!User32.RegisterRawInputDevices(rid))
+        RAWINPUTDEVICE[] rids = { rid };
+
+        if (!User32.RegisterRawInputDevices(rids, rids.Length, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
         {
             Console.WriteLine("[Warning] Raw input registration failed with error: {0}. Device: {1}",
                 Marshal.GetLastWin32Error(), rid.ToString());
@@ -92,12 +86,7 @@ public sealed class MouseManager : IMouseManager
             Console.WriteLine("Registered Mouse {0}: {1}", _mice.Count, device);
         }
     }
-    #endregion
-
-    #endregion
-
-    #region IMouseManager
-    #region State
+    
     public MouseState State
     {
         get
@@ -117,9 +106,7 @@ public sealed class MouseManager : IMouseManager
             }
         }
     }
-    #endregion
-
-    #region GetState(int index)
+    
     public MouseState GetState(int index)
     {
         lock (_syncRoot)
@@ -130,9 +117,7 @@ public sealed class MouseManager : IMouseManager
                 return new MouseState();
         }
     }
-    #endregion
-
-    #region RefreshDevices()
+    
     public void RefreshDevices()
     {
         lock (_syncRoot)
@@ -146,15 +131,15 @@ public sealed class MouseManager : IMouseManager
             }
 
             int count = 0;
-            User32.GetRawInputDeviceList(null, ref count, RawInputDeviceList.Size);
+            User32.GetRawInputDeviceList(null, ref count, RAWINPUTDEVICELIST.Size);
 
-            RawInputDeviceList[] ridl = new RawInputDeviceList[count];
+            RAWINPUTDEVICELIST[] ridl = new RAWINPUTDEVICELIST[count];
             for (int i = 0; i < count; i++)
-                ridl[i] = new RawInputDeviceList();
+                ridl[i] = new RAWINPUTDEVICELIST();
 
-            User32.GetRawInputDeviceList(ridl, ref count, RawInputDeviceList.Size);
+            User32.GetRawInputDeviceList(ridl, ref count, RAWINPUTDEVICELIST.Size);
 
-            foreach (RawInputDeviceList d in ridl)
+            foreach (RAWINPUTDEVICELIST d in ridl)
             {
                 if (_regdDevices.ContainsKey(d.Device))
                 {
@@ -199,7 +184,7 @@ public sealed class MouseManager : IMouseManager
                             // Register the device:
                             RawInputDeviceInfo info = new();
                             int devInfoSize = info.Size;
-                            User32.GetRawInputDeviceInfo(d.Device, RawInputDeviceInfoEnum.DEVICEINFO,
+                            User32.GetRawInputDeviceInfo(d.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICEINFO,
                                     info, ref devInfoSize);
 
                             RegisterRawDevice(_msgWindowHandle, deviceDesc);
@@ -218,9 +203,7 @@ public sealed class MouseManager : IMouseManager
 
         //Console.WriteLine();
     }
-    #endregion
-
-    #region ProcessInput(RawInput data)
+    
     internal bool ProcessInput(RawInput data)
     {
         RawMouse mData = data.Data.Mouse;
@@ -319,6 +302,6 @@ public sealed class MouseManager : IMouseManager
             return true;
         }
     }
-    #endregion
-    #endregion
+    
+    
 }

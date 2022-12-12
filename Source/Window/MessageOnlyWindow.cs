@@ -1,16 +1,13 @@
-﻿using System.Runtime.InteropServices;
-using HaighFramework.Win32API;
+﻿using HaighFramework.Win32API;
+using System.Runtime.InteropServices;
 
 namespace HaighFramework.Window;
 
-internal class MessageOnlyWindow
+internal class MessageOnlyWindow : IDisposable
 {
-    #region Static
     private static readonly object _syncRoot = new();
     public static readonly IntPtr HWND_MESSAGE = new(-3);
-    #endregion
 
-    #region Fields
     private readonly IntPtr _instance = Marshal.GetHINSTANCE(typeof(MessageOnlyWindow).Module);
     private readonly IntPtr _className = Marshal.StringToHGlobalAuto(Guid.NewGuid().ToString());
     bool _classRegistered;
@@ -18,9 +15,6 @@ internal class MessageOnlyWindow
     private bool _disposed = false;
     //only store this so it doesn't get garbage collected (apparently this happens?)
     private readonly WNDPROC _wndProc;
-    #endregion Fields
-
-    #region Constructors
 
     internal MessageOnlyWindow(WNDPROC wndProc)
     {
@@ -30,24 +24,15 @@ internal class MessageOnlyWindow
             Handle = CreateWindow(0, 0, 100, 100);
             Exists = true;
             ProcessEventsOnce();
-            User32.SetWindowLong(Handle, wndProc);
+            User32.SetWindowLongPtr(Handle, GWL.GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate(wndProc));
             ProcessEventsOnce();
         }
     }
-
-    #endregion
-
-    #region Properties
 
     public IntPtr Handle { get; private set; }
 
     public bool Exists { get; private set; }
 
-    #endregion
-
-    #region Methods
-
-    #region CreateWindow
     private IntPtr CreateWindow(int x, int y, int width, int height)
     {
         if (!_classRegistered)
@@ -64,7 +49,8 @@ internal class MessageOnlyWindow
 
             ushort atom = User32.RegisterClassEx(ref wc);
 
-            if (atom == 0) throw new Exception(string.Format("Failed to register window class. Error: {0}", Marshal.GetLastWin32Error()));
+            if (atom == 0)
+                throw new Exception(string.Format("Failed to register window class. Error: {0}", Marshal.GetLastWin32Error()));
 
             _classRegistered = true;
         }
@@ -76,27 +62,21 @@ internal class MessageOnlyWindow
 
         return handle;
     }
-    #endregion
 
-    #region TempWndProc
-    private IntPtr TempWndProc(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
+    private IntPtr TempWndProc(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)
     {
         return User32.DefWindowProc(handle, message, wParam, lParam);
     }
-    #endregion
 
-    #region ProcessEventsOnce
     public void ProcessEventsOnce()
     {
-        while (User32.PeekMessage(ref _msg, Handle, 0, 0, PM.REMOVE))
+        while (User32.PeekMessage(ref _msg, Handle, 0, 0, PEEKMESSAGEFLAGS.PM_REMOVE))
         {
             User32.TranslateMessage(ref _msg);
             User32.DispatchMessage(ref _msg);
         }
     }
-    #endregion
 
-    #region ProcessEventsUntilDestroyed
     public void ProcessEventsUntilDestroyed()
     {
         while (Exists)
@@ -111,16 +91,12 @@ internal class MessageOnlyWindow
             User32.DispatchMessage(ref _msg);
         }
     }
-    #endregion
 
-    #region Close
     public void Close()
     {
-        User32.PostMessage(Handle, WindowMessage.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+        User32.PostMessage(Handle, WINDOWMESSAGE.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
     }
-    #endregion
 
-    #region DestroyWindow
     private void DestroyWindow()
     {
         if (Exists)
@@ -129,17 +105,13 @@ internal class MessageOnlyWindow
             Exists = false;
         }
     }
-    #endregion
 
-    #endregion
-
-    #region IDisposable
     public virtual void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-    
+
     private void Dispose(bool manual)
     {
         if (!_disposed)
@@ -161,5 +133,4 @@ internal class MessageOnlyWindow
         //todo: create warnings
         Dispose(false);
     }
-    #endregion
 }
