@@ -5,8 +5,11 @@ using HaighFramework.WinAPI;
 
 namespace HaighFramework.Window;
 
-public class Win32Window : IWindow
+public class WinAPIWindow : IWindow
 {
+    private const int XBUTTON1 = 0x0001;
+    private const int XBUTTON2 = 0x0002;
+
     private static float Clamp(float value, float min, float max)
     {
         if (min > max)
@@ -23,7 +26,7 @@ public class Win32Window : IWindow
         }
     }
 
-    private const WindowClassStyle DEFAULT_CLASS_STYLE = 0;
+    private const WindowClassStyle DefaultClassStyle = 0;
     private const WINDOWSTYLE WS_PARENT_SIZING_BORDER = WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_THICKFRAME | WINDOWSTYLE.WS_MAXIMIZEBOX | WINDOWSTYLE.WS_MINIMIZEBOX | WINDOWSTYLE.WS_CLIPCHILDREN;
     private const WINDOWSTYLE WS_PARENT_BORDER = WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_MINIMIZEBOX | WINDOWSTYLE.WS_CLIPCHILDREN;
     private const WINDOWSTYLE WS_PARENT_NO_BORDER = WINDOWSTYLE.WS_POPUP | WINDOWSTYLE.WS_CLIPCHILDREN;
@@ -31,9 +34,8 @@ public class Win32Window : IWindow
     private const WINDOWSTYLE WS_CHILD = WINDOWSTYLE.WS_VISIBLE | WINDOWSTYLE.WS_CHILD | WINDOWSTYLE.WS_CLIPSIBLINGS;
     private const WINDOWSTYLEEX EWS_CHILD = 0;
     private const int HTCLIENT = 1;
-    private const int CW_USEDEFAULT = int.MinValue;
 
-    private static RECT GetWindowPosition(IntPtr windowHandle) 
+    private static RECT GetWindowPosition(IntPtr windowHandle)
     {
         _ = DWMAPI.DwmGetWindowAttribute(windowHandle, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS, out RECT rect, Marshal.SizeOf(default(RECT)));
         return rect;
@@ -68,7 +70,7 @@ public class Win32Window : IWindow
     }
 
     private readonly IntPtr _windowClassName = Marshal.StringToHGlobalAuto(Guid.NewGuid().ToString());
-    private readonly IntPtr _instance = Marshal.GetHINSTANCE(typeof(Win32Window).Module);
+    private readonly IntPtr _instance = Marshal.GetHINSTANCE(typeof(WinAPIWindow).Module);
     private readonly WNDPROC _wndProc; //need to reference this so it doesn't get garbage collected
     private readonly IntPtr _windowHandle, _childWindowHandle;
     private readonly WINDOWSTYLE _parentStyle;
@@ -90,8 +92,8 @@ public class Win32Window : IWindow
     private bool _cursorLockedToWindow = false;
     private bool _resizingWindow = false;
     private int _leftInvisBorder, _topInvisBorder, _rightInvisBorder, _bottomInvisBorder;
-    
-    public Win32Window(WindowSettings settings)
+
+    public WinAPIWindow(WindowSettings settings)
     {
         _userPosition = new Rect();//just to shut up the nullable warnings
         _userClientSize = new Point(settings.Width, settings.Height);//just to shut up the nullable warnings
@@ -131,7 +133,7 @@ public class Win32Window : IWindow
         var wcx = new WNDCLASSEX
         {
             cbSize = (uint)Marshal.SizeOf<WNDCLASSEX>(),
-            style = DEFAULT_CLASS_STYLE,
+            style = DefaultClassStyle,
             lpfnWndProc = _wndProc,
             cbClsExtra = 0,
             cbWndExtra = 0,
@@ -198,7 +200,7 @@ public class Win32Window : IWindow
         rect.bottom -= _topInvisBorder;
 
         User32.SetWindowPos(_windowHandle, IntPtr.Zero, rect.left, rect.top, rect.Width, rect.Height, SETWINDOWPOSFLAGS.NOREDRAW);
-        
+
         Border = settings.Border;
 
         if (settings.Centre)
@@ -212,7 +214,7 @@ public class Win32Window : IWindow
 
         SetPixelFormat(DeviceContext);
 
-        RenderContext = new OpenGLWindowsRenderContext(DeviceContext, settings.OpenGLVersion.major, settings.OpenGLVersion.minor);
+        RenderContext = new WinAPIOpenGLRenderContext(DeviceContext, settings.OpenGLVersion.major, settings.OpenGLVersion.minor);
 
         OpenGL32.wglMakeCurrent(DeviceContext, RenderContext.Handle);
 
@@ -223,10 +225,121 @@ public class Win32Window : IWindow
         Log.Information($"Graphics Card: {GetString(GetStringEnum.Renderer)}");
     }
 
+    private void LogWinRects()
+    {
+        Log.Debug($"_userPosition: {_userPosition}");
+        Log.Debug($"_actualPosition: {_actualPosition}");
+        Log.Debug($"_reportedPosition: {_reportedPosition}");
+        Log.Debug($"_userClientSize: {_userClientSize}");
+        Log.Debug($"_actualClientPosition: {_actualClientPosition}");
+        Log.Debug($"Window Position: {GetWindowPosition(_windowHandle)}");
+        Log.Debug($"Window Client: {GetClientSize(_windowHandle)}");
+        Log.Debug($"Child Position: {GetWindowPosition(_childWindowHandle)}");
+        Log.Debug($"Child Client: {GetClientSize(_childWindowHandle)}");
+    }
+
+    private void OnLButtonDown()
+    {
+        User32.SetCapture(_windowHandle); //tells the window to check for WM_?BUTTONUP even if mouse leaves the window
+
+        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Left, ButtonState.Down));
+    }
+
+    private void OnMButtonDown()
+    {
+        User32.SetCapture(_windowHandle); //tells the window to check for WM_?BUTTONUP even if mouse leaves the window
+
+        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Middle, ButtonState.Down));
+    }
+
+    private void OnRButtonDown()
+    {
+        User32.SetCapture(_windowHandle); //tells the window to check for WM_?BUTTONUP even if mouse leaves the window
+
+        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Right, ButtonState.Down));
+    }
+
+    private void OnXButtonDown(IntPtr wParam)
+    {
+        User32.SetCapture(_windowHandle); //tells the window to check for WM_LBUTTONUP even if mouse leaves the window
+
+        int x = wParam.ToHIWORD();
+        MouseButton button = wParam.ToHIWORD() switch
+        {
+            XBUTTON1 => MouseButton.Mouse4,
+            XBUTTON2 => MouseButton.Mouse5,
+            _ => throw new InvalidOperationException(),
+        };
+        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(button, ButtonState.Down));
+    }
+
+    private void OnLButtonUp()
+    {
+        User32.ReleaseCapture();
+
+        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Left, ButtonState.Up));
+    }
+
+    private void OnMButtonUp()
+    {
+        User32.ReleaseCapture();
+
+        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Middle, ButtonState.Up));
+    }
+
+    private void OnRButtonUp()
+    {
+        User32.ReleaseCapture();
+
+        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Right, ButtonState.Up));
+    }
+
+    private void OnXButtonUp(IntPtr wParam)
+    {
+        User32.ReleaseCapture();
+
+        MouseButton button = wParam.ToHIWORD() switch
+        {
+            XBUTTON1 => MouseButton.Mouse4,
+            XBUTTON2 => MouseButton.Mouse5,
+            _ => throw new InvalidOperationException(),
+        };
+        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(button, ButtonState.Up));
+    }
+
     internal IntPtr StandardWindowProcedure(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)
     {
         switch (message)
         {
+            case WINDOWMESSAGE.WM_LBUTTONDOWN:
+                OnLButtonDown();
+                break;
+            case WINDOWMESSAGE.WM_MBUTTONDOWN:
+                OnMButtonDown();
+                break;
+            case WINDOWMESSAGE.WM_RBUTTONDOWN:
+                OnRButtonDown();
+                break;
+            case WINDOWMESSAGE.WM_XBUTTONDOWN:
+                OnXButtonDown(wParam);
+                break;
+            case WINDOWMESSAGE.WM_LBUTTONUP:
+                OnLButtonUp();
+                break;
+            case WINDOWMESSAGE.WM_MBUTTONUP:
+                OnMButtonUp();
+                break;
+            case WINDOWMESSAGE.WM_RBUTTONUP:
+                OnRButtonUp();
+                break;
+            case WINDOWMESSAGE.WM_XBUTTONUP:
+                OnXButtonUp(wParam);
+                break;
+
+            case WINDOWMESSAGE.WM_MOUSEMOVE:
+                Log.Debug("Mouse moved");
+                break;
+
             case WINDOWMESSAGE.WM_DPICHANGED:
                 DPI = wParam.ToHIWORD() / 96f;
                 var proposedRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
@@ -290,7 +403,7 @@ public class Win32Window : IWindow
                     break;
                 }
 
-                User32.SetWindowPos(_childWindowHandle, IntPtr.Zero, 0, 0, _actualClientPosition.Width, _actualClientPosition.Height, 
+                User32.SetWindowPos(_childWindowHandle, IntPtr.Zero, 0, 0, _actualClientPosition.Width, _actualClientPosition.Height,
                     SETWINDOWPOSFLAGS.NOZORDER | SETWINDOWPOSFLAGS.NOOWNERZORDER | SETWINDOWPOSFLAGS.NOACTIVATE | SETWINDOWPOSFLAGS.NOSENDCHANGING);
 
                 if (!_resizingWindow && _cursorLockedToWindow)
@@ -317,7 +430,7 @@ public class Win32Window : IWindow
                     User32.SetCursor(_cursor.HCursor);
                     return IntPtr.Zero;
                 }
-            break;
+                break;
 
             case WINDOWMESSAGE.WM_CHAR:
                 char c;
@@ -353,7 +466,7 @@ public class Win32Window : IWindow
                 if (key != Key.Unknown)
                     KeyUp?.Invoke(this, new KeyboardKeyEventArgs(key));
                 break;
-            
+
 
             case WINDOWMESSAGE.WM_ACTIVATE:
                 bool newFocus = wParam.ToLOWORD() != 0;
@@ -366,7 +479,7 @@ public class Win32Window : IWindow
                     FocusChanged?.Invoke(this, new FocusChangedEventArgs(newFocus));
                 }
                 break;
-            
+
 
             case WINDOWMESSAGE.WM_SETFOCUS:
                 if (!Focussed)
@@ -375,7 +488,7 @@ public class Win32Window : IWindow
                     FocusChanged?.Invoke(this, new FocusChangedEventArgs(true));
                 }
                 break;
-            
+
 
             case WINDOWMESSAGE.WM_KILLFOCUS:
                 if (Focussed)
@@ -384,7 +497,7 @@ public class Win32Window : IWindow
                     FocusChanged?.Invoke(this, new FocusChangedEventArgs(false));
                 }
                 break;
-            
+
 
             //https://docs.microsoft.com/en-us/windows/win32/learnwin32/closing-the-window
 
@@ -393,20 +506,20 @@ public class Win32Window : IWindow
                 if (ExitOnClose)
                     break;
                 return IntPtr.Zero;
-            
+
 
             case WINDOWMESSAGE.WM_DESTROY:
                 Closed?.Invoke(this, EventArgs.Empty);
                 IsOpen = false;
                 Dispose();
                 break;
-                
-            
+
+
         }
 
         return User32.DefWindowProc(handle, message, wParam, lParam);
     }
-    
+
     private void SetWindowPositionValues()
     {
         User32.GetWindowRect(_windowHandle, out _reportedPosition);
@@ -418,7 +531,7 @@ public class Win32Window : IWindow
         POINT br = new() { X = _actualClientPosition.right, Y = _actualClientPosition.bottom };
         User32.ClientToScreen(_windowHandle, ref br);
         _actualClientPosition.left = tl.X;
-        _actualClientPosition.top = tl.Y;;
+        _actualClientPosition.top = tl.Y; ;
         _actualClientPosition.right = br.X;
         _actualClientPosition.bottom = br.Y;
         _userClientSize = UserClientPoint_From_ActualClientRect(_actualClientPosition);
@@ -428,7 +541,7 @@ public class Win32Window : IWindow
         _rightInvisBorder = _reportedPosition.right - _actualPosition.right;
         _bottomInvisBorder = _reportedPosition.bottom - _actualPosition.bottom;
     }
-    
+
     /// <summary>
     /// User requested Window to be a certain size. What RECT needs to be used in SetWindowPos to acheive it?
     /// We need to add DPI and invisible borders.
@@ -444,7 +557,7 @@ public class Win32Window : IWindow
         answer.bottom = (int)Math.Round(answer.bottom * DPI) + _bottomInvisBorder;
 
         return answer;
-    }    
+    }
 
     /// <summary>
     /// Transform the parent rect down to the user coordinations by scaling down by DPI
@@ -456,7 +569,7 @@ public class Win32Window : IWindow
             (int)Math.Round(rect.top / DPI),
             (int)Math.Round(rect.Width / DPI),
             (int)Math.Round(rect.Height / DPI));
-    }    
+    }
 
     /// <summary>
     /// Transform the parent rect down to the user coordinations by scaling down by DPI
@@ -466,7 +579,7 @@ public class Win32Window : IWindow
         return new Point(
             (int)Math.Round(actualClientRect.Width / DPI),
             (int)Math.Round(actualClientRect.Height / DPI));
-    }    
+    }
 
     private RECT ActualClientRect_From_UserClientPoint(Point userClientPoint)
     {
@@ -475,12 +588,12 @@ public class Win32Window : IWindow
             right = (int)Math.Round(userClientPoint.X * DPI),
             bottom = (int)Math.Round(userClientPoint.Y * DPI),
         };
-    }    
+    }
 
     private void ConfineCursor()
     {
         User32.ClipCursor(ref _actualPosition);
-    }    
+    }
 
     private void UnconfineCursor()
     {
@@ -510,7 +623,7 @@ public class Win32Window : IWindow
         if (IsOpen)
             User32.PostMessage(_windowHandle, WINDOWMESSAGE.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
         else
-            Log.Error($"Called Close on a {typeof(Win32Window).Name} window that was already destroyed.");
+            Log.Error($"Called Close on a {typeof(WinAPIWindow).Name} window that was already destroyed.");
     }
 
     public void Exit()
@@ -518,7 +631,7 @@ public class Win32Window : IWindow
         if (IsOpen)
             User32.DestroyWindow(_windowHandle);
         else
-            Log.Error($"Called Exit on a {typeof(Win32Window).Name} window that was already destroyed.");
+            Log.Error($"Called Exit on a {typeof(WinAPIWindow).Name} window that was already destroyed.");
     }
 
     public void ProcessEvents()
@@ -533,10 +646,6 @@ public class Win32Window : IWindow
     public void SwapBuffers() => GDI32.SwapBuffers(DeviceContext);
 
     public bool ExitOnClose { get; set; }
-
-    public event EventHandler? CloseAttempted;
-
-    public event EventHandler? Closed;
 
     public string Title
     {
@@ -560,7 +669,7 @@ public class Win32Window : IWindow
             }
         }
     }
-    
+
     //https://stackoverflow.com/questions/706921/problems-with-setting-application-icon
     public Icon Icon
     {
@@ -606,7 +715,7 @@ public class Win32Window : IWindow
             _border = value;
         }
     }
-    
+
     public WindowState State
     {
         get => _windowState;
@@ -690,13 +799,13 @@ public class Win32Window : IWindow
         get => (int)Position.W;
         set => Position = new Rect(X, Y, value, Height);
     }
-    
+
     public int Height
     {
         get => (int)Position.H;
         set => Position = new Rect(X, Y, Width, value);
     }
-    
+
     public Point ClientSize
     {
         get => _userClientSize;
@@ -738,9 +847,6 @@ public class Win32Window : IWindow
 
     public Point ScreenToClient(Point screenPosition) => new((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));
 
-    public event EventHandler? Moved;
-
-    public event EventHandler? Resized;
 
     public bool Focussed { get; private set; }
 
@@ -756,7 +862,6 @@ public class Win32Window : IWindow
             Log.Warning("Tried to focus the window when it was already focussed.");
     }
 
-    public event EventHandler<FocusChangedEventArgs>? FocusChanged;
 
     //http://www.cplusplus.com/forum/windows/97017/
     //https://docs.microsoft.com/en-us/windows/win32/learnwin32/setting-the-cursor-image
@@ -774,7 +879,7 @@ public class Win32Window : IWindow
             _cursor = value;
         }
     }
-    
+
     public bool CursorVisible
     {
         get => _cursorVisible;
@@ -787,7 +892,7 @@ public class Win32Window : IWindow
             _cursorVisible = value;
         }
     }
-    
+
     public bool CursorLockedToWindow
     {
         get => _cursorLockedToWindow;
@@ -805,12 +910,25 @@ public class Win32Window : IWindow
         }
     }
 
+    public IntPtr DeviceContext { get; }
+
+    internal WinAPIOpenGLRenderContext RenderContext { get; }
+
+
+
+
     /// <summary>
     /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
     /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
     /// Use for eg text box input, rather than for controlling a game character (Use Input.GetKeyboardState)
     /// </summary>
     public event EventHandler<KeyboardCharEventArgs>? CharEntered;
+
+    public event EventHandler? CloseAttempted;
+
+    public event EventHandler? Closed;
+
+    public event EventHandler<FocusChangedEventArgs>? FocusChanged;
 
     /// <summary>
     /// Called whenever a keyboard key is pressed
@@ -822,9 +940,15 @@ public class Win32Window : IWindow
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs>? KeyUp;
 
-    public IntPtr DeviceContext { get; }
+    public event EventHandler<ZMouseButtonEventArgs>? MouseButtonDown;
 
-    internal OpenGLWindowsRenderContext RenderContext { get; }
+    public event EventHandler<ZMouseButtonEventArgs>? MouseButtonUp;
+
+    public event EventHandler? Moved;
+
+    public event EventHandler? Resized;
+
+    //todo: mouse entered, mouse left, drag and drop
 
     protected virtual void Dispose(bool disposedCorrectly)
     {
@@ -846,7 +970,7 @@ public class Win32Window : IWindow
     }
 
     // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-    ~Win32Window()
+    ~WinAPIWindow()
     {
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposedCorrectly: false);
@@ -859,20 +983,4 @@ public class Win32Window : IWindow
         GC.SuppressFinalize(this);
     }
 
-#if DEBUG
-    private void LogWinRects()
-    {
-        Log.Debug($"_userPosition: {_userPosition}");
-        Log.Debug($"_actualPosition: {_actualPosition}");
-        Log.Debug($"_reportedPosition: {_reportedPosition}");
-        Log.Debug($"_userClientSize: {_userClientSize}");
-        Log.Debug($"_actualClientPosition: {_actualClientPosition}");
-        Log.Debug($"Window Position: {GetWindowPosition(_windowHandle)}");
-        Log.Debug($"Window Client: {GetClientSize(_windowHandle)}");
-        Log.Debug($"Child Position: {GetWindowPosition(_childWindowHandle)}");
-        Log.Debug($"Child Client: {GetClientSize(_childWindowHandle)}");
-    }
-    
-    private static void LogIntPtr(IntPtr pointer) => Log.Debug(pointer.ToUInt32().ToString());
-#endif
 }

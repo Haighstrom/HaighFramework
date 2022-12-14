@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace HaighFramework.Window;
 
-internal class OpenGLWindowsRenderContext
+internal class WinAPIOpenGLRenderContext
 {
     private static IntPtr CreateRenderContext(IntPtr deviceContext, (int major, int minor) openGLversion)
     {
@@ -22,7 +22,7 @@ internal class OpenGLWindowsRenderContext
         return rC;
     }
 
-    public OpenGLWindowsRenderContext(IntPtr deviceContext, int glVersionMajor, int glVersionMinor)
+    public WinAPIOpenGLRenderContext(IntPtr deviceContext, int glVersionMajor, int glVersionMinor)
     {
         if (glVersionMajor < 1 || glVersionMinor < 0)
             throw new Exception($"invalid GL version to create: {glVersionMajor}.{glVersionMinor}.");
