@@ -189,4 +189,6 @@ public interface IWindow : IDisposable
     /// Triggers whenever the window changes size
     /// </summary>
     event EventHandler? Resized;
+    event EventHandler<ZMouseButtonEventArgs>? MouseButtonDown;
+    event EventHandler<ZMouseButtonEventArgs>? MouseButtonUp;
 }

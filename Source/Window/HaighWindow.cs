@@ -10,7 +10,7 @@ public class HaighWindow : IWindow
     public HaighWindow(WindowSettings settings)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            _implementation = new Win32Window(settings);
+            _implementation = new WinAPIWindow(settings);
         else
             throw new NotImplementedException();
     }
@@ -200,6 +200,32 @@ public class HaighWindow : IWindow
         remove
         {
             _implementation.KeyUp -= value;
+        }
+    }
+
+    public event EventHandler<ZMouseButtonEventArgs>? MouseButtonDown
+    {
+        add
+        {
+            _implementation.MouseButtonDown += value;
+        }
+
+        remove
+        {
+            _implementation.MouseButtonDown -= value;
+        }
+    }
+
+    public event EventHandler<ZMouseButtonEventArgs>? MouseButtonUp
+    {
+        add
+        {
+            _implementation.MouseButtonUp += value;
+        }
+
+        remove
+        {
+            _implementation.MouseButtonUp -= value;
         }
     }
 }

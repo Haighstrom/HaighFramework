@@ -18,41 +18,42 @@ public enum MouseButton
     /// </summary>
     Right,
     /// <summary>
-    /// The first extra mouse button.
+    /// Browser Back
     /// </summary>
-    Button1,
+    Mouse4,
     /// <summary>
-    /// The second extra mouse button.
+    /// Browser Forward
     /// </summary>
-    Button2,
+    Mouse5,
+
     /// <summary>
     /// The third extra mouse button.
     /// </summary>
-    Button3,
+    Button9,
     /// <summary>
     /// The fourth extra mouse button.
     /// </summary>
-    Button4,
+    Button6,
     /// <summary>
     /// The fifth extra mouse button.
     /// </summary>
-    Button5,
+    Button7,
     /// <summary>
     /// The sixth extra mouse button.
     /// </summary>
-    Button6,
+    Button8,
     /// <summary>
     /// The seventh extra mouse button.
     /// </summary>
-    Button7,
+    Button10,
     /// <summary>
     /// The eigth extra mouse button.
     /// </summary>
-    Button8,
+    Button11,
     /// <summary>
     /// The ninth extra mouse button.
     /// </summary>
-    Button9,
+    Button12,
     /// <summary>
     /// Indicates the last available mouse button.
     /// </summary>

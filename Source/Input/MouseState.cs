@@ -9,7 +9,6 @@ public struct MouseState : IEquatable<MouseState>
         if (offset < 0 || offset >= MaxButtons)
             throw new ArgumentOutOfRangeException("offset");
     }
-    
 
     private Point _positionAbsolute;
     private Point _positionScreen;

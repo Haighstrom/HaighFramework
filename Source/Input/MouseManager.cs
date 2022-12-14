@@ -260,22 +260,22 @@ public sealed class MouseManager : IMouseManager
         }
         if ((mData.ButtonFlags & RawInputMouseState.BUTTON_4_DOWN) != 0)
         {
-            state.EnableBit((int)MouseButton.Button1);
+            state.EnableBit((int)MouseButton.Mouse4);
             User32.SetCapture(_msgWindowHandle);
         }
         if ((mData.ButtonFlags & RawInputMouseState.BUTTON_4_UP) != 0)
         {
-            state.DisableBit((int)MouseButton.Button1);
+            state.DisableBit((int)MouseButton.Mouse4);
             User32.ReleaseCapture();
         }
         if ((mData.ButtonFlags & RawInputMouseState.BUTTON_5_DOWN) != 0)
         {
-            state.EnableBit((int)MouseButton.Button2);
+            state.EnableBit((int)MouseButton.Mouse5);
             User32.SetCapture(_msgWindowHandle);
         }
         if ((mData.ButtonFlags & RawInputMouseState.BUTTON_5_UP) != 0)
         {
-            state.DisableBit((int)MouseButton.Button2);
+            state.DisableBit((int)MouseButton.Mouse5);
             User32.ReleaseCapture();
         }
 
