@@ -161,7 +161,7 @@ public class Rect
     public Rect Zeroed => new Rect(0, 0, W, H);
     public Rect Shift(Point direction, float distance) => Shift(direction.Normal * distance);
     public Rect Shift(Point direction) => Shift(direction.X, direction.Y);
-    public Rect Shift(float x, float y = 0, float w = 0, float h = 0) => new Rect(X + x, Y + y, W + w, H + h);
+    public Rect Shift(float x, float y, float w = 0, float h = 0) => new(X + x, Y + y, W + w, H + h);
     public Rect Scale(float scaleX, float scaleY) => new Rect(X, Y, W * scaleX, H * scaleY);
     public Rect ScaleAroundCentre(float scale) => ScaleAroundCentre(scale, scale);
     public Rect ScaleAroundCentre(float scaleX, float scaleY) => ScaleAround(scaleX, scaleY, Centre.X, Centre.Y);

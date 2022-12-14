@@ -507,14 +507,6 @@ public static partial class OpenGL32
 
     private delegate void DEL_glUniform3i(int location, int v0, int v1, int v2);
     private static DEL_glUniform3i _glUniform3i;
-
-    /// <summary>
-    /// glUniform3f
-    /// </summary>
-    public static void Uniform3(int location, Point3 value)
-    {
-        _glUniform3f(location, value.x, value.y, value.z);
-    }
     
 
     private delegate void DEL_glUniform4f(int location, float v0, float v1, float v2, float v3);
@@ -551,10 +543,6 @@ public static partial class OpenGL32
     /// glUniformMatrix3fv
     /// </summary>
     public static void UniformMatrix3(int location, float[] values) => UniformMatrix3(location, 1, false, values);
-    /// <summary>
-    /// glUniformMatrix3fv
-    /// </summary>
-    public static void UniformMatrix3(int location, ref Matrix4 matrix) => UniformMatrix3(location, 1, false, matrix.Values);
     
 
     private unsafe delegate void DEL_glUniformMatrix4fv(int location, int count, bool transpose, float* value);
@@ -576,10 +564,6 @@ public static partial class OpenGL32
     /// glUniformMatrix4fv
     /// </summary>
     public static void UniformMatrix4(int location, float[] values) => UniformMatrix4(location, 1, false, values);
-    /// <summary>
-    /// glUniformMatrix4fv
-    /// </summary>
-    public static void UniformMatrix4(int location, ref Matrix4 matrix) => UniformMatrix4(location, 1, false, matrix.Values);
     
 
     private delegate void DEL_glUseProgram(uint program);

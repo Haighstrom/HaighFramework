@@ -7,6 +7,8 @@ namespace HaighFramework;
 [StructLayout(LayoutKind.Sequential)]
 public struct Point : IPosition, IEquatable<Point>
 {
+    private const double RadianConversion = Math.PI / 180;
+
     public static readonly Point Zero = new();
     
 
@@ -92,18 +94,20 @@ public struct Point : IPosition, IEquatable<Point>
     /// </summary>
     /// <param name="rotationAngleInDegrees"></param>
     public Point Rotate(float rotationAngleInDegrees) => Rotate(rotationAngleInDegrees, Zero);
+
     /// <summary>
-    /// Rotate this Point around a rotation axis given by Point RotationCentre
+    /// Rotate this point around another point
     /// </summary>
-    /// <param name="rotationAngleInDegrees"></param>
-    /// <param name="rotationCentre"></param>
-    public Point Rotate(float rotationAngleInDegrees, Point rotationCentre)
+    /// <param name="angle">Rotation Angle in Degrees.</param>
+    /// <param name="centre">The rotation centre.</param>
+    public Point Rotate(float angle, Point centre)
     {
-        Point answer = new(X - rotationCentre.X, Y - rotationCentre.Y);
-        answer = Matrix2.CreateRotation(-rotationAngleInDegrees) * answer;
-        answer.X += rotationCentre.X;
-        answer.Y += rotationCentre.Y;
-        return answer;
+        var angleRadians = angle * RadianConversion;
+
+        float rotatedX = (float)(Math.Cos(angleRadians) * (X - centre.X) - Math.Sin(angleRadians) * (Y - centre.Y) + centre.X);
+        float rotatedY = (float)(Math.Sin(angleRadians) * (X - centre.X) + Math.Cos(angleRadians) * (Y - centre.Y) + centre.Y);
+
+        return new Point(rotatedX, rotatedY);
     }
     
 
