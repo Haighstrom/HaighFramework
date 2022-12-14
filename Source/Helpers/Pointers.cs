@@ -10,7 +10,7 @@ internal static class Pointers
     /// </summary>
     public static short ToHIWORD(this IntPtr ptr)
     {
-        return unchecked((short)((short)ptr.ToUInt32() >> 16));
+        return unchecked((short)((uint)ptr >> 16));
     }
 
     /// <summary>
@@ -18,7 +18,7 @@ internal static class Pointers
     /// </summary>
     public static short ToLOWORD(this IntPtr ptr)
     {
-        return unchecked((short)ptr.ToUInt32());
+        return unchecked((short)(uint)ptr);
     }
 
     /// <summary>
