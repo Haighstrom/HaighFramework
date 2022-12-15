@@ -1,5 +1,8 @@
 ﻿namespace HaighFramework;
 
+/// <summary>
+/// A type for managing the Console Window
+/// </summary>
 public interface IConsoleWindow
 {
     /// <summary>
