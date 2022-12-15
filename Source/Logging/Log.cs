@@ -8,7 +8,7 @@ public static class Log
     /// <summary>
     /// The default Logger. Will write only to the Console for messages at or above level <see cref="LogLevel.Information"/> by default if not replaced with another Logger.
     /// </summary>
-    public static ILogger Logger { get; set; } = new Logger(new ConsoleOutputStream(LogLevel.Information));
+    public static ILogger Instance { get; set; } = new Logger(new ConsoleOutputStream(LogLevel.Information));
 
     /// <summary>
     /// If messages are written to the default logger (i.e. using <see cref="Log"/>) with priority equal to or higher than this level, an <see cref="LoggingException"/> will be thrown. Off by default.
@@ -47,7 +47,7 @@ public static class Log
     /// <exception cref="ArgumentException">Throws an exception if <see cref="LogLevel.None"/> is used</exception>
     public static void Write(LogLevel logLevel, object? thingToLog)
     {
-        Logger.Write(logLevel, thingToLog);
+        Instance.Write(logLevel, thingToLog);
 
         if (logLevel >= LogLevelToThrowErrors)
             throw new LoggingException(logLevel, thingToLog);
