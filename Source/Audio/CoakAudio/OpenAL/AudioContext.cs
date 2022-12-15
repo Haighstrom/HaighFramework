@@ -79,8 +79,8 @@ internal sealed class AudioContext : IDisposable
         }
         if (device_handle == IntPtr.Zero)
         {
-            device_name = AudioContext.DefaultDevice;
-            device_handle = Alc.OpenDevice(AudioContext.DefaultDevice); // try to open named default device
+            device_name = DefaultDevice;
+            device_handle = Alc.OpenDevice(DefaultDevice); // try to open named default device
         }
         if (device_handle == IntPtr.Zero)
         {
@@ -186,14 +186,14 @@ internal sealed class AudioContext : IDisposable
                     return false;
                 else
                 {
-                    return AudioContext.CurrentContext == this;
+                    return CurrentContext == this;
                 }
             }
         }
         set
         {
-            if (value) AudioContext.MakeCurrent(this);
-            else AudioContext.MakeCurrent(null);
+            if (value) MakeCurrent(this);
+            else MakeCurrent(null);
         }
     }
 
@@ -352,7 +352,7 @@ internal sealed class AudioContext : IDisposable
                     return null;
                 else
                 {
-                    AudioContext.available_contexts.TryGetValue(Alc.GetCurrentContext(), out AudioContext context);
+                    available_contexts.TryGetValue(Alc.GetCurrentContext(), out AudioContext context);
                     return context;
                 }
             }

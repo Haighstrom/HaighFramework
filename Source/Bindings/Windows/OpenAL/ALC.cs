@@ -16,7 +16,7 @@ internal static class Alc
     /// <summary>This function closes the specified capture device.</summary>
     /// <param name="device">a pointer to a capture device.</param>
     /// <returns>Returns True if the close operation was successful, False on failure.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcCaptureCloseDevice", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcCaptureCloseDevice", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern bool CaptureCloseDevice([In] IntPtr device);
     #endregion
 
@@ -27,7 +27,7 @@ internal static class Alc
     /// <param name="format">the requested capture buffer format.</param>
     /// <param name="buffersize">the size of the capture buffer in samples, not bytes.</param>
     /// <returns>Returns the capture device pointer, or NULL on failure.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcCaptureOpenDevice", ExactSpelling = true, CallingConvention = Alc.Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcCaptureOpenDevice", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
     internal static extern IntPtr CaptureOpenDevice(string devicename, uint frequency, ALFormat format, int buffersize);
     #endregion
 
@@ -36,7 +36,7 @@ internal static class Alc
     /// <param name="device">a pointer to a capture device.</param>
     /// <param name="buffer">a pointer to a buffer, which must be large enough to accommodate the number of samples.</param>
     /// <param name="samples">the number of samples to be retrieved.</param>
-    [DllImport(Alc.Lib, EntryPoint = "alcCaptureSamples", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcCaptureSamples", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern void CaptureSamples(IntPtr device, IntPtr buffer, int samples);
 
     /// <summary>This function completes a capture operation, and does not block.</summary>
@@ -92,14 +92,14 @@ internal static class Alc
     /// <summary>This function begins a capture operation.</summary>
     /// <remarks>alcCaptureStart will begin recording to an internal ring buffer of the size specified when opening the capture device. The application can then retrieve the number of samples currently available using the ALC_CAPTURE_SAPMPLES token with alcGetIntegerv. When the application determines that enough samples are available for processing, then it can obtain them with a call to alcCaptureSamples.</remarks>
     /// <param name="device">a pointer to a capture device.</param>
-    [DllImport(Alc.Lib, EntryPoint = "alcCaptureStart", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcCaptureStart", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern void CaptureStart([In] IntPtr device);
     #endregion
 
     #region CaptureStop
     /// <summary>This function stops a capture operation.</summary>
     /// <param name="device">a pointer to a capture device.</param>
-    [DllImport(Alc.Lib, EntryPoint = "alcCaptureStop", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcCaptureStop", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern void CaptureStop([In] IntPtr device);
     #endregion
 
@@ -107,12 +107,12 @@ internal static class Alc
     /// <summary>This function closes a device by name.</summary>
     /// <param name="device">a pointer to an opened device</param>
     /// <returns>True will be returned on success or False on failure. Closing a device will fail if the device contains any contexts or buffers.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcCloseDevice", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcCloseDevice", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern bool CloseDevice([In] IntPtr device);
     #endregion
 
     #region CreateContext
-    [DllImport(Alc.Lib, EntryPoint = "alcCreateContext", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity]
+    [DllImport(Lib, EntryPoint = "alcCreateContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity]
     private unsafe static extern IntPtr CreateContext([In] IntPtr device, [In] int* attrlist);
 
     /// <summary>This function creates a context using a specified device.</summary>
@@ -137,7 +137,7 @@ internal static class Alc
     /// This function destroys a context.
     /// </summary>
     /// <param name="context">A pointer to the new context.</param>
-    [DllImport(Alc.Lib, EntryPoint = "alcDestroyContext", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcDestroyContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern void DestroyContext(IntPtr context);
     #endregion
 
@@ -147,7 +147,7 @@ internal static class Alc
     /// </summary>
     /// <param name="context">>A pointer to a context.</param>
     /// <returns>Returns a pointer to the specified context's device.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcGetContextsDevice", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcGetContextsDevice", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     static extern IntPtr GetContextsDevice(IntPtr context);
     #endregion
 
@@ -156,7 +156,7 @@ internal static class Alc
     /// This function retrieves the current context.
     /// </summary>
     /// <returns>Returns a pointer to the current context.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcGetCurrentContext", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcGetCurrentContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern IntPtr GetCurrentContext();
     #endregion
 
@@ -165,7 +165,7 @@ internal static class Alc
     /// <param name="device">a pointer to the device to be queried.</param>
     /// <param name="enumname">a null terminated string describing the enum value.</param>
     /// <returns>Returns the enum value described by the enumName string. This is most often used for querying an enum value for an ALC extension.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcGetEnumValue", ExactSpelling = true, CallingConvention = Alc.Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcGetEnumValue", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
     internal static extern int GetEnumValue([In] IntPtr device, [In] string enumname);
     #endregion
 
@@ -173,7 +173,7 @@ internal static class Alc
     /// <summary>This function retrieves the current context error state.</summary>
     /// <param name="device">a pointer to the device to retrieve the error state from</param>
     /// <returns>Errorcode Int32.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcGetError", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcGetError", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern AlcError GetError([In] IntPtr device);
     #endregion
 
@@ -182,12 +182,12 @@ internal static class Alc
     /// <param name="device">a pointer to the device to be queried for an extension.</param>
     /// <param name="extname">a null-terminated string describing the extension.</param>
     /// <returns>Returns True if the extension is available, False if the extension is not available.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcIsExtensionPresent", ExactSpelling = true, CallingConvention = Alc.Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcIsExtensionPresent", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
     internal static extern bool IsExtensionPresent([In] IntPtr device, [In] string extname);
     #endregion
 
     #region GetInteger
-    [DllImport(Alc.Lib, EntryPoint = "alcGetIntegerv", ExactSpelling = true, CallingConvention = Alc.Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcGetIntegerv", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
     private unsafe static extern void GetInteger(IntPtr device, AlcGetInteger param, int size, int* data);
 
     /// <summary>This function returns integers related to the context.</summary>
@@ -228,12 +228,12 @@ internal static class Alc
     /// <param name="device">a pointer to the device to be queried for the function.</param>
     /// <param name="funcname">a null-terminated string describing the function.</param>
     /// <returns>Returns the address of the function, or NULL if it is not found.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcGetProcAddress", ExactSpelling = true, CallingConvention = Alc.Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcGetProcAddress", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
     internal static extern IntPtr GetProcAddress([In] IntPtr device, [In] string funcname);
     #endregion
 
     #region GetString
-    [DllImport(Alc.Lib, EntryPoint = "alcGetString", ExactSpelling = true, CallingConvention = Alc.Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcGetString", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
     private static extern IntPtr GetStringPrivate([In] IntPtr device, AlcGetString param);
 
     /// <summary>This function returns pointers to strings related to the context.</summary>
@@ -326,7 +326,7 @@ internal static class Alc
     /// </summary>
     /// <param name="context">A pointer to the new context handle.</param>
     /// <returns>Returns True on success, or False on failure.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcMakeContextCurrent", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcMakeContextCurrent", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern bool MakeContextCurrent(IntPtr context);
     #endregion
 
@@ -334,7 +334,7 @@ internal static class Alc
     /// <summary>This function opens a device by name.</summary>
     /// <param name="devicename">a null-terminated string describing a device.</param>
     /// <returns>Returns a pointer to the opened device. The return value will be NULL if there is an error.</returns>
-    [DllImport(Alc.Lib, EntryPoint = "alcOpenDevice", ExactSpelling = true, CallingConvention = Alc.Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcOpenDevice", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
     internal static extern IntPtr OpenDevice([In] string devicename);
     #endregion
 
@@ -343,7 +343,7 @@ internal static class Alc
     /// This function tells a context to begin processing. When a context is suspended, changes in OpenAL state will be accepted but will not be processed. alcSuspendContext can be used to suspend a context, and then all the OpenAL state changes can be applied at once, followed by a call to alcProcessContext to apply all the state changes immediately. In some cases, this procedure may be more efficient than application of properties in a non-suspended state. In some implementations, process and suspend calls are each a NOP.
     /// </summary>
     /// <param name="context">A pointer to the new context handle.</param>
-    [DllImport(Alc.Lib, EntryPoint = "alcProcessContext", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcProcessContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern void ProcessContext(IntPtr context);
     #endregion
 
@@ -352,7 +352,7 @@ internal static class Alc
     /// This function suspends processing on a specified context. When a context is suspended, changes in OpenAL state will be accepted but will not be processed. A typical use of alcSuspendContext would be to suspend a context, apply all the OpenAL state changes at once, and then call alcProcessContext to apply all the state changes at once. In some cases, this procedure may be more efficient than application of properties in a non-suspended state. In some implementations, process and suspend calls are each a NOP. 
     /// </summary>
     /// <param name="context">A pointer to the context to be suspended.</param>
-    [DllImport(Alc.Lib, EntryPoint = "alcSuspendContext", ExactSpelling = true, CallingConvention = Alc.Style), SuppressUnmanagedCodeSecurity()]
+    [DllImport(Lib, EntryPoint = "alcSuspendContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
     internal static extern void SuspendContext(IntPtr context);
     #endregion
 }
