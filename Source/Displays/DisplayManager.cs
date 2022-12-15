@@ -13,7 +13,7 @@ public sealed class DisplayManager : IDisplayManager
     private bool _disposed = false;
 
     /// <summary>
-    /// Initialise the default DisplayManager
+    /// Initialise the default DisplayManager.
     /// </summary>
     /// <exception cref="NotImplementedException">Throws an exception if there is no API available for the current OS.</exception>
     public DisplayManager()
@@ -35,12 +35,12 @@ public sealed class DisplayManager : IDisplayManager
     }
 
     /// <summary>
-    /// The displays currently available to this computer
+    /// The displays currently available to this computer.
     /// </summary>
     public IImmutableList<DisplayInfo> AvailableDisplays { get; private set; }
 
     /// <summary>
-    /// The main display
+    /// The main display.
     /// </summary>
     public DisplayInfo PrimaryDisplay { get; private set; }
 
@@ -61,9 +61,9 @@ public sealed class DisplayManager : IDisplayManager
     /// <param name="newWidth">The new width of the display.</param>
     /// <param name="newHeight">The new height of the display.</param>
     /// <param name="newRefreshRate">The new refresh rate of the display.</param>
-    public void ChangeSettings(DisplayInfo device, int newWidth, int newHeight, int newRefreshRate)
+    public void ChangeSettings(DisplayInfo display, int newWidth, int newHeight, int newRefreshRate)
     {
-        _api.ChangeSettings(device.DisplayName, newWidth, newHeight, newRefreshRate);
+        _api.ChangeSettings(display.DisplayName, newWidth, newHeight, newRefreshRate);
         OnDisplaySettingsChanged(this, EventArgs.Empty);
     }
 
@@ -72,7 +72,7 @@ public sealed class DisplayManager : IDisplayManager
     /// </summary>
     /// <param name="display">The display to be changed.</param>
     /// <param name="newSettings">The new settings to be applied.</param>
-    public void ChangeSettings(DisplayInfo device, DisplaySettings newSettings) => ChangeSettings(device, newSettings.Width, newSettings.Height, newSettings.RefreshRate);
+    public void ChangeSettings(DisplayInfo display, DisplaySettings newSettings) => ChangeSettings(display, newSettings.Width, newSettings.Height, newSettings.RefreshRate);
 
     /// <summary>
     /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
@@ -80,7 +80,7 @@ public sealed class DisplayManager : IDisplayManager
     /// <param name="display">The display to be changed.</param>
     /// <param name="newWidth">The new width of the display.</param>
     /// <param name="newHeight">The new height of the display.</param>
-    public void ChangeSettings(DisplayInfo device, int newWidth, int newHeight) => ChangeSettings(device, newWidth, newHeight, device.RefreshRate);
+    public void ChangeSettings(DisplayInfo display, int newWidth, int newHeight) => ChangeSettings(display, newWidth, newHeight, display.RefreshRate);
 
     /// <summary>
     /// Revert all displays back to their original settings.

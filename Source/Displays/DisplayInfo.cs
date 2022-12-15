@@ -24,6 +24,12 @@ public record DisplayInfo(string DisplayName, int DisplayIndex, bool IsPrimary, 
 
     public override string ToString()
     {
-        return $"Device {DisplayIndex}{(IsPrimary ? " (Primary Display)" : "")}:\n  Name: {DisplayName},\n  Position:({X},{Y},{Width},{Height}),\n  ColourDepth:{ColourDepth}\n  DisplayFrequency:{RefreshRate}.\n  Available Settings: {AvailableSettings.Count()}";
+        return 
+            $"Device {DisplayIndex}{(IsPrimary ? " (Primary Display)" : "")}:\n" +
+            $"  Name: {DisplayName},\n" +
+            $"  Position:({X},{Y},{Width},{Height}),\n" +
+            $"  ColourDepth:{ColourDepth}\n" +
+            $"  DisplayFrequency:{RefreshRate}.\n" +
+            $"  Available Settings: {AvailableSettings.Count()}";
     }
 }

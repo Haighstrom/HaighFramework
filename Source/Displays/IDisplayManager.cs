@@ -8,12 +8,12 @@ namespace HaighFramework.Displays;
 public interface IDisplayManager : IDisposable
 {
     /// <summary>
-    /// The displays currently available to this computer
+    /// The displays currently available to this computer.
     /// </summary>
     IImmutableList<DisplayInfo> AvailableDisplays { get; }
 
     /// <summary>
-    /// The main display
+    /// The main display.
     /// </summary>
     DisplayInfo PrimaryDisplay { get; }
 

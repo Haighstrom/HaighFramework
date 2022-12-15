@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace HaighFramework;
 
+/// <summary>
+/// A group of settings for instantiating a ConsoleManager
+/// </summary>
 public class ConsoleSettings
 {
     private const int DefaultWidth = 450;
@@ -44,5 +46,5 @@ public class ConsoleSettings
     /// <summary>
     /// The height of the console in pixels. Defaults to the height of the window.
     /// </summary>
-    public int Height { get; set; } = ConsoleManager.GetMaxSize().Height;
+    public int Height { get; set; } = ConsoleWindow.GetMaxSize().Height;
 }
