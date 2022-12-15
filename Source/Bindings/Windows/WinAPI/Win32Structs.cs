@@ -6,7 +6,7 @@ namespace HaighFramework.WinAPI;
 /// Contains information about a system appbar message.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct APPBARDATA
+internal struct APPBARDATA
 {
     /// <summary>
     /// A value that specifies an edge of the screen.
@@ -947,7 +947,7 @@ internal class PIXELFORMATDESCRIPTOR
 /// The POINT structure defines the x- and y- coordinates of a point.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct POINT
+internal struct POINT
 {
     /// <summary>
     /// The x-coordinate of the point.
@@ -991,7 +991,7 @@ internal struct SMALL_RECT
 /// The RECT structure defines a rectangle by the coordinates of its upper-left and lower-right corners. https://docs.microsoft.com/en-us/windows/win32/api/windef/ns-windef-rect
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct RECT
+internal struct RECT
 {
     /// <summary>
     /// Specifies the x-coordinate of the upper-left corner of the rectangle.

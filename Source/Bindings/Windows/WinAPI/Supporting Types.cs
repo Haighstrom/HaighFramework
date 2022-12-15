@@ -1725,27 +1725,6 @@ internal enum SETWINDOWPOSFLAGS : int
     ASYNCWINDOWPOS = 0x4000
 }
 
-internal enum SizeMessage
-{
-    MAXHIDE = 4,
-    MAXIMIZED = 2,
-    MAXSHOW = 3,
-    MINIMIZED = 1,
-    RESTORED = 0
-}
-
-internal struct StyleStruct
-{
-    public WINDOWSTYLE Old;
-    public WINDOWSTYLE New;
-}
-
-internal struct ExtendedStyleStruct
-{
-    public WINDOWSTYLEEX Old;
-    public WINDOWSTYLEEX New;
-}
-
 //todo: complete this
 internal enum SystemErrorCode : uint
 {
