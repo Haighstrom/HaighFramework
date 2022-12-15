@@ -18,7 +18,7 @@ public class WinAPIWindow : IWindow
         return value < min ? min : value > max ? max : value;
     }
 
-    private static string GetString(GetStringEnum name)
+    private static string GetString(GETSTRING_NAME name)
     {
         unsafe
         {
@@ -108,7 +108,7 @@ public class WinAPIWindow : IWindow
         if (Environment.OSVersion.Version >= new Version(10, 0, 15063)) // win 10 creators update added support for per monitor v2
             User32.SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
         else if (Environment.OSVersion.Version >= new Version(6, 3, 0)) // win 8.1 added support for per monitor dpi
-            SHCore.SetProcessDpiAwareness(PROCESS_DPI_AWARENESS.Process_Per_Monitor_DPI_Aware);
+            SHCore.SetProcessDpiAwareness(PROCESS_DPI_AWARENESS.PROCESS_PER_MONITOR_DPI_AWARE);
         else
             User32.SetProcessDPIAware();
 
@@ -218,11 +218,11 @@ public class WinAPIWindow : IWindow
 
         OpenGL32.wglMakeCurrent(DeviceContext, RenderContext.Handle);
 
-        string version = GetString(GetStringEnum.Version).Remove(9);
-        Log.Information($"Successfully set up OpenGL v:{version}, GLSL: {GetString(GetStringEnum.ShadingLanguageVersion)}");
-        Log.Information($"Graphics Vendor: {GetString(GetStringEnum.Vendor)}");
-        Log.Information($"Graphics Card: {GetString(GetStringEnum.Renderer)}");
-        Log.Information($"Graphics Card: {GetString(GetStringEnum.Renderer)}");
+        string version = GetString(GETSTRING_NAME.GL_VERSION).Remove(9);
+        Log.Information($"Successfully set up OpenGL v:{version}, GLSL: {GetString(GETSTRING_NAME.GL_SHADING_LANGUAGE_VERSION)}");
+        Log.Information($"Graphics Vendor: {GetString(GETSTRING_NAME.GL_VENDOR)}");
+        Log.Information($"Graphics Card: {GetString(GETSTRING_NAME.GL_RENDERER)}");
+        Log.Information($"Graphics Card: {GetString(GETSTRING_NAME.GL_RENDERER)}");
     }
 
     private void LogWinRects()
@@ -238,108 +238,10 @@ public class WinAPIWindow : IWindow
         Log.Debug($"Child Client: {GetClientSize(_childWindowHandle)}");
     }
 
-    private void OnLButtonDown()
-    {
-        User32.SetCapture(_windowHandle); //tells the window to check for WM_?BUTTONUP even if mouse leaves the window
-
-        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Left, ButtonState.Down));
-    }
-
-    private void OnMButtonDown()
-    {
-        User32.SetCapture(_windowHandle); //tells the window to check for WM_?BUTTONUP even if mouse leaves the window
-
-        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Middle, ButtonState.Down));
-    }
-
-    private void OnRButtonDown()
-    {
-        User32.SetCapture(_windowHandle); //tells the window to check for WM_?BUTTONUP even if mouse leaves the window
-
-        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Right, ButtonState.Down));
-    }
-
-    private void OnXButtonDown(IntPtr wParam)
-    {
-        User32.SetCapture(_windowHandle); //tells the window to check for WM_LBUTTONUP even if mouse leaves the window
-
-        int x = wParam.ToHIWORD();
-        MouseButton button = wParam.ToHIWORD() switch
-        {
-            XBUTTON1 => MouseButton.Mouse4,
-            XBUTTON2 => MouseButton.Mouse5,
-            _ => throw new InvalidOperationException(),
-        };
-        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(button, ButtonState.Down));
-    }
-
-    private void OnLButtonUp()
-    {
-        User32.ReleaseCapture();
-
-        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Left, ButtonState.Up));
-    }
-
-    private void OnMButtonUp()
-    {
-        User32.ReleaseCapture();
-
-        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Middle, ButtonState.Up));
-    }
-
-    private void OnRButtonUp()
-    {
-        User32.ReleaseCapture();
-
-        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(MouseButton.Right, ButtonState.Up));
-    }
-
-    private void OnXButtonUp(IntPtr wParam)
-    {
-        User32.ReleaseCapture();
-
-        MouseButton button = wParam.ToHIWORD() switch
-        {
-            XBUTTON1 => MouseButton.Mouse4,
-            XBUTTON2 => MouseButton.Mouse5,
-            _ => throw new InvalidOperationException(),
-        };
-        MouseButtonUp?.Invoke(this, new ZMouseButtonEventArgs(button, ButtonState.Up));
-    }
-
     internal IntPtr StandardWindowProcedure(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)
     {
         switch (message)
         {
-            case WINDOWMESSAGE.WM_LBUTTONDOWN:
-                OnLButtonDown();
-                break;
-            case WINDOWMESSAGE.WM_MBUTTONDOWN:
-                OnMButtonDown();
-                break;
-            case WINDOWMESSAGE.WM_RBUTTONDOWN:
-                OnRButtonDown();
-                break;
-            case WINDOWMESSAGE.WM_XBUTTONDOWN:
-                OnXButtonDown(wParam);
-                break;
-            case WINDOWMESSAGE.WM_LBUTTONUP:
-                OnLButtonUp();
-                break;
-            case WINDOWMESSAGE.WM_MBUTTONUP:
-                OnMButtonUp();
-                break;
-            case WINDOWMESSAGE.WM_RBUTTONUP:
-                OnRButtonUp();
-                break;
-            case WINDOWMESSAGE.WM_XBUTTONUP:
-                OnXButtonUp(wParam);
-                break;
-
-            case WINDOWMESSAGE.WM_MOUSEMOVE:
-                Log.Debug("Mouse moved");
-                break;
-
             case WINDOWMESSAGE.WM_DPICHANGED:
                 DPI = wParam.ToHIWORD() / 96f;
                 var proposedRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
@@ -939,10 +841,6 @@ public class WinAPIWindow : IWindow
     /// Called whenever a keyboard key is released
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs>? KeyUp;
-
-    public event EventHandler<ZMouseButtonEventArgs>? MouseButtonDown;
-
-    public event EventHandler<ZMouseButtonEventArgs>? MouseButtonUp;
 
     public event EventHandler? Moved;
 

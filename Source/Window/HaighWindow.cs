@@ -202,30 +202,4 @@ public class HaighWindow : IWindow
             _implementation.KeyUp -= value;
         }
     }
-
-    public event EventHandler<ZMouseButtonEventArgs>? MouseButtonDown
-    {
-        add
-        {
-            _implementation.MouseButtonDown += value;
-        }
-
-        remove
-        {
-            _implementation.MouseButtonDown -= value;
-        }
-    }
-
-    public event EventHandler<ZMouseButtonEventArgs>? MouseButtonUp
-    {
-        add
-        {
-            _implementation.MouseButtonUp += value;
-        }
-
-        remove
-        {
-            _implementation.MouseButtonUp -= value;
-        }
-    }
 }
