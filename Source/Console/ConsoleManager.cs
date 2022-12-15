@@ -17,7 +17,19 @@ public class ConsoleManager : IConsoleManager
         return mInfo.Work;
     }
 
-    public bool IsOpen { get; private set; }
+    public ConsoleManager()
+    {
+    }
+
+    public ConsoleManager(ConsoleSettings settings)
+    {
+        if (settings.ShowConsoleWindow)
+        {
+            ShowConsole(settings.X, settings.Y, settings.Width, settings.Height);
+        }
+    }
+
+    public bool IsOpen { get; private set; } = false;
 
     public int MaxHeight => GetMaxSize().Height;
 
