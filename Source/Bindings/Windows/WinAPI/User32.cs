@@ -4,6 +4,220 @@ using System.Text;
 
 namespace HaighFramework.WinAPI;
 
+#region Enums
+/// <summary>
+/// For use in <see cref="User32.LoadImage"/>
+/// </summary>
+internal enum IMAGE_FLAG : uint
+{
+    /// <summary>
+    /// When the uType parameter specifies IMAGE_BITMAP, causes the function to return a DIB section bitmap rather than a compatible bitmap. This flag is useful for loading a bitmap without mapping it to the colors of the display device.
+    /// </summary>
+    LR_CREATEDIBSECTION = 0x00002000,
+    /// <summary>
+    /// The default flag; it does nothing. All it means is "not LR_MONOCHROME".
+    /// </summary>
+    LR_DEFAULTCOLOR = 0x00000000,
+    /// <summary>
+    /// Uses the width or height specified by the system metric values for cursors or icons, if the cxDesired or cyDesired values are set to zero. If this flag is not specified and cxDesired and cyDesired are set to zero, the function uses the actual resource size. If the resource contains multiple images, the function uses the size of the first image.
+    /// </summary>
+    LR_DEFAULTSIZE = 0x00000040,
+    /// <summary>
+    /// Loads the stand-alone image from the file specified by lpszName (icon, cursor, or bitmap file).
+    /// </summary>
+    LR_LOADFROMFILE = 0x00000010,
+    /// <summary>
+    /// Searches the color table for the image and replaces the following shades of gray with the corresponding 3-D color.
+    /// Dk Gray, RGB(128,128,128) with COLOR_3DSHADOW
+    /// Gray, RGB(192,192,192) with COLOR_3DFACE
+    /// Lt Gray, RGB(223,223,223) with COLOR_3DLIGHT
+    /// Do not use this option if you are loading a bitmap with a color depth greater than 8bpp.
+    /// </summary>
+    LR_LOADMAP3DCOLORS = 0x00001000,
+    /// <summary>
+    /// Retrieves the color value of the first pixel in the image and replaces the corresponding entry in the color table with the default window color (COLOR_WINDOW). All pixels in the image that use that entry become the default window color. This value applies only to images that have corresponding color tables.
+    /// Do not use this option if you are loading a bitmap with a color depth greater than 8bpp.
+    /// If fuLoad includes both the LR_LOADTRANSPARENT and LR_LOADMAP3DCOLORS values, LR_LOADTRANSPARENT takes precedence. However, the color table entry is replaced with COLOR_3DFACE rather than COLOR_WINDOW.
+    /// </summary>
+    LR_LOADTRANSPARENT = 0x00000020,
+    /// <summary>
+    /// Loads the image in black and white.
+    /// </summary>
+    LR_MONOCHROME = 0x00000001,
+    /// <summary>
+    /// Shares the image handle if the image is loaded multiple times. If LR_SHARED is not set, a second call to LoadImage for the same resource will load the image again and return a different handle.
+    /// When you use this flag, the system will destroy the resource when it is no longer needed.
+    /// Do not use LR_SHARED for images that have non-standard sizes, that may change after loading, or that are loaded from a file.
+    /// When loading a system icon or cursor, you must use LR_SHARED or the function will fail to load the resource.
+    /// This function finds the first image in the cache with the requested resource name, regardless of the size requested.
+    /// </summary>
+    LR_SHARED = 0x00008000,
+    /// <summary>
+    /// Uses true VGA colors.
+    /// </summary>
+    LR_VGACOLOR = 0x00000080,
+}
+
+/// <summary>
+/// The type of image to be loaded in <see cref="User32.LoadImage"/>
+/// </summary>
+internal enum IMAGE_TYPE : uint
+{
+    /// <summary>
+    /// Loads a bitmap.
+    /// </summary>
+    IMAGE_BITMAP = 0,
+    /// <summary>
+    /// Loads a cursor.
+    /// </summary>
+    IMAGE_CURSOR = 2,
+    /// <summary>
+    /// Loads an icon.
+    /// </summary>
+    IMAGE_ICON = 1,
+}
+
+/// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadcursorw
+/// For use with LoadCursor or LoadImage
+/// </summary>
+public enum PredefinedCursors : ushort
+{
+    /// <summary>
+    /// Standard arrow and small hourglass
+    /// </summary>
+    IDC_APPSTARTING = 32650,
+
+    /// <summary>
+    /// Standard arrow
+    /// </summary>
+    IDC_ARROW = 32512,
+
+    /// <summary>
+    /// Crosshair
+    /// </summary>
+    IDC_CROSS = 32515,
+
+    /// <summary>
+    /// Hand
+    /// </summary>
+    IDC_HAND = 32649,
+
+    /// <summary>
+    /// Arrow and question mark
+    /// </summary>
+    IDC_HELP = 32651,
+
+    /// <summary>
+    /// I-beam
+    /// </summary>
+    IDC_IBEAM = 32513,
+
+    /// <summary>
+    /// Slashed circle
+    /// </summary>
+    IDC_NO = 32648,
+
+    /// <summary>
+    /// Obsolete for applications marked version 4.0 or later. Use IDC_SIZEALL.
+    /// </summary>
+    IDC_SIZE = 32640,
+
+    /// <summary>
+    /// Four-pointed arrow pointing north, south, east, and west
+    /// </summary>
+    IDC_SIZEALL = 32646,
+
+    /// <summary>
+    /// Double-pointed arrow pointing northeast and southwest
+    /// </summary>
+    IDC_SIZENESW = 32643,
+
+    /// <summary>
+    /// Double-pointed arrow pointing north and south
+    /// </summary>
+    IDC_SIZENS = 32645,
+
+    /// <summary>
+    /// Double-pointed arrow pointing northwest and southeast
+    /// </summary>
+    IDC_SIZENWSE = 32642,
+
+    /// <summary>
+    /// Double-pointed arrow pointing west and east
+    /// </summary>
+    IDC_SIZEWE = 32644,
+
+    /// <summary>
+    /// Vertical arrow
+    /// </summary>
+    IDC_UPARROW = 32516,
+
+    /// <summary>
+    /// Hourglass
+    /// </summary>
+    IDC_WAIT = 32514
+}
+
+/// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadiconw
+/// For use with LoadIcon / LoadImage
+/// </summary>
+public enum PredefinedIcons : ushort
+{
+    /// <summary>
+    /// Default application icon.
+    /// </summary>
+    IDI_APPLICATION = 32512,
+
+    /// <summary>
+    /// Asterisk icon. Same as IDI_INFORMATION.
+    /// </summary>
+    IDI_ASTERISK = 32516,
+
+    /// <summary>
+    /// Hand-shaped icon.
+    /// </summary>
+    IDI_ERROR = 32513,
+
+    /// <summary>
+    /// Exclamation point icon. Same as IDI_WARNING.
+    /// </summary>
+    IDI_EXCLAMATION = 32515,
+
+    /// <summary>
+    /// Hand-shaped icon. Same as IDI_ERROR.
+    /// </summary>
+    IDI_HAND = IDI_ERROR,
+
+    /// <summary>
+    /// Asterisk icon.
+    /// </summary>
+    IDI_INFORMATION = IDI_ASTERISK,
+
+    /// <summary>
+    /// Question mark icon.
+    /// </summary>
+    IDI_QUESTION = 32514,
+
+    /// <summary>
+    /// Security Shield icon.
+    /// </summary>
+    IDI_SHIELD = 32518,
+
+    /// <summary>
+    /// Exclamation point icon.
+    /// </summary>
+    IDI_WARNING = IDI_EXCLAMATION,
+
+    /// <summary>
+    /// Default application icon.
+    /// Windows 2000:  Windows logo icon.
+    /// </summary>
+    IDI_WINLOGO = 32517,
+}
+#endregion
+
 /// <summary>
 /// Windows management functions for message handling, timers, menus, and communications.
 /// </summary>
@@ -408,11 +622,11 @@ internal static class User32
     /// <summary>
     /// Retrieves the raw input from the specified device.
     /// </summary>
-    /// <param name="RawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
-    /// <param name="Command">The command flag.</param>
-    /// <param name="Data">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
-    /// <param name="Size">The size, in bytes, of the data in pData.</param>
-    /// <param name="SizeHeader">The size, in bytes, of the RAWINPUTHEADER structure..</param>
+    /// <param name="hRawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
+    /// <param name="uiCommand">The command flag.</param>
+    /// <param name="pData">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
+    /// <param name="pcbSize">The size, in bytes, of the data in pData.</param>
+    /// <param name="cbSizeHeader">The size, in bytes, of the RAWINPUTHEADER structure..</param>
     /// <returns>If pData is NULL and the function is successful, the return value is 0. If pData is not NULL and the function is successful, the return value is the number of bytes copied into pData. If there is an error, the return value is (UINT)-1.</returns>
     [DllImport(Library)]
     public static extern int GetRawInputData(IntPtr hRawInput, RAWINPUTDATAFLAG uiCommand, [Out] IntPtr pData, [In, Out] ref int pcbSize, int cbSizeHeader);
@@ -420,11 +634,11 @@ internal static class User32
     /// <summary>
     /// Retrieves the raw input from the specified device.
     /// </summary>
-    /// <param name="RawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
-    /// <param name="Command">The command flag.</param>
-    /// <param name="Data">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
-    /// <param name="Size">The size, in bytes, of the data in pData.</param>
-    /// <param name="SizeHeader">The size, in bytes, of the RAWINPUTHEADER structure..</param>
+    /// <param name="hRawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
+    /// <param name="uiCommand">The command flag.</param>
+    /// <param name="pData">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
+    /// <param name="pcbSize">The size, in bytes, of the data in pData.</param>
+    /// <param name="cbSizeHeader">The size, in bytes, of the RAWINPUTHEADER structure..</param>
     /// <returns>If pData is NULL and the function is successful, the return value is 0. If pData is not NULL and the function is successful, the return value is the number of bytes copied into pData. If there is an error, the return value is (UINT)-1.</returns>
     [DllImport(Library)]
     public static extern int GetRawInputData(IntPtr hRawInput, RAWINPUTDATAFLAG uiCommand, [Out] out RawInput pData, [In, Out] ref int pcbSize, int cbSizeHeader);
@@ -553,21 +767,21 @@ internal static class User32
     /// <param name="fuLoad"></param>
     /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true)]
-    public static extern IntPtr LoadImage(IntPtr hInst, ushort name, LoadImage_Type type, int cx, int cy, LoadImage_FULoad fuLoad);
+    public static extern IntPtr LoadImage(IntPtr hInst, ushort name, IMAGE_TYPE type, int cx, int cy, IMAGE_FLAG fuLoad);
 
     /// <summary>
     /// Loads a standard windows icon.
     /// </summary>
     /// <param name="icon">The icon to use</param>
     /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    public static IntPtr LoadImage(PredefinedIcons icon) => LoadImage(IntPtr.Zero, (ushort)icon, LoadImage_Type.IMAGE_ICON, 0, 0, LoadImage_FULoad.LR_SHARED);
+    public static IntPtr LoadImage(PredefinedIcons icon) => LoadImage(IntPtr.Zero, (ushort)icon, IMAGE_TYPE.IMAGE_ICON, 0, 0, IMAGE_FLAG.LR_SHARED);
 
     /// <summary>
     /// Loads a standard windows cursor.
     /// </summary>
     /// <param name="cursor">The cursor to use</param>
     /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    public static IntPtr LoadImage(PredefinedCursors cursor) => LoadImage(IntPtr.Zero, (ushort)cursor, LoadImage_Type.IMAGE_CURSOR, 0, 0, LoadImage_FULoad.LR_SHARED);
+    public static IntPtr LoadImage(PredefinedCursors cursor) => LoadImage(IntPtr.Zero, (ushort)cursor, IMAGE_TYPE.IMAGE_CURSOR, 0, 0, IMAGE_FLAG.LR_SHARED);
 
     /// <summary>
     /// Translates (maps) a virtual-key code into a scan code or character value, or translates a scan code into a virtual-key code.

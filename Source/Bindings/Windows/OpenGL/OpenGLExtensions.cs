@@ -119,7 +119,7 @@ public static partial class OpenGL32
     private delegate void DEL_glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha);
     private static DEL_glBlendFuncSeparate glBlendFuncSeparate;
 
-    public static void BlendFuncSeperate(BlendScaleFactor srcRGB, BlendScaleFactor dstRGB, BlendScaleFactor srcAlpha, BlendScaleFactor dstAlpha)
+    public static void BlendFuncSeperate(BLEND_SCALE_FACTOR srcRGB, BLEND_SCALE_FACTOR dstRGB, BLEND_SCALE_FACTOR srcAlpha, BLEND_SCALE_FACTOR dstAlpha)
     {
         glBlendFuncSeparate((int)srcRGB, (int)dstRGB, (int)srcAlpha, (int)dstAlpha);
     }
@@ -304,7 +304,7 @@ public static partial class OpenGL32
     /// <summary>
     /// glFramebufferTexture2D
     /// </summary>
-    public static void FramebufferTexture2D(FramebufferTarget target, FramebufferAttachment attachment, TextureTarget texTarget, uint texture, int level)
+    public static void FramebufferTexture2D(FramebufferTarget target, FramebufferAttachment attachment, TEXTURE_TARGET texTarget, uint texture, int level)
     {
         _glFramebufferTexture2D((int)target, (int)attachment, (int)texTarget, texture, level);
     }
@@ -467,7 +467,7 @@ public static partial class OpenGL32
     private delegate void DEL_glTexStorage2D(uint target, int levels, int internalFormat, int width, int height);
     private static DEL_glTexStorage2D _glTexStorage2D;
 
-    public static void TexStorage2D(TextureTarget target, int levels, TexInternalFormat internalFormat, int width, int height)
+    public static void TexStorage2D(TEXTURE_TARGET target, int levels, TexInternalFormat internalFormat, int width, int height)
     {
         _glTexStorage2D((uint)target, levels, (int)internalFormat, width, height);
     }

@@ -1,14 +1,164 @@
 ﻿using System.Security;
 using System.Runtime.InteropServices;
+using static System.Formats.Asn1.AsnWriter;
+using System;
 
 namespace HaighFramework.OpenGL;
 
 #region Enums
+
 /// <summary>
-/// <see cref="OpenGL32.glClear"/> takes a single argument that is the bitwise OR of several values indicating which buffer(s) are to be cleared.
+/// The alpha comparison function used in <see cref="OpenGL32.glAlphaFunc"/>
+/// </summary>
+public enum ALPHA_COMPARISON_FUNCTION : int
+{
+    /// <summary>
+    /// Never passes.
+    /// </summary>
+    GL_NEVER = 0x0200,
+
+    /// <summary>
+    /// Passes if the incoming alpha value is less than the reference value.
+    /// </summary>
+    GL_LESS = 0x0201,
+
+    /// <summary>
+    /// Passes if the incoming alpha value is equal to the reference value.
+    /// </summary>
+    GL_EQUAL = 0x0202,
+
+    /// <summary>
+    /// Passes if the incoming alpha value is less than or equal to the reference value.
+    /// </summary>
+    GL_LEQUAL = 0x0203,
+
+    /// <summary>
+    /// Passes if the incoming alpha value is greater than the reference value.
+    /// </summary>
+    GL_GREATER = 0x0204,
+
+    /// <summary>
+    /// Passes if the incoming alpha value is not equal to the reference value.
+    /// </summary>
+    GL_NOTEQUAL = 0x0205,
+
+    /// <summary>
+    /// Passes if the incoming alpha value is greater than or equal to the reference value.
+    /// </summary>
+    GL_GEQUAL = 0x0206,
+
+    /// <summary>
+    /// Always passes (initial value).
+    /// </summary>
+    GL_ALWAYS = 0x0207,
+}
+
+/// <summary>
+/// Specifies how colour blending calculations are performed. The color specified by glBlendColor is referred to as (Rc,Gc,Bc,Ac). They are understood to have integer values between 0 and (kR,kG,kB,kA), where kc=2mc−1 and(mR, mG, mB, mA) is the number of red, green, blue, and alpha bitplanes. Source and destination scale factors are referred to as (sR, sG, sB, sA) and (dR, dG, dB, dA). The scale factors described in the table, denoted (fR, fG, fB, fA), represent either source or destination factors. All scale factors have range[0, 1].
+/// </summary>
+public enum BLEND_SCALE_FACTOR : int
+{
+    /// <summary>
+    /// Maps (0,0,0,0)
+    /// </summary>
+    GL_ZERO = 0,
+
+    /// <summary>
+    /// (1,1,1,1)
+    /// </summary>
+    GL_ONE = 1,
+
+    /// <summary>
+    /// (R? / kR , G? / kG , B? / kB , A? / kA )
+    /// </summary>
+    GL_SRC_COLOR = 0x0300,
+
+    /// <summary>
+    /// (1,1,1,1) - (R? / kR , G? / kG , B? / kB , A? / kA )
+    /// </summary>
+    GL_ONE_MINUS_SRC_COLOR = 0x0301,
+
+    /// <summary>
+    /// (Rd / kR , Gd / kG , Bd / kB , Ad / kA )
+    /// </summary>
+    GL_DST_COLOR = 0x0306,
+
+    /// <summary>
+    /// (1,1,1,1) - (Rd / kR , Gd / kG , Bd / kB , Ad / kA )
+    /// </summary>
+    GL_ONE_MINUS_DST_COLOR = 0x0307,
+
+    /// <summary>
+    /// (A? / kA , A? / kA , A? / kA , A? / kA )
+    /// </summary>
+    GL_SRC_ALPHA = 0x0302,
+
+    /// <summary>
+    /// (1,1,1,1) - (A? / kA , A? / kA , A? / kA , A? / kA )
+    /// </summary>
+    GL_ONE_MINUS_SRC_ALPHA = 0x0303,
+
+    /// <summary>
+    /// (Ad / kA , Ad / kA , Ad / kA , Ad / kA )
+    /// </summary>
+    GL_DST_ALPHA = 0x0304,
+
+    /// <summary>
+    /// (1,1,1,1) - (Ad / kA , Ad / kA , Ad / kA , Ad / kA )
+    /// </summary>
+    GL_ONE_MINUS_DST_ALPHA = 0x0305,
+
+    /// <summary>
+    /// (Rc,Gc,Bc,Ac)
+    /// </summary>
+    GL_CONSTANT_COLOR = 0x8001,
+
+    /// <summary>
+    /// (1,1,1,1)−(Rc,Gc,Bc,Ac)
+    /// </summary>
+    GL_ONE_MINUS_CONSTANT_COLOR = 0x8002,
+
+    /// <summary>
+    /// (Ac,Ac,Ac,Ac)
+    /// </summary>
+    GL_CONSTANT_ALPHA = 0x8003,
+
+    /// <summary>
+    /// (1,1,1,1)−(Ac,Ac,Ac,Ac)
+    /// </summary>
+    GL_ONE_MINUS_CONSTANT_ALPHA = 0x8004,
+
+    /// <summary>
+    /// (i, i, i, 1), i = min (A? , kA - Ad ) / kA
+    /// </summary>
+    GL_SRC_ALPHA_SATURATE = 0x0308,
+
+    /// <summary>
+    /// (Rs1 / kR, Gs1 / kG, Bs1 / kB, As1 / kA)
+    /// </summary>
+    GL_SRC1_COLOR = 0x88F9,
+
+    /// <summary>
+    /// (1,1,1,1) − (Rs1 / kR, Gs1 / kG, Bs1 / kB, As1 / kA)
+    /// </summary>
+    GL_ONE_MINUS_SRC1_COLOR = 0x88FA,
+
+    /// <summary>
+    /// (As1 / kA, As1 / kA,As1 / kA, As1 / kA)
+    /// </summary>
+    GL_SRC1_ALPHA = 0x8589,
+
+    /// <summary>
+    /// (1,1,1,1) − (As1 / kA, As1 / kA, As1 / kA, As1 / kA)
+    /// </summary>
+    GL_ONE_MINUS_SRC1_ALPHA = 0x88FB,
+}
+
+/// <summary>
+/// The buffer mask to clear in <see cref="OpenGL32.glClear"/>
 /// </summary>
 [Flags]
-public enum CLEAR_MASK : uint
+public enum BUFFER_MASK : uint
 {
     /// <summary>
     /// Indicates the buffers currently enabled for color writing.
@@ -31,262 +181,96 @@ public enum CLEAR_MASK : uint
     GL_STENCIL_BUFFER_BIT = 0x00000400,
 }
 
-public enum GLAlphaFuncEnum : int
+/// <summary>
+/// Specifies the string to retrieve in <see cref="OpenGL32.glGetString"/>
+/// </summary>
+public enum GETSTRING_NAME : uint
 {
     /// <summary>
-    /// Never passes.
+    /// Returns the company responsible for this GL implementation. This name does not change from release to release.
     /// </summary>
-    GL_NEVER = 0x0200,
+    GL_VENDOR = 0x1F00,
+
     /// <summary>
-    /// Passes if the incoming alpha value is less than the reference value.
+    /// Returns the name of the renderer. This name is typically specific to a particular configuration of a hardware platform. It does not change from release to release.
     /// </summary>
-    GL_LESS = 0x0201,
+    GL_RENDERER = 0x1F01,
+
     /// <summary>
-    /// Passes if the incoming alpha value is equal to the reference value.
+    /// Returns a version or release number.
     /// </summary>
-    GL_EQUAL = 0x0202,
+    GL_VERSION = 0x1F02,
+
     /// <summary>
-    /// Passes if the incoming alpha value is less than or equal to the reference value.
+    /// Returns a version or release number for the shading language.
     /// </summary>
-    GL_LEQUAL = 0x0203,
+    GL_SHADING_LANGUAGE_VERSION = 0x8B8C,
+
     /// <summary>
-    /// Passes if the incoming alpha value is greater than the reference value.
+    /// For glGetStringi only, returns the extension string supported by the implementation at index.
     /// </summary>
-    GL_GREATER = 0x0204,
-    /// <summary>
-    /// Passes if the incoming alpha value is not equal to the reference value.
-    /// </summary>
-    GL_NOTEQUAL = 0x0205,
-    /// <summary>
-    /// Passes if the incoming alpha value is greater than or equal to the reference value.
-    /// </summary>
-    GL_GEQUAL = 0x0206,
-    /// <summary>
-    /// Always passes (initial value).
-    /// </summary>
-    GL_ALWAYS = 0x0207,
+    GL_EXTENSIONS = 0x1F03,
 }
 
 /// <summary>
-/// https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml
-/// Specifies how the red, green, blue, and alpha source and destination blending factors are computed
-/// For use with OpenGL32 glBlendFunc, glBlendFunci, glBlendFuncSeparate, glBlendFuncSeparatei
+/// The face of polygons to apply certain functions to
 /// </summary>
-public enum BlendScaleFactor : int
+public enum POLYGON_FACE : int
 {
-    GL_ZERO = 0,
-    GL_ONE = 1,
-    GL_SRC_COLOR = 0x0300,
-    GL_ONE_MINUS_SRC_COLOR = 0x0301,
-    GL_DST_COLOR = 0x0306,
-    GL_ONE_MINUS_DST_COLOR = 0x0307,
-    GL_SRC_ALPHA = 0x0302,
-    GL_ONE_MINUS_SRC_ALPHA = 0x0303,
-    GL_DST_ALPHA = 0x0304,
-    GL_ONE_MINUS_DST_ALPHA = 0x0305,
-    GL_CONSTANT_COLOR = 0x8001,
-    GL_ONE_MINUS_CONSTANT_COLOR = 0x8002,
-    GL_CONSTANT_ALPHA = 0x8003,
-    GL_ONE_MINUS_CONSTANT_ALPHA = 0x8004,
-    GL_SRC_ALPHA_SATURATE = 0x0308,
-    GL_SRC1_COLOR = 0x88F9,
-    GL_ONE_MINUS_SRC1_COLOR = 0x88FA,
-    GL_SRC1_ALPHA = 0x8589,
-    GL_ONE_MINUS_SRC1_ALPHA = 0x88FB,
+    /// <summary>
+    /// front-facing polygons
+    /// </summary>
+    GL_FRONT = 0x0404,
+
+    /// <summary>
+    /// back-facing polygons
+    /// </summary>
+    GL_BACK = 0x0405,
+
+    /// <summary>
+    /// front- and back-facing polygons
+    /// </summary>
+    GL_FRONT_AND_BACK = 0x0408,
 }
 
 /// <summary>
-/// Used in GL.Arb.CompressedTexImage1D, GL.Arb.CompressedTexImage2D and 123 other functions
+/// The mode for use with <see cref="OpenGL32.glPolygonMode"/>
 /// </summary>
-public enum TextureTarget : int
+public enum POLYGON_MODE : int
 {
     /// <summary>
-    /// Original was GL_TEXTURE_1D = 0x0DE0
+    /// Polygon vertices that are marked as the start of a boundary edge are drawn as points. Point attributes such as GL_POINT_SIZE and GL_POINT_SMOOTH control the rasterization of the points. Polygon rasterization attributes other than GL_POLYGON_MODE have no effect.
     /// </summary>
-    Texture1D = 0x0DE0,
+    GL_POINT = 0x1B00,
     /// <summary>
-    /// Original was GL_TEXTURE_2D = 0x0DE1
+    /// Boundary edges of the polygon are drawn as line segments. They are treated as connected line segments for line stippling; the line stipple counter and pattern are not reset between segments (see glLineStipple). Line attributes such as GL_LINE_WIDTH and GL_LINE_SMOOTH control the rasterization of the lines. Polygon rasterization attributes other than GL_POLYGON_MODE have no effect.
     /// </summary>
-    Texture2D = 0x0DE1,
+    GL_LINE = 0x1B01,
     /// <summary>
-    /// Original was GL_PROXY_TEXTURE_1D = 0x8063
+    /// The interior of the polygon is filled. Polygon attributes such as GL_POLYGON_STIPPLE and GL_POLYGON_SMOOTH control the rasterization of the polygon.
     /// </summary>
-    ProxyTexture1D = 0x8063,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_1D_EXT = 0x8063
-    /// </summary>
-    ProxyTexture1DExt = 0x8063,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_2D = 0x8064
-    /// </summary>
-    ProxyTexture2D = 0x8064,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_2D_EXT = 0x8064
-    /// </summary>
-    ProxyTexture2DExt = 0x8064,
-    /// <summary>
-    /// Original was GL_TEXTURE_3D = 0x806F
-    /// </summary>
-    Texture3D = 0x806F,
-    /// <summary>
-    /// Original was GL_TEXTURE_3D_EXT = 0x806F
-    /// </summary>
-    Texture3DExt = 0x806F,
-    /// <summary>
-    /// Original was GL_TEXTURE_3D_OES = 0x806F
-    /// </summary>
-    Texture3DOes = 0x806F,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_3D = 0x8070
-    /// </summary>
-    ProxyTexture3D = 0x8070,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_3D_EXT = 0x8070
-    /// </summary>
-    ProxyTexture3DExt = 0x8070,
-    /// <summary>
-    /// Original was GL_DETAIL_TEXTURE_2D_SGIS = 0x8095
-    /// </summary>
-    DetailTexture2DSgis = 0x8095,
-    /// <summary>
-    /// Original was GL_TEXTURE_4D_SGIS = 0x8134
-    /// </summary>
-    Texture4DSgis = 0x8134,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_4D_SGIS = 0x8135
-    /// </summary>
-    ProxyTexture4DSgis = 0x8135,
-    /// <summary>
-    /// Original was GL_TEXTURE_MIN_LOD = 0x813A
-    /// </summary>
-    TextureMinLod = 0x813A,
-    /// <summary>
-    /// Original was GL_TEXTURE_MIN_LOD_SGIS = 0x813A
-    /// </summary>
-    TextureMinLodSgis = 0x813A,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_LOD = 0x813B
-    /// </summary>
-    TextureMaxLod = 0x813B,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_LOD_SGIS = 0x813B
-    /// </summary>
-    TextureMaxLodSgis = 0x813B,
-    /// <summary>
-    /// Original was GL_TEXTURE_BASE_LEVEL = 0x813C
-    /// </summary>
-    TextureBaseLevel = 0x813C,
-    /// <summary>
-    /// Original was GL_TEXTURE_BASE_LEVEL_SGIS = 0x813C
-    /// </summary>
-    TextureBaseLevelSgis = 0x813C,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_LEVEL = 0x813D
-    /// </summary>
-    TextureMaxLevel = 0x813D,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_LEVEL_SGIS = 0x813D
-    /// </summary>
-    TextureMaxLevelSgis = 0x813D,
-    /// <summary>
-    /// Original was GL_TEXTURE_RECTANGLE = 0x84F5
-    /// </summary>
-    TextureRectangle = 0x84F5,
-    /// <summary>
-    /// Original was GL_TEXTURE_RECTANGLE_ARB = 0x84F5
-    /// </summary>
-    TextureRectangleArb = 0x84F5,
-    /// <summary>
-    /// Original was GL_TEXTURE_RECTANGLE_NV = 0x84F5
-    /// </summary>
-    TextureRectangleNv = 0x84F5,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_RECTANGLE = 0x84F7
-    /// </summary>
-    ProxyTextureRectangle = 0x84F7,
-    /// <summary>
-    /// Original was GL_TEXTURE_CUBE_MAP = 0x8513
-    /// </summary>
-    TextureCubeMap = 0x8513,
-    /// <summary>
-    /// Original was GL_TEXTURE_BINDING_CUBE_MAP = 0x8514
-    /// </summary>
-    TextureBindingCubeMap = 0x8514,
-    /// <summary>
-    /// Original was GL_TEXTURE_CUBE_MAP_POSITIVE_X = 0x8515
-    /// </summary>
-    TextureCubeMapPositiveX = 0x8515,
-    /// <summary>
-    /// Original was GL_TEXTURE_CUBE_MAP_NEGATIVE_X = 0x8516
-    /// </summary>
-    TextureCubeMapNegativeX = 0x8516,
-    /// <summary>
-    /// Original was GL_TEXTURE_CUBE_MAP_POSITIVE_Y = 0x8517
-    /// </summary>
-    TextureCubeMapPositiveY = 0x8517,
-    /// <summary>
-    /// Original was GL_TEXTURE_CUBE_MAP_NEGATIVE_Y = 0x8518
-    /// </summary>
-    TextureCubeMapNegativeY = 0x8518,
-    /// <summary>
-    /// Original was GL_TEXTURE_CUBE_MAP_POSITIVE_Z = 0x8519
-    /// </summary>
-    TextureCubeMapPositiveZ = 0x8519,
-    /// <summary>
-    /// Original was GL_TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x851A
-    /// </summary>
-    TextureCubeMapNegativeZ = 0x851A,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_CUBE_MAP = 0x851B
-    /// </summary>
-    ProxyTextureCubeMap = 0x851B,
-    /// <summary>
-    /// Original was GL_TEXTURE_1D_ARRAY = 0x8C18
-    /// </summary>
-    Texture1DArray = 0x8C18,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_1D_ARRAY = 0x8C19
-    /// </summary>
-    ProxyTexture1DArray = 0x8C19,
-    /// <summary>
-    /// Original was GL_TEXTURE_2D_ARRAY = 0x8C1A
-    /// </summary>
-    Texture2DArray = 0x8C1A,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_2D_ARRAY = 0x8C1B
-    /// </summary>
-    ProxyTexture2DArray = 0x8C1B,
-    /// <summary>
-    /// Original was GL_TEXTURE_BUFFER = 0x8C2A
-    /// </summary>
-    TextureBuffer = 0x8C2A,
-    /// <summary>
-    /// Original was GL_TEXTURE_CUBE_MAP_ARRAY = 0x9009
-    /// </summary>
-    TextureCubeMapArray = 0x9009,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_CUBE_MAP_ARRAY = 0x900B
-    /// </summary>
-    ProxyTextureCubeMapArray = 0x900B,
-    /// <summary>
-    /// Original was GL_TEXTURE_2D_MULTISAMPLE = 0x9100
-    /// </summary>
-    Texture2DMultisample = 0x9100,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_2D_MULTISAMPLE = 0x9101
-    /// </summary>
-    ProxyTexture2DMultisample = 0x9101,
-    /// <summary>
-    /// Original was GL_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9102
-    /// </summary>
-    Texture2DMultisampleArray = 0x9102,
-    /// <summary>
-    /// Original was GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9103
-    /// </summary>
-    ProxyTexture2DMultisampleArray = 0x9103
+    GL_FILL = 0x1B02,
 }
 
-public enum PixelStoreParameter : int
+/// <summary>
+/// Flat and smooth shading are specified by <see cref="OpenGL32.glShadeModel"/> with mode set to GL_FLAT and GL_SMOOTH, respectively.
+/// </summary>
+public enum SHADE_TECHNIQUE : int
+{
+    /// <summary>
+    /// Flat shading selects the computed color of just one vertex and assigns it to all the pixel fragments generated by rasterizing a single primitive.
+    /// </summary>
+    GL_FLAT = 0x1D00,
+
+    /// <summary>
+    /// Smooth shading, the default, causes the computed colors of vertices to be interpolated as the primitive is rasterized, typically assigning different colors to each resulting pixel fragment. 
+    /// </summary>
+    GL_SMOOTH = 0x1D01,
+}
+
+//----Enums Name and Values Updated, and Fully Commented Above This Line ----
+
+public enum PIXEL_STORE_MODE : int
 {
     GL_UNPACK_SWAP_BYTES = 0x0CF0,
     GL_UNPACK_LSB_FIRST = 0x0CF1,
@@ -337,92 +321,325 @@ public enum PixelStoreParameter : int
     GL_PACK_COMPRESSED_BLOCK_SIZE = 0x912E
 }
 
-public enum PolygonMode : int
-{
-    /// <summary>
-    /// Original was GL_POINT = 0x1B00
-    /// </summary>
-    Point = 0x1B00,
-    /// <summary>
-    /// Original was GL_LINE = 0x1B01
-    /// </summary>
-    Line = 0x1B01,
-    /// <summary>
-    /// Original was GL_FILL = 0x1B02
-    /// </summary>
-    Fill = 0x1B02,
-}
-
-public enum PRIMITIVEMODE : int
+public enum PRIMITIVE_TYPE : int
 {
     //todo: complete this. Look at other functions for docs? 
     //https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml
     //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
+
     /// <summary>
     /// Treats each vertex as a single point. Vertex n defines point n. N points are drawn.
     /// </summary>
     GL_POINTS = 0,
+
     /// <summary>
-    /// GL_LINES
+    /// Treats each pair of vertices as an independent line segment. Vertices 2 ⁢ n - 1 and 2 ⁢ n define line n. N 2 lines are drawn.
     /// </summary>
     GL_LINES = 1,
+
     /// <summary>
-    /// GL_LINE_STRIP
+    /// Draws a connected group of line segments from the first vertex to the last. Vertices n and n + 1 define line n. N - 1 lines are drawn.
     /// </summary>
     GL_LINE_STRIP = 3,
+
     /// <summary>
-    /// GL_LINE_LOOP
+    /// Draws a connected group of line segments from the first vertex to the last, then back to the first. Vertices n and n + 1 define line n. The last line, however, is defined by vertices N and 1 . N lines are drawn.
     /// </summary>
     GL_LINE_LOOP = 2,
+
     /// <summary>
-    /// GL_TRIANGLES
+    /// Treats each triplet of vertices as an independent triangle. Vertices 3 ⁢ n - 2 , 3 ⁢ n - 1 , and 3 ⁢ n define triangle n. N 3 triangles are drawn.
     /// </summary>
     GL_TRIANGLES = 4,
+
     /// <summary>
-    /// GL_TRIANGLE_STRIP
+    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. For odd n, vertices n, n + 1 , and n + 2 define triangle n. For even n, vertices n + 1 , n, and n + 2 define triangle n. N - 2 triangles are drawn.
     /// </summary>
     GL_TRIANGLE_STRIP = 5,
+
     /// <summary>
-    /// GL_TRIANGLE_FAN
+    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. Vertices 1 , n + 1 , and n + 2 define triangle n. N - 2 triangles are drawn.
     /// </summary>
     GL_TRIANGLE_FAN = 6,
+
     /// <summary>
-    /// GL_QUADS
+    /// Treats each group of four vertices as an independent quadrilateral. Vertices 4 ⁢ n - 3 , 4 ⁢ n - 2 , 4 ⁢ n - 1 , and 4 ⁢ n define quadrilateral n. N 4 quadrilaterals are drawn.
     /// </summary>
     GL_QUADS = 7,
+
     /// <summary>
-    /// GL_TRIANGLE_STRIP_ADJACENCY
+    /// Draws a connected group of quadrilaterals. One quadrilateral is defined for each pair of vertices presented after the first pair. Vertices 2 ⁢ n - 1 , 2 ⁢ n , 2 ⁢ n + 2 , and 2 ⁢ n + 1 define quadrilateral n. N 2 - 1 quadrilaterals are drawn. Note that the order in which vertices are used to construct a quadrilateral from strip data is different from that used with independent data.
+    /// </summary>
+    GL_QUAD_STRIP = 8,
+
+    /// <summary>
+    /// Draws a single, convex polygon. Vertices 1 through N define this polygon.
+    /// </summary>
+    GL_POLYGON = 9,
+
+    /// <summary>
+    /// 
     /// </summary>
     GL_LINE_STRIP_ADJACENCY = 11,
+
     /// <summary>
-    /// GL_LINES_ADJACENCY
+    /// 
     /// </summary>
     GL_LINES_ADJACENCY = 10,
+
     /// <summary>
-    /// GL_TRIANGLES_ADJACENCY
-    /// </summary>
-    GL_TRIANGLES_ADJACENCY = 12,
-    /// <summary>
-    /// GL_TRIANGLE_STRIP_ADJACENCY
+    /// 
     /// </summary>
     GL_TRIANGLE_STRIP_ADJACENCY = 13,
+
     /// <summary>
-    /// GL_PATCH
+    /// 
     /// </summary>
-    Patches = 14
+    GL_TRIANGLES_ADJACENCY = 12,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PATCHES = 14,
 }
 
-public enum ShadingModel : int
+/// <summary>
+/// 
+/// </summary>
+public enum TEXTURE_TARGET : int
 {
     /// <summary>
-    /// Original was GL_FLAT = 0x1D00
+    /// one-dimensional texture
     /// </summary>
-    Flat = 0x1D00,
+    GL_TEXTURE_1D = 0x0DE0,
+
     /// <summary>
-    /// Original was GL_SMOOTH = 0x1D01
+    /// two-dimensional texture
     /// </summary>
-    Smooth = 0x1D01,
+    GL_TEXTURE_2D = 0x0DE1,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_1D = 0x8063,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_1D_EXT = 0x8063,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_2D = 0x8064,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_2D_EXT = 0x8064,
+
+    /// <summary>
+    /// three-dimensional texture
+    /// </summary>
+    GL_TEXTURE_3D = 0x806F,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_3D_EXT = 0x806F,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_3D_OES = 0x806F,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_3D = 0x8070,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_3D_EXT = 0x8070,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_DETAIL_TEXTURE_2D_SGIS = 0x8095,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_4D_SGIS = 0x8134,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_4D_SGIS = 0x8135,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MIN_LOD = 0x813A,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MIN_LOD_SGIS = 0x813A,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MAX_LOD = 0x813B,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MAX_LOD_SGIS = 0x813B,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_BASE_LEVEL = 0x813C,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_BASE_LEVEL_SGIS = 0x813C,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MAX_LEVEL = 0x813D,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MAX_LEVEL_SGIS = 0x813D,
+
+    /// <summary>
+    /// rectangle texture
+    /// </summary>
+    GL_TEXTURE_RECTANGLE = 0x84F5,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_RECTANGLE_ARB = 0x84F5,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_RECTANGLE_NV = 0x84F5,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_RECTANGLE = 0x84F7,
+
+    /// <summary>
+    /// cube-mapped texture
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP = 0x8513,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_BINDING_CUBE_MAP = 0x8514,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_POSITIVE_X = 0x8515,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_X = 0x8516,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_POSITIVE_Y = 0x8517,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_Y = 0x8518,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_POSITIVE_Z = 0x8519,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x851A,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_CUBE_MAP = 0x851B,
+
+    /// <summary>
+    /// one-dimensional array texture
+    /// </summary>
+    GL_TEXTURE_1D_ARRAY = 0x8C18,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_1D_ARRAY = 0x8C19,
+
+    /// <summary>
+    /// two-dimensional array texture
+    /// </summary>
+    GL_TEXTURE_2D_ARRAY = 0x8C1A,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_2D_ARRAY = 0x8C1B,
+
+    /// <summary>
+    /// buffer texture
+    /// </summary>
+    GL_TEXTURE_BUFFER = 0x8C2A,
+
+    /// <summary>
+    /// cube-mapped array texture
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_ARRAY = 0x9009,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_CUBE_MAP_ARRAY = 0x900B,
+
+    /// <summary>
+    /// two-dimensional multisampled texture, use with glTexImage2DMultisample 
+    /// </summary>
+    GL_TEXTURE_2D_MULTISAMPLE = 0x9100,
+
+    /// <summary>
+    /// Use with glTexImage2DMultisample 
+    /// </summary>
+    GL_PROXY_TEXTURE_2D_MULTISAMPLE = 0x9101,
+
+    /// <summary>
+    /// Use with glTexImage3DMultisample
+    /// </summary>
+    GL_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9102,
+
+    /// <summary>
+    /// Use with glTexImage3DMultisample
+    /// </summary>
+    GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9103
 }
+
+//----Enums Name and Values Updated, still requires more complete commenting above this line ----
 
 public enum ShaderParameter : int
 {
@@ -1162,108 +1379,6 @@ public enum ArbCreateContext
     ContextFlags = 0x2094,
     ErrorInvalidVersion = 0x2095,
     ProfileMask = 0x9126,
-}
-
-public enum ARB_multisample
-{
-    SampleBuffersArb = 0x2041,
-    SamplesArb = 0x2042,
-}
-
-public enum WGL_ARB_pixel_format
-{
-    ShareStencilArb = 0x200d,
-    AccumBitsArb = 0x201d,
-    NumberUnderlaysArb = 0x2009,
-    StereoArb = 0x2012,
-    MaxPbufferHeightArb = 0x2030,
-    TypeRgbaArb = 0x202b,
-    SupportGdiArb = 0x200f,
-    NeedSystemPaletteArb = 0x2005,
-    AlphaBitsArb = 0x201b,
-    ShareDepthArb = 0x200c,
-    SupportOpenglArb = 0x2010,
-    ColorBitsArb = 0x2014,
-    AccumRedBitsArb = 0x201e,
-    MaxPbufferWidthArb = 0x202f,
-    NumberOverlaysArb = 0x2008,
-    MaxPbufferPixelsArb = 0x202e,
-    NeedPaletteArb = 0x2004,
-    RedShiftArb = 0x2016,
-    AccelerationArb = 0x2003,
-    GreenBitsArb = 0x2017,
-    TransparentGreenValueArb = 0x2038,
-    PixelTypeArb = 0x2013,
-    AuxBuffersArb = 0x2024,
-    DrawToWindowArb = 0x2001,
-    RedBitsArb = 0x2015,
-    NumberPixelFormatsArb = 0x2000,
-    GenericAccelerationArb = 0x2026,
-    BlueBitsArb = 0x2019,
-    PbufferLargestArb = 0x2033,
-    AccumAlphaBitsArb = 0x2021,
-    TransparentArb = 0x200a,
-    FullAccelerationArb = 0x2027,
-    ShareAccumArb = 0x200e,
-    SwapExchangeArb = 0x2028,
-    SwapUndefinedArb = 0x202a,
-    TransparentAlphaValueArb = 0x203a,
-    PbufferHeightArb = 0x2035,
-    TransparentBlueValueArb = 0x2039,
-    SwapMethodArb = 0x2007,
-    StencilBitsArb = 0x2023,
-    DepthBitsArb = 0x2022,
-    GreenShiftArb = 0x2018,
-    TransparentRedValueArb = 0x2037,
-    DoubleBufferArb = 0x2011,
-    NoAccelerationArb = 0x2025,
-    TypeColorindexArb = 0x202c,
-    SwapLayerBuffersArb = 0x2006,
-    AccumBlueBitsArb = 0x2020,
-    DrawToPbufferArb = 0x202d,
-    AccumGreenBitsArb = 0x201f,
-    PbufferWidthArb = 0x2034,
-    TransparentIndexValueArb = 0x203b,
-    AlphaShiftArb = 0x201c,
-    DrawToBitmapArb = 0x2002,
-    BlueShiftArb = 0x201a,
-    SwapCopyArb = 0x2029,
-}
-
-public enum AlphaFunction : int
-{
-    /// <summary>
-    /// Original was GL_NEVER = 0x0200
-    /// </summary>
-    Never = 0x0200,
-    /// <summary>
-    /// Original was GL_LESS = 0x0201
-    /// </summary>
-    Less = 0x0201,
-    /// <summary>
-    /// Original was GL_EQUAL = 0x0202
-    /// </summary>
-    Equal = 0x0202,
-    /// <summary>
-    /// Original was GL_LEQUAL = 0x0203
-    /// </summary>
-    Lequal = 0x0203,
-    /// <summary>
-    /// Original was GL_GREATER = 0x0204
-    /// </summary>
-    Greater = 0x0204,
-    /// <summary>
-    /// Original was GL_NOTEQUAL = 0x0205
-    /// </summary>
-    Notequal = 0x0205,
-    /// <summary>
-    /// Original was GL_GEQUAL = 0x0206
-    /// </summary>
-    Gequal = 0x0206,
-    /// <summary>
-    /// Original was GL_ALWAYS = 0x0207
-    /// </summary>
-    Always = 0x0207,
 }
 
 public enum BufferTarget : int
@@ -4794,29 +4909,6 @@ public enum GLGET : int
     MaxComputeImageUniforms = 0x91BD,
 }
 
-public enum GetStringEnum : uint
-{
-    /// <summary>
-    /// GL_VENDOR
-    /// </summary>
-    Vendor = 0x1F00,
-    /// <summary>
-    /// GL_RENDERER
-    /// </summary>
-    Renderer = 0x1F01,
-    /// <summary>
-    /// GL_VERSION
-    /// </summary>
-    Version = 0x1F02,
-    /// <summary>
-    /// GL_EXTENSIONS
-    /// </summary>
-    Extensions = 0x1F03,
-    /// <summary>
-    /// GL_SHADING_LANGUAGE_VERSION
-    /// </summary>
-    ShadingLanguageVersion = 0x8B8C
-}
 
 public enum LightName : int
 {
@@ -4930,24 +5022,6 @@ public enum LightParameter : int
     QuadraticAttenuation = 0x1209,
 }
 
-/// <summary>
-/// Used in GL.ColorMaterial, GL.GetMaterial and 8 other functions
-/// </summary>
-public enum MaterialFace : int
-{
-    /// <summary>
-    /// Original was GL_FRONT = 0x0404
-    /// </summary>
-    Front = 0x0404,
-    /// <summary>
-    /// Original was GL_BACK = 0x0405
-    /// </summary>
-    Back = 0x0405,
-    /// <summary>
-    /// Original was GL_FRONT_AND_BACK = 0x0408
-    /// </summary>
-    FrontAndBack = 0x0408,
-}
 
 public enum MaterialParameter : int
 {
@@ -5780,7 +5854,7 @@ public static partial class OpenGL32
     /// <param name="func">Specifies the alpha comparison function. Symbolic constants GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS are accepted. The initial value is GL_ALWAYS.</param>
     /// <param name="ref">Specifies the reference value that incoming alpha values are compared to. This value is clamped to the range 0 1 , where 0 represents the lowest possible alpha value and 1 the highest possible value. The initial reference value is 0.</param>
     [DllImport(Library)]
-    public static extern void glAlphaFunc(GLAlphaFuncEnum func, float @ref);
+    public static extern void glAlphaFunc(ALPHA_COMPARISON_FUNCTION func, float @ref);
 
     /// <summary>
     /// Delimit the vertices of a primitive or a group of like primitives
@@ -5795,7 +5869,7 @@ public static partial class OpenGL32
     /// <param name="target">Specifies the target to which the texture is bound. Must be one of GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_CUBE_MAP, GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_BUFFER, GL_TEXTURE_2D_MULTISAMPLE or GL_TEXTURE_2D_MULTISAMPLE_ARRAY.</param>
     /// <param name="texture">Specifies the name of a texture.</param>
     [DllImport(Library)]
-    public static extern void glBindTexture(TextureTarget target, uint texture);
+    public static extern void glBindTexture(TEXTURE_TARGET target, uint texture);
 
     /// <summary>
     /// Specify pixel arithmetic
@@ -5803,14 +5877,14 @@ public static partial class OpenGL32
     /// <param name="sfactor">Specifies how the red, green, blue, and alpha source blending factors are computed. The initial value is GL_ONE.</param>
     /// <param name="dfactor">Specifies how the red, green, blue, and alpha destination blending factors are computed. The following symbolic constants are accepted: GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR, GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA. GL_CONSTANT_COLOR, GL_ONE_MINUS_CONSTANT_COLOR, GL_CONSTANT_ALPHA, and GL_ONE_MINUS_CONSTANT_ALPHA. The initial value is GL_ZERO.</param>
     [DllImport(Library)]
-    public static extern void glBlendFunc(BlendScaleFactor sfactor, BlendScaleFactor dfactor);
+    public static extern void glBlendFunc(BLEND_SCALE_FACTOR sfactor, BLEND_SCALE_FACTOR dfactor);
 
     /// <summary>
     /// Clear buffers to preset values
     /// </summary>
     /// <param name="mask">Bitwise OR of masks that indicate the buffers to be cleared. The three masks are GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, and GL_STENCIL_BUFFER_BIT.</param>
     [DllImport(Library)]
-    public static extern void glClear(CLEAR_MASK mask);
+    public static extern void glClear(BUFFER_MASK mask);
 
     /// <summary>
     /// Specify clear values for the color buffers. Specify the red, green, blue, and alpha values used when the color buffers are cleared. The initial values are all 0.
@@ -5878,7 +5952,7 @@ public static partial class OpenGL32
     /// <param name="first">Specifies the starting index in the enabled arrays.</param>
     /// <param name="count">Specifies the number of indices to be rendered.</param>
     [DllImport(Library)]
-    public static extern void glDrawArrays(PRIMITIVEMODE mode, int first, int count);
+    public static extern void glDrawArrays(PRIMITIVE_TYPE mode, int first, int count);
 
     /// <summary>
     /// glEnable and glDisable enable and disable various capabilities. Use glIsEnabled or glGet to determine the current setting of any capability. The initial value for each capability with the exception of GL_DITHER and GL_MULTISAMPLE is GL_FALSE. The initial value for GL_DITHER and GL_MULTISAMPLE is GL_TRUE.
@@ -5950,7 +6024,7 @@ public static partial class OpenGL32
     /// <param name="name">Specifies a symbolic constant</param>
     /// <returns>Returns a pointer to a static string describing some aspect of the current GL connection</returns>
     [DllImport(Library, CharSet = CharSet.Unicode)]
-    public unsafe static extern sbyte* glGetString(GetStringEnum name);
+    public unsafe static extern sbyte* glGetString(GETSTRING_NAME name);
 
     /// <summary>
     /// return a texture image
@@ -5961,7 +6035,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies a pixel type for the returned data.</param>
     /// <param name="pixels">Returns the texture image. Should be a pointer to an array of the type specified by type.</param>
     [DllImport(Library)]
-    public static extern void glGetTexImage(TextureTarget target, int level, PixelFormat format, PixelType type, IntPtr pixels);
+    public static extern void glGetTexImage(TEXTURE_TARGET target, int level, PixelFormat format, PixelType type, IntPtr pixels);
 
     /// <summary>
     /// returns n texture names in textures. There is no guarantee that the names form a contiguous set of integers; however, it is guaranteed that none of the returned names was in use immediately before the call to glGenTextures. The generated textures have no dimensionality; they assume the dimensionality of the texture target to which they are first bound(see glBindTexture). Texture names returned by a call to glGenTextures are not returned by subsequent calls, unless they are first deleted with glDeleteTextures.
@@ -6009,7 +6083,7 @@ public static partial class OpenGL32
     /// <param name="pname">The material parameter of the face or faces being updated.</param>
     /// <param name="params">The value to which parameter GL_SHININESS will be set.</param>
     [DllImport(Library)]
-    public static extern void glMaterialfv(MaterialFace face, MaterialParameter pname, float[] @params);
+    public static extern void glMaterialfv(POLYGON_FACE face, MaterialParameter pname, float[] @params);
 
     /// <summary>
     /// specify which matrix is the current matrix
@@ -6058,7 +6132,7 @@ public static partial class OpenGL32
     /// <param name="pname">a symbolic constant indicating the parameter to be set</param>
     /// <param name="param">the new value</param>
     [DllImport(Library)]
-    public static extern void glPixelStorei(PixelStoreParameter pname, int param);
+    public static extern void glPixelStorei(PIXEL_STORE_MODE pname, int param);
 
     /// <summary>
     /// glPointSize specifies the rasterized diameter of points
@@ -6074,7 +6148,7 @@ public static partial class OpenGL32
     /// <param name="face">Specifies the polygons that mode applies to.</param>
     /// <param name="mode">Specifies how polygons will be rasterized.</param>
     [DllImport(Library)]
-    public static extern void glPolygonMode(MaterialFace face, PolygonMode mode);
+    public static extern void glPolygonMode(POLYGON_FACE face, POLYGON_MODE mode);
 
     /// <summary>
     /// glPopMatrix pops the current matrix stack, replacing the current matrix with the one below it on the stack.
@@ -6112,7 +6186,7 @@ public static partial class OpenGL32
     /// </summary>
     /// <param name="mode">Specifies a symbolic value representing a shading technique.</param>
     [DllImport(Library)]
-    public static extern void glShadeModel(ShadingModel mode);
+    public static extern void glShadeModel(SHADE_TECHNIQUE mode);
 
     /// <summary>
     /// set the current texture coordinates
@@ -6134,7 +6208,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexImage1D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int border, PixelFormat format, PixelType type, IntPtr data);
+    public static extern void glTexImage1D(TEXTURE_TARGET target, int level, PixelInternalFormat internalFormat, int width, int border, PixelFormat format, PixelType type, IntPtr data);
 
     /// <summary>
     /// specify a two-dimensional texture image
@@ -6149,7 +6223,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexImage2D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr data);
+    public static extern void glTexImage2D(TEXTURE_TARGET target, int level, PixelInternalFormat internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr data);
 
     /// <summary>
     /// specify a two-dimensional texture subimage
@@ -6164,7 +6238,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexSubImage2D(TextureTarget target, int level, int xOffset, int yOffset, int width, int height, PixelFormat format, PixelType type, IntPtr pixels);
+    public static extern void glTexSubImage2D(TEXTURE_TARGET target, int level, int xOffset, int yOffset, int width, int height, PixelFormat format, PixelType type, IntPtr pixels);
 
     /// <summary>
     /// set texture parameters
@@ -6173,7 +6247,7 @@ public static partial class OpenGL32
     /// <param name="pname">Specifies the symbolic name of a single-valued texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
     [DllImport(Library)]
-    public static extern void glTexParameteri(TextureTarget target, TextureParameterName pname, TextureParameter param);
+    public static extern void glTexParameteri(TEXTURE_TARGET target, TextureParameterName pname, TextureParameter param);
 
     /// <summary>
     /// multiply the current matrix by a translation matrix
