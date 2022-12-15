@@ -21,7 +21,7 @@ public class KeyboardManager : IKeyboardManager
 
         _msgWindowHandle = messageWindowHandle;
 
-        RefreshDevices();
+        UpdateDevices();
     }
     
 
@@ -92,7 +92,7 @@ public class KeyboardManager : IKeyboardManager
     
     
 
-    public KeyboardState State
+    public KeyboardState GetAggregateState
     {
         get
         {
@@ -121,7 +121,7 @@ public class KeyboardManager : IKeyboardManager
     }
     
 
-    public void RefreshDevices()
+    public void UpdateDevices()
     {
         lock (_syncRoot)
         {
@@ -207,7 +207,7 @@ public class KeyboardManager : IKeyboardManager
     }
     
 
-    internal bool ProcessInput(RawInput data)
+    internal bool ProcessInputData(RawInput data)
     {
         IntPtr dHandle = data.Header.Device;
         RawKeyboard kData = data.Data.Keyboard;
@@ -222,7 +222,7 @@ public class KeyboardManager : IKeyboardManager
 
         //this is needed for weird devices... or something
         if (!_regdDevices.ContainsKey(dHandle))
-            RefreshDevices();
+            UpdateDevices();
 
         if (_keyboards.Count == 0)
             return false;

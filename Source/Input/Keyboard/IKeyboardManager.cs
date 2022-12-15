@@ -2,7 +2,7 @@
 
 public interface IKeyboardManager
 {
-    KeyboardState State { get; }
+    KeyboardState GetAggregateState { get; }
     KeyboardState GetState(int index);
-    void RefreshDevices();
+    void UpdateDevices();
 }

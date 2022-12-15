@@ -1,10 +1,12 @@
 ﻿using System.Runtime.InteropServices;
+using HaighFramework.Source.Input.Mouse;
 using HaighFramework.WinAPI;
 using Microsoft.Win32;
 
 namespace HaighFramework.Input;
 
-public sealed class MouseManager : IMouseManager
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "This is part of the Windows API which will only be invoked if on Windows platform.")]
+internal sealed class WinAPIMouseManager : IWinAPIMouseManager
 {
     private readonly List<MouseState> _mice = new();
     private readonly List<string> _names = new();
@@ -12,15 +14,14 @@ public sealed class MouseManager : IMouseManager
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
     
-
-    public MouseManager(IntPtr messageWindowHandle)
+    public WinAPIMouseManager(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
             throw new ArgumentNullException("messageWindowHandle");
 
         _msgWindowHandle = messageWindowHandle;
 
-        RefreshDevices();
+        UpdateDevices();
     }
     
     static string GetDeviceName(RAWINPUTDEVICELIST dev)
@@ -37,7 +38,6 @@ public sealed class MouseManager : IMouseManager
 
         return name;
     }
-    
 
     static private RegistryKey FindRegistryKey(string name)
     {
@@ -63,7 +63,6 @@ public sealed class MouseManager : IMouseManager
         RegistryKey regkey = Registry.LocalMachine.OpenSubKey(findme);
         return regkey;
     }
-    
 
     private void RegisterRawDevice(IntPtr window, string device)
     {
@@ -87,38 +86,7 @@ public sealed class MouseManager : IMouseManager
         }
     }
     
-    public MouseState State
-    {
-        get
-        {
-            lock (_syncRoot)
-            {
-                MouseState consolidated = new();
-                foreach (MouseState m in _mice)
-                {
-                    consolidated.MergeBits(m);
-                }
-                POINT p = new();
-                User32.GetCursorPos(ref p);
-                consolidated.ScreenX = p.X;
-                consolidated.ScreenY = p.Y;
-                return consolidated;
-            }
-        }
-    }
-    
-    public MouseState GetState(int index)
-    {
-        lock (_syncRoot)
-        {
-            if (index < _mice.Count)
-                return _mice[index];
-            else
-                return new MouseState();
-        }
-    }
-    
-    public void RefreshDevices()
+    public void UpdateDevices()
     {
         lock (_syncRoot)
         {
@@ -204,14 +172,14 @@ public sealed class MouseManager : IMouseManager
         //Console.WriteLine();
     }
     
-    internal bool ProcessInput(RawInput data)
+    public bool ProcessInputData(RawInput data)
     {
         RawMouse mData = data.Data.Mouse;
         IntPtr dHandle = data.Header.Device;
 
         //this is needed for track pads or something
         if (!_regdDevices.ContainsKey(dHandle))
-            RefreshDevices();
+            UpdateDevices();
 
         if (_mice.Count == 0)
             return false;
@@ -229,72 +197,72 @@ public sealed class MouseManager : IMouseManager
 
         if ((mData.ButtonFlags & RawInputMouseState.LEFT_BUTTON_DOWN) != 0)
         {
-            state.EnableBit((int)MouseButton.Left);
+            state.SetButton(MouseButton.Left, true);
             //capture the mouse temporarily to capture mouseup events outside the window.
             User32.SetCapture(_msgWindowHandle);
         }
         if ((mData.ButtonFlags & RawInputMouseState.LEFT_BUTTON_UP) != 0)
         {
-            state.DisableBit((int)MouseButton.Left);
+            state.SetButton(MouseButton.Left, false);
             User32.ReleaseCapture();
         }
         if ((mData.ButtonFlags & RawInputMouseState.RIGHT_BUTTON_DOWN) != 0)
         {
-            state.EnableBit((int)MouseButton.Right);
+            state.SetButton(MouseButton.Right, true);
             User32.SetCapture(_msgWindowHandle);
         }
         if ((mData.ButtonFlags & RawInputMouseState.RIGHT_BUTTON_UP) != 0)
         {
-            state.DisableBit((int)MouseButton.Right);
+            state.SetButton(MouseButton.Right, false);
             User32.ReleaseCapture();
         }
         if ((mData.ButtonFlags & RawInputMouseState.MIDDLE_BUTTON_DOWN) != 0)
         {
-            state.EnableBit((int)MouseButton.Middle);
+            state.SetButton(MouseButton.Middle, true);
             User32.SetCapture(_msgWindowHandle);
         }
         if ((mData.ButtonFlags & RawInputMouseState.MIDDLE_BUTTON_UP) != 0)
         {
-            state.DisableBit((int)MouseButton.Middle);
+            state.SetButton(MouseButton.Middle, false);
             User32.ReleaseCapture();
         }
         if ((mData.ButtonFlags & RawInputMouseState.BUTTON_4_DOWN) != 0)
         {
-            state.EnableBit((int)MouseButton.Mouse4);
+            state.SetButton(MouseButton.Mouse4, true);
             User32.SetCapture(_msgWindowHandle);
         }
         if ((mData.ButtonFlags & RawInputMouseState.BUTTON_4_UP) != 0)
         {
-            state.DisableBit((int)MouseButton.Mouse4);
+            state.SetButton(MouseButton.Mouse4, false);
             User32.ReleaseCapture();
         }
         if ((mData.ButtonFlags & RawInputMouseState.BUTTON_5_DOWN) != 0)
         {
-            state.EnableBit((int)MouseButton.Mouse5);
+            state.SetButton(MouseButton.Mouse5, true);
             User32.SetCapture(_msgWindowHandle);
         }
         if ((mData.ButtonFlags & RawInputMouseState.BUTTON_5_UP) != 0)
         {
-            state.DisableBit((int)MouseButton.Mouse5);
+            state.SetButton(MouseButton.Mouse5, false);
             User32.ReleaseCapture();
         }
 
         if ((mData.ButtonFlags & RawInputMouseState.WHEEL) != 0)
-            state.SetScrollRelative(0, (short)mData.ButtonData / 120.0f);
+            state.WheelY += (short)mData.ButtonData / 120.0f;
 
-        if ((mData.ButtonFlags & RawInputMouseState.HWHEEL) != 0)
-            state.SetScrollRelative((short)mData.ButtonData / 120.0f, 0);
+        //if ((mData.ButtonFlags & RawInputMouseState.HWHEEL) != 0)
+        //    state.SetScrollRelative((short)mData.ButtonData / 120.0f, 0);
 
-        if ((mData.Flags & RawMouseFlags.MOUSE_MOVE_ABSOLUTE) != 0)
-        {
-            state.AbsX = mData.LastX;
-            state.AbsY = mData.LastY;
-        }
-        else
-        {   // Seems like MOUSE_MOVE_RELATIVE is the default, unless otherwise noted.
-            state.AbsX += mData.LastX;
-            state.AbsY += mData.LastY;
-        }
+        //if ((mData.Flags & RawMouseFlags.MOUSE_MOVE_ABSOLUTE) != 0)
+        //{
+        //    state.AbsX = mData.LastX;
+        //    state.AbsY = mData.LastY;
+        //}
+        //else
+        //{   // Seems like MOUSE_MOVE_RELATIVE is the default, unless otherwise noted.
+        //    state.AbsX += mData.LastX;
+        //    state.AbsY += mData.LastY;
+        //}
 
         lock (_syncRoot)
         {
@@ -302,6 +270,34 @@ public sealed class MouseManager : IMouseManager
             return true;
         }
     }
-    
-    
+
+    public MouseState GetAggregateState()
+    {
+        lock (_syncRoot)
+        {
+            MouseState answer = new();
+
+            if (!_mice.Any())
+                return answer;
+
+            POINT p = new();
+            User32.GetCursorPos(ref p);
+
+            answer.ButtonsDown[MouseButton.Left] = _mice.Any(s => s.ButtonsDown[MouseButton.Left]);
+            answer.ButtonsDown[MouseButton.Right] = _mice.Any(s => s.ButtonsDown[MouseButton.Right]);
+            answer.ButtonsDown[MouseButton.Middle] = _mice.Any(s => s.ButtonsDown[MouseButton.Middle]);
+            answer.ButtonsDown[MouseButton.Mouse4] = _mice.Any(s => s.ButtonsDown[MouseButton.Mouse4]);
+            answer.ButtonsDown[MouseButton.Mouse5] = _mice.Any(s => s.ButtonsDown[MouseButton.Mouse5]);
+            //answer.AbsX = states.Sum(s => s.AbsX);
+            //answer.AbsY = states.Sum(s => s.AbsY);
+            answer.ScreenX = p.X;
+            answer.ScreenY = p.Y;
+            answer.WheelY = _mice.Sum(s => s.WheelY);
+            answer.IsConnected = _mice.Any(s => s.IsConnected);
+
+            return answer;
+        }
+    }
+
+
 }
