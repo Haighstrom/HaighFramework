@@ -270,6 +270,59 @@ public enum SHADE_TECHNIQUE : int
 
 //----Enums Name and Values Updated, and Fully Commented Above This Line ----
 
+public enum DEBUG_SEVERITY : int
+{
+    GL_DEBUG_SEVERITY_LOW = 0x9148,
+
+    GL_DEBUG_SEVERITY_MEDIUM = 0x9147,
+
+    GL_DEBUG_SEVERITY_HIGH = 0x9146,
+
+    GL_DEBUG_SEVERITY_NOTIFICATION = 0x826B,
+
+    GL_DONT_CARE = 0x1100,
+}
+
+public enum DEBUG_SOURCE : int
+{
+    GL_DEBUG_SOURCE_API = 0x8246,
+
+    GL_DEBUG_SOURCE_WINDOW_SYSTEM = 0x8247,
+
+    GL_DEBUG_SOURCE_SHADER_COMPILER = 8248,
+
+    GL_DEBUG_SOURCE_THIRD_PARTY = 0x8249,
+
+    GL_DEBUG_SOURCE_APPLICATION = 0x824A,
+
+    GL_DEBUG_SOURCE_OTHER = 0x824B,
+
+    GL_DONT_CARE = 0x1100,
+}
+
+public enum DEBUG_TYPE : int
+{
+    GL_DEBUG_TYPE_ERROR = 0x824C,
+
+    GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR = 0x824D,
+
+    GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR = 0x824E,
+
+    GL_DEBUG_TYPE_PORTABILITY = 0x824F,
+
+    GL_DEBUG_TYPE_PEFORMANCE = 0x8250,
+
+    GL_DEBUG_TYPE_MARKER = 0x824B,
+
+    GL_DEBUG_TYPE_PUSH_GROUP = 0x8269,
+
+    GL_DEBUG_TYPE_POP_GROUP = 0x826A,
+
+    GL_DEBUG_TYPE_OTHER = 0x8251,
+
+    GL_DONT_CARE = 0x1100,
+}
+
 public enum PIXEL_STORE_MODE : int
 {
     GL_UNPACK_SWAP_BYTES = 0x0CF0,
@@ -639,33 +692,22 @@ public enum TEXTURE_TARGET : int
     GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9103
 }
 
-//----Enums Name and Values Updated, still requires more complete commenting above this line ----
-
-public enum ShaderParameter : int
+public enum GETSHADER_FLAG : int
 {
-    /// <summary>
-    /// GL_SHADER_TYPE
-    /// </summary>
-    ShaderType = 0x8B4F,
-    /// <summary>
-    /// GL_DELETE_STATUS
-    /// </summary>
-    DeleteStatus = 0x8B80,
-    /// <summary>
-    /// GL_COMPILE_STATUS
-    /// </summary>
-    CompileStatus = 0x8B81,
-    /// <summary>
-    /// GL_INFO_LOG_LENGTH
-    /// </summary>
-    InfoLogLengtth = 0x8B84,
-    /// <summary>
-    /// GL_SHADER_SOURCE_LENGTH
-    /// </summary>
-    ShaderSourceLength = 0x8B88,
+    GL_SHADER_TYPE = 0x8B4F,
+
+    GL_DELETE_STATUS = 0x8B80,
+
+    GL_COMPILE_STATUS = 0x8B81,
+
+    GL_INFO_LOG_LENGTH = 0x8B84,
+
+    GL_SHADER_SOURCE_LENGTH = 0x8B88,
 }
 
-public enum ShaderType : int
+//----Enums Name and Values Updated, still requires more complete commenting above this line ----
+
+public enum SHADER_TYPE : int
 {
     FragmentShader = 0x8B30,
     VertexShader = 0x8B31,
@@ -1561,129 +1603,6 @@ public enum DataType : uint
     Double = 0x140A
 }
 
-/// <summary>
-/// GL_DEBUG_SEVERITY_HIGH and friends, for calls to glDebugMessageCallback and related error handling
-/// </summary>
-public enum DebugSeverity : int
-{
-    /// <summary>
-    /// Original was GL_DONT_CARE = 0x1100
-    /// </summary>
-    DontCare = 0x1100,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SEVERITY_HIGH = 0x9146
-    /// </summary>
-    High = 0x9146,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SEVERITY_MEDIUM = 0x9147
-    /// </summary>
-    Medium = 0x9147,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SEVERITY_LOW = 0x9148
-    /// </summary>
-    Low = 0x9148,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SEVERITY_NOTIFICATION = 0x826B
-    /// </summary>
-    Notification = 0x826B,
-}
-
-/// <summary>
-/// GL_DEBUG_SOURCE_API and friends, for calls to glDebugMessageCallback and related error handling
-/// </summary>
-public enum DebugSource : int
-{
-    /// <summary>
-    /// Original was GL_DONT_CARE = 0x1100
-    /// </summary>
-    DontCare = 0x1100,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SOURCE_API = 0x8246
-    /// </summary>
-    API = 0x8246,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SOURCE_WINDOW_SYSTEM = 0x8247
-    /// </summary>
-    WindowSystem = 0x8247,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SOURCE_THIRD_PARTY = 0x8249
-    /// </summary>
-    ThirdParty = 0x8249,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SOURCE_APPLICATION = 0x824A
-    /// </summary>
-    Application = 0x824A,
-
-    /// <summary>
-    /// Original was GL_DEBUG_SOURCE_OTHER = 0x824B
-    /// </summary>
-    Other = 0x824B,
-}
-
-/// <summary>
-/// GL_DEBUG_TYPE_ERROR and friends, for calls to glDebugMessageCallback and related error handling
-/// </summary>
-public enum DebugType : int
-{
-    /// <summary>
-    /// Original was GL_DONT_CARE = 0x1100
-    /// </summary>
-    DontCare = 0x1100,
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_ERROR = 0x824C
-    /// </summary>
-    Error = 0x824C,
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR = 0x824D
-    /// </summary>
-    DeprecatedBehaviour = 0x824D,
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR = 0x824E
-    /// </summary>
-    UndefinedBehaviour = 0x824E,
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_PORTABILITY = 0x824F
-    /// </summary>
-    Portability = 0x824F,
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_PEFORMANCE = 0x8250
-    /// </summary>
-    Performance = 0x8250,
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_MARKER = 0x824B
-    /// </summary>
-    Marker = 0x824B,
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_OTHER = 0x8251
-    /// </summary>
-    Other = 0x8251,
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_POP_GROUP = 0x824B
-    /// </summary>
-    //PopGroup = 0x824B,   Unknown value 
-
-    /// <summary>
-    /// Original was GL_DEBUG_TYPE_PUSH_GROUP = 0x824B
-    /// </summary>
-    //PushGroup = 0x824B      unknown value      
-}
-
 public enum GLCAP : int
 {
     /// <summary>
@@ -2268,7 +2187,7 @@ public enum GLCAP : int
     DebugOutput = 0x92E0,
 }
 
-public enum FramebufferAttachment : int
+public enum FRAMEBUFFER_ATTACHMENT_POINT : int
 {
     /// <summary>
     /// Original was GL_FRONT_LEFT = 0x0400
@@ -2464,7 +2383,7 @@ public enum FramebufferAttachment : int
     StencilAttachmentExt = 0x8D20
 }
 
-public enum FramebufferTarget : int
+public enum FRAMEBUFFER_TARGET : int
 {
     /// <summary>
     /// Original was GL_READ_FRAMEBUFFER = 0x8CA8
@@ -4940,7 +4859,6 @@ public enum GLGET : int
     MaxComputeImageUniforms = 0x91BD,
 }
 
-
 public enum LightName : int
 {
     /// <summary>
@@ -5052,7 +4970,6 @@ public enum LightParameter : int
     /// </summary>
     QuadraticAttenuation = 0x1209,
 }
-
 
 public enum MaterialParameter : int
 {
@@ -5900,7 +5817,7 @@ public static partial class OpenGL32
     /// <param name="target">Specifies the target to which the texture is bound. Must be one of GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_CUBE_MAP, GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_BUFFER, GL_TEXTURE_2D_MULTISAMPLE or GL_TEXTURE_2D_MULTISAMPLE_ARRAY.</param>
     /// <param name="texture">Specifies the name of a texture.</param>
     [DllImport(Library)]
-    public static extern void glBindTexture(TEXTURE_TARGET target, uint texture);
+    public static extern void glBindTexture(TEXTURE_TARGET target, int texture);
 
     /// <summary>
     /// Specify pixel arithmetic
@@ -5953,7 +5870,7 @@ public static partial class OpenGL32
     /// <param name="n">Specifies the number of textures to be deleted.</param>
     /// <param name="textures">Specifies an array of textures to be deleted.</param>
     [DllImport(Library)]
-    public static extern void glDeleteTextures(int n, uint[] textures);
+    public static extern void glDeleteTextures(int n, int[] textures);
 
     /// <summary>
     /// Enable or disable writing into the depth buffer. If flag is GL_FALSE, depth buffer writing is disabled. Otherwise, it is enabled. Initially, depth buffer writing is enabled.
@@ -6074,7 +5991,7 @@ public static partial class OpenGL32
     /// <param name="n">Specifies the number of texture names to be generated.</param>
     /// <param name="textures">Specifies an array in which the generated texture names are stored.</param>
     [DllImport(Library)]
-    public static extern void glGenTextures(int n, uint[] textures);
+    public static extern void glGenTextures(int n, int[] textures);
 
     /// <summary>
     /// returns GL_TRUE if cap is an enabled capability and returns GL_FALSE otherwise. Boolean states that are indexed may be tested with glIsEnabledi. For glIsEnabledi, index specifies the index of the capability to test. index must be between zero and the count of indexed capabilities for cap. Initially all capabilities except GL_DITHER are disabled; GL_DITHER is initially enabled.
