@@ -31,9 +31,9 @@ internal sealed class AudioContext : IDisposable
     static AudioContext()
     {
         if (AudioDeviceEnumerator.IsOpenALSupported) // forces enumeration
-            Console.WriteLine("OpenAL successfully initialised\n");
+            System.Console.WriteLine("OpenAL successfully initialised\n");
         else
-            Console.WriteLine("OpenAL was not found or not succesfully set up\n");
+            System.Console.WriteLine("OpenAL was not found or not succesfully set up\n");
     }
 
     #endregion static AudioContext()

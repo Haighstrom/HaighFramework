@@ -72,7 +72,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		}
 		catch(Exception e)
 		{
-			Console.Error.WriteLine("OpenAL Exception in VorbisFile. get_data: " + e.Message);
+            System.Console.Error.WriteLine("OpenAL Exception in VorbisFile. get_data: " + e.Message);
 			return OV_EREAD;
 		}
             instance.oy.wrote(bytes);
@@ -238,7 +238,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				if(result==0)break;
 				if(result==-1)
 				{
-					Console.Error.WriteLine("Corrupt header in logical bitstream.");
+					System.Console.Error.WriteLine("Corrupt header in logical bitstream.");
 					//goto bail_header;
 					vi.clear();
 					vc.clear();
@@ -247,7 +247,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				}
 				if(vi.synthesis_headerin(vc, op)!=0)
 				{
-					Console.Error.WriteLine("Illegal header in logical bitstream.");
+                    System.Console.Error.WriteLine("Illegal header in logical bitstream.");
 					//goto bail_header;
 					vi.clear();
 					vc.clear();
@@ -259,7 +259,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			if(i<3)
 				if(get_next_page(og_ptr, 1, instance)<0)
 				{
-					Console.Error.WriteLine("Missing header in logical bitstream.");
+                    System.Console.Error.WriteLine("Missing header in logical bitstream.");
 					//goto bail_header;
 					vi.clear();
 					vc.clear();
@@ -305,7 +305,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
                     seek_helper(offsets[i], instance); //!!!
                     if (fetch_headers(vi[i], vc[i], null, null, instance) == -1)
 				{
-					Console.Error.WriteLine("Error opening logical bitstream #"+(i+1)+"\n");
+                    System.Console.Error.WriteLine("Error opening logical bitstream #"+(i+1)+"\n");
 					dataoffsets[i]=-1;
 				}
 				else
@@ -325,8 +325,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				ret=get_prev_page(og, instance);
 				if(ret==-1)
 				{
-					// this should not be possible
-					Console.Error.WriteLine("Could not find last page of logical "+
+                    // this should not be possible
+                    System.Console.Error.WriteLine("Could not find last page of logical "+
 						"bitstream #"+(i)+"\n");
 					vi[i].clear();
 					vc[i].clear();
@@ -465,12 +465,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				}
 				else
 				{
-					Console.Error.WriteLine("seek: "+whence+" is not supported");
+                    System.Console.Error.WriteLine("seek: "+whence+" is not supported");
 				}
 			}
 			catch(Exception e)
 			{
-				Console.Error.WriteLine(e.Message);
+                System.Console.Error.WriteLine(e.Message);
 			}
 			return 0;
 		}
@@ -481,7 +481,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		}
 		catch(Exception e)
 		{
-			Console.Error.WriteLine(e.Message);
+            System.Console.Error.WriteLine(e.Message);
 			return -1;
 		}
 		return 0;

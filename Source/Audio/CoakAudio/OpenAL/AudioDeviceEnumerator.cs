@@ -81,9 +81,9 @@ internal static class AudioDeviceEnumerator
         {
             if (AudioPlayer.VerboseLogging)
             {
-                Console.WriteLine();
-                Console.WriteLine("Enumerating audio devices.");
-                Console.WriteLine();
+                System.Console.WriteLine();
+                System.Console.WriteLine("Enumerating audio devices.");
+                System.Console.WriteLine();
             }
 
             // need a dummy context for correct results
@@ -114,7 +114,7 @@ internal static class AudioDeviceEnumerator
             {
                 version = AlcVersion.Alc1_0;
                 if (AudioPlayer.VerboseLogging)
-                    Console.WriteLine("Device enumeration extension not available. Failed to enumerate playback devices.");
+                    System.Console.WriteLine("Device enumeration extension not available. Failed to enumerate playback devices.");
             }
 
             //Check for OpenAL errors
@@ -125,11 +125,11 @@ internal static class AudioDeviceEnumerator
             
             if (AudioPlayer.VerboseLogging)
             {
-                Console.WriteLine("Found playback devices:");
+                System.Console.WriteLine("Found playback devices:");
                 foreach (string s in available_playback_devices)
-                    Console.WriteLine(s);
+                    System.Console.WriteLine(s);
 
-                Console.WriteLine("Default playback device: " + default_playback_device);                   
+                System.Console.WriteLine("Default playback device: " + default_playback_device);                   
             }
         }
         catch (Exception ace)
