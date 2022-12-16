@@ -210,6 +210,9 @@ public static partial class OpenGL32
         _glBindBuffer(target, buffer);
     }
 
+
+    //----Fully Updated above this line----
+
     public static void glBindFramebuffer(FRAMEBUFFER_TARGET target, int frameBuffer)
     {
         if (_glBindFramebuffer is null)
@@ -217,8 +220,6 @@ public static partial class OpenGL32
 
         _glBindFramebuffer(target, frameBuffer);
     }
-
-    //----Fully Updated above this line----
 
     public static void glBindSampler(TEXTURE_UNIT unit, int sampler)
     {
