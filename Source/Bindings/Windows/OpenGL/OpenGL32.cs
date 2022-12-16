@@ -1082,26 +1082,6 @@ public enum TextureParameterName : int
     TextureSwizzleRgba = 0x8E46,
 }
 
-public enum TextureTargetMultisample : int
-{
-    /// <summary>
-    /// GL_TEXTURE_2D_MULTISAMPLE
-    /// </summary>
-    Texture2DMultisample = 0x9100,
-    /// <summary>
-    /// GL_PROXY_TEXTURE_2D_MULTISAMPLE
-    /// </summary>
-    ProxyTexture2DMultisample = 0x9101,
-    /// <summary>
-    /// GL_TEXTURE_2D_MULTISAMPLE_ARRAY
-    /// </summary>
-    Texture2DMultisampleArray = 0x9102,
-    /// <summary>
-    /// GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY
-    /// </summary>
-    ProxyTexture2DMultisampleArray = 0x9103,
-}
-
 public enum TEXTURE_UNIT
 {
     GL_TEXTURE0 = 33984,
@@ -1334,26 +1314,38 @@ public enum STATEARRAY : uint
     T4F_C4F_N3F_V4F = 0x2A2D,
 }
 
-public enum VSyncMode : int
+//todo: force the relevant function to take this enum (tricky because it's an array of ints, and half need to stay ints)
+public enum ARBCREATECONTEXT_ATTRIBUTE_NAMES
 {
-    On = 1,
-    Off = 0,
-    Adaptive = -1
+    WGL_CONTEXT_MAJOR_VERSION_ARB = 0x2091,
+
+    WGL_CONTEXT_MINOR_VERSION_ARB = 0x2092,
+
+    WGL_CONTEXT_LAYER_PLANE_ARB = 0x2093,
+
+    WGL_CONTEXT_FLAGS_ARB = 0x2094,
+
+    WGL_CONTEXT_PROFILE_MASK_ARB = 0x9126,
 }
 
-//todo: force the relevant function to take this enum (tricky because it's an array of ints, and half need to stay ints)
-public enum ArbCreateContext
+public enum ARBCREATECONTEXT_ATTRIBUTE_VALUES
 {
-    CoreProfileBit = 0x0001,
-    CompatibilityProfileBit = 0x0002,
-    DebugBit = 0x0001,
-    ForwardCompatibleBit = 0x0002,
-    MajorVersion = 0x2091,
-    MinorVersion = 0x2092,
-    LayerPlane = 0x2093,
-    ContextFlags = 0x2094,
-    ErrorInvalidVersion = 0x2095,
-    ProfileMask = 0x9126,
+    /// <summary>
+    /// Use with WGL_CONTEXT_FLAGS_ARB
+    /// </summary>
+    WGL_CONTEXT_DEBUG_BIT_ARB = 0x0001,
+    /// <summary>
+    /// Use with WGL_CONTEXT_FLAGS_ARB
+    /// </summary>
+    WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB = 0x0002,
+    /// <summary>
+    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB
+    /// </summary>
+    WGL_CONTEXT_CORE_PROFILE_BIT_ARB = 0x0001,
+    /// <summary>
+    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB
+    /// </summary>
+    WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x0002,
 }
 
 public enum BUFFER_TARGET : int

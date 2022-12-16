@@ -9,9 +9,9 @@ internal class WinAPIOpenGLRenderContext
     private static IntPtr CreateRenderContext(IntPtr deviceContext, (int major, int minor) openGLversion)
     {
         int[] attribs = {
-            (int)ArbCreateContext.MajorVersion, openGLversion.major,
-            (int)ArbCreateContext.MinorVersion, openGLversion.minor,
-            (int)ArbCreateContext.ProfileMask, (int)ArbCreateContext.ForwardCompatibleBit,
+            (int)ARBCREATECONTEXT_ATTRIBUTE_NAMES.WGL_CONTEXT_MAJOR_VERSION_ARB, openGLversion.major,
+            (int)ARBCREATECONTEXT_ATTRIBUTE_NAMES.WGL_CONTEXT_MINOR_VERSION_ARB, openGLversion.minor,
+            (int)ARBCREATECONTEXT_ATTRIBUTE_NAMES.WGL_CONTEXT_PROFILE_MASK_ARB, (int)ARBCREATECONTEXT_ATTRIBUTE_VALUES.WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
             0 };
 
         var rC = WGLExtensions.wglCreateContextAttribsARB(deviceContext, sharedContext: IntPtr.Zero, attribs);
