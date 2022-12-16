@@ -3,10 +3,15 @@
 namespace HaighFramework.Logging;
 
 /// <summary>
-/// A stream for writing <see cref="ILogger"/> messages to a file
+/// A stream for writing <see cref="ILogger"/> messages to a file.
 /// </summary>
 public class FileOutputStream : ILoggerOutputStream
 {
+    /// <summary>
+    /// Create a stream for writing <see cref="ILogger"/> messages to a file.
+    /// </summary>
+    /// <param name="outputFile">The file path to write to.</param>
+    /// <param name="logLevel">The minimum level of messages to be logged.</param>
     public FileOutputStream(string outputFile, LogLevel logLevel)
     {
         LogLevel = logLevel;

@@ -1,7 +1,7 @@
 ﻿namespace HaighFramework.Logging;
 
 /// <summary>
-/// A tool for writing log messages
+/// A type for writing log messages.
 /// </summary>
 public interface ILogger
 {

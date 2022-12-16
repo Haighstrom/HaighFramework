@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HaighFramework.Input;
+using System.Collections;
 
 namespace HaighFramework.Logging;
 
@@ -46,6 +47,7 @@ internal class LoggerMessageFormatter : ILoggerMessageFormatter
     {
         null => NullString,
         string str => str,
+        Key key => KeyFormatter.AsString(key),
         IDictionary dict => FormatToStringInternal(dict),
         IEnumerable enumerable => FormatToStringInternal(enumerable),
         _ => o.ToString() ?? o.GetType().ToString(),

@@ -9,12 +9,21 @@ public class Logger : ILogger
 {
     private readonly ILoggerMessageFormatter _messageFormatter = new LoggerMessageFormatter();
     private readonly IEnumerable<ILoggerOutputStream> _outputStreams;
+    private readonly bool _includeLogLevelInMessages, _includeTimeStampInMessages;
 
+    /// <summary>
+    /// Create a default instance of an ILogger
+    /// </summary>
+    /// <param name="settings">The settings to be used.</param>
     public Logger(LogSettings settings)
     {
-        List<ILoggerOutputStream> streams = new();
+        _includeLogLevelInMessages = settings.IncludeLogLevelInMessages;
+        _includeTimeStampInMessages = settings.IncludeTimeStampInMessages;
 
-        streams.Add(new ConsoleOutputStream(settings.ConsoleLogLevel));
+        List<ILoggerOutputStream> streams = new()
+        {
+            new ConsoleOutputStream(settings.ConsoleLogLevel)
+        };
 
         foreach (var fileWriteSettings in settings.FileLogging)
         {
@@ -29,9 +38,26 @@ public class Logger : ILogger
         _outputStreams = streams;
     }
 
-    public Logger(params ILoggerOutputStream[] outputStreams)
+    /// <summary>
+    /// Create a default instance of an ILogger
+    /// </summary>
+    /// <param name="includeLogLevelInMessages">Whether the <see cref="LogLevel"/> of the message should be included when writing to the output stream(s).</param>
+    /// <param name="includeTimeStampInMessages">Whether the current system time should be included in messages written to the output stream(s).</param>
+    /// <param name="outputStreams">The streams that should be written to when logging with this logger.</param>
+    public Logger(bool includeLogLevelInMessages, bool includeTimeStampInMessages, params ILoggerOutputStream[] outputStreams)
     {
+        _includeLogLevelInMessages = includeLogLevelInMessages;
+        _includeTimeStampInMessages = includeTimeStampInMessages;
         _outputStreams = outputStreams;
+    }
+
+    /// <summary>
+    /// Create a default instance of an ILogger
+    /// </summary>
+    /// <param name="outputStreams">The streams that should be written to when logging with this logger.</param>
+    public Logger(params ILoggerOutputStream[] outputStreams)
+        : this(true, false, outputStreams)
+    {
     }
 
     /// <summary>
@@ -71,7 +97,32 @@ public class Logger : ILogger
 
         foreach (var stream in _outputStreams)
             if (logLevel >= stream.LogLevel)
-                stream.Write(_messageFormatter.FormatToLoggingString(thingToLog));
+            {
+                string logString = "";
+
+                if (_includeTimeStampInMessages)
+                {
+                    logString += $"{DateTime.Now} ";
+                }
+
+                if (_includeLogLevelInMessages)
+                {
+                    logString += logLevel switch
+                    {
+                        LogLevel.Verbose => "[Verbose] ",
+                        LogLevel.Debug => "[Debug] ",
+                        LogLevel.Information => "[Information] ",
+                        LogLevel.Warning => "[Warning] ",
+                        LogLevel.Error => "[Error] ",
+                        LogLevel.Fatal => "[Fatal] ",
+                        _ => throw new NotImplementedException(),
+                    };
+                }
+
+                logString += _messageFormatter.FormatToLoggingString(thingToLog);
+
+                stream.Write(logString);
+            }
     }
 
     /// <summary>
