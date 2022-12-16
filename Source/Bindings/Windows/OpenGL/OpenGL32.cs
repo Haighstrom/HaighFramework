@@ -1142,40 +1142,71 @@ public enum TextureTargetMultisample : int
     ProxyTexture2DMultisampleArray = 0x9103,
 }
 
-public enum TextureUnit
+public enum TEXTURE_UNIT
 {
-    Texture0 = 33984,
-    Texture1 = 33985,
-    Texture2 = 33986,
-    Texture3 = 33987,
-    Texture4 = 33988,
-    Texture5 = 33989,
-    Texture6 = 33990,
-    Texture7 = 33991,
-    Texture8 = 33992,
-    Texture9 = 33993,
-    Texture10 = 33994,
-    Texture11 = 33995,
-    Texture12 = 33996,
-    Texture13 = 33997,
-    Texture14 = 33998,
-    Texture15 = 33999,
-    Texture16 = 34000,
-    Texture17 = 34001,
-    Texture18 = 34002,
-    Texture19 = 34003,
-    Texture20 = 34004,
-    Texture21 = 34005,
-    Texture22 = 34006,
-    Texture23 = 34007,
-    Texture24 = 34008,
-    Texture25 = 34009,
-    Texture26 = 34010,
-    Texture27 = 34011,
-    Texture28 = 34012,
-    Texture29 = 34013,
-    Texture30 = 34014,
-    Texture31 = 34015,
+    GL_TEXTURE0 = 33984,
+
+    GL_TEXTURE1 = 33985,
+
+    GL_TEXTURE2 = 33986,
+
+    GL_TEXTURE3 = 33987,
+
+    GL_TEXTURE4 = 33988,
+
+    GL_TEXTURE5 = 33989,
+
+    GL_TEXTURE6 = 33990,
+
+    GL_TEXTURE7 = 33991,
+
+    GL_TEXTURE8 = 33992,
+
+    GL_TEXTURE9 = 33993,
+
+    GL_TEXTURE10 = 33994,
+
+    GL_TEXTURE11 = 33995,
+
+    GL_TEXTURE12 = 33996,
+
+    GL_TEXTURE13 = 33997,
+
+    GL_TEXTURE14 = 33998,
+
+    GL_TEXTURE15 = 33999,
+
+    GL_TEXTURE16 = 34000,
+
+    GL_TEXTURE17 = 34001,
+
+    GL_TEXTURE18 = 34002,
+
+    GL_TEXTURE19 = 34003,
+
+    GL_TEXTURE20 = 34004,
+
+    GL_TEXTURE21 = 34005,
+
+    GL_TEXTURE22 = 34006,
+
+    GL_TEXTURE23 = 34007,
+
+    GL_TEXTURE24 = 34008,
+
+    GL_TEXTURE25 = 34009,
+
+    GL_TEXTURE26 = 34010,
+
+    GL_TEXTURE27 = 34011,
+
+    GL_TEXTURE28 = 34012,
+
+    GL_TEXTURE29 = 34013,
+
+    GL_TEXTURE30 = 34014,
+
+    GL_TEXTURE31 = 34015,
 }
 
 [Flags]
@@ -1381,7 +1412,7 @@ public enum ArbCreateContext
     ProfileMask = 0x9126,
 }
 
-public enum BufferTarget : int
+public enum BUFFER_TARGET : int
 {
     /// <summary>
     /// Original was GL_ARRAY_BUFFER = 0x8892
@@ -1441,7 +1472,7 @@ public enum BufferTarget : int
     AtomicCounterBuffer = 0x92C0,
 }
 
-public enum BufferUsageHint : int
+public enum USAGE_PATTERN : int
 {
     /// <summary>
     /// Original was GL_STREAM_DRAW = 0x88E0
