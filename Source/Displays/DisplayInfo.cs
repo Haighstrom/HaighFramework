@@ -15,7 +15,7 @@
 /// <param name="ColourDepth">The number of bits in the colour buffer.</param>
 /// <param name="RefreshRate">Wow many times per second the display is able to draw a new image.</param>
 /// <param name="AvailableSettings">All <see cref="DisplaySettings"/> available to this device.</param>
-public record DisplayInfo(string DisplayName, int DisplayIndex, bool IsPrimary, int X, int Y, int Width, int Height, int ColourDepth, int RefreshRate, IEnumerable<DisplaySettings> AvailableSettings)
+public record DisplayInfo(string DeviceName, int DisplayIndex, bool IsPrimary, int X, int Y, int Width, int Height, int ColourDepth, int RefreshRate, IEnumerable<DisplaySettings> AvailableSettings)
 {
     /// <summary>
     /// The centre of the display, in pixels. Bear in mind if there is more than one display the top left of the monitor may not be considered (0,0).
@@ -26,7 +26,7 @@ public record DisplayInfo(string DisplayName, int DisplayIndex, bool IsPrimary, 
     {
         return 
             $"Device {DisplayIndex}{(IsPrimary ? " (Primary Display)" : "")}:\n" +
-            $"  Name: {DisplayName},\n" +
+            $"  Name: {DeviceName},\n" +
             $"  Position:({X},{Y},{Width},{Height}),\n" +
             $"  ColourDepth:{ColourDepth}\n" +
             $"  DisplayFrequency:{RefreshRate}.\n" +

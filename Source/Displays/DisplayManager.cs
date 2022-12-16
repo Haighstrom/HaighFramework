@@ -1,5 +1,4 @@
-﻿using HaighFramework.Displays.WinAPI;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
 namespace HaighFramework.Displays;
@@ -9,8 +8,8 @@ namespace HaighFramework.Displays;
 /// </summary>
 public sealed class DisplayManager : IDisplayManager
 {
-    private readonly IDisplayAPI _api;
     private bool _disposed = false;
+    private readonly IDisplayManager _api;
 
     /// <summary>
     /// Initialise the default DisplayManager.
@@ -19,39 +18,34 @@ public sealed class DisplayManager : IDisplayManager
     public DisplayManager()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            _api = new WindowsDisplayAPI();
+            _api = new Windows.WinAPIDisplayManager();
         else
             throw new NotImplementedException();
 
         Log.Information("-------Display Devices-------");
-
-        (AvailableDisplays, PrimaryDisplay) = _api.GetAvailableDevices();
-
         foreach (DisplayInfo display in AvailableDisplays)
             Log.Information(display);
         Log.Information("-----------------------------\n");
-
-        _api.DisplaySettingsChanged += OnDisplaySettingsChanged;
     }
 
     /// <summary>
     /// The displays currently available to this computer.
     /// </summary>
-    public IImmutableList<DisplayInfo> AvailableDisplays { get; private set; }
+    public IImmutableList<DisplayInfo> AvailableDisplays => _api.AvailableDisplays;
 
     /// <summary>
     /// The main display.
     /// </summary>
-    public DisplayInfo PrimaryDisplay { get; private set; }
+    public DisplayInfo PrimaryDisplay => _api.PrimaryDisplay;
 
-    private void OnDisplaySettingsChanged(object? sender, EventArgs e)
+    /// <summary>
+    /// Event which is triggered when display settings are changed, for exmaple disconnecting or connecting a monitor, or the resolution of a display is changed.
+    /// </summary>
+    public event EventHandler DisplaySettingsChanged
     {
-        Log.Information("Change in display settings detected. Refreshing display devices.");
+        add => _api.DisplaySettingsChanged += value;
 
-        (AvailableDisplays, PrimaryDisplay) = _api.GetAvailableDevices();
-
-        foreach (DisplayInfo display in AvailableDisplays)
-            Log.Information(display);
+        remove => _api.DisplaySettingsChanged -= value;
     }
 
     /// <summary>
@@ -61,18 +55,14 @@ public sealed class DisplayManager : IDisplayManager
     /// <param name="newWidth">The new width of the display.</param>
     /// <param name="newHeight">The new height of the display.</param>
     /// <param name="newRefreshRate">The new refresh rate of the display.</param>
-    public void ChangeSettings(DisplayInfo display, int newWidth, int newHeight, int newRefreshRate)
-    {
-        _api.ChangeSettings(display.DisplayName, newWidth, newHeight, newRefreshRate);
-        OnDisplaySettingsChanged(this, EventArgs.Empty);
-    }
+    public bool ChangeSettings(DisplayInfo display, int newWidth, int newHeight, int newRefreshRate) => _api.ChangeSettings(display, newWidth, newHeight, newRefreshRate);
 
     /// <summary>
     /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
     /// </summary>
     /// <param name="display">The display to be changed.</param>
     /// <param name="newSettings">The new settings to be applied.</param>
-    public void ChangeSettings(DisplayInfo display, DisplaySettings newSettings) => ChangeSettings(display, newSettings.Width, newSettings.Height, newSettings.RefreshRate);
+    public bool ChangeSettings(DisplayInfo display, DisplaySettings newSettings) => _api.ChangeSettings(display, newSettings);
 
     /// <summary>
     /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
@@ -80,15 +70,12 @@ public sealed class DisplayManager : IDisplayManager
     /// <param name="display">The display to be changed.</param>
     /// <param name="newWidth">The new width of the display.</param>
     /// <param name="newHeight">The new height of the display.</param>
-    public void ChangeSettings(DisplayInfo display, int newWidth, int newHeight) => ChangeSettings(display, newWidth, newHeight, display.RefreshRate);
+    public bool ChangeSettings(DisplayInfo display, int newWidth, int newHeight) => _api.ChangeSettings(display, newWidth, newHeight);
 
     /// <summary>
     /// Revert all displays back to their original settings.
     /// </summary>
-    public void ResetSettings()
-    {
-        _api.ResetSettings();
-    }
+    public void ResetSettings() => _api.ResetSettings();
 
     private void Dispose(bool disposedCorrectly)
     {

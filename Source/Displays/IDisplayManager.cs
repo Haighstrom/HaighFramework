@@ -18,20 +18,27 @@ public interface IDisplayManager : IDisposable
     DisplayInfo PrimaryDisplay { get; }
 
     /// <summary>
+    /// Event which is triggered when display settings are changed, for exmaple disconnecting or connecting a monitor, or the resolution of a display is changed.
+    /// </summary>
+    event EventHandler DisplaySettingsChanged;
+
+    /// <summary>
     /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
     /// </summary>
     /// <param name="display">The display to be changed.</param>
     /// <param name="newWidth">The new width of the display.</param>
     /// <param name="newHeight">The new height of the display.</param>
     /// <param name="newRefreshRate">The new refresh rate of the display.</param>
-    void ChangeSettings(DisplayInfo display, int newWidth, int newHeight, int newRefreshRate);
+    /// <returns>Returns true if the requested change was successful, false otherwise.</returns>
+    bool ChangeSettings(DisplayInfo display, int newWidth, int newHeight, int newRefreshRate);
 
     /// <summary>
     /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
     /// </summary>
     /// <param name="display">The display to be changed.</param>
     /// <param name="newSettings">The new settings to be applied.</param>
-    void ChangeSettings(DisplayInfo display, DisplaySettings newSettings);
+    /// <returns>Returns true if the requested change was successful, false otherwise.</returns>
+    bool ChangeSettings(DisplayInfo display, DisplaySettings newSettings);
 
     /// <summary>
     /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
@@ -39,7 +46,8 @@ public interface IDisplayManager : IDisposable
     /// <param name="display">The display to be changed.</param>
     /// <param name="newWidth">The new width of the display.</param>
     /// <param name="newHeight">The new height of the display.</param>
-    void ChangeSettings(DisplayInfo display, int newWidth, int newHeight);
+    /// <returns>Returns true if the requested change was successful, false otherwise.</returns>
+    bool ChangeSettings(DisplayInfo display, int newWidth, int newHeight);
 
     /// <summary>
     /// Revert all displays back to their original settings.

@@ -1,20 +1,41 @@
 ﻿using HaighFramework.WinAPI;
 using Microsoft.Win32;
 using System.Collections.Immutable;
+using System.Threading;
 
-namespace HaighFramework.Displays.WinAPI;
+namespace HaighFramework.Displays.Windows;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "This is part of the Windows API which will only be invoked if on Windows platform.")]
-internal sealed class WindowsDisplayAPI : IDisplayAPI
+internal sealed class WinAPIDisplayManager : IDisplayManager
 {
-    private bool isDisposed;
+    private bool _disposed = false;
 
-    public WindowsDisplayAPI()
+    public event EventHandler? DisplaySettingsChanged;
+
+    public WinAPIDisplayManager()
     {
-        SystemEvents.DisplaySettingsChanged += DisplaySettingsChanged;
+        SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        (AvailableDisplays, PrimaryDisplay) = GetAvailableDevices();
     }
 
-    public bool ChangeSettings(string deviceName, int newWidth, int newHeight, int newRefreshRate)
+    /// <summary>
+    /// The displays currently available to this computer.
+    /// </summary>
+    public IImmutableList<DisplayInfo> AvailableDisplays { get; private set; }
+
+    public DisplayInfo PrimaryDisplay { get; private set; }
+
+    private void OnDisplaySettingsChanged(object? sender, EventArgs e)
+    {
+        Log.Information("Change in display settings detected. Refreshing display devices.");
+
+        (AvailableDisplays, PrimaryDisplay) = GetAvailableDevices();
+
+        foreach (DisplayInfo display in AvailableDisplays)
+            Log.Information(display);
+    }
+
+    public bool ChangeSettings(DisplayInfo display, int newWidth, int newHeight, int newRefreshRate)
     {
         DEVMODE mode = new()
         {
@@ -23,9 +44,13 @@ internal sealed class WindowsDisplayAPI : IDisplayAPI
             DisplayFrequency = newRefreshRate,
             Fields = DeviceModeEnum.DM_PELSWIDTH | DeviceModeEnum.DM_PELSHEIGHT | DeviceModeEnum.DM_DISPLAYFREQUENCY
         };
-        
-        return User32.ChangeDisplaySettingsEx(deviceName, mode, IntPtr.Zero, CHANGEDISPLAYSETTINGSFLAGS.CDS_FULLSCREEN, IntPtr.Zero) == DISPCHANGERESULT.DISP_CHANGE_SUCCESSFUL;
+
+        return User32.ChangeDisplaySettingsEx(display.DeviceName, mode, IntPtr.Zero, CHANGEDISPLAYSETTINGSFLAGS.CDS_FULLSCREEN, IntPtr.Zero) == DISPCHANGERESULT.DISP_CHANGE_SUCCESSFUL;
     }
+
+    public bool ChangeSettings(DisplayInfo display, DisplaySettings newSettings) => ChangeSettings(display, newSettings.Width, newSettings.Height, newSettings.RefreshRate);
+
+    public bool ChangeSettings(DisplayInfo display, int newWidth, int newHeight) => ChangeSettings(display, newWidth, newHeight, display.RefreshRate);
 
     public (IImmutableList<DisplayInfo> Displays, DisplayInfo Primary) GetAvailableDevices()
     {
@@ -56,7 +81,7 @@ internal sealed class WindowsDisplayAPI : IDisplayAPI
 
             bool isPrimary = deviceInfo.StateFlags.HasFlag(DisplayDeviceStateFlags.PrimaryDevice);
 
-            DisplayInfo display = new DisplayInfo(deviceInfo.DeviceName, iDevNum - 1, isPrimary, dm.Position.X, dm.Position.Y, dm.PelsWidth, dm.PelsHeight, dm.BitsPerPel, dm.DisplayFrequency, availableSettings);
+            DisplayInfo display = new(deviceInfo.DeviceName, iDevNum - 1, isPrimary, dm.Position.X, dm.Position.Y, dm.PelsWidth, dm.PelsHeight, dm.BitsPerPel, dm.DisplayFrequency, availableSettings);
             displays.Add(display);
 
             if (isPrimary)
@@ -64,7 +89,7 @@ internal sealed class WindowsDisplayAPI : IDisplayAPI
         }
 
         if (primary is null)
-            throw new InvalidOperationException($"{nameof(IDisplayAPI.GetAvailableDevices)} did not identify any primary display.");
+            throw new InvalidOperationException($"{nameof(WinAPIDisplayManager)}.{nameof(GetAvailableDevices)} did not identify any primary display.");
 
         return (displays.ToImmutableList(), primary);
     }
@@ -74,30 +99,28 @@ internal sealed class WindowsDisplayAPI : IDisplayAPI
         User32.ChangeDisplaySettings(IntPtr.Zero, 0);
     }
 
-    public event EventHandler? DisplaySettingsChanged;
-
     private void Dispose(bool disposedCorrectly)
     {
-        if (!isDisposed)
+        if (!_disposed)
         {
             if (!disposedCorrectly)
             {
-                Log.Warning($"Did not dispose {nameof(WindowsDisplayAPI)} correctly.");
+                Log.Warning($"Did not dispose {nameof(WinAPIDisplayManager)} correctly.");
             }
 
             SystemEvents.DisplaySettingsChanged -= DisplaySettingsChanged;
 
-            isDisposed = true;
+            _disposed = true;
         }
     }
 
-    ~WindowsDisplayAPI()
+    ~WinAPIDisplayManager()
     {
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposedCorrectly: false);
     }
 
-    void IDisposable.Dispose()
+    public void Dispose()
     {
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposedCorrectly: true);
