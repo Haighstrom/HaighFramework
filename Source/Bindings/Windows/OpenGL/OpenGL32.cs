@@ -1,7 +1,5 @@
 ﻿using System.Security;
 using System.Runtime.InteropServices;
-using static System.Formats.Asn1.AsnWriter;
-using System;
 
 namespace HaighFramework.OpenGL;
 
@@ -747,6 +745,65 @@ public enum MSAA_SAMPLES
     X16 = 16
 }
 
+public enum TEXPARAMETER_VALUE : int
+{
+    GL_REPEAT = 0x2901,
+
+    GL_CLAMP_TO_BORDER = 0x812D,
+
+    GL_CLAMP_TO_BORDER_ARB = 0x812D,
+
+    GL_CLAMP_TO_BORDER_NV = 0x812D,
+
+    GL_CLAMP_TO_BORDER_SGIS = 0x812D,
+
+    GL_CLAMP_TO_EDGE = 0x812F,
+
+    GL_CLAMP_TO_EDGE_SGIS = 0x812F,
+
+    GL_MIRRORED_REPEAT = 0x8370,
+
+    GL_NEAREST = 0x2600,
+
+    GL_LINEAR = 0x2601,
+
+    GL_LINEAR_DETAIL_SGIS = 0x8097,
+
+    GL_LINEAR_DETAIL_ALPHA_SGIS = 0x8098,
+
+    GL_LINEAR_DETAIL_COLOR_SGIS = 0x8099,
+
+    GL_LINEAR_SHARPEN_SGIS = 0x80AD,
+
+    GL_LINEAR_SHARPEN_ALPHA_SGIS = 0x80AE,
+
+    GL_LINEAR_SHARPEN_COLOR_SGIS = 0x80AF,
+
+    GL_FILTER4_SGIS = 0x8146,
+
+    GL_PIXEL_TEX_GEN_Q_CEILING_SGIX = 0x8184,
+
+    GL_PIXEL_TEX_GEN_Q_ROUND_SGIX = 0x8185,
+
+    GL_PIXEL_TEX_GEN_Q_FLOOR_SGIX = 0x8186,
+
+    GL_NEAREST_MIPMAP_NEAREST = 0x2700,
+
+    GL_LINEAR_MIPMAP_NEAREST = 0x2701,
+
+    GL_NEAREST_MIPMAP_LINEAR = 0x2702,
+
+    GL_LINEAR_MIPMAP_LINEAR = 0x2703,
+
+    GL_LINEAR_CLIPMAP_LINEAR_SGIX = 0x8170,
+
+    GL_NEAREST_CLIPMAP_NEAREST_SGIX = 0x844D,
+
+    GL_NEAREST_CLIPMAP_LINEAR_SGIX = 0x844E,
+
+    GL_LINEAR_CLIPMAP_NEAREST_SGIX = 0x844F,
+}
+
 //----Enums Name and Values Updated, still requires more complete commenting above this line ----
 
 public enum SHADER_TYPE : int
@@ -759,147 +816,18 @@ public enum SHADER_TYPE : int
     ComputeShader = 0x91B9,
 }
 
-public enum TextureParameter : int
+
+public enum TEXPARAMETER_NAME : int
 {
-    /// <summary>
-    /// GL_REPEAT: Used with TextureParameterName TextureWrapS / TextureWrapT
-    /// </summary>
-    Repeat = 0x2901,
-    /// <summary>
-    /// GL_CLAMP_TO_BORDER: Used with TextureParameterName TextureWrapS / TextureWrapT
-    /// </summary>
-    ClampToBorder = 0x812D,
-    /// <summary>
-    /// GL_CLAMP_TO_BORDER_ARB: Used with TextureParameterName TextureWrapS / TextureWrapT
-    /// </summary>
-    ClampToBorderARB = 0x812D,
-    /// <summary>
-    /// GL_CLAMP_TO_BORDER_NV: Used with TextureParameterName TextureWrapS / TextureWrapT
-    /// </summary>
-    ClampToBorderNV = 0x812D,
-    /// <summary>
-    /// GL_CLAMP_TO_BORDER_SGIS: Used with TextureParameterName TextureWrapS / TextureWrapT
-    /// </summary>
-    ClampToBorderSGIS = 0x812D,
-    /// <summary>
-    /// GL_CLAMP_TO_EDGE: Used with TextureParameterName TextureWrapS / TextureWrapT
-    /// </summary>
-    ClampToEdge = 0x812F,
-    /// <summary>
-    /// GL_CLAMP_TO_EDGE_SGIS: Used with TextureParameterName TextureWrapS / TextureWrapT
-    /// </summary>
-    CLampToEdgeSGIS = 0x812F,
-    /// <summary>
-    /// GL_MIRRORED_REPEAT: Used with TextureParameterName TextureWrapS / TextureWrapT
-    /// </summary>
-    MirroredRepeat = 0x8370,
+    GL_TEXTURE_BORDER_COLOR = 0x1004,
 
+    GL_TEXTURE_MAG_FILTER = 0x2800,
 
-    /// <summary>
-    /// GL_NEAREST: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    Nearest = 0x2600,
-    /// <summary>
-    /// GL_LINEAR: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    Linear = 0x2601,
-    /// <summary>
-    /// GL_LINEAR_DETAIL_SGIS: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    LinearDetailSGIS = 0x8097,
-    /// <summary>
-    /// GL_LINEAR_DETAIL_ALPHA_SGIS: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    LineaerDetailAlphaSGIS = 0x8098,
-    /// <summary>
-    /// GL_LINEAR_DETAIL_COLOR_SGIS: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    LinearDetailColourSGIS = 0x8099,
-    /// <summary>
-    /// GL_LINEAR_SHARPEN_SGIS: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    LinearSharpenSGIS = 0x80AD,
-    /// <summary>
-    /// GL_LINEAR_SHARPEN_ALPHA_SGIS: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    LinearSharpenAlphaSGIS = 0x80AE,
-    /// <summary>
-    /// GL_LINEAR_SHARPEN_COLOR_SGIS: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    LinearSharpenColourSGIS = 0x80AF,
-    /// <summary>
-    /// GL_FILTER4_SGIS: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    Filter4SGIS = 0x8146,
-    /// <summary>
-    /// GL_PIXEL_TEX_GEN_Q_CEILING_SGIX: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    PixelTexGenQCeilingSGIX = 0x8184,
-    /// <summary>
-    /// GL_PIXEL_TEX_GEN_Q_ROUND_SGIX: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    PixelTexGenQRoundSGIX = 0x8185,
-    /// <summary>
-    /// GL_PIXEL_TEX_GEN_Q_FLOOR_SGIX: Used with TextureParameterName TextureMagFilter / TextureMinFilter
-    /// </summary>
-    PixelTexGenQFloorSGIX = 0x8186,
-    /// <summary>
-    /// Original was GL_NEAREST_MIPMAP_NEAREST = 0x2700
-    /// </summary>
-    NearestMipmapNearest = 0x2700,
-    /// <summary>
-    /// Original was GL_LINEAR_MIPMAP_NEAREST = 0x2701
-    /// </summary>
-    LinearMipmapNearest = 0x2701,
-    /// <summary>
-    /// Original was GL_NEAREST_MIPMAP_LINEAR = 0x2702
-    /// </summary>
-    NearestMipmapLinear = 0x2702,
-    /// <summary>
-    /// Original was GL_LINEAR_MIPMAP_LINEAR = 0x2703
-    /// </summary>
-    LinearMipmapLinear = 0x2703,
-    /// <summary>
-    /// Original was GL_LINEAR_CLIPMAP_LINEAR_SGIX = 0x8170
-    /// </summary>
-    LinearClipmapLinearSGIX = 0x8170,
-    /// <summary>
-    /// Original was GL_NEAREST_CLIPMAP_NEAREST_SGIX = 0x844D
-    /// </summary>
-    NearestClipmapNearestSGIX = 0x844D,
-    /// <summary>
-    /// Original was GL_NEAREST_CLIPMAP_LINEAR_SGIX = 0x844E
-    /// </summary>
-    NearestClipmapLinearSGIX = 0x844E,
-    /// <summary>
-    /// Original was GL_LINEAR_CLIPMAP_NEAREST_SGIX = 0x844F
-    /// </summary>
-    LinearClipmapNearestSGIX = 0x844F,
+    GL_TEXTURE_MIN_FILTER = 0x2801,
 
-}
+    GL_TEXTURE_WRAP_S = 0x2802,
 
-public enum TextureParameterName : int
-{
-    /// <summary>
-    /// Original was GL_TEXTURE_BORDER_COLOR = 0x1004
-    /// </summary>
-    TextureBorderColor = 0x1004,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAG_FILTER = 0x2800
-    /// </summary>
-    TextureMagFilter = 0x2800,
-    /// <summary>
-    /// Original was GL_TEXTURE_MIN_FILTER = 0x2801
-    /// </summary>
-    TextureMinFilter = 0x2801,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_S = 0x2802
-    /// </summary>
-    TextureWrapS = 0x2802,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_T = 0x2803
-    /// </summary>
-    TextureWrapT = 0x2803,
+    GL_TEXTURE_WRAP_T = 0x2803,
     /// <summary>
     /// Original was GL_TEXTURE_PRIORITY = 0x8066
     /// </summary>
@@ -1446,55 +1374,6 @@ public enum USAGE_PATTERN : int
     /// Original was GL_DYNAMIC_COPY = 0x88EA
     /// </summary>
     DynamicCopy = 0x88EA,
-}
-
-[Flags]
-public enum DataType : uint
-{
-    /// <summary>
-    /// Original was GL_BYTE = 0x1400
-    /// </summary>
-    Byte = 0x1400,
-    /// <summary>
-    /// Original was GL_UNSIGNED_BYTE = 0x1401
-    /// </summary>
-    UnsignedByte = 0x1401,
-    /// <summary>
-    /// Original was GL_SHORT = 0x1402
-    /// </summary>
-    Short = 0x1402,
-    /// <summary>
-    /// Original was GL_UNSIGNED_SHORT = 0x1403
-    /// </summary>
-    UnsignedShort = 0x1403,
-    /// <summary>
-    /// Original was GL_INT = 0x1404
-    /// </summary>
-    Int = 0x1404,
-    /// <summary>
-    /// Original was GL_UNSIGNED_INT = 0x1405
-    /// </summary>
-    UnsignedInt = 0x1405,
-    /// <summary>
-    /// Original was GL_FLOAT = 0x1406
-    /// </summary>
-    Float = 0x1406,
-    /// <summary>
-    /// Original was GL_2_BYTES = 0x1407
-    /// </summary>
-    TwoBytes = 0x1407,
-    /// <summary>
-    /// Original was GL_3_BYTES = 0x1408
-    /// </summary>
-    ThreeBytes = 0x1408,
-    /// <summary>
-    /// Original was GL_4_BYTES = 0x1409
-    /// </summary>
-    FourBytes = 0x1409,
-    /// <summary>
-    /// Original was GL_DOUBLE = 0x140A
-    /// </summary>
-    Double = 0x140A
 }
 
 public enum GLCAP : int
@@ -4913,19 +4792,60 @@ public enum MatrixMode : int
     Texture = 0x1702,
 }
 
-
-public enum OpenGLErrorCode : uint
+/// <summary>
+/// Error codes returned by the <see cref="OpenGL32.glGetError"/> function.
+/// </summary>
+public enum GL_ERROR : uint
 {
-    NO_ERROR = 0,
-    INVALID_ENUM = 1280,
-    INVALID_VALUE = 1281,
-    INVALID_OPERATION = 1282,
-    STACK_OVERFLOW = 1283,
-    STACK_UNDERFLOW = 1284,
-    OUT_OF_MEMORY = 1285,
-    INVALID_FRAMEBUFFER_OPERATION = 1286,
-    CONTEXT_LOST = 1287,
-    TABLE_TOO_LARGE = 32817
+    /// <summary>
+    /// No (more) errors are available
+    /// </summary>
+    GL_NO_ERROR = 0,
+
+    /// <summary>
+    /// Given when an enumeration parameter is not a legal enumeration for that function. This is given only for local problems; if the spec allows the enumeration in certain circumstances, where other parameters or state dictate those circumstances, then GL_INVALID_OPERATION is the result instead.
+    /// </summary>
+    GL_INVALID_ENUM = 0x0500,
+
+    /// <summary>
+    /// Given when a value parameter is not a legal value for that function. This is only given for local problems; if the spec allows the value in certain circumstances, where other parameters or state dictate those circumstances, then GL_INVALID_OPERATION is the result instead.
+    /// </summary>
+    GL_INVALID_VALUE = 0x0501,
+
+    /// <summary>
+    /// Given when the set of state for a command is not legal for the parameters given to that command. It is also given for commands where combinations of parameters define what the legal parameters are.
+    /// </summary>
+    GL_INVALID_OPERATION = 0x0502,
+
+    /// <summary>
+    /// Given when a stack pushing operation cannot be done because it would overflow the limit of that stack's size.
+    /// </summary>
+    GL_STACK_OVERFLOW = 0x0503,
+
+    /// <summary>
+    /// Given when a stack popping operation cannot be done because the stack is already at its lowest point.
+    /// </summary>
+    GL_STACK_UNDERFLOW = 0x0504,
+
+    /// <summary>
+    /// Given when performing an operation that can allocate memory, and the memory cannot be allocated. The results of OpenGL functions that return this error are undefined; it is allowable for partial execution of an operation to happen in this circumstance.
+    /// </summary>
+    GL_OUT_OF_MEMORY = 0x0505,
+
+    /// <summary>
+    /// Given when doing anything that would attempt to read from or write/render to a framebuffer that is not complete.
+    /// </summary>
+    GL_INVALID_FRAMEBUFFER_OPERATION = 0x0506,
+
+    /// <summary>
+    /// Given if the OpenGL context has been lost, due to a graphics card reset.
+    /// </summary>
+    GL_CONTEXT_LOST = 0x0507,
+
+    /// <summary>
+    /// [Deprecated] Part of the ARB_imaging extension.
+    /// </summary>
+    GL_TABLE_TOO_LARGE = 0x8031
 }
 
 public enum TEXTURE_INTERNALFORMAT : int
@@ -5495,7 +5415,7 @@ public static partial class OpenGL32
     /// </summary>
     /// <returns>Returns the value of the error flag. </returns>
     [DllImport(Library)]
-    public static extern OpenGLErrorCode glGetError();
+    public static extern GL_ERROR glGetError();
 
     /// <summary>
     /// return the value or values of a selected parameter
@@ -5742,7 +5662,7 @@ public static partial class OpenGL32
     /// <param name="pname">Specifies the symbolic name of a single-valued texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
     [DllImport(Library)]
-    public static extern void glTexParameteri(TEXTURE_TARGET target, TextureParameterName pname, TextureParameter param);
+    public static extern void glTexParameteri(TEXTURE_TARGET target, TEXPARAMETER_NAME pname, TEXPARAMETER_VALUE param);
 
     /// <summary>
     /// multiply the current matrix by a translation matrix
@@ -5778,7 +5698,7 @@ public static partial class OpenGL32
     /// <param name="stride">Specifies the byte offset between consecutive vertices. If stride is 0, the vertices are understood to be tightly packed in the array. The initial value is 0.</param>
     /// <param name="pointer">Specifies a pointer to the first coordinate of the first vertex in the array. The initial value is 0.</param>
     [DllImport(Library)]
-    public static extern void glVertexPointer(int size, DataType type, int stride, float[] pointer);
+    public static extern void glVertexPointer(int size, VERTEX_DATA_TYPE type, int stride, float[] pointer);
 
     /// <summary>
     /// Specifies the affine transformation of x and y from normalized device coordinates to window coordinates.
