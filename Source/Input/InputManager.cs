@@ -2,6 +2,9 @@
 
 namespace HaighFramework.Input;
 
+/// <summary>
+/// Class for getting information about input devices and input received.
+/// </summary>
 public class InputManager : IInputManager
 {
     private readonly IInputManager _api;
@@ -15,8 +18,16 @@ public class InputManager : IInputManager
             throw new PlatformNotSupportedException();
     }
 
+    /// <summary>
+    /// The state of the mouse.
+    /// </summary>
+    /// <remarks>If multiple mice are attached their states will be aggregated.</remarks>
     public MouseState MouseState => _api.MouseState;
 
+    /// <summary>
+    /// The state of the keyboard.
+    /// </summary>
+    /// <remarks>If multiple mice are attached their states will be aggregated.</remarks>
     public KeyboardState KeyboardState => _api.KeyboardState;
 
     protected virtual void Dispose(bool disposedCorrectly)

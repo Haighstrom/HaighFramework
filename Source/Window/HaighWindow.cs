@@ -5,129 +5,129 @@ namespace HaighFramework.Window;
 
 public class HaighWindow : IWindow
 {
-    private readonly IWindow _implementation;
+    private readonly IWindow _api;
 
     public HaighWindow(WindowSettings settings)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            _implementation = new Windows.WinAPIWindow(settings);
+            _api = new Windows.WinAPIWindow(settings);
         else
             throw new NotImplementedException();
     }
 
-    public bool IsOpen => _implementation.IsOpen;
+    public bool IsOpen => _api.IsOpen;
 
-    public bool Visible { get => _implementation.Visible; set => _implementation.Visible = value; }
+    public bool Visible { get => _api.Visible; set => _api.Visible = value; }
 
-    public bool ExitOnClose { get => _implementation.ExitOnClose; set => _implementation.ExitOnClose = value; }
+    public bool ExitOnClose { get => _api.ExitOnClose; set => _api.ExitOnClose = value; }
     
-    public string Title { get => _implementation.Title; set => _implementation.Title = value; }
+    public string Title { get => _api.Title; set => _api.Title = value; }
     
-    public Icon Icon { get => _implementation.Icon; set => _implementation.Icon = value; }
+    public Icon Icon { get => _api.Icon; set => _api.Icon = value; }
     
-    public BorderStyle Border { get => _implementation.Border; set => _implementation.Border = value; }
+    public BorderStyle Border { get => _api.Border; set => _api.Border = value; }
     
-    public WindowState State { get => _implementation.State; set => _implementation.State = value; }
+    public WindowState State { get => _api.State; set => _api.State = value; }
 
-    public float DPI => _implementation.DPI;
+    public float DPI => _api.DPI;
 
-    public Rect Position { get => _implementation.Position; set => _implementation.Position = value; }
+    public Rect Position { get => _api.Position; set => _api.Position = value; }
     
-    public int X { get => _implementation.X; set => _implementation.X = value; }
+    public int X { get => _api.X; set => _api.X = value; }
     
-    public int Y { get => _implementation.Y; set => _implementation.Y = value; }
+    public int Y { get => _api.Y; set => _api.Y = value; }
     
-    public int Width { get => _implementation.Width; set => _implementation.Width = value; }
+    public int Width { get => _api.Width; set => _api.Width = value; }
     
-    public int Height { get => _implementation.Height; set => _implementation.Height = value; }
+    public int Height { get => _api.Height; set => _api.Height = value; }
     
-    public Point ClientSize { get => _implementation.ClientSize; set => _implementation.ClientSize = value; }
+    public Point ClientSize { get => _api.ClientSize; set => _api.ClientSize = value; }
 
-    public Rect Viewport => _implementation.Viewport;
+    public Rect Viewport => _api.Viewport;
 
-    public Point MinClientSize { get => _implementation.MinClientSize; set => _implementation.MinClientSize = value; }
+    public Point MinClientSize { get => _api.MinClientSize; set => _api.MinClientSize = value; }
     
-    public Point MaxClientSize { get => _implementation.MaxClientSize; set => _implementation.MaxClientSize = value; }
+    public Point MaxClientSize { get => _api.MaxClientSize; set => _api.MaxClientSize = value; }
 
-    public bool Focussed => _implementation.Focussed;
+    public bool Focussed => _api.Focussed;
 
-    public Cursor Cursor { get => _implementation.Cursor; set => _implementation.Cursor = value; }
+    public Cursor Cursor { get => _api.Cursor; set => _api.Cursor = value; }
     
-    public bool CursorVisible { get => _implementation.CursorVisible; set => _implementation.CursorVisible = value; }
+    public bool CursorVisible { get => _api.CursorVisible; set => _api.CursorVisible = value; }
     
-    public bool CursorLockedToWindow { get => _implementation.CursorLockedToWindow; set => _implementation.CursorLockedToWindow = value; }
+    public bool CursorLockedToWindow { get => _api.CursorLockedToWindow; set => _api.CursorLockedToWindow = value; }
 
-    public IntPtr DeviceContext => _implementation.DeviceContext;
+    public IntPtr DeviceContext => _api.DeviceContext;
 
-    public void Centre() => _implementation.Centre();
+    public void Centre() => _api.Centre();
 
-    public void Close() => _implementation.Close();
+    public void Close() => _api.Close();
 
-    public void Dispose() => _implementation.Dispose();
+    public void Dispose() => _api.Dispose();
 
-    public void Exit() => _implementation.Exit();
+    public void Exit() => _api.Exit();
 
-    public void MakeFocussed() => _implementation.MakeFocussed();
+    public void MakeFocussed() => _api.MakeFocussed();
 
-    public void ProcessEvents() => _implementation.ProcessEvents();
+    public void ProcessEvents() => _api.ProcessEvents();
 
-    public Point ScreenToClient(Point screenPosition) => _implementation.ScreenToClient(screenPosition);
+    public Point ScreenToClient(Point screenPosition) => _api.ScreenToClient(screenPosition);
 
-    public void SwapBuffers() => _implementation.SwapBuffers();
+    public void SwapBuffers() => _api.SwapBuffers();
 
     public event EventHandler? CloseAttempted
     {
-        add => _implementation.CloseAttempted += value;
+        add => _api.CloseAttempted += value;
 
-        remove => _implementation.CloseAttempted -= value;
+        remove => _api.CloseAttempted -= value;
     }
 
     public event EventHandler? Closed
     {
-        add => _implementation.Closed += value;
+        add => _api.Closed += value;
 
-        remove => _implementation.Closed -= value;
+        remove => _api.Closed -= value;
     }
 
     public event EventHandler? Moved
     {
-        add => _implementation.Moved += value;
+        add => _api.Moved += value;
 
-        remove => _implementation.Moved -= value;
+        remove => _api.Moved -= value;
     }
 
     public event EventHandler? Resized
     {
-        add => _implementation.Resized += value;
+        add => _api.Resized += value;
 
-        remove => _implementation.Resized -= value;
+        remove => _api.Resized -= value;
     }
 
     public event EventHandler<FocusChangedEventArgs>? FocusChanged
     {
-        add => _implementation.FocusChanged += value;
+        add => _api.FocusChanged += value;
 
-        remove => _implementation.FocusChanged -= value;
+        remove => _api.FocusChanged -= value;
     }
 
     public event EventHandler<KeyboardCharEventArgs>? CharEntered
     {
-        add => _implementation.CharEntered += value;
+        add => _api.CharEntered += value;
 
-        remove => _implementation.CharEntered -= value;
+        remove => _api.CharEntered -= value;
     }
 
     public event EventHandler<KeyboardKeyEventArgs>? KeyDown
     {
-        add => _implementation.KeyDown += value;
+        add => _api.KeyDown += value;
 
-        remove => _implementation.KeyDown -= value;
+        remove => _api.KeyDown -= value;
     }
 
     public event EventHandler<KeyboardKeyEventArgs>? KeyUp
     {
-        add => _implementation.KeyUp += value;
+        add => _api.KeyUp += value;
 
-        remove => _implementation.KeyUp -= value;
+        remove => _api.KeyUp -= value;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using HaighFramework.Input;
+using HaighFramework.Input.Windows;
 using HaighFramework.OpenGL;
 using HaighFramework.WinAPI;
 
@@ -351,7 +352,7 @@ public class WinAPIWindow : IWindow
                 short scancode = (short)((lParam.ToInt64() >> 16) & 0xff);
                 VIRTUALKEYCODE vkey = (VIRTUALKEYCODE)wParam;
 
-                Key key = KeyMap.TranslateKey(scancode, vkey, extended);
+                Key key = KeyTranslator.TranslateKey(scancode, vkey, extended);
 
                 if (key != Key.Unknown)
                     KeyDown?.Invoke(this, new KeyboardKeyEventArgs(key));
@@ -363,7 +364,7 @@ public class WinAPIWindow : IWindow
                 scancode = (short)((lParam.ToInt64() >> 16) & 0xff);
                 vkey = (VIRTUALKEYCODE)wParam;
 
-                key = KeyMap.TranslateKey(scancode, vkey, extended);
+                key = KeyTranslator.TranslateKey(scancode, vkey, extended);
 
                 if (key != Key.Unknown)
                     KeyUp?.Invoke(this, new KeyboardKeyEventArgs(key));

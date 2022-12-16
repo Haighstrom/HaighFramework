@@ -5,7 +5,7 @@ using Microsoft.Win32;
 namespace HaighFramework.Input.Windows;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "This is part of the Windows API which will only be invoked if on Windows platform.")]
-internal sealed class WinAPIMouseManager : IWinAPIMouseManager
+internal class MouseAPI : IMouseAPI
 {
     private readonly List<MouseState> _mice = new();
     private readonly List<string> _names = new();
@@ -13,7 +13,7 @@ internal sealed class WinAPIMouseManager : IWinAPIMouseManager
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
     
-    public WinAPIMouseManager(IntPtr messageWindowHandle)
+    public MouseAPI(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
             throw new ArgumentNullException("messageWindowHandle");
@@ -296,6 +296,4 @@ internal sealed class WinAPIMouseManager : IWinAPIMouseManager
             return answer;
         }
     }
-
-
 }

@@ -10,8 +10,8 @@ internal class WinAPIInputManager : IInputManager
     private static readonly Guid GUID_DEVINTERFACE_HID = new("4D1E55B2-F16F-11CF-88CB-001111000030"); //https://learn.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-hid
 
     private InputProcessingWindow _inputWindow;
-    private KeyboardManager _keyboardManager;
-    private WinAPIMouseManager _mouseManager;
+    private KeyboardAPI _keyboardManager;
+    private MouseAPI _mouseManager;
     private RawInput _rawInput = new();
     private readonly AutoResetEvent _inputWindowThreadReadyCheck = new(false);
     private readonly Thread _inputWindowThread;
@@ -37,8 +37,8 @@ internal class WinAPIInputManager : IInputManager
 
         Log.Information("--------Input Devices--------");
 
-        _mouseManager = new WinAPIMouseManager(_inputWindow.Handle);
-        _keyboardManager = new KeyboardManager(_inputWindow.Handle);
+        _mouseManager = new MouseAPI(_inputWindow.Handle);
+        _keyboardManager = new KeyboardAPI(_inputWindow.Handle);
 
         Log.Information("-----------------------------\n");
 

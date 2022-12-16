@@ -1,5 +1,8 @@
 ﻿namespace HaighFramework.Input;
 
+/// <summary>
+/// Represents the state of a mouse.
+/// </summary>
 public class MouseState
 {
     internal readonly Dictionary<MouseButton, bool> ButtonsDown = new()

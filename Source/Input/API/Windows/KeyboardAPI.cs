@@ -3,9 +3,9 @@ using Microsoft.Win32;
 using System.Runtime.InteropServices;
 
 
-namespace HaighFramework.Input;
+namespace HaighFramework.Input.Windows;
 
-public class KeyboardManager : IKeyboardManager
+internal class KeyboardAPI : IKeyboardAPI
 {
     private readonly List<KeyboardState> _keyboards = new();
     private readonly List<string> _names = new();
@@ -13,8 +13,7 @@ public class KeyboardManager : IKeyboardManager
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
     
-
-    public KeyboardManager(IntPtr messageWindowHandle)
+    public KeyboardAPI(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
             throw new ArgumentNullException("messageWindowHandle");
@@ -23,7 +22,6 @@ public class KeyboardManager : IKeyboardManager
 
         UpdateDevices();
     }
-    
 
     private static string GetDeviceName(RAWINPUTDEVICELIST dev)
     {
@@ -39,7 +37,6 @@ public class KeyboardManager : IKeyboardManager
 
         return name;
     }
-    
 
     private static RegistryKey FindRegistryKey(string name)
     {
@@ -65,7 +62,6 @@ public class KeyboardManager : IKeyboardManager
         RegistryKey regkey = Registry.LocalMachine.OpenSubKey(findme);
         return regkey;
     }
-    
 
     private void RegisterRawDevice(IntPtr window, string device)
     {
@@ -88,8 +84,6 @@ public class KeyboardManager : IKeyboardManager
             Log.Information($"Registered Keyboard {_keyboards.Count}: {device}");
         }
     }
-    
-    
 
     public KeyboardState GetAggregateState
     {
@@ -106,7 +100,6 @@ public class KeyboardManager : IKeyboardManager
             }
         }
     }
-    
 
     public KeyboardState GetState(int index)
     {
@@ -119,7 +112,6 @@ public class KeyboardManager : IKeyboardManager
         }
     }
     
-
     public void UpdateDevices()
     {
         lock (_syncRoot)
@@ -205,7 +197,6 @@ public class KeyboardManager : IKeyboardManager
         }
     }
     
-
     internal bool ProcessInputData(RawInput data)
     {
         IntPtr dHandle = data.Header.Device;
@@ -231,7 +222,7 @@ public class KeyboardManager : IKeyboardManager
         KeyboardState keyboard = _keyboards[keyboardID];
 
         //now we're ready to process the data
-        Key key = KeyMap.TranslateKey(scancode, vkey, extended0);
+        Key key = KeyTranslator.TranslateKey(scancode, vkey, extended0);
         bool processed = false;
 
         if (key != Key.Unknown)
@@ -244,25 +235,5 @@ public class KeyboardManager : IKeyboardManager
             _keyboards[keyboardID] = keyboard;
             return processed;
         }
-    }
-
-    
-
-    /// <summary>
-    /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
-    /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
-    /// Use for eg text box input, rather than for controlling a game character (Use Input.GetKeyboardState)
-    /// </summary>
-    public event EventHandler<KeyboardCharEventArgs> CharEntered;
-
-    /// <summary>
-    /// Called whenever a keyboard key is pressed
-    /// </summary>
-    public event EventHandler<KeyboardKeyEventArgs> KeyDown;
-
-    /// <summary>
-    /// Called whenever a keyboard key is released
-    /// </summary>
-    public event EventHandler<KeyboardKeyEventArgs> KeyUp;
-    
+    }    
 }

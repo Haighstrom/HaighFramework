@@ -1,8 +1,10 @@
-﻿namespace HaighFramework.Input;
+﻿namespace HaighFramework.Input.Windows;
 
-public interface IKeyboardManager
+internal interface IKeyboardAPI
 {
     KeyboardState GetAggregateState { get; }
+
     KeyboardState GetState(int index);
+
     void UpdateDevices();
 }

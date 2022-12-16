@@ -1,5 +1,8 @@
 ﻿namespace HaighFramework.Input;
 
+/// <summary>
+/// An enumeration to represent the keys on a keyboard
+/// </summary>
 public enum Key : int
 {
     Unknown = 0,
@@ -27,7 +30,6 @@ public enum Key : int
     RightShift,
     LeftAlt,
     RightAlt,
-    
 
     F1,
     F2,
@@ -41,7 +43,6 @@ public enum Key : int
     F10,
     F11,
     F12,
-    
 
     Num1,
     Num2,
@@ -53,7 +54,6 @@ public enum Key : int
     Num8,
     Num9,
     Num0,
-    
 
     Keypad0,
     Keypad1,
@@ -71,7 +71,6 @@ public enum Key : int
     KeypadAdd,
     KeypadPeriod,
     KeypadEnter,
-    
 
     A,
     B,
@@ -99,17 +98,14 @@ public enum Key : int
     X,
     Y,
     Z,
-    
 
     Up,
     Down,
     Left,
     Right,
     
-
     LeftWindows,
     Menu,
-    
 
     Minus,
     Equals,
@@ -125,26 +121,5 @@ public enum Key : int
     Pause,
     GraveAccent,
     
-    
     LastKey            
-}
-
-public static class KeyExtensions
-{
-    /// <summary>
-    /// Extension method for Key to get the official Windows readable string for the key. May not handle Left/Right shift properly because eat a dick Bill Gates
-    /// </summary>
-    public static string ToWindowsString(this Key k)
-    {
-        //Handle wierd cases
-        switch (k)
-        {
-            case (Key.Pause): return "Pause/Break";
-            case (Key.PrintScreen): return "Print screen";
-            case (Key.RightShift): return "RIGHT SHIFT";
-        }
-
-
-        return WinAPI.User32.GetKeyNameText(KeyMap.GetExtendedScanCodeFromKey(k));
-    }
 }

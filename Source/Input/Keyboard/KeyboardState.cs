@@ -1,57 +1,24 @@
 ﻿namespace HaighFramework.Input;
 
-public struct KeyboardState : IEquatable<KeyboardState>
+/// <summary>
+/// Represents the state of a keyboard.
+/// </summary>
+public struct KeyboardState
 {
     //allocate enough ints to store all keys
     const int IntSize = sizeof(int);
     const int NumInts = ((int)Key.LastKey + IntSize - 1) / IntSize;
-    
 
     private static void ValidateOffset(int offset)
     {
         if (offset < 0 || offset >= NumInts * IntSize)
             throw new ArgumentOutOfRangeException("offset");
     }
-    
 
     //fixed sized buffer
     unsafe fixed int _keys[NumInts];
     
-
-    public bool this[Key key]
-    {
-        get { return IsKeyDown(key); }
-        internal set { SetKeyState(key, value); }
-    }
-    public bool this[short code]
-    {
-        get { return IsKeyDown((Key)code); }
-    }
-    
-
-    public bool IsConnected { get; internal set; }
-    
-
-    public bool IsKeyDown(Key key)
-    {
-        return ReadBit((int)key);
-    }
-    public bool IsKeyDown(short code)
-    {
-        return code >= 0 && code < (short)Key.LastKey && ReadBit(code);
-    }
-    
-
-    public bool IsKeyUp(Key key)
-    {
-        return !ReadBit((int)key);
-    }
-    public bool IsKeyUp(short code)
-    {
-        return !IsKeyDown(code);
-    }
-    
-    
+    internal bool IsConnected { get; set; }
 
     internal void SetKeyState(Key key, bool down)
     {
@@ -61,7 +28,6 @@ public struct KeyboardState : IEquatable<KeyboardState>
             DisableBit((int)key);
     }
     
-
     internal bool ReadBit(int offset)
     {
         ValidateOffset(offset);
@@ -75,7 +41,6 @@ public struct KeyboardState : IEquatable<KeyboardState>
             }
         }
     }
-    
 
     internal void EnableBit(int offset)
     {
@@ -90,7 +55,6 @@ public struct KeyboardState : IEquatable<KeyboardState>
             }
         }
     }
-    
 
     internal void DisableBit(int offset)
     {
@@ -105,7 +69,6 @@ public struct KeyboardState : IEquatable<KeyboardState>
             }
         }
     }
-    
 
     internal void MergeBits(KeyboardState other)
     {
@@ -122,52 +85,14 @@ public struct KeyboardState : IEquatable<KeyboardState>
             IsConnected |= other.IsConnected;
         }
     }
-    
-    
-    
 
-    public bool Equals(KeyboardState other)
+    /// <summary>
+    /// Checks if a specified keyboard key is currently pressed down.
+    /// </summary>
+    /// <param name="key">The key to query.</param>
+    /// <returns>Returns true if the key is currently pressed down, false if it is up.</returns>
+    public bool IsDown(Key key)
     {
-        bool equal = true;
-        unsafe
-        {
-            int* k2 = other._keys;
-            fixed(int* k1 = _keys)
-            {
-                for (int i = 0; equal && i < NumInts; i++)
-                    equal &= *(k1 + i) == *(k2 + i);
-            }
-        }
-        return equal;
+        return ReadBit((int)key);
     }
-    
-
-    public static bool operator ==(KeyboardState left, KeyboardState right)
-    {
-        return left.Equals(right);
-    }
-    
-
-    public static bool operator !=(KeyboardState left, KeyboardState right)
-    {
-        return !left.Equals(right);
-    }
-    
-
-    public override bool Equals(object obj)
-    {
-        if (obj is KeyboardState)
-        {
-            return this == (KeyboardState)obj;
-        }
-        else
-            return false;
-    }
-    
-
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
-    
 }
