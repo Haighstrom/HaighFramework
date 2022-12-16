@@ -4632,164 +4632,56 @@ public enum GLGET : int
     MaxComputeImageUniforms = 0x91BD,
 }
 
-public enum LightName : int
+public enum LIGHT : int
 {
-    /// <summary>
-    /// Original was GL_LIGHT0 = 0x4000
-    /// </summary>
-    Light0 = 0x4000,
-    /// <summary>
-    /// Original was GL_LIGHT1 = 0x4001
-    /// </summary>
-    Light1 = 0x4001,
-    /// <summary>
-    /// Original was GL_LIGHT2 = 0x4002
-    /// </summary>
-    Light2 = 0x4002,
-    /// <summary>
-    /// Original was GL_LIGHT3 = 0x4003
-    /// </summary>
-    Light3 = 0x4003,
-    /// <summary>
-    /// Original was GL_LIGHT4 = 0x4004
-    /// </summary>
-    Light4 = 0x4004,
-    /// <summary>
-    /// Original was GL_LIGHT5 = 0x4005
-    /// </summary>
-    Light5 = 0x4005,
-    /// <summary>
-    /// Original was GL_LIGHT6 = 0x4006
-    /// </summary>
-    Light6 = 0x4006,
-    /// <summary>
-    /// Original was GL_LIGHT7 = 0x4007
-    /// </summary>
-    Light7 = 0x4007,
-    /// <summary>
-    /// Original was GL_FRAGMENT_LIGHT0_SGIX = 0x840C
-    /// </summary>
-    FragmentLight0Sgix = 0x840C,
-    /// <summary>
-    /// Original was GL_FRAGMENT_LIGHT1_SGIX = 0x840D
-    /// </summary>
-    FragmentLight1Sgix = 0x840D,
-    /// <summary>
-    /// Original was GL_FRAGMENT_LIGHT2_SGIX = 0x840E
-    /// </summary>
-    FragmentLight2Sgix = 0x840E,
-    /// <summary>
-    /// Original was GL_FRAGMENT_LIGHT3_SGIX = 0x840F
-    /// </summary>
-    FragmentLight3Sgix = 0x840F,
-    /// <summary>
-    /// Original was GL_FRAGMENT_LIGHT4_SGIX = 0x8410
-    /// </summary>
-    FragmentLight4Sgix = 0x8410,
-    /// <summary>
-    /// Original was GL_FRAGMENT_LIGHT5_SGIX = 0x8411
-    /// </summary>
-    FragmentLight5Sgix = 0x8411,
-    /// <summary>
-    /// Original was GL_FRAGMENT_LIGHT6_SGIX = 0x8412
-    /// </summary>
-    FragmentLight6Sgix = 0x8412,
-    /// <summary>
-    /// Original was GL_FRAGMENT_LIGHT7_SGIX = 0x8413
-    /// </summary>
-    FragmentLight7Sgix = 0x8413,
+    GL_LIGHT0 = 0x4000,
+    GL_LIGHT1 = 0x4001,
+    GL_LIGHT2 = 0x4002,
+    GL_LIGHT3 = 0x4003,
+    GL_LIGHT4 = 0x4004,
+    GL_LIGHT5 = 0x4005,
+    GL_LIGHT6 = 0x4006,
+    GL_LIGHT7 = 0x4007,
+    GL_FRAGMENT_LIGHT0_SGIX = 0x840C,
+    GL_FRAGMENT_LIGHT1_SGIX = 0x840D,
+    GL_FRAGMENT_LIGHT2_SGIX = 0x840E,
+    GL_FRAGMENT_LIGHT3_SGIX = 0x840F,
+    GL_FRAGMENT_LIGHT4_SGIX = 0x8410,
+    GL_FRAGMENT_LIGHT5_SGIX = 0x8411,
+    GL_FRAGMENT_LIGHT6_SGIX = 0x8412,
+    GL_FRAGMENT_LIGHT7_SGIX = 0x8413,
 }
 
-public enum LightParameter : int
+public enum LIGHT_FLAG : int
 {
-    /// <summary>
-    /// Original was GL_AMBIENT = 0x1200
-    /// </summary>
-    Ambient = 0x1200,
-    /// <summary>
-    /// Original was GL_DIFFUSE = 0x1201
-    /// </summary>
-    Diffuse = 0x1201,
-    /// <summary>
-    /// Original was GL_SPECULAR = 0x1202
-    /// </summary>
-    Specular = 0x1202,
-    /// <summary>
-    /// Original was GL_POSITION = 0x1203
-    /// </summary>
-    Position = 0x1203,
-    /// <summary>
-    /// Original was GL_SPOT_DIRECTION = 0x1204
-    /// </summary>
-    SpotDirection = 0x1204,
-    /// <summary>
-    /// Original was GL_SPOT_EXPONENT = 0x1205
-    /// </summary>
-    SpotExponent = 0x1205,
-    /// <summary>
-    /// Original was GL_SPOT_CUTOFF = 0x1206
-    /// </summary>
-    SpotCutoff = 0x1206,
-    /// <summary>
-    /// Original was GL_CONSTANT_ATTENUATION = 0x1207
-    /// </summary>
-    ConstantAttenuation = 0x1207,
-    /// <summary>
-    /// Original was GL_LINEAR_ATTENUATION = 0x1208
-    /// </summary>
-    LinearAttenuation = 0x1208,
-    /// <summary>
-    /// Original was GL_QUADRATIC_ATTENUATION = 0x1209
-    /// </summary>
-    QuadraticAttenuation = 0x1209,
+    GL_AMBIENT = 0x1200,
+    GL_DIFFUSE = 0x1201,
+    GL_SPECULAR = 0x1202,
+    GL_POSITION = 0x1203,
+    GL_SPOT_DIRECTION = 0x1204,
+    GL_SPOT_EXPONENT = 0x1205,
+    GL_SPOT_CUTOFF = 0x1206,
+    GL_CONSTANT_ATTENUATION = 0x1207,
+    GL_LINEAR_ATTENUATION = 0x1208,
+    GL_QUADRATIC_ATTENUATION = 0x1209,
 }
 
-public enum MaterialParameter : int
+public enum MATERIAL_FLAG : int
 {
-    /// <summary>
-    /// Original was GL_AMBIENT = 0x1200
-    /// </summary>
-    Ambient = 0x1200,
-    /// <summary>
-    /// Original was GL_DIFFUSE = 0x1201
-    /// </summary>
-    Diffuse = 0x1201,
-    /// <summary>
-    /// Original was GL_SPECULAR = 0x1202
-    /// </summary>
-    Specular = 0x1202,
-    /// <summary>
-    /// Original was GL_EMISSION = 0x1600
-    /// </summary>
-    Emission = 0x1600,
-    /// <summary>
-    /// Original was GL_SHININESS = 0x1601
-    /// </summary>
-    Shininess = 0x1601,
-    /// <summary>
-    /// Original was GL_AMBIENT_AND_DIFFUSE = 0x1602
-    /// </summary>
-    AmbientAndDiffuse = 0x1602,
-    /// <summary>
-    /// Original was GL_COLOR_INDEXES = 0x1603
-    /// </summary>
-    ColorIndexes = 0x1603,
+    GL_AMBIENT = 0x1200,
+    GL_DIFFUSE = 0x1201,
+    GL_SPECULAR = 0x1202,
+    GL_EMISSION = 0x1600,
+    GL_SHININESS = 0x1601,
+    GL_AMBIENT_AND_DIFFUSE = 0x1602,
+    GL_COLOR_INDEXES = 0x1603,
 }
 
-public enum MatrixMode : int
+public enum MATRIX_MODE : int
 {
-    /// <summary>
-    /// Original was MODELVIEW = 0x1700
-    /// </summary>
-    ModelView = 0x1700,
-    /// <summary>
-    /// Original was PROJECTION = 0x1701
-    /// </summary>
-    Projection = 0x1701,
-    /// <summary>
-    /// Original was TEXTURE = 0x1702
-    /// </summary>
-    Texture = 0x1702,
+    MODELVIEW = 0x1700,
+    PROJECTION = 0x1701,
+    TEXTURE = 0x1702,
 }
 
 /// <summary>
@@ -5259,6 +5151,7 @@ public enum PixelType : int
 
 [SuppressUnmanagedCodeSecurity]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming conventions but I'm keeping these APIs pure.")]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1401:P/Invokes should not be visible", Justification = "This is a P/Invoke library...")]
 public static partial class OpenGL32
 {
     private const string Library = "Opengl32.dll";
@@ -5476,7 +5369,7 @@ public static partial class OpenGL32
     /// <param name="params">Specifies the value that parameter pname of light source light will be set to.</param>
     /// <remarks>The glLightfv function sets the value or values of individual light source parameters. The light parameter names the light and is a symbolic name of the form GL_LIGHTi, where 0 = i less than GL_MAX_LIGHTS. The pname parameter specifies one of the light source parameters, again by symbolic name.The params parameter is either a single value or a pointer to an array that contains the new values. Lighting calculation is enabled and disabled using glEnable and glDisable with argument GL_LIGHTING.When lighting is enabled, light sources that are enabled contribute to the lighting calculation.Light source i is enabled and disabled using glEnable and glDisable with argument GL_LIGHTi. It is always the case that GL_LIGHTi = GL_LIGHT0 + i.</remarks>
     [DllImport(Library)]
-    public static extern void glLightfv(LightName light, LightParameter pname, float[] @params);
+    public static extern void glLightfv(LIGHT light, LIGHT_FLAG pname, float[] @params);
 
     /// <summary>
     /// specify the width of rasterized lines
@@ -5498,14 +5391,14 @@ public static partial class OpenGL32
     /// <param name="pname">The material parameter of the face or faces being updated.</param>
     /// <param name="params">The value to which parameter GL_SHININESS will be set.</param>
     [DllImport(Library)]
-    public static extern void glMaterialfv(POLYGON_FACE face, MaterialParameter pname, float[] @params);
+    public static extern void glMaterialfv(POLYGON_FACE face, MATERIAL_FLAG pname, float[] @params);
 
     /// <summary>
     /// specify which matrix is the current matrix
     /// </summary>
     /// <param name="mode">Specifies which matrix stack is the target for subsequent matrix operations.</param>
     [DllImport(Library)]
-    public static extern void glMatrixMode(MatrixMode mode);
+    public static extern void glMatrixMode(MATRIX_MODE mode);
 
     /// <summary>
     /// Sets the current normal vector.
