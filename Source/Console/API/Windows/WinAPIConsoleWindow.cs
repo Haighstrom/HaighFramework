@@ -1,11 +1,11 @@
 ﻿using HaighFramework.WinAPI;
 
-namespace HaighFramework.Console;
+namespace HaighFramework.Console.Windows;
 
 /// <summary>
 /// A class for managing the Console Window
 /// </summary>
-public class ConsoleWindow : IConsoleWindow
+internal class WinAPIConsoleWindow : IConsoleWindow
 {
     private static IntPtr Handle => Kernal32.GetConsoleWindow();
 
@@ -23,7 +23,7 @@ public class ConsoleWindow : IConsoleWindow
     /// <summary>
     /// Create a default console, which is not visible
     /// </summary>
-    public ConsoleWindow()
+    public WinAPIConsoleWindow()
     {
     }
 
@@ -31,7 +31,7 @@ public class ConsoleWindow : IConsoleWindow
     /// Create a console with the specified settings
     /// </summary>
     /// <param name="settings"></param>
-    public ConsoleWindow(ConsoleSettings settings)
+    public WinAPIConsoleWindow(ConsoleSettings settings)
     {
         if (settings.ShowConsoleWindow)
         {

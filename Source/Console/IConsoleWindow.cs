@@ -1,4 +1,4 @@
-﻿namespace HaighFramework;
+﻿namespace HaighFramework.Console;
 
 /// <summary>
 /// A type for managing the Console Window

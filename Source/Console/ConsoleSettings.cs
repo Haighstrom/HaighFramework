@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using HaighFramework.Console;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace HaighFramework;
@@ -9,11 +10,12 @@ namespace HaighFramework;
 public class ConsoleSettings
 {
     private const int DefaultWidth = 450;
+    private const int Windows10InvisibleBorderSize = 7;
 
     private static int GetInvisibleLeftBorder() //Don't even fucking ask. Fuck you Windows 10.
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.OSVersion.Version.Major == 10)
-            return 7;
+            return Windows10InvisibleBorderSize;
         else
             return 0;
     }
