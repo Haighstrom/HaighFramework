@@ -51,6 +51,40 @@ public enum ALPHA_COMPARISON_FUNCTION : int
     GL_ALWAYS = 0x0207,
 }
 
+//todo: force the relevant function to take this enum (tricky because it's an array of ints, and half need to stay ints)
+public enum ARBCREATECONTEXT_ATTRIBUTE_NAMES
+{
+    WGL_CONTEXT_MAJOR_VERSION_ARB = 0x2091,
+
+    WGL_CONTEXT_MINOR_VERSION_ARB = 0x2092,
+
+    WGL_CONTEXT_LAYER_PLANE_ARB = 0x2093,
+
+    WGL_CONTEXT_FLAGS_ARB = 0x2094,
+
+    WGL_CONTEXT_PROFILE_MASK_ARB = 0x9126,
+}
+
+public enum ARBCREATECONTEXT_ATTRIBUTE_VALUES
+{
+    /// <summary>
+    /// Use with WGL_CONTEXT_FLAGS_ARB
+    /// </summary>
+    WGL_CONTEXT_DEBUG_BIT_ARB = 0x0001,
+    /// <summary>
+    /// Use with WGL_CONTEXT_FLAGS_ARB
+    /// </summary>
+    WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB = 0x0002,
+    /// <summary>
+    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB
+    /// </summary>
+    WGL_CONTEXT_CORE_PROFILE_BIT_ARB = 0x0001,
+    /// <summary>
+    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB
+    /// </summary>
+    WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x0002,
+}
+
 /// <summary>
 /// Specifies how colour blending calculations are performed. The color specified by glBlendColor is referred to as (Rc,Gc,Bc,Ac). They are understood to have integer values between 0 and (kR,kG,kB,kA), where kc=2mc−1 and(mR, mG, mB, mA) is the number of red, green, blue, and alpha bitplanes. Source and destination scale factors are referred to as (sR, sG, sB, sA) and (dR, dG, dB, dA). The scale factors described in the table, denoted (fR, fG, fB, fA), represent either source or destination factors. All scale factors have range[0, 1].
 /// </summary>
@@ -179,123 +213,23 @@ public enum BUFFER_MASK : uint
     GL_STENCIL_BUFFER_BIT = 0x00000400,
 }
 
-/// <summary>
-/// Specifies the string to retrieve in <see cref="OpenGL32.glGetString"/>
-/// </summary>
-public enum GETSTRING_NAME : uint
+public enum BUFFER_TARGET : int
 {
-    /// <summary>
-    /// Returns the company responsible for this GL implementation. This name does not change from release to release.
-    /// </summary>
-    GL_VENDOR = 0x1F00,
-
-    /// <summary>
-    /// Returns the name of the renderer. This name is typically specific to a particular configuration of a hardware platform. It does not change from release to release.
-    /// </summary>
-    GL_RENDERER = 0x1F01,
-
-    /// <summary>
-    /// Returns a version or release number.
-    /// </summary>
-    GL_VERSION = 0x1F02,
-
-    /// <summary>
-    /// Returns a version or release number for the shading language.
-    /// </summary>
-    GL_SHADING_LANGUAGE_VERSION = 0x8B8C,
-
-    /// <summary>
-    /// For glGetStringi only, returns the extension string supported by the implementation at index.
-    /// </summary>
-    GL_EXTENSIONS = 0x1F03,
+    GL_ARRAY_BUFFER = 0x8892,
+    GL_ELEMENT_ARRAY_BUFFER = 0x8893,
+    GL_PIXEL_PACK_BUFFER = 0x88EB,
+    GL_PIXEL_UNPACK_BUFFER = 0x88EC,
+    GL_UNIFORM_BUFFER = 0x8A11,
+    GL_TEXTURE_BUFFER = 0x8C2A,
+    GL_TRANSFORM_FEEDBACK_BUFFER = 0x8C8E,
+    GL_COPY_READ_BUFFER = 0x8F36,
+    GL_COPY_WRITE_BUFFER = 0x8F37,
+    GL_DRAW_INDIRECT_BUFFER = 0x8F3F,
+    GL_SHADER_STORAGE_BUFFER = 0x90D2,
+    GL_DISPATCH_INDIRECT_BUFFER = 0x90EE,
+    GL_QUERY_BUFFER = 0x9192,
+    GL_ATOMIC_COUNTER_BUFFER = 0x92C0,
 }
-
-/// <summary>
-/// The face of polygons to apply certain functions to
-/// </summary>
-public enum POLYGON_FACE : int
-{
-    /// <summary>
-    /// front-facing polygons
-    /// </summary>
-    GL_FRONT = 0x0404,
-
-    /// <summary>
-    /// back-facing polygons
-    /// </summary>
-    GL_BACK = 0x0405,
-
-    /// <summary>
-    /// front- and back-facing polygons
-    /// </summary>
-    GL_FRONT_AND_BACK = 0x0408,
-}
-
-/// <summary>
-/// The mode for use with <see cref="OpenGL32.glPolygonMode"/>
-/// </summary>
-public enum POLYGON_MODE : int
-{
-    /// <summary>
-    /// Polygon vertices that are marked as the start of a boundary edge are drawn as points. Point attributes such as GL_POINT_SIZE and GL_POINT_SMOOTH control the rasterization of the points. Polygon rasterization attributes other than GL_POLYGON_MODE have no effect.
-    /// </summary>
-    GL_POINT = 0x1B00,
-    /// <summary>
-    /// Boundary edges of the polygon are drawn as line segments. They are treated as connected line segments for line stippling; the line stipple counter and pattern are not reset between segments (see glLineStipple). Line attributes such as GL_LINE_WIDTH and GL_LINE_SMOOTH control the rasterization of the lines. Polygon rasterization attributes other than GL_POLYGON_MODE have no effect.
-    /// </summary>
-    GL_LINE = 0x1B01,
-    /// <summary>
-    /// The interior of the polygon is filled. Polygon attributes such as GL_POLYGON_STIPPLE and GL_POLYGON_SMOOTH control the rasterization of the polygon.
-    /// </summary>
-    GL_FILL = 0x1B02,
-}
-
-/// <summary>
-/// Flat and smooth shading are specified by <see cref="OpenGL32.glShadeModel"/> with mode set to GL_FLAT and GL_SMOOTH, respectively.
-/// </summary>
-public enum SHADE_TECHNIQUE : int
-{
-    /// <summary>
-    /// Flat shading selects the computed color of just one vertex and assigns it to all the pixel fragments generated by rasterizing a single primitive.
-    /// </summary>
-    GL_FLAT = 0x1D00,
-
-    /// <summary>
-    /// Smooth shading, the default, causes the computed colors of vertices to be interpolated as the primitive is rasterized, typically assigning different colors to each resulting pixel fragment. 
-    /// </summary>
-    GL_SMOOTH = 0x1D01,
-}
-
-public enum VERTEX_DATA_TYPE : int
-{
-    GL_BYTE = 0x1400,
-
-    GL_UNSIGNED_BYTE = 0x1401,
-
-    GL_SHORT = 0x1402,
-
-    GL_UNSIGNED_SHORT = 0x1403,
-
-    GL_INT = 0x1404,
-
-    GL_UNSIGNED_INT = 0x1405,
-
-    GL_HALF_FLOAT = 0x140B,
-
-    GL_FLOAT = 0x1406,
-
-    GL_FIXED = 0x140C,
-
-    GL_INT_2_10_10_10_REV = 0x8D9F,
-
-    GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368,
-
-    GL_UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B,
-
-    GL_DOUBLE = 0x140A,
-}
-
-//----Enums Name and Values Updated, and Fully Commented Above This Line ----
 
 public enum DEBUG_SEVERITY : int
 {
@@ -350,373 +284,232 @@ public enum DEBUG_TYPE : int
     GL_DONT_CARE = 0x1100,
 }
 
-public enum PIXEL_STORE_MODE : int
+public enum FRAMEBUFFER_ATTACHMENT_POINT : int
 {
-    GL_UNPACK_SWAP_BYTES = 0x0CF0,
-    GL_UNPACK_LSB_FIRST = 0x0CF1,
-    GL_UNPACK_ROW_LENGTH = 0x0CF2,
-    GL_UNPACK_ROW_LENGTH_EXT = 0x0CF2,
-    GL_UNPACK_SKIP_ROWS = 0x0CF3,
-    GL_UNPACK_SKIP_ROWS_EXT = 0x0CF3,
-    GL_UNPACK_SKIP_PIXELS = 0x0CF4,
-    GL_UNPACK_SKIP_PIXELS_EXT = 0x0CF4,
-    GL_UNPACK_ALIGNMENT = 0x0CF5,
-    GL_PACK_SWAP_BYTES = 0x0D00,
-    GL_PACK_LSB_FIRST = 0x0D01,
-    GL_PACK_ROW_LENGTH = 0x0D02,
-    GL_PACK_SKIP_ROWS = 0x0D03,
-    GL_PACK_SKIP_PIXELS = 0x0D04,
-    GL_PACK_ALIGNMENT = 0x0D05,
-    GL_PACK_SKIP_IMAGES = 0x806B,
-    GL_PACK_SKIP_IMAGES_EXT = 0x806B,
-    GL_PACK_IMAGE_HEIGHT = 0x806C,
-    GL_PACK_IMAGE_HEIGHT_EXT = 0x806C,
-    GL_UNPACK_SKIP_IMAGES = 0x806D,
-    GL_UNPACK_SKIP_IMAGES_EXT = 0x806D,
-    GL_UNPACK_IMAGE_HEIGHT = 0x806E,
-    GL_UNPACK_IMAGE_HEIGHT_EXT = 0x806E,
-    GL_PACK_SKIP_VOLUMES_SGIS = 0x8130,
-    GL_PACK_IMAGE_DEPTH_SGIS = 0x8131,
-    GL_UNPACK_SKIP_VOLUMES_SGIS = 0x8132,
-    GL_UNPACK_IMAGE_DEPTH_SGIS = 0x8133,
-    GL_PIXEL_TILE_WIDTH_SGIX = 0x8140,
-    GL_PIXEL_TILE_HEIGHT_SGIX = 0x8141,
-    GL_PIXEL_TILE_GRID_WIDTH_SGIX = 0x8142,
-    GL_PIXEL_TILE_GRID_HEIGHT_SGIX = 0x8143,
-    GL_PIXEL_TILE_GRID_DEPTH_SGIX = 0x8144,
-    GL_PIXEL_TILE_CACHE_SIZE_SGIX = 0x8145,
-    GL_PACK_RESAMPLE_SGIX = 0x842C,
-    GL_UNPACK_RESAMPLE_SGIX = 0x842D,
-    GL_PACK_SUBSAMPLE_RATE_SGIX = 0x85A0,
-    GL_UNPACK_SUBSAMPLE_RATE_SGIX = 0x85A1,
-    GL_PACK_RESAMPLE_OML = 0x8984,
-    GL_UNPACK_RESAMPLE_OML = 0x8985,
-    GL_UNPACK_COMPRESSED_BLOCK_WIDTH = 0x9127,
-    GL_UNPACK_COMPRESSED_BLOCK_HEIGHT = 0x9128,
-    GL_UNPACK_COMPRESSED_BLOCK_DEPTH = 0x9129,
-    GL_UNPACK_COMPRESSED_BLOCK_SIZE = 0x912A,
-    GL_PACK_COMPRESSED_BLOCK_WIDTH = 0x912B,
-    GL_PACK_COMPRESSED_BLOCK_HEIGHT = 0x912C,
-    GL_PACK_COMPRESSED_BLOCK_DEPTH = 0x912D,
-    GL_PACK_COMPRESSED_BLOCK_SIZE = 0x912E
+    /// <summary>
+    /// Original was GL_FRONT_LEFT = 0x0400
+    /// </summary>
+    FrontLeft = 0x0400,
+    /// <summary>
+    /// Original was GL_FRONT_RIGHT = 0x0401
+    /// </summary>
+    FrontRight = 0x0401,
+    /// <summary>
+    /// Original was GL_BACK_LEFT = 0x0402
+    /// </summary>
+    BackLeft = 0x0402,
+    /// <summary>
+    /// Original was GL_BACK_RIGHT = 0x0403
+    /// </summary>
+    BackRight = 0x0403,
+    /// <summary>
+    /// Original was GL_AUX0 = 0x0409
+    /// </summary>
+    Aux0 = 0x0409,
+    /// <summary>
+    /// Original was GL_AUX1 = 0x040A
+    /// </summary>
+    Aux1 = 0x040A,
+    /// <summary>
+    /// Original was GL_AUX2 = 0x040B
+    /// </summary>
+    Aux2 = 0x040B,
+    /// <summary>
+    /// Original was GL_AUX3 = 0x040C
+    /// </summary>
+    Aux3 = 0x040C,
+    /// <summary>
+    /// Original was GL_COLOR = 0x1800
+    /// </summary>
+    Colour = 0x1800,
+    /// <summary>
+    /// Original was GL_DEPTH = 0x1801
+    /// </summary>
+    Depth = 0x1801,
+    /// <summary>
+    /// Original was GL_STENCIL = 0x1802
+    /// </summary>
+    Stencil = 0x1802,
+    /// <summary>
+    /// Original was GL_DEPTH_STENCIL_ATTACHMENT = 0x821A
+    /// </summary>
+    DepthStencilAttachment = 0x821A,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT0 = 0x8CE0
+    /// </summary>
+    ColourAttachment0 = 0x8CE0,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT0_EXT = 0x8CE0
+    /// </summary>
+    ColourAttachment0Ext = 0x8CE0,
+    /// <summary>
+    /// Original was  GL_COLOR_ATTACHMENT1 = 0x8CE1
+    /// </summary>
+    ColourAttachment1 = 0x8CE1,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT1_EXT = 0x8CE1
+    /// </summary>
+    ColourAttachment1Ext = 0x8CE1,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT2 = 0x8CE2
+    /// </summary>
+    ColourAttachment2 = 0x8CE2,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT2_EXT = 0x8CE2
+    /// </summary>
+    ColourAttachment2Ext = 0x8CE2,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT3 = 0x8CE3
+    /// </summary>
+    ColourAttachment3 = 0x8CE3,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT3_EXT = 0x8CE3
+    /// </summary>
+    ColourAttachment3Ext = 0x8CE3,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT4 = 0x8CE4
+    /// </summary>
+    ColourAttachment4 = 0x8CE4,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT4_EXT = 0x8CE4
+    /// </summary>
+    ColourAttachment4Ext = 0x8CE4,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT5 = 0x8CE5
+    /// </summary>
+    ColourAttachment5 = 0x8CE5,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT5_EXT = 0x8CE5
+    /// </summary>
+    ColourAttachment5Ext = 0x8CE5,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT6 = 0x8CE6
+    /// </summary>
+    ColourAttachment6 = 0x8CE6,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT6_EXT = 0x8CE6
+    /// </summary>
+    ColourAttachment6Ext = 0x8CE6,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT7 = 0x8CE7
+    /// </summary>
+    ColourAttachment7 = 0x8CE7,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT7_EXT = 0x8CE7
+    /// </summary>
+    ColourAttachment7Ext = 0x8CE7,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT8 = 0x8CE8
+    /// </summary>
+    ColourAttachment8 = 0x8CE8,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT8_EXT = 0x8CE8
+    /// </summary>
+    ColourAttachment8Ext = 0x8CE8,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT9 = 0x8CE9
+    /// </summary>
+    ColourAttachment9 = 0x8CE9,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT9_EXT = 0x8CE9
+    /// </summary>
+    ColourAttachment9Ext = 0x8CE9,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT10 = 0x8CEA
+    /// </summary>
+    ColourAttachment10 = 0x8CEA,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT10_EXT = 0x8CEA
+    /// </summary>
+    ColourAttachment10Ext = 0x8CEA,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT11 = 0x8CEB
+    /// </summary>
+    ColourAttachment11 = 0x8CEB,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT11_EXT = 0x8CEB
+    /// </summary>
+    ColourAttachment11Ext = 0x8CEB,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT12 = 0x8CEC
+    /// </summary>
+    ColourAttachment12 = 0x8CEC,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT12_EXT = 0x8CEC
+    /// </summary>
+    ColourAttachment12Ext = 0x8CEC,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT13 = 0x8CED
+    /// </summary>
+    ColourAttachment13 = 0x8CED,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT13_EXT = 0x8CED
+    /// </summary>
+    ColourAttachment13Ext = 0x8CED,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT14 = 0x8CEE
+    /// </summary>
+    ColourAttachment14 = 0x8CEE,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT14_EXT = 0x8CEE
+    /// </summary>
+    ColourAttachment14Ext = 0x8CEE,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT15 = 0x8CEF
+    /// </summary>
+    ColourAttachment15 = 0x8CEF,
+    /// <summary>
+    /// Original was GL_COLOR_ATTACHMENT15_EXT = 0x8CEF
+    /// </summary>
+    ColourAttachment15Ext = 0x8CEF,
+    /// <summary>
+    /// Original was GL_DEPTH_ATTACHMENT = 0x8D00
+    /// </summary>
+    DepthAttachment = 0x8D00,
+    /// <summary>
+    /// Original was GL_DEPTH_ATTACHMENT_EXT = 0x8D00
+    /// </summary>
+    DepthAttachmentExt = 0x8D00,
+    /// <summary>
+    /// Original was GL_STENCIL_ATTACHMENT = 0x8D20
+    /// </summary>
+    StencilAttachment = 0x8D20,
+    /// <summary>
+    /// Original was GL_STENCIL_ATTACHMENT_EXT = 0x8D20
+    /// </summary>
+    StencilAttachmentExt = 0x8D20
 }
 
-public enum PRIMITIVE_TYPE : int
+public enum FRAMEBUFFER_TARGET : int
 {
-    //todo: complete this. Look at other functions for docs? 
-    //https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml
-    //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
-
     /// <summary>
-    /// Treats each vertex as a single point. Vertex n defines point n. N points are drawn.
+    /// Original was GL_READ_FRAMEBUFFER = 0x8CA8
     /// </summary>
-    GL_POINTS = 0,
-
+    ReadFramebuffer = 0x8CA8,
     /// <summary>
-    /// Treats each pair of vertices as an independent line segment. Vertices 2 ⁢ n - 1 and 2 ⁢ n define line n. N 2 lines are drawn.
+    /// Original was GL_DRAW_FRAMEBUFFER = 0x8CA9
     /// </summary>
-    GL_LINES = 1,
-
+    DrawFramebuffer = 0x8CA9,
     /// <summary>
-    /// Draws a connected group of line segments from the first vertex to the last. Vertices n and n + 1 define line n. N - 1 lines are drawn.
+    /// Original was GL_FRAMEBUFFER = 0x8D40
     /// </summary>
-    GL_LINE_STRIP = 3,
-
+    Framebuffer = 0x8D40,
     /// <summary>
-    /// Draws a connected group of line segments from the first vertex to the last, then back to the first. Vertices n and n + 1 define line n. The last line, however, is defined by vertices N and 1 . N lines are drawn.
+    /// Original was GL_FRAMEBUFFER_EXT = 0x8D40
     /// </summary>
-    GL_LINE_LOOP = 2,
-
-    /// <summary>
-    /// Treats each triplet of vertices as an independent triangle. Vertices 3 ⁢ n - 2 , 3 ⁢ n - 1 , and 3 ⁢ n define triangle n. N 3 triangles are drawn.
-    /// </summary>
-    GL_TRIANGLES = 4,
-
-    /// <summary>
-    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. For odd n, vertices n, n + 1 , and n + 2 define triangle n. For even n, vertices n + 1 , n, and n + 2 define triangle n. N - 2 triangles are drawn.
-    /// </summary>
-    GL_TRIANGLE_STRIP = 5,
-
-    /// <summary>
-    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. Vertices 1 , n + 1 , and n + 2 define triangle n. N - 2 triangles are drawn.
-    /// </summary>
-    GL_TRIANGLE_FAN = 6,
-
-    /// <summary>
-    /// Treats each group of four vertices as an independent quadrilateral. Vertices 4 ⁢ n - 3 , 4 ⁢ n - 2 , 4 ⁢ n - 1 , and 4 ⁢ n define quadrilateral n. N 4 quadrilaterals are drawn.
-    /// </summary>
-    GL_QUADS = 7,
-
-    /// <summary>
-    /// Draws a connected group of quadrilaterals. One quadrilateral is defined for each pair of vertices presented after the first pair. Vertices 2 ⁢ n - 1 , 2 ⁢ n , 2 ⁢ n + 2 , and 2 ⁢ n + 1 define quadrilateral n. N 2 - 1 quadrilaterals are drawn. Note that the order in which vertices are used to construct a quadrilateral from strip data is different from that used with independent data.
-    /// </summary>
-    GL_QUAD_STRIP = 8,
-
-    /// <summary>
-    /// Draws a single, convex polygon. Vertices 1 through N define this polygon.
-    /// </summary>
-    GL_POLYGON = 9,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_LINE_STRIP_ADJACENCY = 11,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_LINES_ADJACENCY = 10,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TRIANGLE_STRIP_ADJACENCY = 13,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TRIANGLES_ADJACENCY = 12,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PATCHES = 14,
+    FramebufferExt = 0x8D40,
 }
 
-/// <summary>
-/// 
-/// </summary>
-public enum TEXTURE_TARGET : int
+public enum FRONTFACEMODE : int
 {
     /// <summary>
-    /// one-dimensional texture
+    /// Original was GL_CW = 0x0900
     /// </summary>
-    GL_TEXTURE_1D = 0x0DE0,
-
+    Cw = 0x0900,
     /// <summary>
-    /// two-dimensional texture
+    /// Original was GL_CCW = 0x0901
     /// </summary>
-    GL_TEXTURE_2D = 0x0DE1,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_1D = 0x8063,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_1D_EXT = 0x8063,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_2D = 0x8064,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_2D_EXT = 0x8064,
-
-    /// <summary>
-    /// three-dimensional texture
-    /// </summary>
-    GL_TEXTURE_3D = 0x806F,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_3D_EXT = 0x806F,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_3D_OES = 0x806F,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_3D = 0x8070,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_3D_EXT = 0x8070,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_DETAIL_TEXTURE_2D_SGIS = 0x8095,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_4D_SGIS = 0x8134,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_4D_SGIS = 0x8135,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_MIN_LOD = 0x813A,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_MIN_LOD_SGIS = 0x813A,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_MAX_LOD = 0x813B,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_MAX_LOD_SGIS = 0x813B,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_BASE_LEVEL = 0x813C,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_BASE_LEVEL_SGIS = 0x813C,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_MAX_LEVEL = 0x813D,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_MAX_LEVEL_SGIS = 0x813D,
-
-    /// <summary>
-    /// rectangle texture
-    /// </summary>
-    GL_TEXTURE_RECTANGLE = 0x84F5,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_RECTANGLE_ARB = 0x84F5,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_RECTANGLE_NV = 0x84F5,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_RECTANGLE = 0x84F7,
-
-    /// <summary>
-    /// cube-mapped texture
-    /// </summary>
-    GL_TEXTURE_CUBE_MAP = 0x8513,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_BINDING_CUBE_MAP = 0x8514,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_CUBE_MAP_POSITIVE_X = 0x8515,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_CUBE_MAP_NEGATIVE_X = 0x8516,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_CUBE_MAP_POSITIVE_Y = 0x8517,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_CUBE_MAP_NEGATIVE_Y = 0x8518,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_CUBE_MAP_POSITIVE_Z = 0x8519,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x851A,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_CUBE_MAP = 0x851B,
-
-    /// <summary>
-    /// one-dimensional array texture
-    /// </summary>
-    GL_TEXTURE_1D_ARRAY = 0x8C18,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_1D_ARRAY = 0x8C19,
-
-    /// <summary>
-    /// two-dimensional array texture
-    /// </summary>
-    GL_TEXTURE_2D_ARRAY = 0x8C1A,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_2D_ARRAY = 0x8C1B,
-
-    /// <summary>
-    /// buffer texture
-    /// </summary>
-    GL_TEXTURE_BUFFER = 0x8C2A,
-
-    /// <summary>
-    /// cube-mapped array texture
-    /// </summary>
-    GL_TEXTURE_CUBE_MAP_ARRAY = 0x9009,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    GL_PROXY_TEXTURE_CUBE_MAP_ARRAY = 0x900B,
-
-    /// <summary>
-    /// two-dimensional multisampled texture, use with glTexImage2DMultisample 
-    /// </summary>
-    GL_TEXTURE_2D_MULTISAMPLE = 0x9100,
-
-    /// <summary>
-    /// Use with glTexImage2DMultisample 
-    /// </summary>
-    GL_PROXY_TEXTURE_2D_MULTISAMPLE = 0x9101,
-
-    /// <summary>
-    /// Use with glTexImage3DMultisample
-    /// </summary>
-    GL_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9102,
-
-    /// <summary>
-    /// Use with glTexImage3DMultisample
-    /// </summary>
-    GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9103
+    Ccw = 0x0901,
 }
 
 public enum GETSHADER_FLAG : int
@@ -732,648 +525,35 @@ public enum GETSHADER_FLAG : int
     GL_SHADER_SOURCE_LENGTH = 0x8B88,
 }
 
-public enum MSAA_SAMPLES
-{
-    Disabled = 0,
-
-    X2 = 2,
-
-    X4 = 4,
-
-    X8 = 8,
-
-    X16 = 16
-}
-
-public enum TEXPARAMETER_VALUE : int
-{
-    GL_REPEAT = 0x2901,
-
-    GL_CLAMP_TO_BORDER = 0x812D,
-
-    GL_CLAMP_TO_BORDER_ARB = 0x812D,
-
-    GL_CLAMP_TO_BORDER_NV = 0x812D,
-
-    GL_CLAMP_TO_BORDER_SGIS = 0x812D,
-
-    GL_CLAMP_TO_EDGE = 0x812F,
-
-    GL_CLAMP_TO_EDGE_SGIS = 0x812F,
-
-    GL_MIRRORED_REPEAT = 0x8370,
-
-    GL_NEAREST = 0x2600,
-
-    GL_LINEAR = 0x2601,
-
-    GL_LINEAR_DETAIL_SGIS = 0x8097,
-
-    GL_LINEAR_DETAIL_ALPHA_SGIS = 0x8098,
-
-    GL_LINEAR_DETAIL_COLOR_SGIS = 0x8099,
-
-    GL_LINEAR_SHARPEN_SGIS = 0x80AD,
-
-    GL_LINEAR_SHARPEN_ALPHA_SGIS = 0x80AE,
-
-    GL_LINEAR_SHARPEN_COLOR_SGIS = 0x80AF,
-
-    GL_FILTER4_SGIS = 0x8146,
-
-    GL_PIXEL_TEX_GEN_Q_CEILING_SGIX = 0x8184,
-
-    GL_PIXEL_TEX_GEN_Q_ROUND_SGIX = 0x8185,
-
-    GL_PIXEL_TEX_GEN_Q_FLOOR_SGIX = 0x8186,
-
-    GL_NEAREST_MIPMAP_NEAREST = 0x2700,
-
-    GL_LINEAR_MIPMAP_NEAREST = 0x2701,
-
-    GL_NEAREST_MIPMAP_LINEAR = 0x2702,
-
-    GL_LINEAR_MIPMAP_LINEAR = 0x2703,
-
-    GL_LINEAR_CLIPMAP_LINEAR_SGIX = 0x8170,
-
-    GL_NEAREST_CLIPMAP_NEAREST_SGIX = 0x844D,
-
-    GL_NEAREST_CLIPMAP_LINEAR_SGIX = 0x844E,
-
-    GL_LINEAR_CLIPMAP_NEAREST_SGIX = 0x844F,
-}
-
-//----Enums Name and Values Updated, still requires more complete commenting above this line ----
-
-public enum SHADER_TYPE : int
-{
-    FragmentShader = 0x8B30,
-    VertexShader = 0x8B31,
-    GeometryShader = 0x8DD9,
-    TessEvaluationShader = 0x8E87,
-    TessControlShader = 0x8E88,
-    ComputeShader = 0x91B9,
-}
-
-
-public enum TEXPARAMETER_NAME : int
-{
-    GL_TEXTURE_BORDER_COLOR = 0x1004,
-
-    GL_TEXTURE_MAG_FILTER = 0x2800,
-
-    GL_TEXTURE_MIN_FILTER = 0x2801,
-
-    GL_TEXTURE_WRAP_S = 0x2802,
-
-    GL_TEXTURE_WRAP_T = 0x2803,
-    /// <summary>
-    /// Original was GL_TEXTURE_PRIORITY = 0x8066
-    /// </summary>
-    TexturePriority = 0x8066,
-    /// <summary>
-    /// Original was GL_TEXTURE_PRIORITY_EXT = 0x8066
-    /// </summary>
-    TexturePriorityExt = 0x8066,
-    /// <summary>
-    /// Original was GL_TEXTURE_DEPTH = 0x8071
-    /// </summary>
-    TextureDepth = 0x8071,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_R = 0x8072
-    /// </summary>
-    TextureWrapR = 0x8072,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_R_EXT = 0x8072
-    /// </summary>
-    TextureWrapRExt = 0x8072,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_R_OES = 0x8072
-    /// </summary>
-    TextureWrapROes = 0x8072,
-    /// <summary>
-    /// Original was GL_DETAIL_TEXTURE_LEVEL_SGIS = 0x809A
-    /// </summary>
-    DetailTextureLevelSgis = 0x809A,
-    /// <summary>
-    /// Original was GL_DETAIL_TEXTURE_MODE_SGIS = 0x809B
-    /// </summary>
-    DetailTextureModeSgis = 0x809B,
-    /// <summary>
-    /// Original was GL_SHADOW_AMBIENT_SGIX = 0x80BF
-    /// </summary>
-    ShadowAmbientSgix = 0x80BF,
-    /// <summary>
-    /// Original was GL_TEXTURE_COMPARE_FAIL_VALUE = 0x80BF
-    /// </summary>
-    TextureCompareFailValue = 0x80BF,
-    /// <summary>
-    /// Original was GL_DUAL_TEXTURE_SELECT_SGIS = 0x8124
-    /// </summary>
-    DualTextureSelectSgis = 0x8124,
-    /// <summary>
-    /// Original was GL_QUAD_TEXTURE_SELECT_SGIS = 0x8125
-    /// </summary>
-    QuadTextureSelectSgis = 0x8125,
-    /// <summary>
-    /// Original was GL_CLAMP_TO_BORDER = 0x812D
-    /// </summary>
-    ClampToBorder = 0x812D,
-    /// <summary>
-    /// Original was GL_CLAMP_TO_EDGE = 0x812F
-    /// </summary>
-    ClampToEdge = 0x812F,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_Q_SGIS = 0x8137
-    /// </summary>
-    TextureWrapQSgis = 0x8137,
-    /// <summary>
-    /// Original was GL_TEXTURE_MIN_LOD = 0x813A
-    /// </summary>
-    TextureMinLod = 0x813A,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_LOD = 0x813B
-    /// </summary>
-    TextureMaxLod = 0x813B,
-    /// <summary>
-    /// Original was GL_TEXTURE_BASE_LEVEL = 0x813C
-    /// </summary>
-    TextureBaseLevel = 0x813C,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_LEVEL = 0x813D
-    /// </summary>
-    TextureMaxLevel = 0x813D,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_CENTER_SGIX = 0x8171
-    /// </summary>
-    TextureClipmapCenterSgix = 0x8171,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_FRAME_SGIX = 0x8172
-    /// </summary>
-    TextureClipmapFrameSgix = 0x8172,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_OFFSET_SGIX = 0x8173
-    /// </summary>
-    TextureClipmapOffsetSgix = 0x8173,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_VIRTUAL_DEPTH_SGIX = 0x8174
-    /// </summary>
-    TextureClipmapVirtualDepthSgix = 0x8174,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_LOD_OFFSET_SGIX = 0x8175
-    /// </summary>
-    TextureClipmapLodOffsetSgix = 0x8175,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_DEPTH_SGIX = 0x8176
-    /// </summary>
-    TextureClipmapDepthSgix = 0x8176,
-    /// <summary>
-    /// Original was GL_POST_TEXTURE_FILTER_BIAS_SGIX = 0x8179
-    /// </summary>
-    PostTextureFilterBiasSgix = 0x8179,
-    /// <summary>
-    /// Original was GL_POST_TEXTURE_FILTER_SCALE_SGIX = 0x817A
-    /// </summary>
-    PostTextureFilterScaleSgix = 0x817A,
-    /// <summary>
-    /// Original was GL_TEXTURE_LOD_BIAS_S_SGIX = 0x818E
-    /// </summary>
-    TextureLodBiasSSgix = 0x818E,
-    /// <summary>
-    /// Original was GL_TEXTURE_LOD_BIAS_T_SGIX = 0x818F
-    /// </summary>
-    TextureLodBiasTSgix = 0x818F,
-    /// <summary>
-    /// Original was GL_TEXTURE_LOD_BIAS_R_SGIX = 0x8190
-    /// </summary>
-    TextureLodBiasRSgix = 0x8190,
-    /// <summary>
-    /// Original was GL_GENERATE_MIPMAP = 0x8191
-    /// </summary>
-    GenerateMipmap = 0x8191,
-    /// <summary>
-    /// Original was GL_GENERATE_MIPMAP_SGIS = 0x8191
-    /// </summary>
-    GenerateMipmapSgis = 0x8191,
-    /// <summary>
-    /// Original was GL_TEXTURE_COMPARE_SGIX = 0x819A
-    /// </summary>
-    TextureCompareSgix = 0x819A,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_CLAMP_S_SGIX = 0x8369
-    /// </summary>
-    TextureMaxClampSSgix = 0x8369,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_CLAMP_T_SGIX = 0x836A
-    /// </summary>
-    TextureMaxClampTSgix = 0x836A,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_CLAMP_R_SGIX = 0x836B
-    /// </summary>
-    TextureMaxClampRSgix = 0x836B,
-    /// <summary>
-    /// Original was GL_TEXTURE_LOD_BIAS = 0x8501
-    /// </summary>
-    TextureLodBias = 0x8501,
-    /// <summary>
-    /// Original was GL_DEPTH_TEXTURE_MODE = 0x884B
-    /// </summary>
-    DepthTextureMode = 0x884B,
-    /// <summary>
-    /// Original was GL_TEXTURE_COMPARE_MODE = 0x884C
-    /// </summary>
-    TextureCompareMode = 0x884C,
-    /// <summary>
-    /// Original was GL_TEXTURE_COMPARE_FUNC = 0x884D
-    /// </summary>
-    TextureCompareFunc = 0x884D,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_R = 0x8E42
-    /// </summary>
-    TextureSwizzleR = 0x8E42,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_G = 0x8E43
-    /// </summary>
-    TextureSwizzleG = 0x8E43,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_B = 0x8E44
-    /// </summary>
-    TextureSwizzleB = 0x8E44,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_A = 0x8E45
-    /// </summary>
-    TextureSwizzleA = 0x8E45,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_RGBA = 0x8E46
-    /// </summary>
-    TextureSwizzleRgba = 0x8E46,
-}
-
-public enum TEXTURE_UNIT
-{
-    GL_TEXTURE0 = 33984,
-
-    GL_TEXTURE1 = 33985,
-
-    GL_TEXTURE2 = 33986,
-
-    GL_TEXTURE3 = 33987,
-
-    GL_TEXTURE4 = 33988,
-
-    GL_TEXTURE5 = 33989,
-
-    GL_TEXTURE6 = 33990,
-
-    GL_TEXTURE7 = 33991,
-
-    GL_TEXTURE8 = 33992,
-
-    GL_TEXTURE9 = 33993,
-
-    GL_TEXTURE10 = 33994,
-
-    GL_TEXTURE11 = 33995,
-
-    GL_TEXTURE12 = 33996,
-
-    GL_TEXTURE13 = 33997,
-
-    GL_TEXTURE14 = 33998,
-
-    GL_TEXTURE15 = 33999,
-
-    GL_TEXTURE16 = 34000,
-
-    GL_TEXTURE17 = 34001,
-
-    GL_TEXTURE18 = 34002,
-
-    GL_TEXTURE19 = 34003,
-
-    GL_TEXTURE20 = 34004,
-
-    GL_TEXTURE21 = 34005,
-
-    GL_TEXTURE22 = 34006,
-
-    GL_TEXTURE23 = 34007,
-
-    GL_TEXTURE24 = 34008,
-
-    GL_TEXTURE25 = 34009,
-
-    GL_TEXTURE26 = 34010,
-
-    GL_TEXTURE27 = 34011,
-
-    GL_TEXTURE28 = 34012,
-
-    GL_TEXTURE29 = 34013,
-
-    GL_TEXTURE30 = 34014,
-
-    GL_TEXTURE31 = 34015,
-}
-
-[Flags]
-public enum STATEARRAY : uint
+/// <summary>
+/// Specifies the string to retrieve in <see cref="OpenGL32.glGetString"/>
+/// </summary>
+public enum GETSTRING_NAME : uint
 {
     /// <summary>
-    /// GL_VERTEX_ARRAY
+    /// Returns the company responsible for this GL implementation. This name does not change from release to release.
     /// </summary>
-    VertexArray = 0x8074,
-    /// <summary>
-    /// GL_NORMAL_ARRAY
-    /// </summary>
-    NormalArray = 0x8075,
-    /// <summary>
-    /// GL_COLOR_ARRAY
-    /// </summary>
-    ColourArray = 0x8076,
-    /// <summary>
-    /// GL_INDEX_ARRAY
-    /// </summary>
-    IndexArray = 0x8077,
-    /// <summary>
-    /// GL_TEXTURE_COORD_ARRAY
-    /// </summary>
-    TextureCoordArray = 0x8078,
-    /// <summary>
-    /// GL_EDGE_FLAG_ARRAY
-    /// </summary>
-    EdgeFlagArray = 0x8079,
-    /// <summary>
-    /// GL_VERTEX_ARRAY_SIZE
-    /// </summary>
-    VertexArraySize = 0x807A,
-    /// <summary>
-    /// GL_VERTEX_ARRAY_TYPE
-    /// </summary>
-    VertexArrayType = 0x807B,
-    /// <summary>
-    /// GL_VERTEX_ARRAY_STRIDE
-    /// </summary>
-    VertexArrayStride = 0x807C,
-    /// <summary>
-    /// GL_NORMAL_ARRAY_TYPE
-    /// </summary>
-    NormalArrayType = 0x807E,
-    /// <summary>
-    /// GL_NORMAL_ARRAY_STRIDE
-    /// </summary>
-    NormalArrayStride = 0x807F,
-    /// <summary>
-    /// GL_COLOR_ARRAY_SIZE
-    /// </summary>
-    ColourArraySize = 0x8081,
-    /// <summary>
-    /// GL_COLOR_ARRAY_TYPE
-    /// </summary>
-    ColourArrayType = 0x8082,
-    /// <summary>
-    /// GL_COLOR_ARRAY_STRIDE
-    /// </summary>
-    ColourArrayStride = 0x8083,
-    /// <summary>
-    /// GL_INDEX_ARRAY_TYPE
-    /// </summary>
-    IndexArrayType = 0x8085,
-    /// <summary>
-    /// GL_INDEX_ARRAY_STRIDE
-    /// </summary>
-    IndexArrayStride = 0x8086,
-    /// <summary>
-    /// GL_TEXTURE_COORD_ARRAY_SIZE
-    /// </summary>
-    TextureCoordArraySize = 0x8088,
-    /// <summary>
-    /// GL_TEXTURE_COORD_ARRAY_TYPE
-    /// </summary>
-    TextureCoordArrayType = 0x8089,
-    /// <summary>
-    /// GL_TEXTURE_COORD_ARRAY_STRIDE
-    /// </summary>
-    TextureCoordArrayStride = 0x808A,
-    /// <summary>
-    /// GL_EDGE_FLAG_ARRAY_STRIDE
-    /// </summary>
-    EdgeFlagArrayStride = 0x808C,
-    /// <summary>
-    /// GL_VERTEX_ARRAY_POINTER
-    /// </summary>
-    VertexArrayPointer = 0x808E,
-    /// <summary>
-    /// GL_NORMAL_ARRAY_POINTER
-    /// </summary>
-    NormalArrayPointer = 0x808F,
-    /// <summary>
-    /// GL_COLOR_ARRAY_POINTER
-    /// </summary>
-    ColourArrayPointer = 0x8090,
-    /// <summary>
-    /// GL_INDEX_ARRAY_POINTER
-    /// </summary>
-    IndexArrayPointer = 0x8091,
-    /// <summary>
-    /// GL_TEXTURE_COORD_ARRAY_POINTER
-    /// </summary>
-    TextureCoordArrayPointer = 0x8092,
-    /// <summary>
-    /// GL_EDGE_FLAG_ARRAY_POINTER
-    /// </summary>
-    EdgeFlagArrayPointer = 0x8093,
-    /// <summary>
-    /// GL_V2F
-    /// </summary>
-    V2F = 0x2A20,
-    /// <summary>
-    /// GL_V3F
-    /// </summary>
-    V3F = 0x2A21,
-    /// <summary>
-    /// GL_C4UB_V2F
-    /// </summary>
-    C4UB_V2F = 0x2A22,
-    /// <summary>
-    /// GL_C4UB_V3F
-    /// </summary>
-    C4UB_V3F = 0x2A23,
-    /// <summary>
-    /// GL_C3F_V3F
-    /// </summary>
-    C3F_V3F = 0x2A24,
-    /// <summary>
-    /// GL_N3F_V3F
-    /// </summary>
-    N3F_V3F = 0x2A25,
-    /// <summary>
-    /// GL_C4F_N3F_V3F
-    /// </summary>
-    C4F_N3F_V3F = 0x2A26,
-    /// <summary>
-    /// GL_T2F_V3F
-    /// </summary>
-    T2F_V3F = 0x2A27,
-    /// <summary>
-    /// GL_T4F_V4F
-    /// </summary>
-    T4F_V4F = 0x2A28,
-    /// <summary>
-    /// GL_T2F_C4UB_V3F
-    /// </summary>
-    T2F_C4UB_V3F = 0x2A29,
-    /// <summary>
-    /// GL_T2F_C3F_V3F
-    /// </summary>
-    T2F_C3F_V3F = 0x2A2A,
-    /// <summary>
-    /// GL_T2F_N3F_V3F
-    /// </summary>
-    T2F_N3F_V3F = 0x2A2B,
-    /// <summary>
-    /// GL_T2F_C4F_N3F_V3F
-    /// </summary>
-    T2F_C4F_N3F_V3F = 0x2A2C,
-    /// <summary>
-    /// GL_T4F_C4F_N3F_V4F
-    /// </summary>
-    T4F_C4F_N3F_V4F = 0x2A2D,
-}
+    GL_VENDOR = 0x1F00,
 
-//todo: force the relevant function to take this enum (tricky because it's an array of ints, and half need to stay ints)
-public enum ARBCREATECONTEXT_ATTRIBUTE_NAMES
-{
-    WGL_CONTEXT_MAJOR_VERSION_ARB = 0x2091,
+    /// <summary>
+    /// Returns the name of the renderer. This name is typically specific to a particular configuration of a hardware platform. It does not change from release to release.
+    /// </summary>
+    GL_RENDERER = 0x1F01,
 
-    WGL_CONTEXT_MINOR_VERSION_ARB = 0x2092,
+    /// <summary>
+    /// Returns a version or release number.
+    /// </summary>
+    GL_VERSION = 0x1F02,
 
-    WGL_CONTEXT_LAYER_PLANE_ARB = 0x2093,
+    /// <summary>
+    /// Returns a version or release number for the shading language.
+    /// </summary>
+    GL_SHADING_LANGUAGE_VERSION = 0x8B8C,
 
-    WGL_CONTEXT_FLAGS_ARB = 0x2094,
-
-    WGL_CONTEXT_PROFILE_MASK_ARB = 0x9126,
-}
-
-public enum ARBCREATECONTEXT_ATTRIBUTE_VALUES
-{
     /// <summary>
-    /// Use with WGL_CONTEXT_FLAGS_ARB
+    /// For glGetStringi only, returns the extension string supported by the implementation at index.
     /// </summary>
-    WGL_CONTEXT_DEBUG_BIT_ARB = 0x0001,
-    /// <summary>
-    /// Use with WGL_CONTEXT_FLAGS_ARB
-    /// </summary>
-    WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB = 0x0002,
-    /// <summary>
-    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB
-    /// </summary>
-    WGL_CONTEXT_CORE_PROFILE_BIT_ARB = 0x0001,
-    /// <summary>
-    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB
-    /// </summary>
-    WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x0002,
-}
-
-public enum BUFFER_TARGET : int
-{
-    /// <summary>
-    /// Original was GL_ARRAY_BUFFER = 0x8892
-    /// </summary>
-    ArrayBuffer = 0x8892,
-    /// <summary>
-    /// Original was GL_ELEMENT_ARRAY_BUFFER = 0x8893
-    /// </summary>
-    ElementArrayBuffer = 0x8893,
-    /// <summary>
-    /// Original was GL_PIXEL_PACK_BUFFER = 0x88EB
-    /// </summary>
-    PixelPackBuffer = 0x88EB,
-    /// <summary>
-    /// Original was GL_PIXEL_UNPACK_BUFFER = 0x88EC
-    /// </summary>
-    PixelUnpackBuffer = 0x88EC,
-    /// <summary>
-    /// Original was GL_UNIFORM_BUFFER = 0x8A11
-    /// </summary>
-    UniformBuffer = 0x8A11,
-    /// <summary>
-    /// Original was GL_TEXTURE_BUFFER = 0x8C2A
-    /// </summary>
-    TextureBuffer = 0x8C2A,
-    /// <summary>
-    /// Original was GL_TRANSFORM_FEEDBACK_BUFFER = 0x8C8E
-    /// </summary>
-    TransformFeedbackBuffer = 0x8C8E,
-    /// <summary>
-    /// Original was GL_COPY_READ_BUFFER = 0x8F36
-    /// </summary>
-    CopyReadBuffer = 0x8F36,
-    /// <summary>
-    /// Original was GL_COPY_WRITE_BUFFER = 0x8F37
-    /// </summary>
-    CopyWriteBuffer = 0x8F37,
-    /// <summary>
-    /// Original was GL_DRAW_INDIRECT_BUFFER = 0x8F3F
-    /// </summary>
-    DrawIndirectBuffer = 0x8F3F,
-    /// <summary>
-    /// Original was GL_SHADER_STORAGE_BUFFER = 0x90D2
-    /// </summary>
-    ShaderStorageBuffer = 0x90D2,
-    /// <summary>
-    /// Original was GL_DISPATCH_INDIRECT_BUFFER = 0x90EE
-    /// </summary>
-    DispatchIndirectBuffer = 0x90EE,
-    /// <summary>
-    /// Original was GL_QUERY_BUFFER = 0x9192
-    /// </summary>
-    QueryBuffer = 0x9192,
-    /// <summary>
-    /// Original was GL_ATOMIC_COUNTER_BUFFER = 0x92C0
-    /// </summary>
-    AtomicCounterBuffer = 0x92C0,
-}
-
-public enum USAGE_PATTERN : int
-{
-    /// <summary>
-    /// Original was GL_STREAM_DRAW = 0x88E0
-    /// </summary>
-    StreamDraw = 0x88E0,
-    /// <summary>
-    /// Original was GL_STREAM_READ = 0x88E1
-    /// </summary>
-    StreamRead = 0x88E1,
-    /// <summary>
-    /// Original was GL_STREAM_COPY = 0x88E2
-    /// </summary>
-    StreamCopy = 0x88E2,
-    /// <summary>
-    /// Original was GL_STATIC_DRAW = 0x88E4
-    /// </summary>
-    StaticDraw = 0x88E4,
-    /// <summary>
-    /// Original was GL_STATIC_READ = 0x88E5
-    /// </summary>
-    StaticRead = 0x88E5,
-    /// <summary>
-    /// Original was GL_STATIC_COPY = 0x88E6
-    /// </summary>
-    StaticCopy = 0x88E6,
-    /// <summary>
-    /// Original was GL_DYNAMIC_DRAW = 0x88E8
-    /// </summary>
-    DynamicDraw = 0x88E8,
-    /// <summary>
-    /// Original was GL_DYNAMIC_READ = 0x88E9
-    /// </summary>
-    DynamicRead = 0x88E9,
-    /// <summary>
-    /// Original was GL_DYNAMIC_COPY = 0x88EA
-    /// </summary>
-    DynamicCopy = 0x88EA,
+    GL_EXTENSIONS = 0x1F03,
 }
 
 public enum GLCAP : int
@@ -1958,234 +1138,6 @@ public enum GLCAP : int
     /// Original was GL_DEBUG_OUTPUT = 0x92E0
     /// </summary>
     DebugOutput = 0x92E0,
-}
-
-public enum FRAMEBUFFER_ATTACHMENT_POINT : int
-{
-    /// <summary>
-    /// Original was GL_FRONT_LEFT = 0x0400
-    /// </summary>
-    FrontLeft = 0x0400,
-    /// <summary>
-    /// Original was GL_FRONT_RIGHT = 0x0401
-    /// </summary>
-    FrontRight = 0x0401,
-    /// <summary>
-    /// Original was GL_BACK_LEFT = 0x0402
-    /// </summary>
-    BackLeft = 0x0402,
-    /// <summary>
-    /// Original was GL_BACK_RIGHT = 0x0403
-    /// </summary>
-    BackRight = 0x0403,
-    /// <summary>
-    /// Original was GL_AUX0 = 0x0409
-    /// </summary>
-    Aux0 = 0x0409,
-    /// <summary>
-    /// Original was GL_AUX1 = 0x040A
-    /// </summary>
-    Aux1 = 0x040A,
-    /// <summary>
-    /// Original was GL_AUX2 = 0x040B
-    /// </summary>
-    Aux2 = 0x040B,
-    /// <summary>
-    /// Original was GL_AUX3 = 0x040C
-    /// </summary>
-    Aux3 = 0x040C,
-    /// <summary>
-    /// Original was GL_COLOR = 0x1800
-    /// </summary>
-    Colour = 0x1800,
-    /// <summary>
-    /// Original was GL_DEPTH = 0x1801
-    /// </summary>
-    Depth = 0x1801,
-    /// <summary>
-    /// Original was GL_STENCIL = 0x1802
-    /// </summary>
-    Stencil = 0x1802,
-    /// <summary>
-    /// Original was GL_DEPTH_STENCIL_ATTACHMENT = 0x821A
-    /// </summary>
-    DepthStencilAttachment = 0x821A,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT0 = 0x8CE0
-    /// </summary>
-    ColourAttachment0 = 0x8CE0,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT0_EXT = 0x8CE0
-    /// </summary>
-    ColourAttachment0Ext = 0x8CE0,
-    /// <summary>
-    /// Original was  GL_COLOR_ATTACHMENT1 = 0x8CE1
-    /// </summary>
-    ColourAttachment1 = 0x8CE1,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT1_EXT = 0x8CE1
-    /// </summary>
-    ColourAttachment1Ext = 0x8CE1,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT2 = 0x8CE2
-    /// </summary>
-    ColourAttachment2 = 0x8CE2,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT2_EXT = 0x8CE2
-    /// </summary>
-    ColourAttachment2Ext = 0x8CE2,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT3 = 0x8CE3
-    /// </summary>
-    ColourAttachment3 = 0x8CE3,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT3_EXT = 0x8CE3
-    /// </summary>
-    ColourAttachment3Ext = 0x8CE3,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT4 = 0x8CE4
-    /// </summary>
-    ColourAttachment4 = 0x8CE4,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT4_EXT = 0x8CE4
-    /// </summary>
-    ColourAttachment4Ext = 0x8CE4,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT5 = 0x8CE5
-    /// </summary>
-    ColourAttachment5 = 0x8CE5,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT5_EXT = 0x8CE5
-    /// </summary>
-    ColourAttachment5Ext = 0x8CE5,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT6 = 0x8CE6
-    /// </summary>
-    ColourAttachment6 = 0x8CE6,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT6_EXT = 0x8CE6
-    /// </summary>
-    ColourAttachment6Ext = 0x8CE6,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT7 = 0x8CE7
-    /// </summary>
-    ColourAttachment7 = 0x8CE7,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT7_EXT = 0x8CE7
-    /// </summary>
-    ColourAttachment7Ext = 0x8CE7,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT8 = 0x8CE8
-    /// </summary>
-    ColourAttachment8 = 0x8CE8,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT8_EXT = 0x8CE8
-    /// </summary>
-    ColourAttachment8Ext = 0x8CE8,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT9 = 0x8CE9
-    /// </summary>
-    ColourAttachment9 = 0x8CE9,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT9_EXT = 0x8CE9
-    /// </summary>
-    ColourAttachment9Ext = 0x8CE9,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT10 = 0x8CEA
-    /// </summary>
-    ColourAttachment10 = 0x8CEA,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT10_EXT = 0x8CEA
-    /// </summary>
-    ColourAttachment10Ext = 0x8CEA,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT11 = 0x8CEB
-    /// </summary>
-    ColourAttachment11 = 0x8CEB,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT11_EXT = 0x8CEB
-    /// </summary>
-    ColourAttachment11Ext = 0x8CEB,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT12 = 0x8CEC
-    /// </summary>
-    ColourAttachment12 = 0x8CEC,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT12_EXT = 0x8CEC
-    /// </summary>
-    ColourAttachment12Ext = 0x8CEC,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT13 = 0x8CED
-    /// </summary>
-    ColourAttachment13 = 0x8CED,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT13_EXT = 0x8CED
-    /// </summary>
-    ColourAttachment13Ext = 0x8CED,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT14 = 0x8CEE
-    /// </summary>
-    ColourAttachment14 = 0x8CEE,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT14_EXT = 0x8CEE
-    /// </summary>
-    ColourAttachment14Ext = 0x8CEE,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT15 = 0x8CEF
-    /// </summary>
-    ColourAttachment15 = 0x8CEF,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT15_EXT = 0x8CEF
-    /// </summary>
-    ColourAttachment15Ext = 0x8CEF,
-    /// <summary>
-    /// Original was GL_DEPTH_ATTACHMENT = 0x8D00
-    /// </summary>
-    DepthAttachment = 0x8D00,
-    /// <summary>
-    /// Original was GL_DEPTH_ATTACHMENT_EXT = 0x8D00
-    /// </summary>
-    DepthAttachmentExt = 0x8D00,
-    /// <summary>
-    /// Original was GL_STENCIL_ATTACHMENT = 0x8D20
-    /// </summary>
-    StencilAttachment = 0x8D20,
-    /// <summary>
-    /// Original was GL_STENCIL_ATTACHMENT_EXT = 0x8D20
-    /// </summary>
-    StencilAttachmentExt = 0x8D20
-}
-
-public enum FRAMEBUFFER_TARGET : int
-{
-    /// <summary>
-    /// Original was GL_READ_FRAMEBUFFER = 0x8CA8
-    /// </summary>
-    ReadFramebuffer = 0x8CA8,
-    /// <summary>
-    /// Original was GL_DRAW_FRAMEBUFFER = 0x8CA9
-    /// </summary>
-    DrawFramebuffer = 0x8CA9,
-    /// <summary>
-    /// Original was GL_FRAMEBUFFER = 0x8D40
-    /// </summary>
-    Framebuffer = 0x8D40,
-    /// <summary>
-    /// Original was GL_FRAMEBUFFER_EXT = 0x8D40
-    /// </summary>
-    FramebufferExt = 0x8D40,
-}
-
-public enum FRONTFACEMODE : int
-{
-    /// <summary>
-    /// Original was GL_CW = 0x0900
-    /// </summary>
-    Cw = 0x0900,
-    /// <summary>
-    /// Original was GL_CCW = 0x0901
-    /// </summary>
-    Ccw = 0x0901,
 }
 
 public enum GLGET : int
@@ -4632,58 +3584,6 @@ public enum GLGET : int
     MaxComputeImageUniforms = 0x91BD,
 }
 
-public enum LIGHT : int
-{
-    GL_LIGHT0 = 0x4000,
-    GL_LIGHT1 = 0x4001,
-    GL_LIGHT2 = 0x4002,
-    GL_LIGHT3 = 0x4003,
-    GL_LIGHT4 = 0x4004,
-    GL_LIGHT5 = 0x4005,
-    GL_LIGHT6 = 0x4006,
-    GL_LIGHT7 = 0x4007,
-    GL_FRAGMENT_LIGHT0_SGIX = 0x840C,
-    GL_FRAGMENT_LIGHT1_SGIX = 0x840D,
-    GL_FRAGMENT_LIGHT2_SGIX = 0x840E,
-    GL_FRAGMENT_LIGHT3_SGIX = 0x840F,
-    GL_FRAGMENT_LIGHT4_SGIX = 0x8410,
-    GL_FRAGMENT_LIGHT5_SGIX = 0x8411,
-    GL_FRAGMENT_LIGHT6_SGIX = 0x8412,
-    GL_FRAGMENT_LIGHT7_SGIX = 0x8413,
-}
-
-public enum LIGHT_FLAG : int
-{
-    GL_AMBIENT = 0x1200,
-    GL_DIFFUSE = 0x1201,
-    GL_SPECULAR = 0x1202,
-    GL_POSITION = 0x1203,
-    GL_SPOT_DIRECTION = 0x1204,
-    GL_SPOT_EXPONENT = 0x1205,
-    GL_SPOT_CUTOFF = 0x1206,
-    GL_CONSTANT_ATTENUATION = 0x1207,
-    GL_LINEAR_ATTENUATION = 0x1208,
-    GL_QUADRATIC_ATTENUATION = 0x1209,
-}
-
-public enum MATERIAL_FLAG : int
-{
-    GL_AMBIENT = 0x1200,
-    GL_DIFFUSE = 0x1201,
-    GL_SPECULAR = 0x1202,
-    GL_EMISSION = 0x1600,
-    GL_SHININESS = 0x1601,
-    GL_AMBIENT_AND_DIFFUSE = 0x1602,
-    GL_COLOR_INDEXES = 0x1603,
-}
-
-public enum MATRIX_MODE : int
-{
-    MODELVIEW = 0x1700,
-    PROJECTION = 0x1701,
-    TEXTURE = 0x1702,
-}
-
 /// <summary>
 /// Error codes returned by the <see cref="OpenGL32.glGetError"/> function.
 /// </summary>
@@ -4738,6 +3638,756 @@ public enum GL_ERROR : uint
     /// [Deprecated] Part of the ARB_imaging extension.
     /// </summary>
     GL_TABLE_TOO_LARGE = 0x8031
+}
+
+public enum LIGHT : int
+{
+    GL_LIGHT0 = 0x4000,
+    GL_LIGHT1 = 0x4001,
+    GL_LIGHT2 = 0x4002,
+    GL_LIGHT3 = 0x4003,
+    GL_LIGHT4 = 0x4004,
+    GL_LIGHT5 = 0x4005,
+    GL_LIGHT6 = 0x4006,
+    GL_LIGHT7 = 0x4007,
+    GL_FRAGMENT_LIGHT0_SGIX = 0x840C,
+    GL_FRAGMENT_LIGHT1_SGIX = 0x840D,
+    GL_FRAGMENT_LIGHT2_SGIX = 0x840E,
+    GL_FRAGMENT_LIGHT3_SGIX = 0x840F,
+    GL_FRAGMENT_LIGHT4_SGIX = 0x8410,
+    GL_FRAGMENT_LIGHT5_SGIX = 0x8411,
+    GL_FRAGMENT_LIGHT6_SGIX = 0x8412,
+    GL_FRAGMENT_LIGHT7_SGIX = 0x8413,
+}
+
+public enum LIGHT_FLAG : int
+{
+    GL_AMBIENT = 0x1200,
+    GL_DIFFUSE = 0x1201,
+    GL_SPECULAR = 0x1202,
+    GL_POSITION = 0x1203,
+    GL_SPOT_DIRECTION = 0x1204,
+    GL_SPOT_EXPONENT = 0x1205,
+    GL_SPOT_CUTOFF = 0x1206,
+    GL_CONSTANT_ATTENUATION = 0x1207,
+    GL_LINEAR_ATTENUATION = 0x1208,
+    GL_QUADRATIC_ATTENUATION = 0x1209,
+}
+
+public enum MATERIAL_FLAG : int
+{
+    GL_AMBIENT = 0x1200,
+    GL_DIFFUSE = 0x1201,
+    GL_SPECULAR = 0x1202,
+    GL_EMISSION = 0x1600,
+    GL_SHININESS = 0x1601,
+    GL_AMBIENT_AND_DIFFUSE = 0x1602,
+    GL_COLOR_INDEXES = 0x1603,
+}
+
+public enum MATRIX_MODE : int
+{
+    MODELVIEW = 0x1700,
+    PROJECTION = 0x1701,
+    TEXTURE = 0x1702,
+}
+
+public enum MSAA_SAMPLES
+{
+    Disabled = 0,
+
+    X2 = 2,
+
+    X4 = 4,
+
+    X8 = 8,
+
+    X16 = 16
+}
+
+public enum PIXEL_STORE_MODE : int
+{
+    GL_UNPACK_SWAP_BYTES = 0x0CF0,
+    GL_UNPACK_LSB_FIRST = 0x0CF1,
+    GL_UNPACK_ROW_LENGTH = 0x0CF2,
+    GL_UNPACK_ROW_LENGTH_EXT = 0x0CF2,
+    GL_UNPACK_SKIP_ROWS = 0x0CF3,
+    GL_UNPACK_SKIP_ROWS_EXT = 0x0CF3,
+    GL_UNPACK_SKIP_PIXELS = 0x0CF4,
+    GL_UNPACK_SKIP_PIXELS_EXT = 0x0CF4,
+    GL_UNPACK_ALIGNMENT = 0x0CF5,
+    GL_PACK_SWAP_BYTES = 0x0D00,
+    GL_PACK_LSB_FIRST = 0x0D01,
+    GL_PACK_ROW_LENGTH = 0x0D02,
+    GL_PACK_SKIP_ROWS = 0x0D03,
+    GL_PACK_SKIP_PIXELS = 0x0D04,
+    GL_PACK_ALIGNMENT = 0x0D05,
+    GL_PACK_SKIP_IMAGES = 0x806B,
+    GL_PACK_SKIP_IMAGES_EXT = 0x806B,
+    GL_PACK_IMAGE_HEIGHT = 0x806C,
+    GL_PACK_IMAGE_HEIGHT_EXT = 0x806C,
+    GL_UNPACK_SKIP_IMAGES = 0x806D,
+    GL_UNPACK_SKIP_IMAGES_EXT = 0x806D,
+    GL_UNPACK_IMAGE_HEIGHT = 0x806E,
+    GL_UNPACK_IMAGE_HEIGHT_EXT = 0x806E,
+    GL_PACK_SKIP_VOLUMES_SGIS = 0x8130,
+    GL_PACK_IMAGE_DEPTH_SGIS = 0x8131,
+    GL_UNPACK_SKIP_VOLUMES_SGIS = 0x8132,
+    GL_UNPACK_IMAGE_DEPTH_SGIS = 0x8133,
+    GL_PIXEL_TILE_WIDTH_SGIX = 0x8140,
+    GL_PIXEL_TILE_HEIGHT_SGIX = 0x8141,
+    GL_PIXEL_TILE_GRID_WIDTH_SGIX = 0x8142,
+    GL_PIXEL_TILE_GRID_HEIGHT_SGIX = 0x8143,
+    GL_PIXEL_TILE_GRID_DEPTH_SGIX = 0x8144,
+    GL_PIXEL_TILE_CACHE_SIZE_SGIX = 0x8145,
+    GL_PACK_RESAMPLE_SGIX = 0x842C,
+    GL_UNPACK_RESAMPLE_SGIX = 0x842D,
+    GL_PACK_SUBSAMPLE_RATE_SGIX = 0x85A0,
+    GL_UNPACK_SUBSAMPLE_RATE_SGIX = 0x85A1,
+    GL_PACK_RESAMPLE_OML = 0x8984,
+    GL_UNPACK_RESAMPLE_OML = 0x8985,
+    GL_UNPACK_COMPRESSED_BLOCK_WIDTH = 0x9127,
+    GL_UNPACK_COMPRESSED_BLOCK_HEIGHT = 0x9128,
+    GL_UNPACK_COMPRESSED_BLOCK_DEPTH = 0x9129,
+    GL_UNPACK_COMPRESSED_BLOCK_SIZE = 0x912A,
+    GL_PACK_COMPRESSED_BLOCK_WIDTH = 0x912B,
+    GL_PACK_COMPRESSED_BLOCK_HEIGHT = 0x912C,
+    GL_PACK_COMPRESSED_BLOCK_DEPTH = 0x912D,
+    GL_PACK_COMPRESSED_BLOCK_SIZE = 0x912E
+}
+
+public enum PIXEL_FORMAT : int
+{
+    GL_STENCIL_INDEX = 0X1901,
+    GL_DEPTH_COMPONENT = 0X1902,
+    GL_DEPTH_STENCIL = 0X84f9,
+    GL_RED = 0X1903,
+    GL_GREEN = 0X1904,
+    GL_BLUE = 0X1905,
+    GL_RG = 0X8227,
+    GL_RGB = 0X1907,
+    GL_RGBA = 0X1908,
+    GL_BGR = 0X80e0,
+    GL_BGRA = 0X80e1,
+    GL_RED_INTEGER = 0X8d94,
+    GL_GREEN_INTEGER = 0X8d95,
+    GL_BLUE_INTEGER = 0X8d96,
+    GL_RGB_INTEGER = 0X8d98,
+    GL_RGBA_INTEGER = 0X8d99,
+    GL_BGR_INTEGER = 0X8d9a,
+    GL_BGRA_INTEGER = 0X8d9b,
+
+    ColorIndex = 0X1900,
+    Alpha = 0X1906,
+    Luminance = 0X1909,
+    LuminanceAlpha = 0X190a,
+    AbgrExt = 0X8000,
+    CmykExt = 0X800c,
+    CmykaExt = 0X800D,
+    Ycrcb422Sgix = 0X81bb,
+    Ycrcb444Sgix = 0X81bc,
+    RgInteger = 0X8228,
+    AlphaInteger = 0X8d97,
+}
+
+public enum PixelType : int
+{
+    GL_UNSIGNED_BYTE = 0X1401,
+    GL_BYTE = 0X1400,
+    GL_UNSIGNED_SHORT = 0X1403,
+    GL_SHORT = 0X1402,
+    GL_UNSIGNED_INT = 0X1405,
+    GL_INT = 0X1404,
+    GL_HALF_FLOAT = 0X140b,
+    GL_FLOAT = 0X1406,
+    GL_UNSIGNED_BYTE_3_3_2 = 0X8032,
+    GL_UNSIGNED_BYTE_2_3_3_REV = 0X8362,
+    GL_UNSIGNED_SHORT_5_6_5 = 0X8363,
+    GL_UNSIGNED_SHORT_5_6_5_REV = 0X8364,
+    GL_UNSIGNED_SHORT_4_4_4_4 = 0X8033,
+    GL_UNSIGNED_SHORT_4_4_4_4_REV = 0X8365,
+    GL_UNSIGNED_SHORT_5_5_5_1 = 0X8034,
+    GL_UNSIGNED_SHORT_1_5_5_5_REV = 0X8366,
+    GL_UNSIGNED_INT_8_8_8_8 = 0X8035,
+    GL_UNSIGNED_INT_8_8_8_8_REV = 0X8367,
+    GL_UNSIGNED_INT_10_10_10_2 = 0X8036,
+    GL_UNSIGNED_INT_2_10_10_10_REV = 0X8368,
+    GL_UNSIGNED_INT_24_8 = 0X84fa,
+    GL_UNSIGNED_INT_10F_11F_11F_REV = 0X8c3b,
+    GL_UNSIGNED_INT_5_9_9_9_REV = 0X8c3e,
+    GL_FLOAT_32_UNSIGNED_INT_24_8_REV = 0X8Dad,
+
+    Bitmap = 0X1a00,
+    UnsignedByte332Ext = 0X8032,
+    UnsignedShort4444Ext = 0X8033,
+    UnsignedShort5551Ext = 0X8034,
+    UnsignedInt8888Ext = 0X8035,
+    UnsignedInt1010102Ext = 0X8036,
+}
+
+/// <summary>
+/// The face of polygons to apply certain functions to
+/// </summary>
+public enum POLYGON_FACE : int
+{
+    /// <summary>
+    /// front-facing polygons
+    /// </summary>
+    GL_FRONT = 0x0404,
+
+    /// <summary>
+    /// back-facing polygons
+    /// </summary>
+    GL_BACK = 0x0405,
+
+    /// <summary>
+    /// front- and back-facing polygons
+    /// </summary>
+    GL_FRONT_AND_BACK = 0x0408,
+}
+
+/// <summary>
+/// The mode for use with <see cref="OpenGL32.glPolygonMode"/>
+/// </summary>
+public enum POLYGON_MODE : int
+{
+    /// <summary>
+    /// Polygon vertices that are marked as the start of a boundary edge are drawn as points. Point attributes such as GL_POINT_SIZE and GL_POINT_SMOOTH control the rasterization of the points. Polygon rasterization attributes other than GL_POLYGON_MODE have no effect.
+    /// </summary>
+    GL_POINT = 0x1B00,
+    /// <summary>
+    /// Boundary edges of the polygon are drawn as line segments. They are treated as connected line segments for line stippling; the line stipple counter and pattern are not reset between segments (see glLineStipple). Line attributes such as GL_LINE_WIDTH and GL_LINE_SMOOTH control the rasterization of the lines. Polygon rasterization attributes other than GL_POLYGON_MODE have no effect.
+    /// </summary>
+    GL_LINE = 0x1B01,
+    /// <summary>
+    /// The interior of the polygon is filled. Polygon attributes such as GL_POLYGON_STIPPLE and GL_POLYGON_SMOOTH control the rasterization of the polygon.
+    /// </summary>
+    GL_FILL = 0x1B02,
+}
+
+public enum PRIMITIVE_TYPE : int
+{
+    //todo: complete this. Look at other functions for docs? 
+    //https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml
+    //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
+
+    /// <summary>
+    /// Treats each vertex as a single point. Vertex n defines point n. N points are drawn.
+    /// </summary>
+    GL_POINTS = 0,
+
+    /// <summary>
+    /// Treats each pair of vertices as an independent line segment. Vertices 2 ⁢ n - 1 and 2 ⁢ n define line n. N 2 lines are drawn.
+    /// </summary>
+    GL_LINES = 1,
+
+    /// <summary>
+    /// Draws a connected group of line segments from the first vertex to the last. Vertices n and n + 1 define line n. N - 1 lines are drawn.
+    /// </summary>
+    GL_LINE_STRIP = 3,
+
+    /// <summary>
+    /// Draws a connected group of line segments from the first vertex to the last, then back to the first. Vertices n and n + 1 define line n. The last line, however, is defined by vertices N and 1 . N lines are drawn.
+    /// </summary>
+    GL_LINE_LOOP = 2,
+
+    /// <summary>
+    /// Treats each triplet of vertices as an independent triangle. Vertices 3 ⁢ n - 2 , 3 ⁢ n - 1 , and 3 ⁢ n define triangle n. N 3 triangles are drawn.
+    /// </summary>
+    GL_TRIANGLES = 4,
+
+    /// <summary>
+    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. For odd n, vertices n, n + 1 , and n + 2 define triangle n. For even n, vertices n + 1 , n, and n + 2 define triangle n. N - 2 triangles are drawn.
+    /// </summary>
+    GL_TRIANGLE_STRIP = 5,
+
+    /// <summary>
+    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. Vertices 1 , n + 1 , and n + 2 define triangle n. N - 2 triangles are drawn.
+    /// </summary>
+    GL_TRIANGLE_FAN = 6,
+
+    /// <summary>
+    /// Treats each group of four vertices as an independent quadrilateral. Vertices 4 ⁢ n - 3 , 4 ⁢ n - 2 , 4 ⁢ n - 1 , and 4 ⁢ n define quadrilateral n. N 4 quadrilaterals are drawn.
+    /// </summary>
+    GL_QUADS = 7,
+
+    /// <summary>
+    /// Draws a connected group of quadrilaterals. One quadrilateral is defined for each pair of vertices presented after the first pair. Vertices 2 ⁢ n - 1 , 2 ⁢ n , 2 ⁢ n + 2 , and 2 ⁢ n + 1 define quadrilateral n. N 2 - 1 quadrilaterals are drawn. Note that the order in which vertices are used to construct a quadrilateral from strip data is different from that used with independent data.
+    /// </summary>
+    GL_QUAD_STRIP = 8,
+
+    /// <summary>
+    /// Draws a single, convex polygon. Vertices 1 through N define this polygon.
+    /// </summary>
+    GL_POLYGON = 9,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_LINE_STRIP_ADJACENCY = 11,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_LINES_ADJACENCY = 10,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TRIANGLE_STRIP_ADJACENCY = 13,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TRIANGLES_ADJACENCY = 12,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PATCHES = 14,
+}
+/// <summary>
+/// Flat and smooth shading are specified by <see cref="OpenGL32.glShadeModel"/> with mode set to GL_FLAT and GL_SMOOTH, respectively.
+/// </summary>
+
+public enum SHADE_TECHNIQUE : int
+{
+    /// <summary>
+    /// Flat shading selects the computed color of just one vertex and assigns it to all the pixel fragments generated by rasterizing a single primitive.
+    /// </summary>
+    GL_FLAT = 0x1D00,
+
+    /// <summary>
+    /// Smooth shading, the default, causes the computed colors of vertices to be interpolated as the primitive is rasterized, typically assigning different colors to each resulting pixel fragment. 
+    /// </summary>
+    GL_SMOOTH = 0x1D01,
+}
+
+public enum SHADER_TYPE : int
+{
+    FragmentShader = 0x8B30,
+    VertexShader = 0x8B31,
+    GeometryShader = 0x8DD9,
+    TessEvaluationShader = 0x8E87,
+    TessControlShader = 0x8E88,
+    ComputeShader = 0x91B9,
+}
+
+[Flags]
+public enum STATEARRAY : uint
+{
+    /// <summary>
+    /// GL_VERTEX_ARRAY
+    /// </summary>
+    VertexArray = 0x8074,
+    /// <summary>
+    /// GL_NORMAL_ARRAY
+    /// </summary>
+    NormalArray = 0x8075,
+    /// <summary>
+    /// GL_COLOR_ARRAY
+    /// </summary>
+    ColourArray = 0x8076,
+    /// <summary>
+    /// GL_INDEX_ARRAY
+    /// </summary>
+    IndexArray = 0x8077,
+    /// <summary>
+    /// GL_TEXTURE_COORD_ARRAY
+    /// </summary>
+    TextureCoordArray = 0x8078,
+    /// <summary>
+    /// GL_EDGE_FLAG_ARRAY
+    /// </summary>
+    EdgeFlagArray = 0x8079,
+    /// <summary>
+    /// GL_VERTEX_ARRAY_SIZE
+    /// </summary>
+    VertexArraySize = 0x807A,
+    /// <summary>
+    /// GL_VERTEX_ARRAY_TYPE
+    /// </summary>
+    VertexArrayType = 0x807B,
+    /// <summary>
+    /// GL_VERTEX_ARRAY_STRIDE
+    /// </summary>
+    VertexArrayStride = 0x807C,
+    /// <summary>
+    /// GL_NORMAL_ARRAY_TYPE
+    /// </summary>
+    NormalArrayType = 0x807E,
+    /// <summary>
+    /// GL_NORMAL_ARRAY_STRIDE
+    /// </summary>
+    NormalArrayStride = 0x807F,
+    /// <summary>
+    /// GL_COLOR_ARRAY_SIZE
+    /// </summary>
+    ColourArraySize = 0x8081,
+    /// <summary>
+    /// GL_COLOR_ARRAY_TYPE
+    /// </summary>
+    ColourArrayType = 0x8082,
+    /// <summary>
+    /// GL_COLOR_ARRAY_STRIDE
+    /// </summary>
+    ColourArrayStride = 0x8083,
+    /// <summary>
+    /// GL_INDEX_ARRAY_TYPE
+    /// </summary>
+    IndexArrayType = 0x8085,
+    /// <summary>
+    /// GL_INDEX_ARRAY_STRIDE
+    /// </summary>
+    IndexArrayStride = 0x8086,
+    /// <summary>
+    /// GL_TEXTURE_COORD_ARRAY_SIZE
+    /// </summary>
+    TextureCoordArraySize = 0x8088,
+    /// <summary>
+    /// GL_TEXTURE_COORD_ARRAY_TYPE
+    /// </summary>
+    TextureCoordArrayType = 0x8089,
+    /// <summary>
+    /// GL_TEXTURE_COORD_ARRAY_STRIDE
+    /// </summary>
+    TextureCoordArrayStride = 0x808A,
+    /// <summary>
+    /// GL_EDGE_FLAG_ARRAY_STRIDE
+    /// </summary>
+    EdgeFlagArrayStride = 0x808C,
+    /// <summary>
+    /// GL_VERTEX_ARRAY_POINTER
+    /// </summary>
+    VertexArrayPointer = 0x808E,
+    /// <summary>
+    /// GL_NORMAL_ARRAY_POINTER
+    /// </summary>
+    NormalArrayPointer = 0x808F,
+    /// <summary>
+    /// GL_COLOR_ARRAY_POINTER
+    /// </summary>
+    ColourArrayPointer = 0x8090,
+    /// <summary>
+    /// GL_INDEX_ARRAY_POINTER
+    /// </summary>
+    IndexArrayPointer = 0x8091,
+    /// <summary>
+    /// GL_TEXTURE_COORD_ARRAY_POINTER
+    /// </summary>
+    TextureCoordArrayPointer = 0x8092,
+    /// <summary>
+    /// GL_EDGE_FLAG_ARRAY_POINTER
+    /// </summary>
+    EdgeFlagArrayPointer = 0x8093,
+    /// <summary>
+    /// GL_V2F
+    /// </summary>
+    V2F = 0x2A20,
+    /// <summary>
+    /// GL_V3F
+    /// </summary>
+    V3F = 0x2A21,
+    /// <summary>
+    /// GL_C4UB_V2F
+    /// </summary>
+    C4UB_V2F = 0x2A22,
+    /// <summary>
+    /// GL_C4UB_V3F
+    /// </summary>
+    C4UB_V3F = 0x2A23,
+    /// <summary>
+    /// GL_C3F_V3F
+    /// </summary>
+    C3F_V3F = 0x2A24,
+    /// <summary>
+    /// GL_N3F_V3F
+    /// </summary>
+    N3F_V3F = 0x2A25,
+    /// <summary>
+    /// GL_C4F_N3F_V3F
+    /// </summary>
+    C4F_N3F_V3F = 0x2A26,
+    /// <summary>
+    /// GL_T2F_V3F
+    /// </summary>
+    T2F_V3F = 0x2A27,
+    /// <summary>
+    /// GL_T4F_V4F
+    /// </summary>
+    T4F_V4F = 0x2A28,
+    /// <summary>
+    /// GL_T2F_C4UB_V3F
+    /// </summary>
+    T2F_C4UB_V3F = 0x2A29,
+    /// <summary>
+    /// GL_T2F_C3F_V3F
+    /// </summary>
+    T2F_C3F_V3F = 0x2A2A,
+    /// <summary>
+    /// GL_T2F_N3F_V3F
+    /// </summary>
+    T2F_N3F_V3F = 0x2A2B,
+    /// <summary>
+    /// GL_T2F_C4F_N3F_V3F
+    /// </summary>
+    T2F_C4F_N3F_V3F = 0x2A2C,
+    /// <summary>
+    /// GL_T4F_C4F_N3F_V4F
+    /// </summary>
+    T4F_C4F_N3F_V4F = 0x2A2D,
+}
+
+public enum TEXPARAMETER_NAME : int
+{
+    GL_TEXTURE_BORDER_COLOR = 0x1004,
+
+    GL_TEXTURE_MAG_FILTER = 0x2800,
+
+    GL_TEXTURE_MIN_FILTER = 0x2801,
+
+    GL_TEXTURE_WRAP_S = 0x2802,
+
+    GL_TEXTURE_WRAP_T = 0x2803,
+    /// <summary>
+    /// Original was GL_TEXTURE_PRIORITY = 0x8066
+    /// </summary>
+    TexturePriority = 0x8066,
+    /// <summary>
+    /// Original was GL_TEXTURE_PRIORITY_EXT = 0x8066
+    /// </summary>
+    TexturePriorityExt = 0x8066,
+    /// <summary>
+    /// Original was GL_TEXTURE_DEPTH = 0x8071
+    /// </summary>
+    TextureDepth = 0x8071,
+    /// <summary>
+    /// Original was GL_TEXTURE_WRAP_R = 0x8072
+    /// </summary>
+    TextureWrapR = 0x8072,
+    /// <summary>
+    /// Original was GL_TEXTURE_WRAP_R_EXT = 0x8072
+    /// </summary>
+    TextureWrapRExt = 0x8072,
+    /// <summary>
+    /// Original was GL_TEXTURE_WRAP_R_OES = 0x8072
+    /// </summary>
+    TextureWrapROes = 0x8072,
+    /// <summary>
+    /// Original was GL_DETAIL_TEXTURE_LEVEL_SGIS = 0x809A
+    /// </summary>
+    DetailTextureLevelSgis = 0x809A,
+    /// <summary>
+    /// Original was GL_DETAIL_TEXTURE_MODE_SGIS = 0x809B
+    /// </summary>
+    DetailTextureModeSgis = 0x809B,
+    /// <summary>
+    /// Original was GL_SHADOW_AMBIENT_SGIX = 0x80BF
+    /// </summary>
+    ShadowAmbientSgix = 0x80BF,
+    /// <summary>
+    /// Original was GL_TEXTURE_COMPARE_FAIL_VALUE = 0x80BF
+    /// </summary>
+    TextureCompareFailValue = 0x80BF,
+    /// <summary>
+    /// Original was GL_DUAL_TEXTURE_SELECT_SGIS = 0x8124
+    /// </summary>
+    DualTextureSelectSgis = 0x8124,
+    /// <summary>
+    /// Original was GL_QUAD_TEXTURE_SELECT_SGIS = 0x8125
+    /// </summary>
+    QuadTextureSelectSgis = 0x8125,
+    /// <summary>
+    /// Original was GL_CLAMP_TO_BORDER = 0x812D
+    /// </summary>
+    ClampToBorder = 0x812D,
+    /// <summary>
+    /// Original was GL_CLAMP_TO_EDGE = 0x812F
+    /// </summary>
+    ClampToEdge = 0x812F,
+    /// <summary>
+    /// Original was GL_TEXTURE_WRAP_Q_SGIS = 0x8137
+    /// </summary>
+    TextureWrapQSgis = 0x8137,
+    /// <summary>
+    /// Original was GL_TEXTURE_MIN_LOD = 0x813A
+    /// </summary>
+    TextureMinLod = 0x813A,
+    /// <summary>
+    /// Original was GL_TEXTURE_MAX_LOD = 0x813B
+    /// </summary>
+    TextureMaxLod = 0x813B,
+    /// <summary>
+    /// Original was GL_TEXTURE_BASE_LEVEL = 0x813C
+    /// </summary>
+    TextureBaseLevel = 0x813C,
+    /// <summary>
+    /// Original was GL_TEXTURE_MAX_LEVEL = 0x813D
+    /// </summary>
+    TextureMaxLevel = 0x813D,
+    /// <summary>
+    /// Original was GL_TEXTURE_CLIPMAP_CENTER_SGIX = 0x8171
+    /// </summary>
+    TextureClipmapCenterSgix = 0x8171,
+    /// <summary>
+    /// Original was GL_TEXTURE_CLIPMAP_FRAME_SGIX = 0x8172
+    /// </summary>
+    TextureClipmapFrameSgix = 0x8172,
+    /// <summary>
+    /// Original was GL_TEXTURE_CLIPMAP_OFFSET_SGIX = 0x8173
+    /// </summary>
+    TextureClipmapOffsetSgix = 0x8173,
+    /// <summary>
+    /// Original was GL_TEXTURE_CLIPMAP_VIRTUAL_DEPTH_SGIX = 0x8174
+    /// </summary>
+    TextureClipmapVirtualDepthSgix = 0x8174,
+    /// <summary>
+    /// Original was GL_TEXTURE_CLIPMAP_LOD_OFFSET_SGIX = 0x8175
+    /// </summary>
+    TextureClipmapLodOffsetSgix = 0x8175,
+    /// <summary>
+    /// Original was GL_TEXTURE_CLIPMAP_DEPTH_SGIX = 0x8176
+    /// </summary>
+    TextureClipmapDepthSgix = 0x8176,
+    /// <summary>
+    /// Original was GL_POST_TEXTURE_FILTER_BIAS_SGIX = 0x8179
+    /// </summary>
+    PostTextureFilterBiasSgix = 0x8179,
+    /// <summary>
+    /// Original was GL_POST_TEXTURE_FILTER_SCALE_SGIX = 0x817A
+    /// </summary>
+    PostTextureFilterScaleSgix = 0x817A,
+    /// <summary>
+    /// Original was GL_TEXTURE_LOD_BIAS_S_SGIX = 0x818E
+    /// </summary>
+    TextureLodBiasSSgix = 0x818E,
+    /// <summary>
+    /// Original was GL_TEXTURE_LOD_BIAS_T_SGIX = 0x818F
+    /// </summary>
+    TextureLodBiasTSgix = 0x818F,
+    /// <summary>
+    /// Original was GL_TEXTURE_LOD_BIAS_R_SGIX = 0x8190
+    /// </summary>
+    TextureLodBiasRSgix = 0x8190,
+    /// <summary>
+    /// Original was GL_GENERATE_MIPMAP = 0x8191
+    /// </summary>
+    GenerateMipmap = 0x8191,
+    /// <summary>
+    /// Original was GL_GENERATE_MIPMAP_SGIS = 0x8191
+    /// </summary>
+    GenerateMipmapSgis = 0x8191,
+    /// <summary>
+    /// Original was GL_TEXTURE_COMPARE_SGIX = 0x819A
+    /// </summary>
+    TextureCompareSgix = 0x819A,
+    /// <summary>
+    /// Original was GL_TEXTURE_MAX_CLAMP_S_SGIX = 0x8369
+    /// </summary>
+    TextureMaxClampSSgix = 0x8369,
+    /// <summary>
+    /// Original was GL_TEXTURE_MAX_CLAMP_T_SGIX = 0x836A
+    /// </summary>
+    TextureMaxClampTSgix = 0x836A,
+    /// <summary>
+    /// Original was GL_TEXTURE_MAX_CLAMP_R_SGIX = 0x836B
+    /// </summary>
+    TextureMaxClampRSgix = 0x836B,
+    /// <summary>
+    /// Original was GL_TEXTURE_LOD_BIAS = 0x8501
+    /// </summary>
+    TextureLodBias = 0x8501,
+    /// <summary>
+    /// Original was GL_DEPTH_TEXTURE_MODE = 0x884B
+    /// </summary>
+    DepthTextureMode = 0x884B,
+    /// <summary>
+    /// Original was GL_TEXTURE_COMPARE_MODE = 0x884C
+    /// </summary>
+    TextureCompareMode = 0x884C,
+    /// <summary>
+    /// Original was GL_TEXTURE_COMPARE_FUNC = 0x884D
+    /// </summary>
+    TextureCompareFunc = 0x884D,
+    /// <summary>
+    /// Original was GL_TEXTURE_SWIZZLE_R = 0x8E42
+    /// </summary>
+    TextureSwizzleR = 0x8E42,
+    /// <summary>
+    /// Original was GL_TEXTURE_SWIZZLE_G = 0x8E43
+    /// </summary>
+    TextureSwizzleG = 0x8E43,
+    /// <summary>
+    /// Original was GL_TEXTURE_SWIZZLE_B = 0x8E44
+    /// </summary>
+    TextureSwizzleB = 0x8E44,
+    /// <summary>
+    /// Original was GL_TEXTURE_SWIZZLE_A = 0x8E45
+    /// </summary>
+    TextureSwizzleA = 0x8E45,
+    /// <summary>
+    /// Original was GL_TEXTURE_SWIZZLE_RGBA = 0x8E46
+    /// </summary>
+    TextureSwizzleRgba = 0x8E46,
+}
+
+public enum TEXPARAMETER_VALUE : int
+{
+    GL_REPEAT = 0x2901,
+
+    GL_CLAMP_TO_BORDER = 0x812D,
+
+    GL_CLAMP_TO_BORDER_ARB = 0x812D,
+
+    GL_CLAMP_TO_BORDER_NV = 0x812D,
+
+    GL_CLAMP_TO_BORDER_SGIS = 0x812D,
+
+    GL_CLAMP_TO_EDGE = 0x812F,
+
+    GL_CLAMP_TO_EDGE_SGIS = 0x812F,
+
+    GL_MIRRORED_REPEAT = 0x8370,
+
+    GL_NEAREST = 0x2600,
+
+    GL_LINEAR = 0x2601,
+
+    GL_LINEAR_DETAIL_SGIS = 0x8097,
+
+    GL_LINEAR_DETAIL_ALPHA_SGIS = 0x8098,
+
+    GL_LINEAR_DETAIL_COLOR_SGIS = 0x8099,
+
+    GL_LINEAR_SHARPEN_SGIS = 0x80AD,
+
+    GL_LINEAR_SHARPEN_ALPHA_SGIS = 0x80AE,
+
+    GL_LINEAR_SHARPEN_COLOR_SGIS = 0x80AF,
+
+    GL_FILTER4_SGIS = 0x8146,
+
+    GL_PIXEL_TEX_GEN_Q_CEILING_SGIX = 0x8184,
+
+    GL_PIXEL_TEX_GEN_Q_ROUND_SGIX = 0x8185,
+
+    GL_PIXEL_TEX_GEN_Q_FLOOR_SGIX = 0x8186,
+
+    GL_NEAREST_MIPMAP_NEAREST = 0x2700,
+
+    GL_LINEAR_MIPMAP_NEAREST = 0x2701,
+
+    GL_NEAREST_MIPMAP_LINEAR = 0x2702,
+
+    GL_LINEAR_MIPMAP_LINEAR = 0x2703,
+
+    GL_LINEAR_CLIPMAP_LINEAR_SGIX = 0x8170,
+
+    GL_NEAREST_CLIPMAP_NEAREST_SGIX = 0x844D,
+
+    GL_NEAREST_CLIPMAP_LINEAR_SGIX = 0x844E,
+
+    GL_LINEAR_CLIPMAP_NEAREST_SGIX = 0x844F,
 }
 
 public enum TEXTURE_INTERNALFORMAT : int
@@ -5081,71 +4731,373 @@ public enum TEXTURE_INTERNALFORMAT : int
     GL_FOUR = 4,
 }
 
-public enum PixelFormat : int
+public enum TEXTURE_TARGET : int
 {
-    ColorIndex = 0X1900,
-    StencilIndex = 0X1901,
-    DepthComponent = 0X1902,
-    Red = 0X1903,
-    Green = 0X1904,
-    Blue = 0X1905,
-    Alpha = 0X1906,
-    Rgb = 0X1907,
-    Rgba = 0X1908,
-    Luminance = 0X1909,
-    LuminanceAlpha = 0X190a,
-    AbgrExt = 0X8000,
-    CmykExt = 0X800c,
-    CmykaExt = 0X800D,
-    Bgr = 0X80e0,
-    Bgra = 0X80e1,
-    Ycrcb422Sgix = 0X81bb,
-    Ycrcb444Sgix = 0X81bc,
-    Rg = 0X8227,
-    RgInteger = 0X8228,
-    DepthStencil = 0X84f9,
-    RedInteger = 0X8d94,
-    GreenInteger = 0X8d95,
-    BlueInteger = 0X8d96,
-    AlphaInteger = 0X8d97,
-    RgbInteger = 0X8d98,
-    RgbaInteger = 0X8d99,
-    BgrInteger = 0X8d9a,
-    BgraInteger = 0X8d9b,
+    /// <summary>
+    /// one-dimensional texture
+    /// </summary>
+    GL_TEXTURE_1D = 0x0DE0,
+
+    /// <summary>
+    /// two-dimensional texture
+    /// </summary>
+    GL_TEXTURE_2D = 0x0DE1,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_1D = 0x8063,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_1D_EXT = 0x8063,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_2D = 0x8064,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_2D_EXT = 0x8064,
+
+    /// <summary>
+    /// three-dimensional texture
+    /// </summary>
+    GL_TEXTURE_3D = 0x806F,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_3D_EXT = 0x806F,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_3D_OES = 0x806F,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_3D = 0x8070,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_3D_EXT = 0x8070,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_DETAIL_TEXTURE_2D_SGIS = 0x8095,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_4D_SGIS = 0x8134,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_4D_SGIS = 0x8135,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MIN_LOD = 0x813A,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MIN_LOD_SGIS = 0x813A,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MAX_LOD = 0x813B,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MAX_LOD_SGIS = 0x813B,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_BASE_LEVEL = 0x813C,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_BASE_LEVEL_SGIS = 0x813C,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MAX_LEVEL = 0x813D,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_MAX_LEVEL_SGIS = 0x813D,
+
+    /// <summary>
+    /// rectangle texture
+    /// </summary>
+    GL_TEXTURE_RECTANGLE = 0x84F5,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_RECTANGLE_ARB = 0x84F5,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_RECTANGLE_NV = 0x84F5,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_RECTANGLE = 0x84F7,
+
+    /// <summary>
+    /// cube-mapped texture
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP = 0x8513,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_BINDING_CUBE_MAP = 0x8514,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_POSITIVE_X = 0x8515,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_X = 0x8516,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_POSITIVE_Y = 0x8517,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_Y = 0x8518,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_POSITIVE_Z = 0x8519,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x851A,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_CUBE_MAP = 0x851B,
+
+    /// <summary>
+    /// one-dimensional array texture
+    /// </summary>
+    GL_TEXTURE_1D_ARRAY = 0x8C18,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_1D_ARRAY = 0x8C19,
+
+    /// <summary>
+    /// two-dimensional array texture
+    /// </summary>
+    GL_TEXTURE_2D_ARRAY = 0x8C1A,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_2D_ARRAY = 0x8C1B,
+
+    /// <summary>
+    /// buffer texture
+    /// </summary>
+    GL_TEXTURE_BUFFER = 0x8C2A,
+
+    /// <summary>
+    /// cube-mapped array texture
+    /// </summary>
+    GL_TEXTURE_CUBE_MAP_ARRAY = 0x9009,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    GL_PROXY_TEXTURE_CUBE_MAP_ARRAY = 0x900B,
+
+    /// <summary>
+    /// two-dimensional multisampled texture, use with glTexImage2DMultisample 
+    /// </summary>
+    GL_TEXTURE_2D_MULTISAMPLE = 0x9100,
+
+    /// <summary>
+    /// Use with glTexImage2DMultisample 
+    /// </summary>
+    GL_PROXY_TEXTURE_2D_MULTISAMPLE = 0x9101,
+
+    /// <summary>
+    /// Use with glTexImage3DMultisample
+    /// </summary>
+    GL_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9102,
+
+    /// <summary>
+    /// Use with glTexImage3DMultisample
+    /// </summary>
+    GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9103
 }
 
-public enum PixelType : int
+public enum TEXTURE_UNIT
 {
-    Byte = 0X1400,
-    UnsignedByte = 0X1401,
-    Short = 0X1402,
-    UnsignedShort = 0X1403,
-    Int = 0X1404,
-    UnsignedInt = 0X1405,
-    Float = 0X1406,
-    HalfFloat = 0X140b,
-    Bitmap = 0X1a00,
-    UnsignedByte332 = 0X8032,
-    UnsignedByte332Ext = 0X8032,
-    UnsignedShort4444 = 0X8033,
-    UnsignedShort4444Ext = 0X8033,
-    UnsignedShort5551 = 0X8034,
-    UnsignedShort5551Ext = 0X8034,
-    UnsignedInt8888 = 0X8035,
-    UnsignedInt8888Ext = 0X8035,
-    UnsignedInt1010102 = 0X8036,
-    UnsignedInt1010102Ext = 0X8036,
-    UnsignedByte233Reversed = 0X8362,
-    UnsignedShort565 = 0X8363,
-    UnsignedShort565Reversed = 0X8364,
-    UnsignedShort4444Reversed = 0X8365,
-    UnsignedShort1555Reversed = 0X8366,
-    UnsignedInt8888Reversed = 0X8367,
-    UnsignedInt2101010Reversed = 0X8368,
-    UnsignedInt248 = 0X84fa,
-    UnsignedInt10F11F11FRev = 0X8c3b,
-    UnsignedInt5999Rev = 0X8c3e,
-    Float32UnsignedInt248Rev = 0X8Dad,
+    GL_TEXTURE0 = 33984,
+
+    GL_TEXTURE1 = 33985,
+
+    GL_TEXTURE2 = 33986,
+
+    GL_TEXTURE3 = 33987,
+
+    GL_TEXTURE4 = 33988,
+
+    GL_TEXTURE5 = 33989,
+
+    GL_TEXTURE6 = 33990,
+
+    GL_TEXTURE7 = 33991,
+
+    GL_TEXTURE8 = 33992,
+
+    GL_TEXTURE9 = 33993,
+
+    GL_TEXTURE10 = 33994,
+
+    GL_TEXTURE11 = 33995,
+
+    GL_TEXTURE12 = 33996,
+
+    GL_TEXTURE13 = 33997,
+
+    GL_TEXTURE14 = 33998,
+
+    GL_TEXTURE15 = 33999,
+
+    GL_TEXTURE16 = 34000,
+
+    GL_TEXTURE17 = 34001,
+
+    GL_TEXTURE18 = 34002,
+
+    GL_TEXTURE19 = 34003,
+
+    GL_TEXTURE20 = 34004,
+
+    GL_TEXTURE21 = 34005,
+
+    GL_TEXTURE22 = 34006,
+
+    GL_TEXTURE23 = 34007,
+
+    GL_TEXTURE24 = 34008,
+
+    GL_TEXTURE25 = 34009,
+
+    GL_TEXTURE26 = 34010,
+
+    GL_TEXTURE27 = 34011,
+
+    GL_TEXTURE28 = 34012,
+
+    GL_TEXTURE29 = 34013,
+
+    GL_TEXTURE30 = 34014,
+
+    GL_TEXTURE31 = 34015,
+}
+
+public enum USAGE_PATTERN : int
+{
+    /// <summary>
+    /// Original was GL_STREAM_DRAW = 0x88E0
+    /// </summary>
+    StreamDraw = 0x88E0,
+    /// <summary>
+    /// Original was GL_STREAM_READ = 0x88E1
+    /// </summary>
+    StreamRead = 0x88E1,
+    /// <summary>
+    /// Original was GL_STREAM_COPY = 0x88E2
+    /// </summary>
+    StreamCopy = 0x88E2,
+    /// <summary>
+    /// Original was GL_STATIC_DRAW = 0x88E4
+    /// </summary>
+    StaticDraw = 0x88E4,
+    /// <summary>
+    /// Original was GL_STATIC_READ = 0x88E5
+    /// </summary>
+    StaticRead = 0x88E5,
+    /// <summary>
+    /// Original was GL_STATIC_COPY = 0x88E6
+    /// </summary>
+    StaticCopy = 0x88E6,
+    /// <summary>
+    /// Original was GL_DYNAMIC_DRAW = 0x88E8
+    /// </summary>
+    DynamicDraw = 0x88E8,
+    /// <summary>
+    /// Original was GL_DYNAMIC_READ = 0x88E9
+    /// </summary>
+    DynamicRead = 0x88E9,
+    /// <summary>
+    /// Original was GL_DYNAMIC_COPY = 0x88EA
+    /// </summary>
+    DynamicCopy = 0x88EA,
+}
+
+public enum VERTEX_DATA_TYPE : int
+{
+    GL_BYTE = 0x1400,
+
+    GL_UNSIGNED_BYTE = 0x1401,
+
+    GL_SHORT = 0x1402,
+
+    GL_UNSIGNED_SHORT = 0x1403,
+
+    GL_INT = 0x1404,
+
+    GL_UNSIGNED_INT = 0x1405,
+
+    GL_HALF_FLOAT = 0x140B,
+
+    GL_FLOAT = 0x1406,
+
+    GL_FIXED = 0x140C,
+
+    GL_INT_2_10_10_10_REV = 0x8D9F,
+
+    GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368,
+
+    GL_UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B,
+
+    GL_DOUBLE = 0x140A,
 }
 #endregion
 
@@ -5343,7 +5295,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies a pixel type for the returned data.</param>
     /// <param name="pixels">Returns the texture image. Should be a pointer to an array of the type specified by type.</param>
     [DllImport(Library)]
-    public static extern void glGetTexImage(TEXTURE_TARGET target, int level, PixelFormat format, PixelType type, IntPtr pixels);
+    public static extern void glGetTexImage(TEXTURE_TARGET target, int level, PIXEL_FORMAT format, PixelType type, IntPtr pixels);
 
     /// <summary>
     /// returns n texture names in textures. There is no guarantee that the names form a contiguous set of integers; however, it is guaranteed that none of the returned names was in use immediately before the call to glGenTextures. The generated textures have no dimensionality; they assume the dimensionality of the texture target to which they are first bound(see glBindTexture). Texture names returned by a call to glGenTextures are not returned by subsequent calls, unless they are first deleted with glDeleteTextures.
@@ -5432,7 +5384,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Returns the pixel data.</param>
     [DllImport(Library)]
-    public static extern void glReadPixels(int x, int y, int width, int height, PixelFormat format, PixelType type, [Out] IntPtr data);
+    public static extern void glReadPixels(int x, int y, int width, int height, PIXEL_FORMAT format, PixelType type, [Out] IntPtr data);
 
     /// <summary>
     /// glPixelStorei sets pixel storage modes that affect the operation of subsequent glReadPixels as well as the unpacking of texture patterns (see glTexImage2D and glTexSubImage2D).
@@ -5516,7 +5468,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexImage1D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int border, PixelFormat format, PixelType type, IntPtr data);
+    public static extern void glTexImage1D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int border, PIXEL_FORMAT format, PixelType type, IntPtr data);
 
     /// <summary>
     /// specify a two-dimensional texture image
@@ -5531,7 +5483,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexImage2D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr data);
+    public static extern void glTexImage2D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, int border, PIXEL_FORMAT format, PixelType type, IntPtr data);
 
     /// <summary>
     /// specify a two-dimensional texture subimage
@@ -5546,7 +5498,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexSubImage2D(TEXTURE_TARGET target, int level, int xOffset, int yOffset, int width, int height, PixelFormat format, PixelType type, IntPtr pixels);
+    public static extern void glTexSubImage2D(TEXTURE_TARGET target, int level, int xOffset, int yOffset, int width, int height, PIXEL_FORMAT format, PixelType type, IntPtr pixels);
 
     /// <summary>
     /// set texture parameters
