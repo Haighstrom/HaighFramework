@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace HaighFramework.Window;
+namespace HaighFramework.Window.Windows;
 
 internal class WinAPIOpenGLRenderContext
 {

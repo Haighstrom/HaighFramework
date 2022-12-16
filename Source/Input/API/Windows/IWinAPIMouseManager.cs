@@ -1,7 +1,7 @@
 ﻿using HaighFramework.Input;
 using HaighFramework.WinAPI;
 
-namespace HaighFramework.Source.Input.Mouse;
+namespace HaighFramework.Input.Windows;
 
 internal interface IWinAPIMouseManager
 {

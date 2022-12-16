@@ -1,9 +1,8 @@
 ﻿using System.Runtime.InteropServices;
-using HaighFramework.Source.Input.Mouse;
 using HaighFramework.WinAPI;
 using Microsoft.Win32;
 
-namespace HaighFramework.Input;
+namespace HaighFramework.Input.Windows;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "This is part of the Windows API which will only be invoked if on Windows platform.")]
 internal sealed class WinAPIMouseManager : IWinAPIMouseManager
@@ -77,12 +76,11 @@ internal sealed class WinAPIMouseManager : IWinAPIMouseManager
 
         if (!User32.RegisterRawInputDevices(rids, rids.Length, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
         {
-            Console.WriteLine("[Warning] Raw input registration failed with error: {0}. Device: {1}",
-                Marshal.GetLastWin32Error(), rid.ToString());
+            Log.Warning($"[Warning] Raw input registration failed with error: {Marshal.GetLastWin32Error()}. Device: {rid}");
         }
         else
         {
-            Console.WriteLine("Registered Mouse {0}: {1}", _mice.Count, device);
+            Log.Information("Registered Mouse {_mice.Count}: {device}");
         }
     }
     

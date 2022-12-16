@@ -10,7 +10,7 @@ public class InputManager : IInputManager
     public InputManager()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            _api = new WinAPIInputManager();
+            _api = new Windows.WinAPIInputManager();
         else
             throw new PlatformNotSupportedException();
     }

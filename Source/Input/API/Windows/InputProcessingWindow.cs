@@ -1,7 +1,7 @@
 ﻿using HaighFramework.WinAPI;
 using System.Runtime.InteropServices;
 
-namespace HaighFramework.Input;
+namespace HaighFramework.Input.Windows;
 
 internal class InputProcessingWindow
 {

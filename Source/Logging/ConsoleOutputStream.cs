@@ -21,6 +21,6 @@ public class ConsoleOutputStream : ILoggerOutputStream
     /// <param name="message">The message.</param>
     public void Write(string message)
     {
-        Console.WriteLine(message);
+        System.Console.WriteLine(message);
     }
 }

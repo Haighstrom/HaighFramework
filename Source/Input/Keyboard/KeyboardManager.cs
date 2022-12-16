@@ -81,12 +81,11 @@ public class KeyboardManager : IKeyboardManager
 
         if (!User32.RegisterRawInputDevices(rids, rids.Length, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
         {
-            Console.WriteLine("[Warning] Raw input registration failed with error: {0}. Device: {1}",
-                Marshal.GetLastWin32Error(), rids[0].ToString());
+            Log.Warning($"Raw input registration failed with error: {Marshal.GetLastWin32Error()}. Device: {rids[0]}");
         }
         else
         {
-            Console.WriteLine("Registered Keyboard {0}: {1}", _keyboards.Count, device);
+            Log.Information($"Registered Keyboard {_keyboards.Count}: {device}");
         }
     }
     

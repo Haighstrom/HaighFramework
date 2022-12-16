@@ -10,7 +10,7 @@ public class HaighWindow : IWindow
     public HaighWindow(WindowSettings settings)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            _implementation = new WinAPIWindow(settings);
+            _implementation = new Windows.WinAPIWindow(settings);
         else
             throw new NotImplementedException();
     }
@@ -59,147 +59,75 @@ public class HaighWindow : IWindow
 
     public IntPtr DeviceContext => _implementation.DeviceContext;
 
-    public void Centre()
-    {
-        _implementation.Centre();
-    }
+    public void Centre() => _implementation.Centre();
 
-    public void Close()
-    {
-        _implementation.Close();
-    }
+    public void Close() => _implementation.Close();
 
-    public void Dispose()
-    {
-        _implementation.Dispose();
-    }
+    public void Dispose() => _implementation.Dispose();
 
-    public void Exit()
-    {
-        _implementation.Exit();
-    }
+    public void Exit() => _implementation.Exit();
 
-    public void MakeFocussed()
-    {
-        _implementation.MakeFocussed();
-    }
+    public void MakeFocussed() => _implementation.MakeFocussed();
 
-    public void ProcessEvents()
-    {
-        _implementation.ProcessEvents();
-    }
+    public void ProcessEvents() => _implementation.ProcessEvents();
 
-    public Point ScreenToClient(Point screenPosition)
-    {
-        return _implementation.ScreenToClient(screenPosition);
-    }
+    public Point ScreenToClient(Point screenPosition) => _implementation.ScreenToClient(screenPosition);
 
-    public void SwapBuffers()
-    {
-        _implementation.SwapBuffers();
-    }
+    public void SwapBuffers() => _implementation.SwapBuffers();
 
     public event EventHandler? CloseAttempted
     {
-        add
-        {
-            _implementation.CloseAttempted += value;
-        }
+        add => _implementation.CloseAttempted += value;
 
-        remove
-        {
-            _implementation.CloseAttempted -= value;
-        }
+        remove => _implementation.CloseAttempted -= value;
     }
 
     public event EventHandler? Closed
     {
-        add
-        {
-            _implementation.Closed += value;
-        }
+        add => _implementation.Closed += value;
 
-        remove
-        {
-            _implementation.Closed -= value;
-        }
+        remove => _implementation.Closed -= value;
     }
 
     public event EventHandler? Moved
     {
-        add
-        {
-            _implementation.Moved += value;
-        }
+        add => _implementation.Moved += value;
 
-        remove
-        {
-            _implementation.Moved -= value;
-        }
+        remove => _implementation.Moved -= value;
     }
 
     public event EventHandler? Resized
     {
-        add
-        {
-            _implementation.Resized += value;
-        }
+        add => _implementation.Resized += value;
 
-        remove
-        {
-            _implementation.Resized -= value;
-        }
+        remove => _implementation.Resized -= value;
     }
 
     public event EventHandler<FocusChangedEventArgs>? FocusChanged
     {
-        add
-        {
-            _implementation.FocusChanged += value;
-        }
+        add => _implementation.FocusChanged += value;
 
-        remove
-        {
-            _implementation.FocusChanged -= value;
-        }
+        remove => _implementation.FocusChanged -= value;
     }
 
     public event EventHandler<KeyboardCharEventArgs>? CharEntered
     {
-        add
-        {
-            _implementation.CharEntered += value;
-        }
+        add => _implementation.CharEntered += value;
 
-        remove
-        {
-            _implementation.CharEntered -= value;
-        }
+        remove => _implementation.CharEntered -= value;
     }
 
     public event EventHandler<KeyboardKeyEventArgs>? KeyDown
     {
-        add
-        {
-            _implementation.KeyDown += value;
-        }
+        add => _implementation.KeyDown += value;
 
-        remove
-        {
-            _implementation.KeyDown -= value;
-        }
+        remove => _implementation.KeyDown -= value;
     }
 
     public event EventHandler<KeyboardKeyEventArgs>? KeyUp
     {
-        add
-        {
-            _implementation.KeyUp += value;
-        }
+        add => _implementation.KeyUp += value;
 
-        remove
-        {
-            _implementation.KeyUp -= value;
-        }
+        remove => _implementation.KeyUp -= value;
     }
 }

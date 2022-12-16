@@ -3,7 +3,7 @@ using HaighFramework.Input;
 using HaighFramework.OpenGL;
 using HaighFramework.WinAPI;
 
-namespace HaighFramework.Window;
+namespace HaighFramework.Window.Windows;
 
 public class WinAPIWindow : IWindow
 {
