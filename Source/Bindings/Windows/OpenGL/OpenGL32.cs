@@ -268,6 +268,35 @@ public enum SHADE_TECHNIQUE : int
     GL_SMOOTH = 0x1D01,
 }
 
+public enum VERTEX_DATA_TYPE : int
+{
+    GL_BYTE = 0x1400,
+
+    GL_UNSIGNED_BYTE = 0x1401,
+
+    GL_SHORT = 0x1402,
+
+    GL_UNSIGNED_SHORT = 0x1403,
+
+    GL_INT = 0x1404,
+
+    GL_UNSIGNED_INT = 0x1405,
+
+    GL_HALF_FLOAT = 0x140B,
+
+    GL_FLOAT = 0x1406,
+
+    GL_FIXED = 0x140C,
+
+    GL_INT_2_10_10_10_REV = 0x8D9F,
+
+    GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368,
+
+    GL_UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B,
+
+    GL_DOUBLE = 0x140A,
+}
+
 //----Enums Name and Values Updated, and Fully Commented Above This Line ----
 
 public enum DEBUG_SEVERITY : int
@@ -705,6 +734,19 @@ public enum GETSHADER_FLAG : int
     GL_SHADER_SOURCE_LENGTH = 0x8B88,
 }
 
+public enum MSAA_SAMPLES
+{
+    Disabled = 0,
+
+    X2 = 2,
+
+    X4 = 4,
+
+    X8 = 8,
+
+    X16 = 16
+}
+
 //----Enums Name and Values Updated, still requires more complete commenting above this line ----
 
 public enum SHADER_TYPE : int
@@ -715,130 +757,6 @@ public enum SHADER_TYPE : int
     TessEvaluationShader = 0x8E87,
     TessControlShader = 0x8E88,
     ComputeShader = 0x91B9,
-}
-
-public enum TexInternalFormat : int
-{
-    /// <summary>
-    /// GL_RGBA8
-    /// </summary>
-    RGBA8 = 0x8058,
-    /// <summary>
-    /// GL_RGBA16
-    /// </summary>
-    RGBA16 = 0x805B,
-    /// <summary>
-    /// GL_R8
-    /// </summary>
-    R8 = 0x8229,
-    /// <summary>
-    /// GL_R16
-    /// </summary>
-    R16 = 0x822A,
-    /// <summary>
-    /// GL_RG8
-    /// </summary>
-    RG8 = 0x822B,
-    /// <summary>
-    /// GL_RG16
-    /// </summary>
-    RG16 = 0x822C,
-    /// <summary>
-    /// GL_R16F
-    /// </summary>
-    R16F = 0x822D,
-    /// <summary>
-    /// GL_R32F
-    /// </summary>
-    R32F = 0x822E,
-    /// <summary>
-    /// GL_RG16F
-    /// </summary>
-    RG16F = 0x822F,
-    /// <summary>
-    /// GL_RG32F
-    /// </summary>
-    RG32F = 0x8230,
-    /// <summary>
-    /// GL_R8I
-    /// </summary>
-    R8I = 0x8231,
-    /// <summary>
-    /// GL_R8UI
-    /// </summary>
-    R8UI = 0x8232,
-    /// <summary>
-    /// GL_R16I
-    /// </summary>
-    R16I = 0x8233,
-    /// <summary>
-    /// GL_R16UI
-    /// </summary>
-    R16UI = 0x8234,
-    /// <summary>
-    /// GL_R32I
-    /// </summary>
-    R32I = 0x8235,
-    /// <summary>
-    /// GL_R32UI
-    /// </summary>
-    R32UI = 0x8236,
-    /// <summary>
-    /// GL_RG8I
-    /// </summary>
-    RG8I = 0x8237,
-    /// <summary>
-    /// GL_RG8UI
-    /// </summary>
-    RG8UI = 0x8238,
-    /// <summary>
-    /// GL_RG16I
-    /// </summary>
-    RG16I = 0x8239,
-    /// <summary>
-    /// GL_RG16UI
-    /// </summary>
-    RG16UI = 0x823A,
-    /// <summary>
-    /// GL_RG32I
-    /// </summary>
-    RG32I = 0x823B,
-    /// <summary>
-    /// GL_RG32UI
-    /// </summary>
-    RG32UI = 0x823C,
-    /// <summary>
-    /// GL_RGBA32F
-    /// </summary>
-    RGBA32F = 0x8814,
-    /// <summary>
-    /// GL_RGBA16F
-    /// </summary>
-    RGBA16F = 0x881A,
-    /// <summary>
-    /// GL_RGBA32UI
-    /// </summary>
-    RGBA32UI = 0x8D70,
-    /// <summary>
-    /// GL_RGBA16UI
-    /// </summary>
-    RGBA16UI = 0x8D76,
-    /// <summary>
-    /// GL_RGBA8UI
-    /// </summary>
-    RGBA8UI = 0x8D7C,
-    /// <summary>
-    /// GL_RGBA32I
-    /// </summary>
-    RGBA32I = 0x8D82,
-    /// <summary>
-    /// GL_RGBA16I
-    /// </summary>
-    RGBA16I = 0x8D88,
-    /// <summary>
-    /// GL_RGBA8I
-    /// </summary>
-    RGBA8I = 0x8D8E
 }
 
 public enum TextureParameter : int
@@ -1414,22 +1332,6 @@ public enum STATEARRAY : uint
     /// GL_T4F_C4F_N3F_V4F
     /// </summary>
     T4F_C4F_N3F_V4F = 0x2A2D,
-}
-
-public enum VertexAttribPointerType : int
-{
-    Byte = 5120,
-    UnsignedByte = 5121,
-    Short = 5122,
-    UnsignedShort = 5123,
-    Int = 5124,
-    UnsignedInt = 5125,
-    Float = 5126,
-    Double = 5130,
-    HalfFloat = 5131,
-    Fixed = 5132,
-    UnsignedInt2101010Rev = 33640,
-    Int2101010Rev = 36255,
 }
 
 public enum VSyncMode : int
@@ -5019,14 +4921,6 @@ public enum MatrixMode : int
     Texture = 0x1702,
 }
 
-public enum MSAA_Samples
-{
-    Disabled = 0,
-    x2 = 2,
-    x4 = 4,
-    x8 = 8,
-    x16 = 16
-}
 
 public enum OpenGLErrorCode : uint
 {
@@ -5042,7 +4936,7 @@ public enum OpenGLErrorCode : uint
     TABLE_TOO_LARGE = 32817
 }
 
-public enum TEXTURE_FORMAT : int
+public enum TEXTURE_INTERNALFORMAT : int
 {
     GL_DEPTH_COMPONENT = 0x1902,
 
@@ -5817,7 +5711,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexImage1D(TEXTURE_TARGET target, int level, TEXTURE_FORMAT internalFormat, int width, int border, PixelFormat format, PixelType type, IntPtr data);
+    public static extern void glTexImage1D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int border, PixelFormat format, PixelType type, IntPtr data);
 
     /// <summary>
     /// specify a two-dimensional texture image
@@ -5832,7 +5726,7 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexImage2D(TEXTURE_TARGET target, int level, TEXTURE_FORMAT internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr data);
+    public static extern void glTexImage2D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr data);
 
     /// <summary>
     /// specify a two-dimensional texture subimage

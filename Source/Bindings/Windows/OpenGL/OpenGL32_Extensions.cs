@@ -40,9 +40,9 @@ public static partial class OpenGL32
     private unsafe delegate void Delegate_glGetShaderInfoLog(int shader, int bufSize, out int length, StringBuilder infoLog);
     private delegate int Delegate_glGetUniformLocation(int program, string name);
     private delegate void Delegate_glLinkProgram(int program);
-    private delegate void Delegate_glShaderSource(int shader, int count, string[] strings, int[] lengths);
-    private delegate void Delegate_glTexImage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations);
-    private delegate void Delegate_glTexStorage2D(TEXTURE_TARGET target, int levels, int internalFormat, int width, int height);
+    private delegate void Delegate_glShaderSource(int shader, int count, string[] strings, int[]? lengths);
+    private delegate void Delegate_glTexImage2DMultisample(TEXTURE_TARGET target, MSAA_SAMPLES samples, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, bool fixedsamplelocations);
+    private delegate void Delegate_glTexStorage2D(TEXTURE_TARGET target, int levels, TEXTURE_INTERNALFORMAT internalFormat, int width, int height);
     private delegate void Delegate_glUniform1f(int location, float v0);
     private delegate void Delegate_glUniform1i(int location, int v0);
     private delegate void Delegate_glUniform2f(int location, float v0, float v1);
@@ -157,8 +157,11 @@ public static partial class OpenGL32
         GL.GetProcAddress("glUniform1f", out _glUniform1f);
         GL.GetProcAddress("glUniform1i", out _glUniform1i);
         GL.GetProcAddress("glUniform2f", out _glUniform2f);
+        GL.GetProcAddress("glUniform2i", out _glUniform2i);
         GL.GetProcAddress("glUniform3f", out _glUniform3f);
+        GL.GetProcAddress("glUniform3i", out _glUniform3i);
         GL.GetProcAddress("glUniform4f", out _glUniform4f);
+        GL.GetProcAddress("glUniform4i", out _glUniform4i);
         GL.GetProcAddress("glUniformMatrix3fv", out _glUniformMatrix3fv);
         GL.GetProcAddress("glUniformMatrix4fv", out _glUniformMatrix4fv);
         GL.GetProcAddress("glUseProgram", out _glUseProgram);
@@ -415,37 +418,31 @@ public static partial class OpenGL32
         _glLinkProgram(program);
     }
 
-    //----Naming finalised, comments still to be added above this line----
-
-    public static int glShaderSource(int shader, string source)
+    public static void glShaderSource(int shader, int count, string[] strings, int[]? lengths)
     {
         if (_glShaderSource is null)
             throw new EntryPointNotFoundException($"{nameof(_glShaderSource)} was called but the entrypoint was not loaded.");
 
-        string[] strings = new string[1] { source };
-
-        return _glShaderSource(shader, 1, strings, null);
+        _glShaderSource(shader, count, strings, lengths);
     }
     
-    public static void glTexImage2DMultisample(TextureTargetMultisample target, int samples, TEXTURE_FORMAT internalFormat, int width, int height, bool fixedSampleLocations)
+    public static void glTexImage2DMultisample(TEXTURE_TARGET target, MSAA_SAMPLES samples, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, bool fixedSampleLocations)
     {
         if (_glTexImage2DMultisample is null)
             throw new EntryPointNotFoundException($"{nameof(_glTexImage2DMultisample)} was called but the entrypoint was not loaded.");
 
-        _glTexImage2DMultisample((int)target, samples, (int)internalFormat, width, height, fixedSampleLocations);
+        _glTexImage2DMultisample(target, samples, internalFormat, width, height, fixedSampleLocations);
     }
-
-    public static void glTexImage2DMultisample(TextureTargetMultisample target, MSAA_Samples samples, TEXTURE_FORMAT internalFormat, int width, int height, bool fixedSampleLocations) => glTexImage2DMultisample(target, (int)samples, internalFormat, width, height, fixedSampleLocations);
     
-    public static void glTexStorage2D(TEXTURE_TARGET target, int levels, TexInternalFormat internalFormat, int width, int height)
+    public static void glTexStorage2D(TEXTURE_TARGET target, int levels, TEXTURE_INTERNALFORMAT internalFormat, int width, int height)
     {
         if (_glTexStorage2D is null)
             throw new EntryPointNotFoundException($"{nameof(_glTexStorage2D)} was called but the entrypoint was not loaded.");
 
-        _glTexStorage2D(target, levels, (int)internalFormat, width, height);
+        _glTexStorage2D(target, levels, internalFormat, width, height);
     }
     
-    public static void glUniform(int location, float value)
+    public static void glUniform1f(int location, float value)
     {
         if (_glUniform1f is null)
             throw new EntryPointNotFoundException($"{nameof(_glUniform1f)} was called but the entrypoint was not loaded.");
@@ -453,7 +450,7 @@ public static partial class OpenGL32
         _glUniform1f(location, value);
     }
 
-    public static void glUniform(int location, int value)
+    public static void glUniform1i(int location, int value)
     {
         if (_glUniform1i is null)
             throw new EntryPointNotFoundException($"{nameof(_glUniform1i)} was called but the entrypoint was not loaded.");
@@ -468,7 +465,31 @@ public static partial class OpenGL32
 
         _glUniform2f(location, v0, v1);
     }
-    
+
+    public static void glUniform2i(int location, int v0, int v1)
+    {
+        if (_glUniform2i is null)
+            throw new EntryPointNotFoundException($"{nameof(_glUniform2i)} was called but the entrypoint was not loaded.");
+
+        _glUniform2i(location, v0, v1);
+    }
+
+    public static void glUniform3f(int location, float v0, float v1, float v2)
+    {
+        if (_glUniform3f is null)
+            throw new EntryPointNotFoundException($"{nameof(_glUniform3f)} was called but the entrypoint was not loaded.");
+
+        _glUniform3f(location, v0, v1, v2);
+    }
+
+    public static void glUniform3i(int location, int v0, int v1, int v2)
+    {
+        if (_glUniform3i is null)
+            throw new EntryPointNotFoundException($"{nameof(_glUniform3i)} was called but the entrypoint was not loaded.");
+
+        _glUniform3i(location, v0, v1, v2);
+    }
+
     public static void glUniform4f(int location, float v0, float v1, float v2, float v3)
     {
         if (_glUniform4f is null)
@@ -476,39 +497,31 @@ public static partial class OpenGL32
 
         _glUniform4f(location, v0, v1, v2, v3);
     }
+    
+    public static void glUniform4i(int location, int v0, int v1, int v2, int v3)
+    {
+        if (_glUniform4i is null)
+            throw new EntryPointNotFoundException($"{nameof(_glUniform4i)} was called but the entrypoint was not loaded.");
 
-    public static void glUniformMatrix3(int location, int count, bool transpose, float[] values)
+        _glUniform4i(location, v0, v1, v2, v3);
+    }
+
+    public unsafe static void glUniformMatrix3fv(int location, int count, bool transpose, float* value)
     {
         if (_glUniformMatrix3fv is null)
             throw new EntryPointNotFoundException($"{nameof(_glUniformMatrix3fv)} was called but the entrypoint was not loaded.");
 
-        unsafe
-        {
-            fixed (float* valuePointer = values)
-            {
-                _glUniformMatrix3fv(location, count, transpose, valuePointer);
-            }
-        }
+        _glUniformMatrix3fv(location, count, transpose, value);
     }
 
-    public static void glUniformMatrix3(int location, float[] values) => glUniformMatrix3(location, 1, false, values);
-
-    public static void glUniformMatrix4(int location, int count, bool transpose, float[] values)
+    public unsafe static void glUniformMatrix4fv(int location, int count, bool transpose, float* value)
     {
         if (_glUniformMatrix4fv is null)
             throw new EntryPointNotFoundException($"{nameof(_glUniformMatrix4fv)} was called but the entrypoint was not loaded.");
 
-        unsafe
-        {
-            fixed (float* valuePointer = values)
-            {
-                _glUniformMatrix4fv(location, count, transpose, valuePointer);
-            }
-        }
+        _glUniformMatrix4fv(location, count, transpose, value);
     }
 
-    public static void glUniformMatrix4(int location, float[] values) => glUniformMatrix4(location, 1, false, values);
-    
     public static void glUseProgram(int program)
     {
         if (_glUseProgram is null)
@@ -525,7 +538,7 @@ public static partial class OpenGL32
         _glValidateProgram(program);
     }
     
-    public static void glVertexAttribPointer(int index, int size, VertexAttribPointerType type, bool normalised, int stride, int offset)
+    public static void glVertexAttribPointer(int index, int size, VERTEX_DATA_TYPE type, bool normalised, int stride, int offset)
     {
         if (_glVertexAttribPointer is null)
             throw new EntryPointNotFoundException($"{nameof(_glVertexAttribPointer)} was called but the entrypoint was not loaded.");
