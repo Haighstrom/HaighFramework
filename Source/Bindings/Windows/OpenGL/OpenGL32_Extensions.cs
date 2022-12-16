@@ -40,8 +40,8 @@ public static partial class OpenGL32
     private unsafe delegate void Delegate_glGetShaderInfoLog(int shader, int bufSize, out int length, StringBuilder infoLog);
     private delegate int Delegate_glGetUniformLocation(int program, string name);
     private delegate void Delegate_glLinkProgram(int program);
-    private delegate int Delegate_glShaderSource(int shader, int count, string[] strings, int[] lengths);
-    private delegate int Delegate_glTexImage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations);
+    private delegate void Delegate_glShaderSource(int shader, int count, string[] strings, int[] lengths);
+    private delegate void Delegate_glTexImage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations);
     private delegate void Delegate_glTexStorage2D(TEXTURE_TARGET target, int levels, int internalFormat, int width, int height);
     private delegate void Delegate_glUniform1f(int location, float v0);
     private delegate void Delegate_glUniform1i(int location, int v0);
@@ -427,7 +427,7 @@ public static partial class OpenGL32
         return _glShaderSource(shader, 1, strings, null);
     }
     
-    public static void glTexImage2DMultisample(TextureTargetMultisample target, int samples, PixelInternalFormat internalFormat, int width, int height, bool fixedSampleLocations)
+    public static void glTexImage2DMultisample(TextureTargetMultisample target, int samples, TEXTURE_FORMAT internalFormat, int width, int height, bool fixedSampleLocations)
     {
         if (_glTexImage2DMultisample is null)
             throw new EntryPointNotFoundException($"{nameof(_glTexImage2DMultisample)} was called but the entrypoint was not loaded.");
@@ -435,7 +435,7 @@ public static partial class OpenGL32
         _glTexImage2DMultisample((int)target, samples, (int)internalFormat, width, height, fixedSampleLocations);
     }
 
-    public static void glTexImage2DMultisample(TextureTargetMultisample target, MSAA_Samples samples, PixelInternalFormat internalFormat, int width, int height, bool fixedSampleLocations) => glTexImage2DMultisample(target, (int)samples, internalFormat, width, height, fixedSampleLocations);
+    public static void glTexImage2DMultisample(TextureTargetMultisample target, MSAA_Samples samples, TEXTURE_FORMAT internalFormat, int width, int height, bool fixedSampleLocations) => glTexImage2DMultisample(target, (int)samples, internalFormat, width, height, fixedSampleLocations);
     
     public static void glTexStorage2D(TEXTURE_TARGET target, int levels, TexInternalFormat internalFormat, int width, int height)
     {
