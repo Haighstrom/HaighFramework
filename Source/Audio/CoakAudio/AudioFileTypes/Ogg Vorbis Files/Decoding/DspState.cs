@@ -366,7 +366,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	}
 
 	// pcm==NULL indicates we just want the pending samples, no more
-	internal int synthesis_pcmout(float[][][] _pcm, int[] index)
+	internal int synthesis_pcmout(float[][][]? _pcm, int[]? index)
 	{
 		if(pcm_returned<centerW)
 		{

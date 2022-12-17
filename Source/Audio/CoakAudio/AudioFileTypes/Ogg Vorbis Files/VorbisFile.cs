@@ -30,12 +30,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
         internal long offset;
 
         internal int links;
-        internal long[] offsets;
-        internal long[] dataoffsets;
-        internal int[] serialnos;
-        internal long[] pcmlengths;
-        internal Info[] vi;
-        internal Comment[] vc;
+        internal long[]? offsets;
+        internal long[]? dataoffsets;
+        internal int[]? serialnos;
+        internal long[]? pcmlengths;
+        internal Info[]? vi;
+        internal Comment[]? vc;
 
 	// Decoding working state local storage
 
@@ -46,7 +46,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 	internal VorbisFile(string file) : this()
 	{
-		FileStream inst=null;
+		FileStream? inst=null;
 		
 		try{ inst=new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);}
 		catch(Exception e)
@@ -63,12 +63,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
         internal int get_data(VorbisFileInstance instance)
 	{
 		int index=instance.oy.buffer(CHUNKSIZE);
-            byte[] buffer = instance.oy.data;
+            byte[]? buffer = instance.oy.data;
 		//  int bytes=callbacks.read_func(buffer, index, 1, CHUNKSIZE, datasource);
 		int bytes=0;
 		try
 		{
-			bytes=datasource.Read(buffer, index, CHUNKSIZE);
+			bytes=datasource.Read(buffer!, index, CHUNKSIZE);
 		}
 		catch(Exception e)
 		{
@@ -203,7 +203,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 	// uses the local ogg_stream storage in vf; this is important for
 	// non-streaming input sources
-        internal int fetch_headers(Info vi, Comment vc, int[] serialno, Page og_ptr, VorbisFileInstance instance)
+        internal int fetch_headers(Info vi, Comment vc, int[]? serialno, Page? og_ptr, VorbisFileInstance instance)
 	{
 		//System.err.println("fetch_headers");
 		Page og=new();
@@ -446,7 +446,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		return(0);
 	}
 
-        internal static int fseek(Stream fis,
+        internal static int fseek(Stream? fis,
 		//int64_t off,
 		long off,
 		int whence)
@@ -487,7 +487,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		return 0;
 	}
 
-        static long ftell(Stream fis)
+        static long ftell(Stream? fis)
         {
             if (fis.CanSeek == true)
             {
@@ -503,12 +503,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	// return: -1) error
 	//          0) OK
 
-	int open(Stream iis, byte[] initial, int ibytes)
+	int open(Stream iis, byte[]? initial, int ibytes)
 	{
 		return open_callbacks(iis, initial, ibytes);
 	}
 
-	int open_callbacks(Stream iis, byte[] initial, int ibytes)
+	int open_callbacks(Stream iis, byte[]? initial, int ibytes)
 	{
 		int ret;
 		datasource=iis;
@@ -684,8 +684,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		return(offset);
 	}       
 
-        internal Info[] getInfo() { return vi; }
-        internal Comment[] getComment() { return vc; }
+        internal Info[]? getInfo() { return vi; }
+        internal Comment[]? getComment() { return vc; }
         internal int host_is_big_endian()
         {
             return 0;

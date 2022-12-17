@@ -4,7 +4,7 @@ namespace HaighFramework.Audio.OpenAL;
 
 internal abstract class AudioFile 
 {
-    internal Stream datasource;
+    internal Stream? datasource;
 
     internal AudioFile()
         : base()

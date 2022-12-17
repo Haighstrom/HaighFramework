@@ -5,7 +5,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
     /// </summary>
     internal class SyncState
 {
-	internal byte[] data;
+	internal byte[]? data;
 	int storage;
 	int fill;
 	int returned;
@@ -30,7 +30,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			fill-=returned;
 			if(fill>0)
 			{
-				Array.Copy(data, returned, data, 0, fill);
+				Array.Copy(data!, returned, data!, 0, fill);
 			}
 			returned=0;
 		}
@@ -87,7 +87,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
     
 			/* verify capture pattern */
 			//!!!!!!!!!!!
-			if(data[page]!='O' ||
+			if(data![page]!='O' ||
 				data[page+1]!='g' ||
 				data[page+2]!='g' ||
 				data[page+3]!='S')
@@ -126,7 +126,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			// Grab the checksum bytes, set the header field to zero
     
-			Array.Copy(data, page+22, chksum, 0, 4);
+			Array.Copy(data!, page+22, chksum, 0, 4);
 			data[page+22]=0;
 			data[page+23]=0;
 			data[page+24]=0;
