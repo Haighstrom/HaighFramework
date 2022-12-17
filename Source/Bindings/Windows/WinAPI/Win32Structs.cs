@@ -2,6 +2,8 @@
 
 namespace HaighFramework.WinAPI;
 
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+
 /// <summary>
 /// Contains information about a system appbar message.
 /// </summary>
@@ -327,41 +329,6 @@ internal struct JOYCAPS
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
     public string szOEMVxD;
-
-    public static readonly int SizeInBytes;
-
-    static JOYCAPS()
-    {
-        SizeInBytes = Marshal.SizeOf(default(JOYCAPS));
-    }
-
-    public int GetMin(int i)
-    {
-        return i switch
-        {
-            0 => wXmin,
-            1 => wYmin,
-            2 => wZmin,
-            3 => wRmin,
-            4 => wUmin,
-            5 => wVmin,
-            _ => 0,
-        };
-    }
-
-    public int GetMax(int i)
-    {
-        return i switch
-        {
-            0 => wXmax,
-            1 => wYmax,
-            2 => wZmax,
-            3 => wRmax,
-            4 => wUmax,
-            5 => wVmax,
-            _ => 0,
-        };
-    }
 }
 
 /// <summary>
@@ -1084,3 +1051,5 @@ internal struct TRACKMOUSEEVENT
     /// </summary>
     public int dwHoverTime;
 }
+
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
