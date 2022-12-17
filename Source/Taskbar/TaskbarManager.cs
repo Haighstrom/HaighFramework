@@ -1,53 +1,30 @@
-﻿using HaighFramework.WinAPI;
+﻿using System.Runtime.InteropServices;
 
 namespace HaighFramework.Taskbar;
 
-public enum TaskbarPosition
+public class TaskbarManager : ITaskbarManager
 {
-    Unknown = -1,
-    Left,
-    Top,
-    Right,
-    Bottom,
-}
+    private readonly ITaskbarManager _api;
 
-public static class TaskbarManager
-{
-    private const string CLASS_NAME = "Shell_TrayWnd";
-
-    static TaskbarManager()
+    public TaskbarManager()
     {
-        IntPtr taskbarHandle = User32.FindWindow(CLASS_NAME, null);
-
-        APPBARDATA data = new()
-        {
-            cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA)),
-            hWnd = taskbarHandle
-        };
-        IntPtr result = Shell32.SHAppBarMessage(APPBARMESSAGE.ABM_GETTASKBARPOS, ref data);
-        if (result == IntPtr.Zero)
-            throw new InvalidOperationException();
-
-        Position = (TaskbarPosition)data.uEdge;
-        R = new Rect(data.rc.left, data.rc.top, data.rc.right - data.rc.left, data.rc.bottom - data.rc.top);
-
-        data.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA));
-        result = Shell32.SHAppBarMessage(APPBARMESSAGE.ABM_GETSTATE, ref data);
-        int state = result.ToInt32();
-        AlwaysOnTop = (state & (int)ABS.AlwaysOnTop) == (int)ABS.AlwaysOnTop;
-        AutoHide = (state & (int)ABS.Autohide) == (int)ABS.Autohide;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            _api = new API.Windows.Win32TaskbarManager();
+        else
+            throw new NotImplementedException();
     }
 
-    public static Rect R { get; set; }
-    public static TaskbarPosition Position { get; set; }
-    public static bool AlwaysOnTop { get; set; }
-    public static bool AutoHide { get; set; }
+    public bool AlwaysOnTop => _api.AlwaysOnTop;
 
-    public static Point P => R.P;
-    public static int X => (int)R.X;
-    public static int Y => (int)R.Y;
-    public static int W => (int)R.W;
-    public static int H => (int)R.H;
-    public static Point Centre => R.Centre;
-    public static Point Size => R.Size;
+    public bool AutoHide => _api.AutoHide;
+
+    public int Height => _api.Height;
+
+    public int Width => _api.Width;
+
+    public TaskbarPosition Position => _api.Position;
+
+    public int X => _api.X;
+
+    public int Y => _api.Y;
 }

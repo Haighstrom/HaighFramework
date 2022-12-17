@@ -16,7 +16,9 @@ internal class WinAPIInputManager : IInputManager
     private readonly AutoResetEvent _inputWindowThreadReadyCheck = new(false);
     private readonly Thread _inputWindowThread;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public WinAPIInputManager()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         _inputWindowThread = new Thread(ProcessInputData)
         {
