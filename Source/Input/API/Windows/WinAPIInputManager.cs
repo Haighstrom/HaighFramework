@@ -9,16 +9,14 @@ internal class WinAPIInputManager : IInputManager
 {
     private static readonly Guid GUID_DEVINTERFACE_HID = new("4D1E55B2-F16F-11CF-88CB-001111000030"); //https://learn.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-hid
 
-    private InputProcessingWindow _inputWindow;
-    private KeyboardAPI _keyboardManager;
-    private MouseAPI _mouseManager;
+    private InputProcessingWindow? _inputWindow;
+    private KeyboardAPI? _keyboardManager;
+    private MouseAPI? _mouseManager;
     private RawInput _rawInput = new();
     private readonly AutoResetEvent _inputWindowThreadReadyCheck = new(false);
     private readonly Thread _inputWindowThread;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public WinAPIInputManager()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         _inputWindowThread = new Thread(ProcessInputData)
         {
@@ -61,7 +59,7 @@ internal class WinAPIInputManager : IInputManager
 
         unsafe
         {
-            User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr(&dbHdr), DEVICENOTIFYFLAGS.DEVICE_NOTIFY_WINDOW_HANDLE);
+            User32.RegisterDeviceNotification(_inputWindow!.Handle, new IntPtr(&dbHdr), DEVICENOTIFYFLAGS.DEVICE_NOTIFY_WINDOW_HANDLE);
         }
     }
 
@@ -69,8 +67,8 @@ internal class WinAPIInputManager : IInputManager
     {
         Log.Information("Input Devices Change detected. Identifying new devices:");
 
-        _mouseManager.UpdateDevices();
-        _keyboardManager.UpdateDevices();
+        _mouseManager!.UpdateDevices();
+        _keyboardManager!.UpdateDevices();
     }
 
     private void OnInput(IntPtr lParam)
@@ -83,10 +81,10 @@ internal class WinAPIInputManager : IInputManager
             switch (_rawInput.Header.Type)
             {
                 case RawInputDeviceType.KEYBOARD:
-                    _keyboardManager.ProcessInputData(_rawInput);
+                    _keyboardManager!.ProcessInputData(_rawInput);
                     break;
                 case RawInputDeviceType.MOUSE:
-                    _mouseManager.ProcessInputData(_rawInput);
+                    _mouseManager!.ProcessInputData(_rawInput);
                     break;
                 default:
                     Log.Warning("Input received from a device that was not processed.");
@@ -111,9 +109,9 @@ internal class WinAPIInputManager : IInputManager
         return IntPtr.Zero;
     }
 
-    public MouseState MouseState => _mouseManager.GetAggregateState();
+    public MouseState MouseState => _mouseManager!.GetAggregateState();
 
-    public KeyboardState KeyboardState => _keyboardManager.GetAggregateState;
+    public KeyboardState KeyboardState => _keyboardManager!.GetAggregateState;
 
 
     private bool _disposed;
