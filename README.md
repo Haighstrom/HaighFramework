@@ -15,7 +15,7 @@ WindowSettings WindowSettings = new()
 
 IWindow window = new HaighWindow(windowSettings);
 
-while (Window.Instance.IsOpen)
+while (window.IsOpen)
 {
     window.ProcessEvents();
     
