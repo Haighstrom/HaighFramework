@@ -7,11 +7,11 @@ public class KeyboardCharEventArgs : EventArgs
 {
     internal KeyboardCharEventArgs(char key)
     {
-        Key = key;
+        Char = key;
     }
 
     /// <summary>
     /// The character received.
     /// </summary>
-    public char Key { get; internal set; }
+    public char Char { get; internal set; }
 }
