@@ -13,7 +13,7 @@ WindowSettings WindowSettings = new()
     Title = "Haighframework Tester",
 };
 
-IWindow window = new HaighWindow(windowSettings);
+using IWindow window = new HaighWindow(windowSettings);
 
 while (window.IsOpen)
 {
