@@ -1,7 +1,8 @@
-﻿using HaighFramework.Input;
+﻿namespace HaighFramework.Window;
 
-namespace HaighFramework.Window;
-
+/// <summary>
+/// A type to represent the application window.
+/// </summary>
 public interface IWindow : IDisposable
 {
     /// <summary>
@@ -28,8 +29,6 @@ public interface IWindow : IDisposable
     /// Gets or sets whether the mouse is currently visible. Defaults to true.
     /// </summary>
     bool CursorVisible { get; set; }
-
-    IntPtr DeviceContext { get; }
 
     /// <summary>
     /// The DPI scaling currently applicable to the window
@@ -173,12 +172,12 @@ public interface IWindow : IDisposable
     /// <summary>
     /// Called whenever a keyboard key is pressed
     /// </summary>
-    public event EventHandler<KeyboardKeyEventArgs>? KeyDown;
+    event EventHandler<KeyboardKeyEventArgs>? KeyDown;
 
     /// <summary>
     /// Called whenever a keyboard key is released
     /// </summary>
-    public event EventHandler<KeyboardKeyEventArgs>? KeyUp;
+    event EventHandler<KeyboardKeyEventArgs>? KeyUp;
 
     /// <summary>
     /// Triggers whenever the window moves

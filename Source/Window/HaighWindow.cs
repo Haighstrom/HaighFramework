@@ -57,8 +57,6 @@ public class HaighWindow : IWindow
     
     public bool CursorLockedToWindow { get => _api.CursorLockedToWindow; set => _api.CursorLockedToWindow = value; }
 
-    public IntPtr DeviceContext => _api.DeviceContext;
-
     public void Centre() => _api.Centre();
 
     public void Close() => _api.Close();

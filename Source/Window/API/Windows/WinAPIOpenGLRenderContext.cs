@@ -9,12 +9,12 @@ internal class WinAPIOpenGLRenderContext
     private static IntPtr CreateRenderContext(IntPtr deviceContext, (int major, int minor) openGLversion)
     {
         int[] attribs = {
-            (int)ARBCREATECONTEXT_ATTRIBUTE_NAMES.WGL_CONTEXT_MAJOR_VERSION_ARB, openGLversion.major,
-            (int)ARBCREATECONTEXT_ATTRIBUTE_NAMES.WGL_CONTEXT_MINOR_VERSION_ARB, openGLversion.minor,
-            (int)ARBCREATECONTEXT_ATTRIBUTE_NAMES.WGL_CONTEXT_PROFILE_MASK_ARB, (int)ARBCREATECONTEXT_ATTRIBUTE_VALUES.WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
+            (int)ARBCREATECONTEXT_ATTRIBUTE.WGL_CONTEXT_MAJOR_VERSION_ARB, openGLversion.major,
+            (int)ARBCREATECONTEXT_ATTRIBUTE.WGL_CONTEXT_MINOR_VERSION_ARB, openGLversion.minor,
+            (int)ARBCREATECONTEXT_ATTRIBUTE.WGL_CONTEXT_PROFILE_MASK_ARB, (int)ARBCREATECONTEXT_ATTRIBUTE_VALUES.WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
             0 };
 
-        var rC = WGLExtensions.wglCreateContextAttribsARB(deviceContext, sharedContext: IntPtr.Zero, attribs);
+        var rC = OpenGL32.wglCreateContextAttribsARB(deviceContext, sharedContext: IntPtr.Zero, attribs);
 
         if (rC == IntPtr.Zero)
             throw new Win32Exception($"Something went wrong with wglCreateContextAttribsARB: {Marshal.GetLastWin32Error()}");
@@ -35,7 +35,7 @@ internal class WinAPIOpenGLRenderContext
             throw new Exception("tempContext failed to create.");
         if (!OpenGL32.wglMakeCurrent(deviceContext, tempContext))
             throw new Exception("wglMakeCurrent Failed");
-        WGLExtensions.LoadWGLExtensions();
+        OpenGL32.LoadWGLExtensions();
 
         Handle = CreateRenderContext(deviceContext, (glVersionMajor, glVersionMinor));
 
