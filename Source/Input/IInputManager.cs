@@ -14,6 +14,6 @@ public interface IInputManager : IDisposable
     /// <summary>
     /// The state of the keyboard.
     /// </summary>
-    /// <remarks>If multiple mice are attached their states will be aggregated.</remarks>
+    /// <remarks>If multiple keyboards are attached their states will be aggregated.</remarks>
     KeyboardState KeyboardState { get; }
 }
