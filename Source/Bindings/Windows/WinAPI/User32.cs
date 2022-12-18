@@ -6,6 +6,75 @@ namespace HaighFramework.WinAPI;
 
 #region Enums
 /// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/winmsg/window-class-styles
+/// The class styles define additional elements of the window class. Two or more styles can be combined by using the bitwise OR (|) operator. To assign a style to a window class, assign the style to the style member of the WNDCLASSEX structure.
+/// </summary>
+[Flags]
+internal enum CLASSSTLYE : uint
+{
+    /// <summary>
+    /// Aligns the window's client area on a byte boundary (in the x direction). This style affects the width of the window and its horizontal placement on the display.
+    /// </summary>
+    CS_BYTEALIGNCLIENT = 0x1000,
+
+    /// <summary>
+    /// Aligns the window on a byte boundary (in the x direction). This style affects the width of the window and its horizontal placement on the display.
+    /// </summary>
+    CS_BYTEALIGNWINDOW = 0x2000,
+
+    /// <summary>
+    /// Allocates one device context to be shared by all windows in the class. Because window classes are process specific, it is possible for multiple threads of an application to create a window of the same class. It is also possible for the threads to attempt to use the device context simultaneously. When this happens, the system allows only one thread to successfully finish its drawing operation.
+    /// </summary>
+    CS_CLASSDC = 0x0040,
+
+    /// <summary>
+    /// Sends a double-click message to the window procedure when the user double-clicks the mouse while the cursor is within a window belonging to the class.
+    /// </summary>
+    CS_DBLCLKS = 0x0008,
+
+    /// <summary>
+    /// Enables the drop shadow effect on a window. The effect is turned on and off through SPI_SETDROPSHADOW. Typically, this is enabled for small, short-lived windows such as menus to emphasize their Z-order relationship to other windows. Windows created from a class with this style must be top-level windows; they may not be child windows.
+    /// </summary>
+    CS_DROPSHADOW = 0x00020000,
+
+    /// <summary>
+    /// Indicates that the window class is an application global class. For more information, see the "Application Global Classes" section of About Window Classes.
+    /// </summary>
+    CS_GLOBALCLASS = 0x4000,
+
+    /// <summary>
+    /// Redraws the entire window if a movement or size adjustment changes the width of the client area.
+    /// </summary>
+    CS_HREDRAW = 0x0002,
+
+    /// <summary>
+    /// Disables Close on the window menu.
+    /// </summary>
+    CS_NOCLOSE = 0x0200,
+
+    /// <summary>
+    /// Allocates a unique device context for each window in the class.
+    /// </summary>
+    CS_OWNDC = 0x0020,
+
+    /// <summary>
+    /// Sets the clipping rectangle of the child window to that of the parent window so that the child can draw on the parent. A window with the CS_PARENTDC style bit receives a regular device context from the system's cache of device contexts. It does not give the child the parent's device context or device context settings. Specifying CS_PARENTDC enhances an application's performance.
+    /// </summary>
+    CS_PARENTDC = 0x0080,
+
+    /// <summary>
+    /// Saves, as a bitmap, the portion of the screen image obscured by a window of this class. When the window is removed, the system uses the saved bitmap to restore the screen image, including other windows that were obscured. Therefore, the system does not send WM_PAINT messages to windows that were obscured if the memory used by the bitmap has not been discarded and if other screen actions have not invalidated the stored image.
+    /// This style is useful for small windows (for example, menus or dialog boxes) that are displayed briefly and then removed before other screen activity takes place. This style increases the time required to display the window, because the system must first allocate memory to store the bitmap.
+    /// </summary>
+    CS_SAVEBITS = 0x0800,
+
+    /// <summary>
+    /// Redraws the entire window if a movement or size adjustment changes the height of the client area.
+    /// </summary>
+    CS_VREDRAW = 0x0001,
+}
+
+/// <summary>
 /// For use in <see cref="User32.LoadImage"/>
 /// </summary>
 internal enum IMAGE_FLAG : uint
@@ -216,6 +285,717 @@ public enum PredefinedIcons : ushort
     /// </summary>
     IDI_WINLOGO = 32517,
 }
+
+/// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinputdevice
+/// Defines information for the raw input devices. For use with User32 RegisterRawInputDevices.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct RAWINPUTDEVICE
+{
+    /// <summary>
+    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinputdevice
+    /// Mode flag that specifies how to interpret the information provided by usUsagePage and usUsage. For use with User32 RegisterRawInputDevices.
+    /// </summary>
+    /// <remarks>If RIDEV_NOLEGACY is set for a mouse or a keyboard, the system does not generate any legacy message for that device for the application. For example, if the mouse TLC is set with RIDEV_NOLEGACY, WM_LBUTTONDOWN and related legacy mouse messages are not generated. Likewise, if the keyboard TLC is set with RIDEV_NOLEGACY, WM_KEYDOWN and related legacy keyboard messages are not generated.
+    /// If RIDEV_REMOVE is set and the hwndTarget member is not set to NULL, then RegisterRawInputDevices function will fail.</remarks>
+    [Flags]
+    public enum FLAGS : int
+    {
+        DEFAULT = 0,
+        /// <summary>
+        /// If set, this removes the top level collection from the inclusion list. This tells the operating system to stop reading from a device which matches the top level collection.
+        /// </summary>
+        RIDEV_REMOVE = 0x00000001,
+        /// <summary>
+        /// If set, this specifies the top level collections to exclude when reading a complete usage page. This flag only affects a TLC whose usage page is already specified with RIDEV_PAGEONLY.
+        /// </summary>
+        RIDEV_EXCLUDE = 0x00000010,
+        /// <summary>
+        /// If set, this specifies all devices whose top level collection is from the specified usUsagePage. Note that usUsage must be zero. To exclude a particular top level collection, use RIDEV_EXCLUDE.
+        /// </summary>
+        RIDEV_PAGEONLY = 0x00000020,
+        /// <summary>
+        /// If set, this prevents any devices specified by usUsagePage or usUsage from generating legacy messages. This is only for the mouse and keyboard. See Remarks.
+        /// </summary>
+        RIDEV_NOLEGACY = 0x00000030,
+        /// <summary>
+        /// If set, this enables the caller to receive the input even when the caller is not in the foreground. Note that hwndTarget must be specified.
+        /// </summary>
+        RIDEV_INPUTSINK = 0x00000100,
+        /// <summary>
+        /// If set, the mouse button click does not activate the other window. RIDEV_CAPTUREMOUSE can be specified only if RIDEV_NOLEGACY is specified for a mouse device.
+        /// </summary>
+        RIDEV_CAPTUREMOUSE = 0x00000200, // effective when mouse nolegacy is specified, otherwise it would be an error
+        /// <summary>
+        /// If set, the application-defined keyboard device hotkeys are not handled. However, the system hotkeys; for example, ALT+TAB and CTRL+ALT+DEL, are still handled. By default, all keyboard hotkeys are handled. RIDEV_NOHOTKEYS can be specified even if RIDEV_NOLEGACY is not specified and hwndTarget is NULL.
+        /// </summary>
+        RIDEV_NOHOTKEYS = 0x00000200, // effective for keyboard.
+        /// <summary>
+        /// If set, the application command keys are handled. RIDEV_APPKEYS can be specified only if RIDEV_NOLEGACY is specified for a keyboard device.
+        /// </summary>
+        RIDEV_APPKEYS = 0x00000400, // effective for keyboard.
+        /// <summary>
+        /// If set, this enables the caller to receive input in the background only if the foreground application does not process it. In other words, if the foreground application is not registered for raw input, then the background application that is registered will receive the input. This flag is not supported until Windows Vista
+        /// </summary>
+        RIDEV_EXINPUTSINK = 0x00001000,
+        /// <summary>
+        /// If set, this enables the caller to receive WM_INPUT_DEVICE_CHANGE notifications for device arrival and device removal. This flag is not supported until Windows Vista
+        /// </summary>
+        RIDEV_DEVNOTIFY = 0x00002000,
+    }
+
+    /// <summary>
+    /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-id
+    /// https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/shared/hidusage.h
+    /// </summary>
+    public enum USAGE : ushort
+    {
+        //
+        // Generic Desktop Page (0x01)
+        //
+        HID_USAGE_GENERIC_POINTER = 0x01,
+        HID_USAGE_GENERIC_MOUSE = 0x02,
+        HID_USAGE_GENERIC_JOYSTICK = 0x04,
+        HID_USAGE_GENERIC_GAMEPAD = 0x05,
+        HID_USAGE_GENERIC_KEYBOARD = 0x06,
+        HID_USAGE_GENERIC_KEYPAD = 0x07,
+        HID_USAGE_GENERIC_PORTABLE_DEVICE_CONTROL = 0x0D,
+        HID_USAGE_GENERIC_SYSTEM_CTL = 0x80,
+
+        HID_USAGE_GENERIC_X = 0x30,
+        HID_USAGE_GENERIC_Y = 0x31,
+        HID_USAGE_GENERIC_Z = 0x32,
+        HID_USAGE_GENERIC_RX = 0x33,
+        HID_USAGE_GENERIC_RY = 0x34,
+        HID_USAGE_GENERIC_RZ = 0x35,
+        HID_USAGE_GENERIC_SLIDER = 0x36,
+        HID_USAGE_GENERIC_DIAL = 0x37,
+        HID_USAGE_GENERIC_WHEEL = 0x38,
+        HID_USAGE_GENERIC_HATSWITCH = 0x39,
+        HID_USAGE_GENERIC_COUNTED_BUFFER = 0x3A,
+        HID_USAGE_GENERIC_BYTE_COUNT = 0x3B,
+        HID_USAGE_GENERIC_MOTION_WAKEUP = 0x3C,
+        HID_USAGE_GENERIC_VX = 0x40,
+        HID_USAGE_GENERIC_VY = 0x41,
+        HID_USAGE_GENERIC_VZ = 0x42,
+        HID_USAGE_GENERIC_VBRX = 0x43,
+        HID_USAGE_GENERIC_VBRY = 0x44,
+        HID_USAGE_GENERIC_VBRZ = 0x45,
+        HID_USAGE_GENERIC_VNO = 0x46,
+        HID_USAGE_GENERIC_RESOLUTION_MULTIPLIER = 0x48,
+        HID_USAGE_GENERIC_SYSCTL_POWER = 0x81,
+        HID_USAGE_GENERIC_SYSCTL_SLEEP = 0x82,
+        HID_USAGE_GENERIC_SYSCTL_WAKE = 0x83,
+        HID_USAGE_GENERIC_SYSCTL_CONTEXT_MENU = 0x84,
+        HID_USAGE_GENERIC_SYSCTL_MAIN_MENU = 0x85,
+        HID_USAGE_GENERIC_SYSCTL_APP_MENU = 0x86,
+        HID_USAGE_GENERIC_SYSCTL_HELP_MENU = 0x87,
+        HID_USAGE_GENERIC_SYSCTL_MENU_EXIT = 0x88,
+        HID_USAGE_GENERIC_SYSCTL_MENU_SELECT = 0x89,
+        HID_USAGE_GENERIC_SYSCTL_MENU_RIGHT = 0x8A,
+        HID_USAGE_GENERIC_SYSCTL_MENU_LEFT = 0x8B,
+        HID_USAGE_GENERIC_SYSCTL_MENU_UP = 0x8C,
+        HID_USAGE_GENERIC_SYSCTL_MENU_DOWN = 0x8D,
+        HID_USAGE_GENERIC_SYSTEM_DISPLAY_ROTATION_LOCK_BUTTON = 0xC9,
+        HID_USAGE_GENERIC_SYSTEM_DISPLAY_ROTATION_LOCK_SLIDER_SWITCH = 0xCA,
+        HID_USAGE_GENERIC_CONTROL_ENABLE = 0xCB,
+
+        //
+        // Simulation Controls Page (0x02)
+        //
+        HID_USAGE_SIMULATION_RUDDER = 0xBA,
+        HID_USAGE_SIMULATION_THROTTLE = 0xBB,
+
+
+        //
+        // Virtual Reality Controls Page (0x03)
+        //
+
+
+        //
+        // Sport Controls Page (0x04)
+        //
+
+
+        //
+        // Game Controls Page (0x05)
+        //
+
+
+        //
+        // Keyboard/Keypad Page (0x07)
+        //
+
+        // Error "keys"
+        HID_USAGE_KEYBOARD_NOEVENT = 0x00,
+        HID_USAGE_KEYBOARD_ROLLOVER = 0x01,
+        HID_USAGE_KEYBOARD_POSTFAIL = 0x02,
+        HID_USAGE_KEYBOARD_UNDEFINED = 0x03,
+
+        // Letters
+        HID_USAGE_KEYBOARD_aA = 0x04,
+        HID_USAGE_KEYBOARD_zZ = 0x1D,
+
+        // Numbers
+        HID_USAGE_KEYBOARD_ONE = 0x1E,
+        HID_USAGE_KEYBOARD_ZERO = 0x27,
+
+        // Modifier Keys
+        HID_USAGE_KEYBOARD_LCTRL = 0xE0,
+        HID_USAGE_KEYBOARD_LSHFT = 0xE1,
+        HID_USAGE_KEYBOARD_LALT = 0xE2,
+        HID_USAGE_KEYBOARD_LGUI = 0xE3,
+        HID_USAGE_KEYBOARD_RCTRL = 0xE4,
+        HID_USAGE_KEYBOARD_RSHFT = 0xE5,
+        HID_USAGE_KEYBOARD_RALT = 0xE6,
+        HID_USAGE_KEYBOARD_RGUI = 0xE7,
+        HID_USAGE_KEYBOARD_SCROLL_LOCK = 0x47,
+        HID_USAGE_KEYBOARD_NUM_LOCK = 0x53,
+        HID_USAGE_KEYBOARD_CAPS_LOCK = 0x39,
+
+        // Function keys
+        HID_USAGE_KEYBOARD_F1 = 0x3A,
+        HID_USAGE_KEYBOARD_F2 = 0x3B,
+        HID_USAGE_KEYBOARD_F3 = 0x3C,
+        HID_USAGE_KEYBOARD_F4 = 0x3D,
+        HID_USAGE_KEYBOARD_F5 = 0x3E,
+        HID_USAGE_KEYBOARD_F6 = 0x3F,
+        HID_USAGE_KEYBOARD_F7 = 0x40,
+        HID_USAGE_KEYBOARD_F8 = 0x41,
+        HID_USAGE_KEYBOARD_F9 = 0x42,
+        HID_USAGE_KEYBOARD_F10 = 0x43,
+        HID_USAGE_KEYBOARD_F11 = 0x44,
+        HID_USAGE_KEYBOARD_F12 = 0x45,
+        HID_USAGE_KEYBOARD_F13 = 0x68,
+        HID_USAGE_KEYBOARD_F14 = 0x69,
+        HID_USAGE_KEYBOARD_F15 = 0x6A,
+        HID_USAGE_KEYBOARD_F16 = 0x6B,
+        HID_USAGE_KEYBOARD_F17 = 0x6C,
+        HID_USAGE_KEYBOARD_F18 = 0x6D,
+        HID_USAGE_KEYBOARD_F19 = 0x6E,
+        HID_USAGE_KEYBOARD_F20 = 0x6F,
+        HID_USAGE_KEYBOARD_F21 = 0x70,
+        HID_USAGE_KEYBOARD_F22 = 0x71,
+        HID_USAGE_KEYBOARD_F23 = 0x72,
+        HID_USAGE_KEYBOARD_F24 = 0x73,
+
+        HID_USAGE_KEYBOARD_RETURN = 0x28,
+        HID_USAGE_KEYBOARD_ESCAPE = 0x29,
+        HID_USAGE_KEYBOARD_DELETE = 0x2A,
+
+        HID_USAGE_KEYBOARD_PRINT_SCREEN = 0x46,
+        HID_USAGE_KEYBOARD_DELETE_FORWARD = 0x4C,
+
+
+        //
+        // LED Page (0x08)
+        //
+        HID_USAGE_LED_NUM_LOCK = 0x01,
+        HID_USAGE_LED_CAPS_LOCK = 0x02,
+        HID_USAGE_LED_SCROLL_LOCK = 0x03,
+        HID_USAGE_LED_COMPOSE = 0x04,
+        HID_USAGE_LED_KANA = 0x05,
+        HID_USAGE_LED_POWER = 0x06,
+        HID_USAGE_LED_SHIFT = 0x07,
+        HID_USAGE_LED_DO_NOT_DISTURB = 0x08,
+        HID_USAGE_LED_MUTE = 0x09,
+        HID_USAGE_LED_TONE_ENABLE = 0x0A,
+        HID_USAGE_LED_HIGH_CUT_FILTER = 0x0B,
+        HID_USAGE_LED_LOW_CUT_FILTER = 0x0C,
+        HID_USAGE_LED_EQUALIZER_ENABLE = 0x0D,
+        HID_USAGE_LED_SOUND_FIELD_ON = 0x0E,
+        HID_USAGE_LED_SURROUND_FIELD_ON = 0x0F,
+        HID_USAGE_LED_REPEAT = 0x10,
+        HID_USAGE_LED_STEREO = 0x11,
+        HID_USAGE_LED_SAMPLING_RATE_DETECT = 0x12,
+        HID_USAGE_LED_SPINNING = 0x13,
+        HID_USAGE_LED_CAV = 0x14,
+        HID_USAGE_LED_CLV = 0x15,
+        HID_USAGE_LED_RECORDING_FORMAT_DET = 0x16,
+        HID_USAGE_LED_OFF_HOOK = 0x17,
+        HID_USAGE_LED_RING = 0x18,
+        HID_USAGE_LED_MESSAGE_WAITING = 0x19,
+        HID_USAGE_LED_DATA_MODE = 0x1A,
+        HID_USAGE_LED_BATTERY_OPERATION = 0x1B,
+        HID_USAGE_LED_BATTERY_OK = 0x1C,
+        HID_USAGE_LED_BATTERY_LOW = 0x1D,
+        HID_USAGE_LED_SPEAKER = 0x1E,
+        HID_USAGE_LED_HEAD_SET = 0x1F,
+        HID_USAGE_LED_HOLD = 0x20,
+        HID_USAGE_LED_MICROPHONE = 0x21,
+        HID_USAGE_LED_COVERAGE = 0x22,
+        HID_USAGE_LED_NIGHT_MODE = 0x23,
+        HID_USAGE_LED_SEND_CALLS = 0x24,
+        HID_USAGE_LED_CALL_PICKUP = 0x25,
+        HID_USAGE_LED_CONFERENCE = 0x26,
+        HID_USAGE_LED_STAND_BY = 0x27,
+        HID_USAGE_LED_CAMERA_ON = 0x28,
+        HID_USAGE_LED_CAMERA_OFF = 0x29,
+        HID_USAGE_LED_ON_LINE = 0x2A,
+        HID_USAGE_LED_OFF_LINE = 0x2B,
+        HID_USAGE_LED_BUSY = 0x2C,
+        HID_USAGE_LED_READY = 0x2D,
+        HID_USAGE_LED_PAPER_OUT = 0x2E,
+        HID_USAGE_LED_PAPER_JAM = 0x2F,
+        HID_USAGE_LED_REMOTE = 0x30,
+        HID_USAGE_LED_FORWARD = 0x31,
+        HID_USAGE_LED_REVERSE = 0x32,
+        HID_USAGE_LED_STOP = 0x33,
+        HID_USAGE_LED_REWIND = 0x34,
+        HID_USAGE_LED_FAST_FORWARD = 0x35,
+        HID_USAGE_LED_PLAY = 0x36,
+        HID_USAGE_LED_PAUSE = 0x37,
+        HID_USAGE_LED_RECORD = 0x38,
+        HID_USAGE_LED_ERROR = 0x39,
+        HID_USAGE_LED_SELECTED_INDICATOR = 0x3A,
+        HID_USAGE_LED_IN_USE_INDICATOR = 0x3B,
+        HID_USAGE_LED_MULTI_MODE_INDICATOR = 0x3C,
+        HID_USAGE_LED_INDICATOR_ON = 0x3D,
+        HID_USAGE_LED_INDICATOR_FLASH = 0x3E,
+        HID_USAGE_LED_INDICATOR_SLOW_BLINK = 0x3F,
+        HID_USAGE_LED_INDICATOR_FAST_BLINK = 0x40,
+        HID_USAGE_LED_INDICATOR_OFF = 0x41,
+        HID_USAGE_LED_FLASH_ON_TIME = 0x42,
+        HID_USAGE_LED_SLOW_BLINK_ON_TIME = 0x43,
+        HID_USAGE_LED_SLOW_BLINK_OFF_TIME = 0x44,
+        HID_USAGE_LED_FAST_BLINK_ON_TIME = 0x45,
+        HID_USAGE_LED_FAST_BLINK_OFF_TIME = 0x46,
+        HID_USAGE_LED_INDICATOR_COLOR = 0x47,
+        HID_USAGE_LED_RED = 0x48,
+        HID_USAGE_LED_GREEN = 0x49,
+        HID_USAGE_LED_AMBER = 0x4A,
+        HID_USAGE_LED_GENERIC_INDICATOR = 0x4B,
+
+        //
+        //  Button Page (0x09)
+        //
+        //  There is no need to label these usages.
+        //
+
+
+        //
+        //  Ordinal Page (0x0A)
+        //
+        //  There is no need to label these usages.
+        //
+
+
+        //
+        //  Telephony Device Page (0x0B)
+        //
+        HID_USAGE_TELEPHONY_PHONE = 0x01,
+        HID_USAGE_TELEPHONY_ANSWERING_MACHINE = 0x02,
+        HID_USAGE_TELEPHONY_MESSAGE_CONTROLS = 0x03,
+        HID_USAGE_TELEPHONY_HANDSET = 0x04,
+        HID_USAGE_TELEPHONY_HEADSET = 0x05,
+        HID_USAGE_TELEPHONY_KEYPAD = 0x06,
+        HID_USAGE_TELEPHONY_PROGRAMMABLE_BUTTON = 0x07,
+        HID_USAGE_TELEPHONY_REDIAL = 0x24,
+        HID_USAGE_TELEPHONY_TRANSFER = 0x25,
+        HID_USAGE_TELEPHONY_DROP = 0x26,
+        HID_USAGE_TELEPHONY_LINE = 0x2A,
+        HID_USAGE_TELEPHONY_RING_ENABLE = 0x2D,
+        HID_USAGE_TELEPHONY_SEND = 0x31,
+        HID_USAGE_TELEPHONY_KEYPAD_0 = 0xB0,
+        HID_USAGE_TELEPHONY_KEYPAD_D = 0xBF,
+        HID_USAGE_TELEPHONY_HOST_AVAILABLE = 0xF1,
+
+
+        //
+        // Consumer Controls Page (0x0C)
+        //
+        HID_USAGE_CONSUMERCTRL = 0x01,
+
+        // channel
+        HID_USAGE_CONSUMER_CHANNEL_INCREMENT = 0x9C,
+        HID_USAGE_CONSUMER_CHANNEL_DECREMENT = 0x9D,
+
+        // transport control
+        HID_USAGE_CONSUMER_PLAY = 0xB0,
+        HID_USAGE_CONSUMER_PAUSE = 0xB1,
+        HID_USAGE_CONSUMER_RECORD = 0xB2,
+        HID_USAGE_CONSUMER_FAST_FORWARD = 0xB3,
+        HID_USAGE_CONSUMER_REWIND = 0xB4,
+        HID_USAGE_CONSUMER_SCAN_NEXT_TRACK = 0xB5,
+        HID_USAGE_CONSUMER_SCAN_PREV_TRACK = 0xB6,
+        HID_USAGE_CONSUMER_STOP = 0xB7,
+        HID_USAGE_CONSUMER_PLAY_PAUSE = 0xCD,
+
+        // audio
+        HID_USAGE_CONSUMER_VOLUME = 0xE0,
+        HID_USAGE_CONSUMER_BALANCE = 0xE1,
+        HID_USAGE_CONSUMER_MUTE = 0xE2,
+        HID_USAGE_CONSUMER_BASS = 0xE3,
+        HID_USAGE_CONSUMER_TREBLE = 0xE4,
+        HID_USAGE_CONSUMER_BASS_BOOST = 0xE5,
+        HID_USAGE_CONSUMER_SURROUND_MODE = 0xE6,
+        HID_USAGE_CONSUMER_LOUDNESS = 0xE7,
+        HID_USAGE_CONSUMER_MPX = 0xE8,
+        HID_USAGE_CONSUMER_VOLUME_INCREMENT = 0xE9,
+        HID_USAGE_CONSUMER_VOLUME_DECREMENT = 0xEA,
+
+        // supplementary audio
+        HID_USAGE_CONSUMER_BASS_INCREMENT = 0x152,
+        HID_USAGE_CONSUMER_BASS_DECREMENT = 0x153,
+        HID_USAGE_CONSUMER_TREBLE_INCREMENT = 0x154,
+        HID_USAGE_CONSUMER_TREBLE_DECREMENT = 0x155,
+
+        // Application Launch
+        HID_USAGE_CONSUMER_AL_CONFIGURATION = 0x183,
+        HID_USAGE_CONSUMER_AL_EMAIL = 0x18A,
+        HID_USAGE_CONSUMER_AL_CALCULATOR = 0x192,
+        HID_USAGE_CONSUMER_AL_BROWSER = 0x194,
+
+        // Application Control
+        HID_USAGE_CONSUMER_AC_SEARCH = 0x221,
+        HID_USAGE_CONSUMER_AC_GOTO = 0x222,
+        HID_USAGE_CONSUMER_AC_HOME = 0x223,
+        HID_USAGE_CONSUMER_AC_BACK = 0x224,
+        HID_USAGE_CONSUMER_AC_FORWARD = 0x225,
+        HID_USAGE_CONSUMER_AC_STOP = 0x226,
+        HID_USAGE_CONSUMER_AC_REFRESH = 0x227,
+        HID_USAGE_CONSUMER_AC_PREVIOUS = 0x228,
+        HID_USAGE_CONSUMER_AC_NEXT = 0x229,
+        HID_USAGE_CONSUMER_AC_BOOKMARKS = 0x22A,
+        HID_USAGE_CONSUMER_AC_PAN = 0x238,
+
+        // Keyboard Extended Attributes (defined on consumer page in HUTRR42)
+        HID_USAGE_CONSUMER_EXTENDED_KEYBOARD_ATTRIBUTES_COLLECTION = 0x2C0,
+        HID_USAGE_CONSUMER_KEYBOARD_FORM_FACTOR = 0x2C1,
+        HID_USAGE_CONSUMER_KEYBOARD_KEY_TYPE = 0x2C2,
+        HID_USAGE_CONSUMER_KEYBOARD_PHYSICAL_LAYOUT = 0x2C3,
+        HID_USAGE_CONSUMER_VENDOR_SPECIFIC_KEYBOARD_PHYSICAL_LAYOUT = 0x2C4,
+        HID_USAGE_CONSUMER_KEYBOARD_IETF_LANGUAGE_TAG_INDEX = 0x2C5,
+        HID_USAGE_CONSUMER_IMPLEMENTED_KEYBOARD_INPUT_ASSIST_CONTROLS = 0x2C6,
+
+        //
+        // Digitizer Page (0x0D)
+        //
+        HID_USAGE_DIGITIZER_PEN = 0x02,
+        HID_USAGE_DIGITIZER_IN_RANGE = 0x32,
+        HID_USAGE_DIGITIZER_TIP_SWITCH = 0x42,
+        HID_USAGE_DIGITIZER_BARREL_SWITCH = 0x44,
+
+
+        //
+        // Sensor Page (0x20)
+        //
+
+
+        //
+        // Camera Control Page (0x90)
+        //
+        HID_USAGE_CAMERA_AUTO_FOCUS = 0x20,
+        HID_USAGE_CAMERA_SHUTTER = 0x21,
+
+        //
+        // Microsoft Bluetooth Handsfree Page (0xFFF3)
+        //
+        HID_USAGE_MS_BTH_HF_DIALNUMBER = 0x21,
+        HID_USAGE_MS_BTH_HF_DIALMEMORY = 0x22,
+    }
+
+    /// <summary>
+    /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-page
+    /// https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/shared/hidusage.h
+    /// HID usages are organized into usage pages of related controls. A specific control usage is defined by its usage page, a usage ID, a name, and a description. A usage page value is a 16-bit unsigned value. For use with User32 RegisterRawInputDevices.
+    /// </summary>
+    internal enum USAGEPAGE : ushort
+    {
+        /// <summary>Unknown usage page.</summary>
+        HID_USAGE_PAGE_UNDEFINED = 0x00,
+        /// <summary>Generic desktop controls.</summary>
+        HID_USAGE_PAGE_GENERIC = 0x01,
+        /// <summary>Simulation controls.</summary>
+        HID_USAGE_PAGE_SIMULATION = 0x02,
+        /// <summary>Virtual reality controls.</summary>
+        HID_USAGE_PAGE_VR = 0x03,
+        /// <summary>Sports controls.</summary>
+        HID_USAGE_PAGE_SPORT = 0x04,
+        /// <summary>Games controls.</summary>
+        HID_USAGE_PAGE_GAME = 0x05,
+        /// <summary>Keyboard controls.</summary>
+        HID_USAGE_PAGE_KEYBOARD = 0x07,
+        /// <summary>LED controls.</summary>
+        HID_USAGE_PAGE_LED = 0x08,
+        /// <summary>Button.</summary>
+        HID_USAGE_PAGE_BUTTON = 0x09,
+        /// <summary>Ordinal.</summary>
+        HID_USAGE_PAGE_ORDINAL = 0x0A,
+        /// <summary>Telephony.</summary>
+        HID_USAGE_PAGE_TELEPHONY = 0x0B,
+        /// <summary>Consumer.</summary>
+        HID_USAGE_PAGE_CONSUMER = 0x0C,
+        /// <summary>Digitizer.</summary>
+        HID_USAGE_PAGE_DIGITIZER = 0x0D,
+        /// <summary>Physical interface device.</summary>
+        HID_USAGE_PAGE_PID = 0x0F,
+        /// <summary>Unicode.</summary>
+        HID_USAGE_PAGE_UNICODE = 0x10,
+        /// <summary>Alphanumeric display.</summary>
+        HID_USAGE_PAGE_ALPHANUMERIC = 0x14,
+        HID_USAGE_PAGE_SENSOR = 0x20,
+        /// <summary>Medical instruments.</summary>
+        HID_USAGE_PAGE_MEDICAL = 0x40,
+        /// <summary>Monitor page 0.</summary>
+        HID_USAGE_PAGE_MONITOR_PAGE_0 = 0x80,
+        /// <summary>Monitor page 1.</summary>
+        HID_USAGE_PAGE_MONITOR_PAGE_1 = 0x81,
+        /// <summary>Monitor page 2.</summary>
+        HID_USAGE_PAGE_MONITOR_PAGE_2 = 0x82,
+        /// <summary>Monitor page 3.</summary>
+        HID_USAGE_PAGE_MONITOR_PAGE_3 = 0x83,
+        /// <summary>Power page 0.</summary>
+        HID_USAGE_PAGE_POWER_PAGE_0 = 0x84,
+        /// <summary>Power page 1.</summary>
+        HID_USAGE_PAGE_POWER_PAGE_1 = 0x85,
+        /// <summary>Power page 2.</summary>
+        HID_USAGE_PAGE_POWER_PAGE_2 = 0x86,
+        /// <summary>Power page 3.</summary>
+        HID_USAGE_PAGE_POWER_PAGE_3 = 0x87,
+        /// <summary>Bar code scanner.</summary>
+        HID_USAGE_PAGE_BARCODE_SCANNER = 0x8C,
+        /// <summary>Scale page.</summary>
+        HID_USAGE_PAGE_WEIGHING_DEVICE = 0x8D,
+        /// <summary>Magnetic strip reading devices.</summary>
+        HID_USAGE_PAGE_MAGNETIC_STRIPE_READER = 0x8E,
+        HID_USAGE_PAGE_CAMERA_CONTROL = 0x90,
+        HID_USAGE_PAGE_MICROSOFT_BLUETOOTH_HANDSFREE = 0xFFF3,
+        HID_USAGE_PAGE_VENDOR_DEFINED_BEGIN = 0xFF00,
+        HID_USAGE_PAGE_VENDOR_DEFINED_END = 0xFFFF,
+    }
+
+    /// <summary>
+    /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/top-level-collections
+    /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-page
+    /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-architecture#hid-clients-supported-in-windows
+    /// Top level collection Usage page for the raw input device. See HID Clients Supported in Windows for details on possible values.
+    /// </summary>
+    internal USAGEPAGE usUsagePage;
+
+    /// <summary>
+    /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/top-level-collections
+    /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-id
+    /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-architecture#hid-clients-supported-in-windows
+    /// Top level collection Usage ID for the raw input device. See HID Clients Supported in Windows for details on possible values.
+    /// </summary>
+    internal USAGE usUsage;
+
+    /// <summary>
+    /// Mode flag that specifies how to interpret the information provided by usUsagePage and usUsage. It can be zero (the default) or one of the following values. By default, the operating system sends raw input from devices with the specified top level collection (TLC) to the registered application as long as it has the window focus.
+    /// RIDEV_REMOVE: If set, this removes the top level collection from the inclusion list.This tells the operating system to stop reading from a device which matches the top level collection.
+    /// RIDEV_EXCLUDE: If set, this specifies the top level collections to exclude when reading a complete usage page.This flag only affects a TLC whose usage page is already specified with RIDEV_PAGEONLY.
+    /// RIDEV_PAGEONLY: If set, this specifies all devices whose top level collection is from the specified usUsagePage. Note that usUsage must be zero. To exclude a particular top level collection, use RIDEV_EXCLUDE.
+    /// RIDEV_NOLEGACY: If set, this prevents any devices specified by usUsagePage or usUsage from generating legacy messages. This is only for the mouse and keyboard. See Remarks.
+    /// RIDEV_INPUTSINK: If set, this enables the caller to receive the input even when the caller is not in the foreground. Note that hwndTarget must be specified.
+    /// RIDEV_CAPTUREMOUSE: If set, the mouse button click does not activate the other window. RIDEV_CAPTUREMOUSE can be specified only if RIDEV_NOLEGACY is specified for a mouse device.
+    /// RIDEV_NOHOTKEYS: If set, the application-defined keyboard device hotkeys are not handled.However, the system hotkeys; for example, ALT+TAB and CTRL+ALT+DEL, are still handled.By default, all keyboard hotkeys are handled.RIDEV_NOHOTKEYS can be specified even if RIDEV_NOLEGACY is not specified and hwndTarget is NULL.
+    /// RIDEV_APPKEYS: If set, the application command keys are handled.RIDEV_APPKEYS can be specified only if RIDEV_NOLEGACY is specified for a keyboard device.
+    /// RIDEV_EXINPUTSINK: If set, this enables the caller to receive input in the background only if the foreground application does not process it.In other words, if the foreground application is not registered for raw input, then the background application that is registered will receive the input. This flag is not supported until Windows Vista
+    /// RIDEV_DEVNOTIFY: If set, this enables the caller to receive WM_INPUT_DEVICE_CHANGE notifications for device arrival and device removal. Windows XP: This flag is not supported until Windows Vista
+    /// </summary>
+    internal FLAGS dwFlags;
+
+    /// <summary>
+    /// Handle to the target window. If NULL it follows the keyboard focus.
+    /// </summary>
+    internal IntPtr hwndTarget;
+}
+
+/// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
+/// For use with <see cref="User32.GetSysColor"/>.
+/// </summary>
+internal enum SYSCOLORINDEX : int
+{
+    /// <summary>
+    /// Dark shadow for three-dimensional display elements.
+    /// </summary>
+    COLOR_3DDKSHADOW = 21,
+
+    /// <summary>
+    /// Face color for three-dimensional display elements and for dialog box backgrounds.
+    /// </summary>
+    COLOR_3DFACE = 15,
+
+    /// <summary>
+    /// Highlight color for three-dimensional display elements (for edges facing the light source.)
+    /// </summary>
+    COLOR_3DHIGHLIGHT = 20,
+
+    /// <summary>
+    /// Highlight color for three-dimensional display elements (for edges facing the light source.)
+    /// </summary>
+    COLOR_3DHILIGHT = COLOR_3DHIGHLIGHT,
+
+    /// <summary>
+    /// Light color for three-dimensional display elements (for edges facing the light source.)
+    /// </summary>
+    COLOR_3DLIGHT = 22,
+
+    /// <summary>
+    /// Shadow color for three-dimensional display elements (for edges facing away from the light source).
+    /// </summary>
+    COLOR_3DSHADOW = 16,
+
+    /// <summary>
+    /// Active window border.
+    /// </summary>
+    COLOR_ACTIVEBORDER = 10,
+
+    /// <summary>
+    /// Active window title bar.
+    /// The associated foreground color is COLOR_CAPTIONTEXT.
+    /// Specifies the left side color in the color gradient of an active window's title bar if the gradient effect is enabled.
+    /// </summary>
+    COLOR_ACTIVECAPTION = 2,
+
+    /// <summary>
+    /// Background color of multiple document interface (MDI) applications.
+    /// </summary>
+    COLOR_APPWORKSPACE = 12,
+
+    /// <summary>
+    /// Desktop
+    /// </summary>
+    COLOR_BACKGROUND = 1,
+
+    /// <summary>
+    /// Face color for three-dimensional display elements and for dialog box backgrounds. The associated foreground color is COLOR_BTNTEXT.
+    /// </summary>
+    COLOR_BTNFACE = COLOR_3DFACE,
+
+    /// <summary>
+    /// Highlight color for three-dimensional display elements (for edges facing the light source.)
+    /// </summary>
+    COLOR_BTNHIGHLIGHT = COLOR_3DHIGHLIGHT,
+
+    /// <summary>
+    /// Highlight color for three-dimensional display elements (for edges facing the light source.)
+    /// </summary>
+    COLOR_BTNHILIGHT = COLOR_3DHIGHLIGHT,
+
+    /// <summary>
+    /// Shadow color for three-dimensional display elements (for edges facing away from the light source).
+    /// </summary>
+    COLOR_BTNSHADOW = COLOR_3DSHADOW,
+
+    /// <summary>
+    /// Text on push buttons. The associated background color is COLOR_BTNFACE.
+    /// </summary>
+    COLOR_BTNTEXT = 18,
+
+    /// <summary>
+    /// Text in caption, size box, and scroll bar arrow box. The associated background color is COLOR_ACTIVECAPTION.
+    /// </summary>
+    COLOR_CAPTIONTEXT = 9,
+
+    /// <summary>
+    /// Desktop.
+    /// </summary>
+    COLOR_DESKTOP = COLOR_BACKGROUND,
+
+    /// <summary>
+    /// Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color. Use SPI_GETGRADIENTCAPTIONS with the SystemParametersInfo function to determine whether the gradient effect is enabled.
+    /// </summary>
+    COLOR_GRADIENTACTIVECAPTION = 27,
+
+    /// <summary>
+    /// Right side color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION specifies the left side color.
+    /// </summary>
+    COLOR_GRADIENTINACTIVECAPTION = 28,
+
+    /// <summary>
+    /// Grayed (disabled) text. This color is set to 0 if the current display driver does not support a solid gray color.
+    /// </summary>
+    COLOR_GRAYTEXT = 17,
+
+    /// <summary>
+    /// Item(s) selected in a control. The associated foreground color is COLOR_HIGHLIGHTTEXT.
+    /// </summary>
+    COLOR_HIGHLIGHT = 13,
+
+    /// <summary>
+    /// Text of item(s) selected in a control. The associated background color is COLOR_HIGHLIGHT.
+    /// </summary>
+    COLOR_HIGHLIGHTTEXT = 14,
+
+    /// <summary>
+    /// Color for a hyperlink or hot-tracked item. The associated background color is COLOR_WINDOW.
+    /// </summary>
+    COLOR_HOTLIGHT = 26,
+
+    /// <summary>
+    /// Inactive window border.
+    /// </summary>
+    COLOR_INACTIVEBORDER = 11,
+
+    /// <summary>
+    /// Inactive window caption.
+    /// The associated foreground color is COLOR_INACTIVECAPTIONTEXT.
+    /// Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled.
+    /// </summary>
+    COLOR_INACTIVECAPTION = 3,
+
+    /// <summary>
+    /// Color of text in an inactive caption. The associated background color is COLOR_INACTIVECAPTION.
+    /// </summary>
+    COLOR_INACTIVECAPTIONTEXT = 19,
+
+    /// <summary>
+    /// Background color for tooltip controls. The associated foreground color is COLOR_INFOTEXT.
+    /// </summary>
+    COLOR_INFOBK = 24,
+
+    /// <summary>
+    /// Text color for tooltip controls. The associated background color is COLOR_INFOBK.
+    /// </summary>
+    COLOR_INFOTEXT = 23,
+
+    /// <summary>
+    /// Menu background. The associated foreground color is COLOR_MENUTEXT.
+    /// </summary>
+    COLOR_MENU = 4,
+
+    /// <summary>
+    /// The color used to highlight menu items when the menu appears as a flat menu (see SystemParametersInfo). The highlighted menu item is outlined with COLOR_HIGHLIGHT.
+    /// Windows 2000:  This value is not supported.
+    /// </summary>
+    COLOR_MENUHILIGHT = 29,
+
+    /// <summary>
+    /// The background color for the menu bar when menus appear as flat menus (see SystemParametersInfo). However, COLOR_MENU continues to specify the background color of the menu popup.
+    /// Windows 2000:  This value is not supported.
+    /// </summary>
+    COLOR_MENUBAR = 30,
+
+    /// <summary>
+    /// Text in menus. The associated background color is COLOR_MENU.
+    /// </summary>
+    COLOR_MENUTEXT = 7,
+
+    /// <summary>
+    /// Scroll bar gray area.
+    /// </summary>
+    COLOR_SCROLLBAR = 0,
+
+    /// <summary>
+    /// Window background. The associated foreground colors are COLOR_WINDOWTEXT and COLOR_HOTLITE.
+    /// </summary>
+    COLOR_WINDOW = 5,
+
+    /// <summary>
+    /// Window frame.
+    /// </summary>
+    COLOR_WINDOWFRAME = 6,
+
+    /// <summary>
+    /// Text in windows. The associated background color is COLOR_WINDOW.
+    /// </summary>
+    COLOR_WINDOWTEXT = 8,
+}
+
 #endregion
 
 /// <summary>
@@ -682,7 +1462,7 @@ internal static class User32
     /// <returns>The function returns the red, green, blue (RGB) color value of the given element.
     /// If the nIndex parameter is out of range, the return value is zero.Because zero is also a valid RGB value, you cannot use GetSysColor to determine whether a system color is supported by the current platform.Instead, use the GetSysColorBrush function, which returns NULL if the color is not supported.</returns>
     [DllImport(Library)]
-    public static extern uint GetSysColor(GetSysColor_nIndex nIndex);
+    public static extern uint GetSysColor(SYSCOLORINDEX nIndex);
 
     /// <summary>
     /// The GetSysColorBrush function retrieves a handle identifying a logical brush that corresponds to the specified color index. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolorbrush

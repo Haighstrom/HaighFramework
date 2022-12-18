@@ -33,7 +33,7 @@ internal class InputProcessingWindow
             WNDCLASSEX wc = new()
             {
                 cbSize = (uint)Marshal.SizeOf(default(WNDCLASSEX)),
-                style = WindowClassStyle.CS_OWNDC,
+                style = CLASSSTLYE.CS_OWNDC,
                 hInstance = _instance,
                 lpfnWndProc = TempWndProc,
                 lpszClassName = _className,

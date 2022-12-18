@@ -69,9 +69,9 @@ internal class KeyboardAPI : IKeyboardAPI
         // Keyboard is 1/6 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
         rids[0] = new()
         {
-            usUsagePage = RAWINPUTDEVICEUSAGEPAGE.HID_USAGE_PAGE_GENERIC,
-            usUsage = RAWINPUTDEVICE_usUsage.HID_USAGE_GENERIC_KEYBOARD,
-            dwFlags = RAWINPUTDEVICEFLAGS.RIDEV_INPUTSINK,
+            usUsagePage = RAWINPUTDEVICE.USAGEPAGE.HID_USAGE_PAGE_GENERIC,
+            usUsage = RAWINPUTDEVICE.USAGE.HID_USAGE_GENERIC_KEYBOARD,
+            dwFlags = RAWINPUTDEVICE.FLAGS.RIDEV_INPUTSINK,
             hwndTarget = window
         };
 

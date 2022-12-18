@@ -67,9 +67,9 @@ internal class MouseAPI : IMouseAPI
     {
         // Mouse is 1/2 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
         RAWINPUTDEVICE rid = new();
-        rid.usUsagePage = RAWINPUTDEVICEUSAGEPAGE.HID_USAGE_PAGE_GENERIC;
-        rid.usUsage = RAWINPUTDEVICE_usUsage.HID_USAGE_GENERIC_MOUSE;
-        rid.dwFlags = RAWINPUTDEVICEFLAGS.RIDEV_INPUTSINK;
+        rid.usUsagePage = RAWINPUTDEVICE.USAGEPAGE.HID_USAGE_PAGE_GENERIC;
+        rid.usUsage = RAWINPUTDEVICE.USAGE.HID_USAGE_GENERIC_MOUSE;
+        rid.dwFlags = RAWINPUTDEVICE.FLAGS.RIDEV_INPUTSINK;
         rid.hwndTarget = window;
 
         RAWINPUTDEVICE[] rids = { rid };
