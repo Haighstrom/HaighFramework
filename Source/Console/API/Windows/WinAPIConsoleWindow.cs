@@ -7,6 +7,8 @@ namespace HaighFramework.Console.Windows;
 /// </summary>
 internal class WinAPIConsoleWindow : IConsoleWindow
 {
+    private const int Windows10InvisibleBorderSize = 7;
+
     private static IntPtr Handle => Kernal32.GetConsoleWindow();
 
     internal static RECT GetMaxSize()
@@ -17,7 +19,15 @@ internal class WinAPIConsoleWindow : IConsoleWindow
 
         User32.GetMonitorInfo(monitor, ref mInfo);
 
-        return mInfo.Work;
+        RECT answer = mInfo.Work;
+        if (Environment.OSVersion.Version.Major == 10) //Don't even fucking ask. Fuck you Windows 10.
+        {
+            answer.left -= Windows10InvisibleBorderSize;
+            answer.right += Windows10InvisibleBorderSize;
+            answer.bottom += Windows10InvisibleBorderSize;
+        }
+
+        return answer;
     }
 
     /// <summary>
@@ -25,18 +35,6 @@ internal class WinAPIConsoleWindow : IConsoleWindow
     /// </summary>
     public WinAPIConsoleWindow()
     {
-    }
-
-    /// <summary>
-    /// Create a console with the specified settings
-    /// </summary>
-    /// <param name="settings"></param>
-    public WinAPIConsoleWindow(ConsoleSettings settings)
-    {
-        if (settings.ShowConsoleWindow)
-        {
-            ShowConsole(settings.X, settings.Y, settings.Width, settings.Height);
-        }
     }
 
     /// <summary>
@@ -78,6 +76,11 @@ internal class WinAPIConsoleWindow : IConsoleWindow
     /// <param name="height">The new height of the console in pixels.</param>
     public void MoveConsoleTo(int topLeftX, int topLeftY, int width, int height)
     {
+        if (Environment.OSVersion.Version.Major == 10) //Don't even fucking ask. Fuck you Windows 10.
+        {
+            topLeftX -= Windows10InvisibleBorderSize;
+        }
+
         User32.MoveWindow(Handle, topLeftX, topLeftY, width, height, true);
     }
 

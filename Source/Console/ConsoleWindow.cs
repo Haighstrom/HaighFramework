@@ -1,4 +1,6 @@
-﻿using HaighFramework.WinAPI;
+﻿using HaighFramework.Console.Windows;
+using HaighFramework.WinAPI;
+using System.Runtime.InteropServices;
 
 namespace HaighFramework.Console;
 
@@ -7,24 +9,17 @@ namespace HaighFramework.Console;
 /// </summary>
 public class ConsoleWindow : IConsoleWindow
 {
-    private static IntPtr Handle => Kernal32.GetConsoleWindow();
-
-    internal static RECT GetMaxSize()
-    {
-        IntPtr monitor = User32.MonitorFromWindow(Handle, MONITORFROMWINDOWFLAGS.MONITOR_DEFAULTTONEAREST);
-
-        var mInfo = new MONITORINFO() { Size = MONITORINFO.UnmanagedSize };
-
-        User32.GetMonitorInfo(monitor, ref mInfo);
-
-        return mInfo.Work;
-    }
+    private readonly IConsoleWindow _api;
 
     /// <summary>
     /// Create a default console, which is not visible
     /// </summary>
     public ConsoleWindow()
     {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            _api = new WinAPIConsoleWindow();
+        else
+            throw new NotImplementedException();
     }
 
     /// <summary>
@@ -32,6 +27,7 @@ public class ConsoleWindow : IConsoleWindow
     /// </summary>
     /// <param name="settings"></param>
     public ConsoleWindow(ConsoleSettings settings)
+        : this()
     {
         if (settings.ShowConsoleWindow)
         {
@@ -42,32 +38,22 @@ public class ConsoleWindow : IConsoleWindow
     /// <summary>
     /// Whether the console is currently open/visible
     /// </summary>
-    public bool Visible { get; private set; } = false;
+    public bool Visible => _api.Visible;
 
     /// <summary>
     /// The maximum height the console can be without exceeding the screen height.
     /// </summary>
-    public int MaxHeight => GetMaxSize().Height;
+    public int MaxHeight => _api.MaxHeight;
 
     /// <summary>
     /// The maximum width the console can be without exceeding the screen height.
     /// </summary>
-    public int MaxWidth => GetMaxSize().Width;
+    public int MaxWidth => _api.MaxWidth;
 
     /// <summary>
     /// Hides/closes the console.
     /// </summary>
-    public void HideConsole()
-    {
-        if (!Visible)
-        {
-            Log.Warning("Tried to hide console when it is not currently shown.");
-            return;
-        }
-
-        Kernal32.FreeConsole();
-        Visible = false;
-    }
+    public void HideConsole() => _api.HideConsole();
 
     /// <summary>
     /// Moves the console to a specified location on screen.
@@ -76,25 +62,12 @@ public class ConsoleWindow : IConsoleWindow
     /// <param name="y">The new y-coordinate of the top left of the console, relative to the top left of the main display.</param>
     /// <param name="width">The new width of the console in pixels.</param>
     /// <param name="height">The new height of the console in pixels.</param>
-    public void MoveConsoleTo(int topLeftX, int topLeftY, int width, int height)
-    {
-        User32.MoveWindow(Handle, topLeftX, topLeftY, width, height, true);
-    }
+    public void MoveConsoleTo(int topLeftX, int topLeftY, int width, int height) => _api.MoveConsoleTo(topLeftX, topLeftY, width, height);
 
     /// <summary>
     /// Shows/opens the console.
     /// </summary>
-    public void ShowConsole()
-    {
-        if (Visible)
-        {
-            Log.Warning("Tried to show console when it is already shown.");
-                return;
-        }
-
-        Kernal32.AllocConsole();
-        Visible = true;
-    }
+    public void ShowConsole() => _api.ShowConsole();
 
     /// <summary>
     /// Shows/opens the console at the location specified.
@@ -103,16 +76,5 @@ public class ConsoleWindow : IConsoleWindow
     /// <param name="y">The y-coordinate of the top left of the console, relative to the top left of the main display.</param>
     /// <param name="width">The desired width of the console in pixels.</param>
     /// <param name="height">The desired height of the console in pixels.</param>
-    public void ShowConsole(int topLeftX, int topLeftY, int width, int height)
-    {
-        if (Visible)
-        {
-            Log.Warning("Tried to show console when it is already shown.");
-            return;
-        }
-
-        ShowConsole();
-
-        MoveConsoleTo(topLeftX, topLeftY, width, height);
-    }
+    public void ShowConsole(int topLeftX, int topLeftY, int width, int height) => _api.ShowConsole(topLeftX, topLeftY, width, height);
 }

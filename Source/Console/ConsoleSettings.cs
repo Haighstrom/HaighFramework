@@ -1,6 +1,5 @@
 ﻿using HaighFramework.Console;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace HaighFramework;
 
@@ -9,16 +8,7 @@ namespace HaighFramework;
 /// </summary>
 public class ConsoleSettings
 {
-    private const int DefaultWidth = 450;
-    private const int Windows10InvisibleBorderSize = 7;
-
-    private static int GetInvisibleLeftBorder() //Don't even fucking ask. Fuck you Windows 10.
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.OSVersion.Version.Major == 10)
-            return Windows10InvisibleBorderSize;
-        else
-            return 0;
-    }
+    public const int DefaultWidth = 450;
 
     /// <summary>
     /// The default console settings.
@@ -33,7 +23,7 @@ public class ConsoleSettings
     /// <summary>
     /// The x-coordinate of the top left position of the console. Defaults to the top left of the screen.
     /// </summary>
-    public int X { get; set; } = 0 - GetInvisibleLeftBorder();
+    public int X { get; set; } = 0;
 
     /// <summary>
     /// The y-coordinate of the top left position of the console. Defaults to the top left of the screen.
@@ -48,5 +38,5 @@ public class ConsoleSettings
     /// <summary>
     /// The height of the console in pixels. Defaults to the height of the window.
     /// </summary>
-    public int Height { get; set; } = ConsoleWindow.GetMaxSize().Height;
+    public int Height { get; set; } = new ConsoleWindow().MaxHeight;
 }
