@@ -51,6 +51,115 @@ public enum ALPHA_COMPARISON_FUNCTION : int
 }
 
 /// <summary>
+/// Keys in the key-value-pairs used in the attribList parameter of <see cref="OpenGL32.wglCreateContextAttribsARB"/>
+/// </summary>
+public enum ARBCREATECONTEXT_ATTRIBUTE
+{
+    //https://registry.khronos.org/OpenGL/extensions/ARB/WGL_ARB_create_context.txt
+
+    /// <summary>
+    /// Request an OpenGL context supporting the specified version of the API (Major version). Default value is 1.
+    /// </summary>
+    WGL_CONTEXT_MAJOR_VERSION_ARB = 0x2091,
+
+    /// <summary>
+    /// Request an OpenGL context supporting the specified version of the API (Minor version). Default value is 0.
+    /// </summary>
+    WGL_CONTEXT_MINOR_VERSION_ARB = 0x2092,
+
+    /// <summary>
+    /// specifies the layer plane that the rendering context is bound to. The attribute value has the same meaning and allowed values as the iLayerPlane parameter of wglCreateLayerContext. The default value for WGL_CONTEXT_LAYER_PLANE is 0 (the main plane).
+    /// </summary>
+    WGL_CONTEXT_LAYER_PLANE_ARB = 0x2093,
+
+    /// <summary>
+    /// Specifies a set of flag bits affecting the rendering context. Default is 0.
+    /// </summary>
+    WGL_CONTEXT_FLAGS_ARB = 0x2094,
+
+    /// <summary>
+    /// Requests an OpenGL context supporting a specific profile of the API. If the requested OpenGL version is less than 3.2, WGL_CONTEXT_PROFILE_MASK_ARB is ignored and the functionality of the context is determined solely by the requested version. Default is <see cref="ARBCREATECONTEXT_ATTRIBUTE_VALUES.WGL_CONTEXT_CORE_PROFILE_BIT_ARB"/>.
+    /// </summary>
+    WGL_CONTEXT_PROFILE_MASK_ARB = 0x9126,
+}
+
+/// <summary>
+/// Values in the key-value-pairs used in the attribList parameter of <see cref="OpenGL32.wglCreateContextAttribsARB"/>
+/// </summary>
+public enum ARBCREATECONTEXT_ATTRIBUTE_VALUES
+{
+    /// <summary>
+    /// Use with WGL_CONTEXT_MAJOR_VERSION_ARB
+    /// </summary>
+    WGL_MAJOR_1 = 1,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MAJOR_VERSION_ARB
+    /// </summary>
+    WGL_MAJOR_2 = 2,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MAJOR_VERSION_ARB
+    /// </summary>
+    WGL_MAJOR_3 = 3,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MAJOR_VERSION_ARB
+    /// </summary>
+    WGL_MAJOR_4 = 4,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MINOR_VERSION_ARB
+    /// </summary>
+    WGL_MINOR_1 = 1,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MINOR_VERSION_ARB
+    /// </summary>
+    WGL_MINOR_2 = 2,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MINOR_VERSION_ARB
+    /// </summary>
+    WGL_MINOR_3 = 3,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MINOR_VERSION_ARB
+    /// </summary>
+    WGL_MINOR_4 = 4,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MINOR_VERSION_ARB
+    /// </summary>
+    WGL_MINOR_5 = 5,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_MINOR_VERSION_ARB
+    /// </summary>
+    WGL_MINOR_6 = 6,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_FLAGS_ARB. If the WGL_CONTEXT_DEBUG_BIT_ARB flag bit is set in WGL_CONTEXT_FLAGS_ARB, then a <debug context> will be created. Debug contexts are intended for use during application development, and provide additional runtime checking, validation, and logging functionality while possibly incurring performance penalties.
+    /// </summary>
+    WGL_CONTEXT_DEBUG_BIT_ARB = 0x0001,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_FLAGS_ARB. If the WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB is set in WGL_CONTEXT_FLAGS_ARB, then a <forward-compatible> context will be created. Forward-compatible contexts are defined only for OpenGL versions 3.0 and later. They must not support functionality marked as <deprecated> by that version of the API, while a non-forward-compatible context must support all functionality in that version, deprecated or not.
+    /// </summary>
+    WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB = 0x0002,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB.
+    /// </summary>
+    WGL_CONTEXT_CORE_PROFILE_BIT_ARB = 0x0001,
+
+    /// <summary>
+    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB. If the WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB bit is set, then a context implementing the compatibility profile is returned. 
+    /// </summary>
+    WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x0002,
+}
+
+/// <summary>
 /// Specifies how colour blending calculations are performed. The color specified by glBlendColor is referred to as (Rc,Gc,Bc,Ac). They are understood to have integer values between 0 and (kR,kG,kB,kA), where kc=2mc−1 and(mR, mG, mB, mA) is the number of red, green, blue, and alpha bitplanes. Source and destination scale factors are referred to as (sR, sG, sB, sA) and (dR, dG, dB, dA). The scale factors described in the table, denoted (fR, fG, fB, fA), represent either source or destination factors. All scale factors have range[0, 1].
 /// </summary>
 public enum BLEND_SCALE_FACTOR : int
@@ -255,6 +364,228 @@ public enum BUFFER_TARGET : int
 }
 
 /// <summary>
+/// The message severity (how important it is) in a debug message.
+/// </summary>
+public enum DEBUGMESSAGE_SEVERITY : int
+{
+    /// <summary>
+    /// All OpenGL Errors, shader compilation/linking errors, or highly-dangerous undefined behavior.
+    /// </summary>
+    GL_DEBUG_SEVERITY_LOW = 0x9148,
+
+    /// <summary>
+    /// Major performance warnings, shader compilation/linking warnings, or the use of deprecated functionality.
+    /// </summary>
+    GL_DEBUG_SEVERITY_MEDIUM = 0x9147,
+
+    /// <summary>
+    /// All OpenGL Errors, shader compilation/linking errors, or highly-dangerous undefined behavior.
+    /// </summary>
+    GL_DEBUG_SEVERITY_HIGH = 0x9146,
+
+    /// <summary>
+    /// Anything that isn't an error or performance issue.
+    /// </summary>
+    GL_DEBUG_SEVERITY_NOTIFICATION = 0x826B,
+
+    /// <summary>
+    /// Wildcard - allows all severities.
+    /// </summary>
+    GL_DONT_CARE = 0x1100,
+}
+
+/// <summary>
+/// The source that produced the message in a debug message.
+/// </summary>
+public enum DEBUGMESSAGE_SOURCE : int
+{
+    /// <summary>
+    /// Calls to the OpenGL API.
+    /// </summary>
+    GL_DEBUG_SOURCE_API = 0x8246,
+
+    /// <summary>
+    /// Calls to a window-system API.
+    /// </summary>
+    GL_DEBUG_SOURCE_WINDOW_SYSTEM = 0x8247,
+
+    /// <summary>
+    /// A compiler for a shading language.
+    /// </summary>
+    GL_DEBUG_SOURCE_SHADER_COMPILER = 8248,
+
+    /// <summary>
+    /// An application associated with OpenGL.
+    /// </summary>
+    GL_DEBUG_SOURCE_THIRD_PARTY = 0x8249,
+
+    /// <summary>
+    /// Generated by the user of this application.
+    /// </summary>
+    GL_DEBUG_SOURCE_APPLICATION = 0x824A,
+
+    /// <summary>
+    /// Some source that isn't one of these.
+    /// </summary>
+    GL_DEBUG_SOURCE_OTHER = 0x824B,
+
+    /// <summary>
+    /// Wildcard - allows all sources.
+    /// </summary>
+    GL_DONT_CARE = 0x1100,
+}
+
+/// <summary>
+/// The type of message in a Debug Message.
+/// </summary>
+public enum DEBUGMESSAGE_TYPE : int
+{
+    /// <summary>
+    /// An error, typically from the API.
+    /// </summary>
+    GL_DEBUG_TYPE_ERROR = 0x824C,
+
+    /// <summary>
+    /// Some behavior marked deprecated has been used.
+    /// </summary>
+    GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR = 0x824D,
+
+    /// <summary>
+    /// Something has invoked undefined behavior.
+    /// </summary>
+    GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR = 0x824E,
+
+    /// <summary>
+    /// Some functionality the user relies upon is not portable.
+    /// </summary>
+    GL_DEBUG_TYPE_PORTABILITY = 0x824F,
+
+    /// <summary>
+    /// Code has triggered possible performance issues.
+    /// </summary>
+    GL_DEBUG_TYPE_PEFORMANCE = 0x8250,
+
+    /// <summary>
+    /// Command stream annotation.
+    /// </summary>
+    GL_DEBUG_TYPE_MARKER = 0x824B,
+
+    /// <summary>
+    /// Group pushing.
+    /// </summary>
+    GL_DEBUG_TYPE_PUSH_GROUP = 0x8269,
+
+    /// <summary>
+    /// Group popping.
+    /// </summary>
+    GL_DEBUG_TYPE_POP_GROUP = 0x826A,
+
+    /// <summary>
+    /// Some type that isn't one of these.
+    /// </summary>
+    GL_DEBUG_TYPE_OTHER = 0x8251,
+
+    /// <summary>
+    /// Wildcard - allows all types.
+    /// </summary>
+    GL_DONT_CARE = 0x1100,
+}
+
+/// <summary>
+/// Specifies the attachment point of the framebuffer.
+/// </summary>
+public enum FRAMEBUFFER_ATTACHMENT_POINT : int
+{
+    GL_DEPTH_STENCIL_ATTACHMENT = 0x821A,
+    GL_COLOR_ATTACHMENT0 = 0x8CE0,
+    GL_COLOR_ATTACHMENT1 = 0x8CE1,
+    GL_COLOR_ATTACHMENT2 = 0x8CE2,
+    GL_COLOR_ATTACHMENT3 = 0x8CE3,
+    GL_COLOR_ATTACHMENT4 = 0x8CE4,
+    GL_COLOR_ATTACHMENT5 = 0x8CE5,
+    GL_COLOR_ATTACHMENT6 = 0x8CE6,
+    GL_COLOR_ATTACHMENT7 = 0x8CE7,
+    GL_COLOR_ATTACHMENT8 = 0x8CE8,
+    GL_COLOR_ATTACHMENT9 = 0x8CE9,
+    GL_COLOR_ATTACHMENT10 = 0x8CEA,
+    GL_COLOR_ATTACHMENT11 = 0x8CEB,
+    GL_COLOR_ATTACHMENT12 = 0x8CEC,
+    GL_COLOR_ATTACHMENT13 = 0x8CED,
+    GL_COLOR_ATTACHMENT14 = 0x8CEE,
+    GL_COLOR_ATTACHMENT15 = 0x8CEF,
+    GL_DEPTH_ATTACHMENT = 0x8D00,
+    GL_STENCIL_ATTACHMENT = 0x8D20,
+}
+
+/// <summary>
+/// A framebuffer target.
+/// </summary>
+public enum FRAMEBUFFER_TARGET : int
+{
+    /// <summary>
+    /// Specify read-only framebuffer operations such as glReadPixels.
+    /// </summary>
+    GL_READ_FRAMEBUFFER = 0x8CA8,
+
+    /// <summary>
+    /// Specify write-only framebuffer operations such as glWritePixels.
+    /// </summary>
+    GL_DRAW_FRAMEBUFFER = 0x8CA9,
+
+    /// <summary>
+    /// Specify all read and write framebuffer operations.
+    /// </summary>
+    GL_FRAMEBUFFER = 0x8D40,
+}
+
+/// <summary>
+/// Specifies the orientation of front-facing polygons.
+/// </summary>
+public enum FRONTFACE_MODE : int
+{
+    /// <summary>
+    /// Selects counterclockwise polygons as front-facing. The projection of a polygon to window coordinates is said to have a clockwise winding if an imaginary object following the path from its first vertex, its second vertex, and so on, to its last vertex, and finally back to its first vertex, moves in a clockwise direction about the interior of the polygon.
+    /// </summary>
+    GL_CW = 0x0900,
+
+    /// <summary>
+    /// Selects clockwise polygons as front-facing. The projection of a polygon to window coordinates is said to have a counter-clockwise winding if an imaginary object following the path from its first vertex, its second vertex, and so on, to its last vertex, and finally back to its first vertex, moves in a counter-clockwise direction about the interior of the polygon.
+    /// </summary>
+    GL_CCW = 0x0901,
+}
+
+/// <summary>
+/// <see cref="OpenGL32.glGetShader"/> returns in params the value of a parameter for a specific shader object.
+/// </summary>
+public enum GETSHADER_NAME : int
+{
+    /// <summary>
+    /// params returns GL_VERTEX_SHADER if shader is a vertex shader object, GL_GEOMETRY_SHADER if shader is a geometry shader object, and GL_FRAGMENT_SHADER if shader is a fragment shader object.
+    /// </summary>
+    GL_SHADER_TYPE = 0x8B4F,
+
+    /// <summary>
+    /// params returns GL_TRUE if shader is currently flagged for deletion, and GL_FALSE otherwise.
+    /// </summary>
+    GL_DELETE_STATUS = 0x8B80,
+
+    /// <summary>
+    /// params returns GL_TRUE if the last compile operation on shader was successful, and GL_FALSE otherwise.
+    /// </summary>
+    GL_COMPILE_STATUS = 0x8B81,
+
+    /// <summary>
+    /// params returns the number of characters in the information log for shader including the null termination character (i.e., the size of the character buffer required to store the information log). If shader has no information log, a value of 0 is returned.
+    /// </summary>
+    GL_INFO_LOG_LENGTH = 0x8B84,
+
+    /// <summary>
+    /// params returns the length of the concatenation of the source strings that make up the shader source for the shader, including the null termination character. (i.e., the size of the character buffer required to store the shader source). If no source code exists, 0 is returned.
+    /// </summary>
+    GL_SHADER_SOURCE_LENGTH = 0x8B88,
+}
+
+/// <summary>
 /// Specifies the string to retrieve in <see cref="OpenGL32.glGetString"/>
 /// </summary>
 public enum GETSTRING_NAME : uint
@@ -342,6 +673,144 @@ public enum GL_ERROR : uint
 }
 
 /// <summary>
+/// Specifies a light.
+/// </summary>
+public enum LIGHT : int
+{
+    GL_LIGHT0 = 0x4000,
+    GL_LIGHT1 = 0x4001,
+    GL_LIGHT2 = 0x4002,
+    GL_LIGHT3 = 0x4003,
+    GL_LIGHT4 = 0x4004,
+    GL_LIGHT5 = 0x4005,
+    GL_LIGHT6 = 0x4006,
+    GL_LIGHT7 = 0x4007,
+}
+
+/// <summary>
+/// A light source parameter for light in <see cref="OpenGL32.glLightfv"/>.
+/// </summary>
+public enum LIGHTSOURCE_NAME : int
+{
+    /// <summary>
+    /// The params parameter contains four floating-point values that specify the ambient RGBA intensity of the light. Floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The default ambient light intensity is (0.0, 0.0, 0.0, 1.0).
+    /// </summary>
+    GL_AMBIENT = 0x1200,
+
+    /// <summary>
+    /// The params parameter contains four floating-point values that specify the diffuse RGBA intensity of the light. Floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The default diffuse intensity is (0.0, 0.0, 0.0, 1.0) for all lights other than light zero. The default diffuse intensity of light zero is (1.0, 1.0, 1.0, 1.0).
+    /// </summary>
+    GL_DIFFUSE = 0x1201,
+
+    /// <summary>
+    /// The params parameter contains four floating-point values that specify the specular RGBA intensity of the light. Floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The default specular intensity is (0.0, 0.0, 0.0, 1.0) for all lights other than light zero. The default specular intensity of light zero is (1.0, 1.0, 1.0, 1.0).
+    /// </summary>
+    GL_SPECULAR = 0x1202,
+
+    /// <summary>
+    /// The params parameter contains four floating-point values that specify the position of the light in homogeneous object coordinates. Both integer and floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The position is transformed by the modelview matrix when glLightfv is called (just as if it were a point), and it is stored in eye coordinates. If the w component of the position is 0.0, the light is treated as a directional source. Diffuse and specular lighting calculations take the light's direction, but not its actual position, into account, and attenuation is disabled. Otherwise, diffuse and specular lighting calculations are based on the actual location of the light in eye coordinates, and attenuation is enabled. The default position is (0,0,1,0); thus, the default light source is directional, parallel to, and in the direction of the -z axis.
+    /// </summary>
+    GL_POSITION = 0x1203,
+
+    /// <summary>
+    /// The params parameter contains three floating-point values that specify the direction of the light in homogeneous object coordinates. Both integer and floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The spot direction is transformed by the inverse of the modelview matrix when glLightfv is called (just as if it were a normal), and it is stored in eye coordinates. It is significant only when GL_SPOT_CUTOFF is not 180, which it is by default. The default direction is (0,0,1).
+    /// </summary>
+    GL_SPOT_DIRECTION = 0x1204,
+
+    /// <summary>
+    /// The params parameter is a single floating-point value that specifies the intensity distribution of the light. Integer and floating-point values are mapped directly. Only values in the range [0, 128] are accepted. Effective light intensity is attenuated by the cosine of the angle between the direction of the light and the direction from the light to the vertex being lighted, raised to the power of the spot exponent. Thus, higher spot exponents result in a more focused light source, regardless of the spot cutoff angle. The default spot exponent is 0, resulting in uniform light distribution.
+    /// </summary>
+    GL_SPOT_EXPONENT = 0x1205,
+
+    /// <summary>
+    /// The params parameter is a single floating-point value that specifies the maximum spread angle of a light source. Integer and floating-point values are mapped directly. Only values in the range [0, 90], and the special value 180, are accepted. If the angle between the direction of the light and the direction from the light to the vertex being lighted is greater than the spot cutoff angle, then the light is completely masked. Otherwise, its intensity is controlled by the spot exponent and the attenuation factors. The default spot cutoff is 180, resulting in uniform light distribution.
+    /// </summary>
+    GL_SPOT_CUTOFF = 0x1206,
+
+    /// <summary>
+    /// The params parameter is a single floating-point value that specifies one of the three light attenuation factors. Integer and floating-point values are mapped directly. Only nonnegative values are accepted. If the light is positional, rather than directional, its intensity is attenuated by the reciprocal of the sum of: the constant factor, the linear factor multiplied by the distance between the light and the vertex being lighted, and the quadratic factor multiplied by the square of the same distance. The default attenuation factors are (1,0,0), resulting in no attenuation.
+    /// </summary>
+    GL_CONSTANT_ATTENUATION = 0x1207,
+
+    /// <summary>
+    /// The params parameter is a single floating-point value that specifies one of the three light attenuation factors. Integer and floating-point values are mapped directly. Only nonnegative values are accepted. If the light is positional, rather than directional, its intensity is attenuated by the reciprocal of the sum of: the constant factor, the linear factor multiplied by the distance between the light and the vertex being lighted, and the quadratic factor multiplied by the square of the same distance. The default attenuation factors are (1,0,0), resulting in no attenuation.
+    /// </summary>
+    GL_LINEAR_ATTENUATION = 0x1208,
+
+    /// <summary>
+    /// The params parameter is a single floating-point value that specifies one of the three light attenuation factors. Integer and floating-point values are mapped directly. Only nonnegative values are accepted. If the light is positional, rather than directional, its intensity is attenuated by the reciprocal of the sum of: the constant factor, the linear factor multiplied by the distance between the light and the vertex being lighted, and the quadratic factor multiplied by the square of the same distance. The default attenuation factors are (1,0,0), resulting in no attenuation.
+    /// </summary>
+    GL_QUADRATIC_ATTENUATION = 0x1209,
+}
+
+/// <summary>
+/// Specifies which matrix stack is the target for subsequent matrix operations.
+/// </summary>
+public enum MATRIX_MODE : int
+{
+    /// <summary>
+    /// Applies subsequent matrix operations to the modelview matrix stack.
+    /// </summary>
+    GL_MODELVIEW = 0x1700,
+
+    /// <summary>
+    /// Applies subsequent matrix operations to the projection matrix stack.
+    /// </summary>
+    GL_PROJECTION = 0x1701,
+
+    /// <summary>
+    /// Applies subsequent matrix operations to the texture matrix stack.
+    /// </summary>
+    GL_TEXTURE = 0x1702,
+
+    /// <summary>
+    /// Applies subsequent matrix operations to the color matrix stack. Only available if the ARB_imaging extension is supported.
+    /// </summary>
+    GL_COLOR = 0x1800,
+}
+
+/// <summary>
+/// The material parameter of the face or faces being updated in <see cref="OpenGL32.glMaterialfv"/>.
+/// </summary>
+public enum MATERIAL_NAME : int
+{
+    /// <summary>
+    /// The params parameter contains four floating-point values that specify the ambient RGBA reflectance of the material. Integer values are mapped linearly such that the most positive representable value maps to 1.0, and the most negative representable value maps to -1.0. Floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The default ambient reflectance for both front-facing and back-facing materials is (0.2, 0.2, 0.2, 1.0).
+    /// </summary>
+    GL_AMBIENT = 0x1200,
+
+    /// <summary>
+    /// The params parameter contains four floating-point values that specify the diffuse RGBA reflectance of the material. Integer values are mapped linearly such that the most positive representable value maps to 1.0, and the most negative representable value maps to -1.0. Floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The default diffuse reflectance for both front-facing and back-facing materials is (0.8, 0.8, 0.8, 1.0).
+    /// </summary>
+    GL_DIFFUSE = 0x1201,
+
+    /// <summary>
+    /// The params parameter contains four floating-point values that specify the specular RGBA reflectance of the material. Integer values are mapped linearly such that the most positive representable value maps to 1.0, and the most negative representable value maps to -1.0. Floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The default specular reflectance for both front-facing and back-facing materials is (0.0, 0.0, 0.0, 1.0).
+    /// </summary>
+    GL_SPECULAR = 0x1202,
+
+    /// <summary>
+    /// The params parameter contains four floating-point values that specify the RGBA emitted light intensity of the material. Integer values are mapped linearly such that the most positive representable value maps to 1.0, and the most negative representable value maps to -1.0. Floating-point values are mapped directly. Neither integer nor floating-point values are clamped. The default emission intensity for both front-facing and back-facing materials is (0.0, 0.0, 0.0, 1.0).
+    /// </summary>
+    GL_EMISSION = 0x1600,
+
+    /// <summary>
+    /// The param parameter is a single integer value that specifies the RGBA specular exponent of the material. Integer values are mapped directly. Only values in the range [0, 128] are accepted. The default specular exponent for both front-facing and back-facing materials is 0.
+    /// </summary>
+    GL_SHININESS = 0x1601,
+
+    /// <summary>
+    /// Equivalent to calling glMaterial twice with the same parameter values, once with GL_AMBIENT and once with GL_DIFFUSE.
+    /// </summary>
+    GL_AMBIENT_AND_DIFFUSE = 0x1602,
+
+    /// <summary>
+    /// The params parameter contains three floating-point values specifying the color indexes for ambient, diffuse, and specular lighting. These three values, and GL_SHININESS, are the only material values used by the color-index mode lighting equation. Refer to glLightModel for a discussion of color-index lighting.
+    /// </summary>
+    GL_COLOR_INDEXES = 0x1603,
+}
+
+/// <summary>
 /// The face of polygons to apply certain functions to
 /// </summary>
 public enum POLYGON_FACE : int
@@ -384,6 +853,72 @@ public enum POLYGON_MODE : int
 }
 
 /// <summary>
+/// Specifies what kind of primitives to render in <see cref="OpenGL32.glDrawArrays"/>.
+/// </summary>
+public enum PRIMITIVE_TYPE : int
+{
+    /// <summary>
+    /// Treats each vertex as a single point. Vertex n defines point n. N points are drawn.
+    /// </summary>
+    GL_POINTS = 0,
+
+    /// <summary>
+    /// Treats each pair of vertices as an independent line segment. Vertices 2 ⁢ n - 1 and 2 ⁢ n define line n. N 2 lines are drawn.
+    /// </summary>
+    GL_LINES = 1,
+
+    /// <summary>
+    /// Draws a connected group of line segments from the first vertex to the last. Vertices n and n + 1 define line n. N - 1 lines are drawn.
+    /// </summary>
+    GL_LINE_STRIP = 3,
+
+    /// <summary>
+    /// Draws a connected group of line segments from the first vertex to the last, then back to the first. Vertices n and n + 1 define line n. The last line, however, is defined by vertices N and 1 . N lines are drawn.
+    /// </summary>
+    GL_LINE_LOOP = 2,
+
+    /// <summary>
+    /// Treats each triplet of vertices as an independent triangle. Vertices 3 ⁢ n - 2 , 3 ⁢ n - 1 , and 3 ⁢ n define triangle n. N 3 triangles are drawn.
+    /// </summary>
+    GL_TRIANGLES = 4,
+
+    /// <summary>
+    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. For odd n, vertices n, n + 1 , and n + 2 define triangle n. For even n, vertices n + 1 , n, and n + 2 define triangle n. N - 2 triangles are drawn.
+    /// </summary>
+    GL_TRIANGLE_STRIP = 5,
+
+    /// <summary>
+    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. Vertices 1 , n + 1 , and n + 2 define triangle n. N - 2 triangles are drawn.
+    /// </summary>
+    GL_TRIANGLE_FAN = 6,
+
+    /// <summary>
+    /// Treats each group of four vertices as an independent quadrilateral. Vertices 4 ⁢ n - 3 , 4 ⁢ n - 2 , 4 ⁢ n - 1 , and 4 ⁢ n define quadrilateral n. N 4 quadrilaterals are drawn.
+    /// </summary>
+    GL_QUADS = 7,
+
+    /// <summary>
+    /// Draws a connected group of quadrilaterals. One quadrilateral is defined for each pair of vertices presented after the first pair. Vertices 2 ⁢ n - 1 , 2 ⁢ n , 2 ⁢ n + 2 , and 2 ⁢ n + 1 define quadrilateral n. N 2 - 1 quadrilaterals are drawn. Note that the order in which vertices are used to construct a quadrilateral from strip data is different from that used with independent data.
+    /// </summary>
+    GL_QUAD_STRIP = 8,
+
+    /// <summary>
+    /// Draws a single, convex polygon. Vertices 1 through N define this polygon.
+    /// </summary>
+    GL_POLYGON = 9,
+
+    GL_LINE_STRIP_ADJACENCY = 11,
+
+    GL_LINES_ADJACENCY = 10,
+
+    GL_TRIANGLE_STRIP_ADJACENCY = 13,
+
+    GL_TRIANGLES_ADJACENCY = 12,
+
+    GL_PATCHES = 14,
+}
+
+/// <summary>
 /// Flat and smooth shading are specified by <see cref="OpenGL32.glShadeModel"/> with mode set to GL_FLAT and GL_SMOOTH, respectively.
 /// </summary>
 public enum SHADE_TECHNIQUE : int
@@ -397,6 +932,112 @@ public enum SHADE_TECHNIQUE : int
     /// Smooth shading, the default, causes the computed colors of vertices to be interpolated as the primitive is rasterized, typically assigning different colors to each resulting pixel fragment. 
     /// </summary>
     GL_SMOOTH = 0x1D01,
+}
+
+/// <summary>
+/// The symbolic name of a single valued texture parameter.
+/// </summary>
+public enum TEXPARAMETER_NAME : int
+{
+    /// <summary>
+    /// Specifies the mode used to read from depth-stencil format textures. params must be one of GL_DEPTH_COMPONENT or GL_STENCIL_INDEX. If the depth stencil mode is GL_DEPTH_COMPONENT, then reads from depth-stencil format textures will return the depth component of the texel in Rt and the stencil component will be discarded. If the depth stencil mode is GL_STENCIL_INDEX then the stencil component is returned in Rt and the depth component is discarded. The initial value is GL_DEPTH_COMPONENT.
+    /// </summary>
+    GL_DEPTH_STENCIL_TEXTURE_MODE = 0x90EA,
+
+    /// <summary>
+    /// Specifies the index of the lowest defined mipmap level. This is an integer value. The initial value is 0.
+    /// </summary>
+    GL_TEXTURE_BASE_LEVEL = 0x813C,
+
+    /// <summary>
+    /// Specifies the comparison operator used when GL_TEXTURE_COMPARE_MODE is set to GL_COMPARE_REF_TO_TEXTURE.
+    /// </summary>
+    GL_TEXTURE_COMPARE_FUNC = 0x884D,
+
+    /// <summary>
+    /// Specifies the texture comparison mode for currently bound depth textures.
+    /// </summary>
+    GL_TEXTURE_COMPARE_MODE = 0x884C,
+
+    /// <summary>
+    /// params specifies a fixed bias value that is to be added to the level-of-detail parameter for the texture before texture sampling. The specified value is added to the shader-supplied bias value (if any) and subsequently clamped into the implementation-defined range [−biasmax,biasmax], where biasmax is the value of the implementation defined constant GL_MAX_TEXTURE_LOD_BIAS. The initial value is 0.0.
+    /// </summary>
+    GL_TEXTURE_LOD_BIAS = 0x8501,
+
+    /// <summary>
+    /// The texture minifying function is used whenever the pixel being textured maps to an area greater than one texture element. There are six defined minifying functions. Two of them use the nearest one or nearest four texture elements to compute the texture value. The other four use mipmaps.
+    /// </summary>
+    GL_TEXTURE_MIN_FILTER = 0x2801,
+
+    /// <summary>
+    /// The texture magnification function is used when the pixel being textured maps to an area less than or equal to one texture element. It sets the texture magnification function to either GL_NEAREST or GL_LINEAR.
+    /// </summary>
+    GL_TEXTURE_MAG_FILTER = 0x2800,
+
+    /// <summary>
+    /// Sets the minimum level-of-detail parameter. This floating-point value limits the selection of highest resolution mipmap (lowest mipmap level). The initial value is -1000.
+    /// </summary>
+    GL_TEXTURE_MIN_LOD = 0x813A,
+
+    /// <summary>
+    /// Sets the maximum level-of-detail parameter. This floating-point value limits the selection of the lowest resolution mipmap (highest mipmap level). The initial value is 1000.
+    /// </summary>
+    GL_TEXTURE_MAX_LOD = 0x813B,
+
+    /// <summary>
+    /// Sets the index of the highest defined mipmap level. This is an integer value. The initial value is 1000.
+    /// </summary>
+    GL_TEXTURE_MAX_LEVEL = 0x813D,
+
+    /// <summary>
+    /// Sets the swizzle that will be applied to the r component of a texel before it is returned to the shader. The initial value is GL_RED.
+    /// </summary>
+    GL_TEXTURE_SWIZZLE_R = 0x8E42,
+
+    /// <summary>
+    /// Sets the swizzle that will be applied to the g component of a texel before it is returned to the shader. The initial value is GL_GREEN.
+    /// </summary>
+    GL_TEXTURE_SWIZZLE_G = 0x8E43,
+
+    /// <summary>
+    /// Sets the swizzle that will be applied to the b component of a texel before it is returned to the shader. The initial value is GL_BLUE.
+    /// </summary>
+    GL_TEXTURE_SWIZZLE_B = 0x8E44,
+
+    /// <summary>
+    /// Sets the swizzle that will be applied to the a component of a texel before it is returned to the shader. The initial value is GL_ALPHA.
+    /// </summary>
+    GL_TEXTURE_SWIZZLE_A = 0x8E45,
+
+    /// <summary>
+    /// Sets the wrap parameter for texture coordinate s to either GL_CLAMP or GL_REPEAT. GL_CLAMP causes s coordinates to be clamped to the range [0,1] and is useful for preventing wrapping artifacts when mapping a single image onto an object. GL_REPEAT causes the integer part of the s coordinate to be ignored; OpenGL uses only the fractional part, thereby creating a repeating pattern. Border texture elements are accessed only if wrapping is set to GL_CLAMP. Initially, GL_TEXTURE_WRAP_S is set to GL_REPEAT.
+    /// </summary>
+    GL_TEXTURE_WRAP_S = 0x2802,
+
+    /// <summary>
+    /// Sets the wrap parameter for texture coordinate t to either GL_CLAMP or GL_REPEAT. See the discussion under GL_TEXTURE_WRAP_S. Initially, GL_TEXTURE_WRAP_T is set to GL_REPEAT.
+    /// </summary>
+    GL_TEXTURE_WRAP_T = 0x2803,
+
+    /// <summary>
+    /// Sets the wrap parameter for texture coordinate r to either GL_CLAMP_TO_EDGE, GL_MIRRORED_REPEAT, or GL_REPEAT. Initially, GL_TEXTURE_WRAP_R is set to GL_REPEAT.
+    /// </summary>
+    GL_TEXTURE_WRAP_R = 0x8072,
+
+    /// <summary>
+    /// Valid in glTexParameter*v. Sets a border color. The params parameter contains four values that comprise the RGBA color of the texture border.
+    /// </summary>
+    GL_TEXTURE_BORDER_COLOR = 0x1004,
+
+    /// <summary>
+    /// Valid in glTexParameter*v. 
+    /// </summary>
+    GL_TEXTURE_SWIZZLE_RGBA = 0x8E46,
+
+    /// <summary>
+    /// Specifies the texture residence priority of the currently bound texture. Permissible values are in the range [0, 1].
+    /// </summary>
+    GL_TEXTURE_PRIORITY = 0x8066,
 }
 
 /// <summary>
@@ -637,319 +1278,6 @@ public enum TEXTURE_TARGET : int
 
 //-----Enums finalised above this line-----
 
-
-//todo: force the relevant function to take this enum (tricky because it's an array of ints, and half need to stay ints)
-public enum ARBCREATECONTEXT_ATTRIBUTE_NAMES
-{
-    WGL_CONTEXT_MAJOR_VERSION_ARB = 0x2091,
-
-    WGL_CONTEXT_MINOR_VERSION_ARB = 0x2092,
-
-    WGL_CONTEXT_LAYER_PLANE_ARB = 0x2093,
-
-    WGL_CONTEXT_FLAGS_ARB = 0x2094,
-
-    WGL_CONTEXT_PROFILE_MASK_ARB = 0x9126,
-}
-
-public enum ARBCREATECONTEXT_ATTRIBUTE_VALUES
-{
-    /// <summary>
-    /// Use with WGL_CONTEXT_FLAGS_ARB
-    /// </summary>
-    WGL_CONTEXT_DEBUG_BIT_ARB = 0x0001,
-    /// <summary>
-    /// Use with WGL_CONTEXT_FLAGS_ARB
-    /// </summary>
-    WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB = 0x0002,
-    /// <summary>
-    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB
-    /// </summary>
-    WGL_CONTEXT_CORE_PROFILE_BIT_ARB = 0x0001,
-    /// <summary>
-    /// Use with WGL_CONTEXT_PROFILE_MASK_ARB
-    /// </summary>
-    WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x0002,
-}
-
-public enum DEBUG_SEVERITY : int
-{
-    GL_DEBUG_SEVERITY_LOW = 0x9148,
-
-    GL_DEBUG_SEVERITY_MEDIUM = 0x9147,
-
-    GL_DEBUG_SEVERITY_HIGH = 0x9146,
-
-    GL_DEBUG_SEVERITY_NOTIFICATION = 0x826B,
-
-    GL_DONT_CARE = 0x1100,
-}
-
-public enum DEBUG_SOURCE : int
-{
-    GL_DEBUG_SOURCE_API = 0x8246,
-
-    GL_DEBUG_SOURCE_WINDOW_SYSTEM = 0x8247,
-
-    GL_DEBUG_SOURCE_SHADER_COMPILER = 8248,
-
-    GL_DEBUG_SOURCE_THIRD_PARTY = 0x8249,
-
-    GL_DEBUG_SOURCE_APPLICATION = 0x824A,
-
-    GL_DEBUG_SOURCE_OTHER = 0x824B,
-
-    GL_DONT_CARE = 0x1100,
-}
-
-public enum DEBUG_TYPE : int
-{
-    GL_DEBUG_TYPE_ERROR = 0x824C,
-
-    GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR = 0x824D,
-
-    GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR = 0x824E,
-
-    GL_DEBUG_TYPE_PORTABILITY = 0x824F,
-
-    GL_DEBUG_TYPE_PEFORMANCE = 0x8250,
-
-    GL_DEBUG_TYPE_MARKER = 0x824B,
-
-    GL_DEBUG_TYPE_PUSH_GROUP = 0x8269,
-
-    GL_DEBUG_TYPE_POP_GROUP = 0x826A,
-
-    GL_DEBUG_TYPE_OTHER = 0x8251,
-
-    GL_DONT_CARE = 0x1100,
-}
-
-public enum FRAMEBUFFER_ATTACHMENT_POINT : int
-{
-    /// <summary>
-    /// Original was GL_FRONT_LEFT = 0x0400
-    /// </summary>
-    FrontLeft = 0x0400,
-    /// <summary>
-    /// Original was GL_FRONT_RIGHT = 0x0401
-    /// </summary>
-    FrontRight = 0x0401,
-    /// <summary>
-    /// Original was GL_BACK_LEFT = 0x0402
-    /// </summary>
-    BackLeft = 0x0402,
-    /// <summary>
-    /// Original was GL_BACK_RIGHT = 0x0403
-    /// </summary>
-    BackRight = 0x0403,
-    /// <summary>
-    /// Original was GL_AUX0 = 0x0409
-    /// </summary>
-    Aux0 = 0x0409,
-    /// <summary>
-    /// Original was GL_AUX1 = 0x040A
-    /// </summary>
-    Aux1 = 0x040A,
-    /// <summary>
-    /// Original was GL_AUX2 = 0x040B
-    /// </summary>
-    Aux2 = 0x040B,
-    /// <summary>
-    /// Original was GL_AUX3 = 0x040C
-    /// </summary>
-    Aux3 = 0x040C,
-    /// <summary>
-    /// Original was GL_COLOR = 0x1800
-    /// </summary>
-    Colour = 0x1800,
-    /// <summary>
-    /// Original was GL_DEPTH = 0x1801
-    /// </summary>
-    Depth = 0x1801,
-    /// <summary>
-    /// Original was GL_STENCIL = 0x1802
-    /// </summary>
-    Stencil = 0x1802,
-    /// <summary>
-    /// Original was GL_DEPTH_STENCIL_ATTACHMENT = 0x821A
-    /// </summary>
-    DepthStencilAttachment = 0x821A,
-
-    GL_COLOR_ATTACHMENT0 = 0x8CE0,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT0_EXT = 0x8CE0
-    /// </summary>
-    ColourAttachment0Ext = 0x8CE0,
-    /// <summary>
-    /// Original was  GL_COLOR_ATTACHMENT1 = 0x8CE1
-    /// </summary>
-    ColourAttachment1 = 0x8CE1,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT1_EXT = 0x8CE1
-    /// </summary>
-    ColourAttachment1Ext = 0x8CE1,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT2 = 0x8CE2
-    /// </summary>
-    ColourAttachment2 = 0x8CE2,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT2_EXT = 0x8CE2
-    /// </summary>
-    ColourAttachment2Ext = 0x8CE2,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT3 = 0x8CE3
-    /// </summary>
-    ColourAttachment3 = 0x8CE3,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT3_EXT = 0x8CE3
-    /// </summary>
-    ColourAttachment3Ext = 0x8CE3,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT4 = 0x8CE4
-    /// </summary>
-    ColourAttachment4 = 0x8CE4,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT4_EXT = 0x8CE4
-    /// </summary>
-    ColourAttachment4Ext = 0x8CE4,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT5 = 0x8CE5
-    /// </summary>
-    ColourAttachment5 = 0x8CE5,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT5_EXT = 0x8CE5
-    /// </summary>
-    ColourAttachment5Ext = 0x8CE5,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT6 = 0x8CE6
-    /// </summary>
-    ColourAttachment6 = 0x8CE6,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT6_EXT = 0x8CE6
-    /// </summary>
-    ColourAttachment6Ext = 0x8CE6,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT7 = 0x8CE7
-    /// </summary>
-    ColourAttachment7 = 0x8CE7,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT7_EXT = 0x8CE7
-    /// </summary>
-    ColourAttachment7Ext = 0x8CE7,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT8 = 0x8CE8
-    /// </summary>
-    ColourAttachment8 = 0x8CE8,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT8_EXT = 0x8CE8
-    /// </summary>
-    ColourAttachment8Ext = 0x8CE8,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT9 = 0x8CE9
-    /// </summary>
-    ColourAttachment9 = 0x8CE9,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT9_EXT = 0x8CE9
-    /// </summary>
-    ColourAttachment9Ext = 0x8CE9,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT10 = 0x8CEA
-    /// </summary>
-    ColourAttachment10 = 0x8CEA,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT10_EXT = 0x8CEA
-    /// </summary>
-    ColourAttachment10Ext = 0x8CEA,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT11 = 0x8CEB
-    /// </summary>
-    ColourAttachment11 = 0x8CEB,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT11_EXT = 0x8CEB
-    /// </summary>
-    ColourAttachment11Ext = 0x8CEB,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT12 = 0x8CEC
-    /// </summary>
-    ColourAttachment12 = 0x8CEC,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT12_EXT = 0x8CEC
-    /// </summary>
-    ColourAttachment12Ext = 0x8CEC,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT13 = 0x8CED
-    /// </summary>
-    ColourAttachment13 = 0x8CED,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT13_EXT = 0x8CED
-    /// </summary>
-    ColourAttachment13Ext = 0x8CED,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT14 = 0x8CEE
-    /// </summary>
-    ColourAttachment14 = 0x8CEE,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT14_EXT = 0x8CEE
-    /// </summary>
-    ColourAttachment14Ext = 0x8CEE,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT15 = 0x8CEF
-    /// </summary>
-    ColourAttachment15 = 0x8CEF,
-    /// <summary>
-    /// Original was GL_COLOR_ATTACHMENT15_EXT = 0x8CEF
-    /// </summary>
-    ColourAttachment15Ext = 0x8CEF,
-    /// <summary>
-    /// Original was GL_DEPTH_ATTACHMENT = 0x8D00
-    /// </summary>
-    DepthAttachment = 0x8D00,
-    /// <summary>
-    /// Original was GL_DEPTH_ATTACHMENT_EXT = 0x8D00
-    /// </summary>
-    DepthAttachmentExt = 0x8D00,
-    /// <summary>
-    /// Original was GL_STENCIL_ATTACHMENT = 0x8D20
-    /// </summary>
-    StencilAttachment = 0x8D20,
-    /// <summary>
-    /// Original was GL_STENCIL_ATTACHMENT_EXT = 0x8D20
-    /// </summary>
-    StencilAttachmentExt = 0x8D20
-}
-
-public enum FRAMEBUFFER_TARGET : int
-{
-    GL_READ_FRAMEBUFFER = 0x8CA8,
-
-    GL_DRAW_FRAMEBUFFER = 0x8CA9,
-
-    GL_FRAMEBUFFER = 0x8D40,
-
-    GL_FRAMEBUFFER_EXT = 0x8D40,
-}
-
-public enum FRONTFACEMODE : int
-{
-    GL_CW = 0x0900,
-
-    GL_CCW = 0x0901,
-}
-
-public enum GETSHADER_FLAG : int
-{
-    GL_SHADER_TYPE = 0x8B4F,
-
-    GL_DELETE_STATUS = 0x8B80,
-
-    GL_COMPILE_STATUS = 0x8B81,
-
-    GL_INFO_LOG_LENGTH = 0x8B84,
-
-    GL_SHADER_SOURCE_LENGTH = 0x8B88,
-}
-
 public enum GLCAP : int
 {
     GL_CURRENT_COLOR = 0x0B00,
@@ -1163,71 +1491,6 @@ public enum GLCAP : int
     GL_SELECTION_BUFFER_SIZE = 0x0DF4,
 }
 
-public enum LIGHT : int
-{
-    GL_LIGHT0 = 0x4000,
-    GL_LIGHT1 = 0x4001,
-    GL_LIGHT2 = 0x4002,
-    GL_LIGHT3 = 0x4003,
-    GL_LIGHT4 = 0x4004,
-    GL_LIGHT5 = 0x4005,
-    GL_LIGHT6 = 0x4006,
-    GL_LIGHT7 = 0x4007,
-    GL_FRAGMENT_LIGHT0_SGIX = 0x840C,
-    GL_FRAGMENT_LIGHT1_SGIX = 0x840D,
-    GL_FRAGMENT_LIGHT2_SGIX = 0x840E,
-    GL_FRAGMENT_LIGHT3_SGIX = 0x840F,
-    GL_FRAGMENT_LIGHT4_SGIX = 0x8410,
-    GL_FRAGMENT_LIGHT5_SGIX = 0x8411,
-    GL_FRAGMENT_LIGHT6_SGIX = 0x8412,
-    GL_FRAGMENT_LIGHT7_SGIX = 0x8413,
-}
-
-public enum LIGHT_FLAG : int
-{
-    GL_AMBIENT = 0x1200,
-    GL_DIFFUSE = 0x1201,
-    GL_SPECULAR = 0x1202,
-    GL_POSITION = 0x1203,
-    GL_SPOT_DIRECTION = 0x1204,
-    GL_SPOT_EXPONENT = 0x1205,
-    GL_SPOT_CUTOFF = 0x1206,
-    GL_CONSTANT_ATTENUATION = 0x1207,
-    GL_LINEAR_ATTENUATION = 0x1208,
-    GL_QUADRATIC_ATTENUATION = 0x1209,
-}
-
-public enum MATERIAL_FLAG : int
-{
-    GL_AMBIENT = 0x1200,
-    GL_DIFFUSE = 0x1201,
-    GL_SPECULAR = 0x1202,
-    GL_EMISSION = 0x1600,
-    GL_SHININESS = 0x1601,
-    GL_AMBIENT_AND_DIFFUSE = 0x1602,
-    GL_COLOR_INDEXES = 0x1603,
-}
-
-public enum MATRIX_MODE : int
-{
-    MODELVIEW = 0x1700,
-    PROJECTION = 0x1701,
-    TEXTURE = 0x1702,
-}
-
-public enum MSAA_SAMPLES
-{
-    Disabled = 0,
-
-    X2 = 2,
-
-    X4 = 4,
-
-    X8 = 8,
-
-    X16 = 16
-}
-
 public enum PIXEL_STORE_MODE : int
 {
     GL_UNPACK_SWAP_BYTES = 0x0CF0,
@@ -1341,69 +1604,6 @@ public enum PIXEL_TYPE : int
     GL_FLOAT_32_UNSIGNED_INT_24_8_REV = 0X8Dad,
 }
 
-public enum PRIMITIVE_TYPE : int
-{
-    /// <summary>
-    /// Treats each vertex as a single point. Vertex n defines point n. N points are drawn.
-    /// </summary>
-    GL_POINTS = 0,
-
-    /// <summary>
-    /// Treats each pair of vertices as an independent line segment. Vertices 2 ⁢ n - 1 and 2 ⁢ n define line n. N 2 lines are drawn.
-    /// </summary>
-    GL_LINES = 1,
-
-    /// <summary>
-    /// Draws a connected group of line segments from the first vertex to the last. Vertices n and n + 1 define line n. N - 1 lines are drawn.
-    /// </summary>
-    GL_LINE_STRIP = 3,
-
-    /// <summary>
-    /// Draws a connected group of line segments from the first vertex to the last, then back to the first. Vertices n and n + 1 define line n. The last line, however, is defined by vertices N and 1 . N lines are drawn.
-    /// </summary>
-    GL_LINE_LOOP = 2,
-
-    /// <summary>
-    /// Treats each triplet of vertices as an independent triangle. Vertices 3 ⁢ n - 2 , 3 ⁢ n - 1 , and 3 ⁢ n define triangle n. N 3 triangles are drawn.
-    /// </summary>
-    GL_TRIANGLES = 4,
-
-    /// <summary>
-    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. For odd n, vertices n, n + 1 , and n + 2 define triangle n. For even n, vertices n + 1 , n, and n + 2 define triangle n. N - 2 triangles are drawn.
-    /// </summary>
-    GL_TRIANGLE_STRIP = 5,
-
-    /// <summary>
-    /// Draws a connected group of triangles. One triangle is defined for each vertex presented after the first two vertices. Vertices 1 , n + 1 , and n + 2 define triangle n. N - 2 triangles are drawn.
-    /// </summary>
-    GL_TRIANGLE_FAN = 6,
-
-    /// <summary>
-    /// Treats each group of four vertices as an independent quadrilateral. Vertices 4 ⁢ n - 3 , 4 ⁢ n - 2 , 4 ⁢ n - 1 , and 4 ⁢ n define quadrilateral n. N 4 quadrilaterals are drawn.
-    /// </summary>
-    GL_QUADS = 7,
-
-    /// <summary>
-    /// Draws a connected group of quadrilaterals. One quadrilateral is defined for each pair of vertices presented after the first pair. Vertices 2 ⁢ n - 1 , 2 ⁢ n , 2 ⁢ n + 2 , and 2 ⁢ n + 1 define quadrilateral n. N 2 - 1 quadrilaterals are drawn. Note that the order in which vertices are used to construct a quadrilateral from strip data is different from that used with independent data.
-    /// </summary>
-    GL_QUAD_STRIP = 8,
-
-    /// <summary>
-    /// Draws a single, convex polygon. Vertices 1 through N define this polygon.
-    /// </summary>
-    GL_POLYGON = 9,
-
-    GL_LINE_STRIP_ADJACENCY = 11,
-
-    GL_LINES_ADJACENCY = 10,
-
-    GL_TRIANGLE_STRIP_ADJACENCY = 13,
-
-    GL_TRIANGLES_ADJACENCY = 12,
-
-    GL_PATCHES = 14,
-}
-
 public enum SHADER_TYPE : int
 {
     GL_COMPUTE_SHADER = 0x91B9,
@@ -1459,202 +1659,10 @@ public enum STATE_CAP : uint
     GL_T4F_C4F_N3F_V4F = 0x2A2D,
 }
 
-public enum TEXPARAMETER_NAME : int
-{
-    //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
-    GL_TEXTURE_BORDER_COLOR = 0x1004,
-
-    GL_TEXTURE_MAG_FILTER = 0x2800,
-
-    GL_TEXTURE_MIN_FILTER = 0x2801,
-
-    GL_TEXTURE_WRAP_S = 0x2802,
-
-    GL_TEXTURE_WRAP_T = 0x2803,
-    /// <summary>
-    /// Original was GL_TEXTURE_PRIORITY = 0x8066
-    /// </summary>
-    TexturePriority = 0x8066,
-    /// <summary>
-    /// Original was GL_TEXTURE_PRIORITY_EXT = 0x8066
-    /// </summary>
-    TexturePriorityExt = 0x8066,
-    /// <summary>
-    /// Original was GL_TEXTURE_DEPTH = 0x8071
-    /// </summary>
-    TextureDepth = 0x8071,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_R = 0x8072
-    /// </summary>
-    TextureWrapR = 0x8072,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_R_EXT = 0x8072
-    /// </summary>
-    TextureWrapRExt = 0x8072,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_R_OES = 0x8072
-    /// </summary>
-    TextureWrapROes = 0x8072,
-    /// <summary>
-    /// Original was GL_DETAIL_TEXTURE_LEVEL_SGIS = 0x809A
-    /// </summary>
-    DetailTextureLevelSgis = 0x809A,
-    /// <summary>
-    /// Original was GL_DETAIL_TEXTURE_MODE_SGIS = 0x809B
-    /// </summary>
-    DetailTextureModeSgis = 0x809B,
-    /// <summary>
-    /// Original was GL_SHADOW_AMBIENT_SGIX = 0x80BF
-    /// </summary>
-    ShadowAmbientSgix = 0x80BF,
-    /// <summary>
-    /// Original was GL_TEXTURE_COMPARE_FAIL_VALUE = 0x80BF
-    /// </summary>
-    TextureCompareFailValue = 0x80BF,
-    /// <summary>
-    /// Original was GL_DUAL_TEXTURE_SELECT_SGIS = 0x8124
-    /// </summary>
-    DualTextureSelectSgis = 0x8124,
-    /// <summary>
-    /// Original was GL_QUAD_TEXTURE_SELECT_SGIS = 0x8125
-    /// </summary>
-    QuadTextureSelectSgis = 0x8125,
-    /// <summary>
-    /// Original was GL_CLAMP_TO_BORDER = 0x812D
-    /// </summary>
-    ClampToBorder = 0x812D,
-    /// <summary>
-    /// Original was GL_CLAMP_TO_EDGE = 0x812F
-    /// </summary>
-    ClampToEdge = 0x812F,
-    /// <summary>
-    /// Original was GL_TEXTURE_WRAP_Q_SGIS = 0x8137
-    /// </summary>
-    TextureWrapQSgis = 0x8137,
-    /// <summary>
-    /// Original was GL_TEXTURE_MIN_LOD = 0x813A
-    /// </summary>
-    TextureMinLod = 0x813A,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_LOD = 0x813B
-    /// </summary>
-    TextureMaxLod = 0x813B,
-    /// <summary>
-    /// Original was GL_TEXTURE_BASE_LEVEL = 0x813C
-    /// </summary>
-    TextureBaseLevel = 0x813C,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_LEVEL = 0x813D
-    /// </summary>
-    TextureMaxLevel = 0x813D,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_CENTER_SGIX = 0x8171
-    /// </summary>
-    TextureClipmapCenterSgix = 0x8171,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_FRAME_SGIX = 0x8172
-    /// </summary>
-    TextureClipmapFrameSgix = 0x8172,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_OFFSET_SGIX = 0x8173
-    /// </summary>
-    TextureClipmapOffsetSgix = 0x8173,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_VIRTUAL_DEPTH_SGIX = 0x8174
-    /// </summary>
-    TextureClipmapVirtualDepthSgix = 0x8174,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_LOD_OFFSET_SGIX = 0x8175
-    /// </summary>
-    TextureClipmapLodOffsetSgix = 0x8175,
-    /// <summary>
-    /// Original was GL_TEXTURE_CLIPMAP_DEPTH_SGIX = 0x8176
-    /// </summary>
-    TextureClipmapDepthSgix = 0x8176,
-    /// <summary>
-    /// Original was GL_POST_TEXTURE_FILTER_BIAS_SGIX = 0x8179
-    /// </summary>
-    PostTextureFilterBiasSgix = 0x8179,
-    /// <summary>
-    /// Original was GL_POST_TEXTURE_FILTER_SCALE_SGIX = 0x817A
-    /// </summary>
-    PostTextureFilterScaleSgix = 0x817A,
-    /// <summary>
-    /// Original was GL_TEXTURE_LOD_BIAS_S_SGIX = 0x818E
-    /// </summary>
-    TextureLodBiasSSgix = 0x818E,
-    /// <summary>
-    /// Original was GL_TEXTURE_LOD_BIAS_T_SGIX = 0x818F
-    /// </summary>
-    TextureLodBiasTSgix = 0x818F,
-    /// <summary>
-    /// Original was GL_TEXTURE_LOD_BIAS_R_SGIX = 0x8190
-    /// </summary>
-    TextureLodBiasRSgix = 0x8190,
-    /// <summary>
-    /// Original was GL_GENERATE_MIPMAP = 0x8191
-    /// </summary>
-    GenerateMipmap = 0x8191,
-    /// <summary>
-    /// Original was GL_GENERATE_MIPMAP_SGIS = 0x8191
-    /// </summary>
-    GenerateMipmapSgis = 0x8191,
-    /// <summary>
-    /// Original was GL_TEXTURE_COMPARE_SGIX = 0x819A
-    /// </summary>
-    TextureCompareSgix = 0x819A,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_CLAMP_S_SGIX = 0x8369
-    /// </summary>
-    TextureMaxClampSSgix = 0x8369,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_CLAMP_T_SGIX = 0x836A
-    /// </summary>
-    TextureMaxClampTSgix = 0x836A,
-    /// <summary>
-    /// Original was GL_TEXTURE_MAX_CLAMP_R_SGIX = 0x836B
-    /// </summary>
-    TextureMaxClampRSgix = 0x836B,
-    /// <summary>
-    /// Original was GL_TEXTURE_LOD_BIAS = 0x8501
-    /// </summary>
-    TextureLodBias = 0x8501,
-    /// <summary>
-    /// Original was GL_DEPTH_TEXTURE_MODE = 0x884B
-    /// </summary>
-    DepthTextureMode = 0x884B,
-    /// <summary>
-    /// Original was GL_TEXTURE_COMPARE_MODE = 0x884C
-    /// </summary>
-    TextureCompareMode = 0x884C,
-    /// <summary>
-    /// Original was GL_TEXTURE_COMPARE_FUNC = 0x884D
-    /// </summary>
-    TextureCompareFunc = 0x884D,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_R = 0x8E42
-    /// </summary>
-    TextureSwizzleR = 0x8E42,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_G = 0x8E43
-    /// </summary>
-    TextureSwizzleG = 0x8E43,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_B = 0x8E44
-    /// </summary>
-    TextureSwizzleB = 0x8E44,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_A = 0x8E45
-    /// </summary>
-    TextureSwizzleA = 0x8E45,
-    /// <summary>
-    /// Original was GL_TEXTURE_SWIZZLE_RGBA = 0x8E46
-    /// </summary>
-    TextureSwizzleRgba = 0x8E46,
-}
-
 public enum TEXPARAMETER_VALUE : int
 {
+    //https://registry.khronos.org/OpenGL-Refpages/es3.0/html/glTexParameter.xhtml
+    //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
     GL_REPEAT = 0x2901,
 
     GL_CLAMP_TO_BORDER = 0x812D,
@@ -2163,6 +2171,9 @@ public enum VERTEX_DATA_TYPE : int
 }
 #endregion
 
+/// <summary>
+/// Access to OpenGL capabilities via the Opengl32.dll library.
+/// </summary>
 [SuppressUnmanagedCodeSecurity]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming conventions but I'm keeping these APIs pure.")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1401:P/Invokes should not be visible", Justification = "This is a P/Invoke library...")]
@@ -2307,7 +2318,7 @@ public static partial class OpenGL32
     /// </summary>
     /// <param name="mode">Specifies the orientation of front-facing polygons. GL_CW and GL_CCW are accepted. The initial value is GL_CCW.</param>
     [DllImport(Library)]
-    public static extern void glFrontFace(FRONTFACEMODE mode);
+    public static extern void glFrontFace(FRONTFACE_MODE mode);
 
     /// <summary>
     /// The glGetBooleanv function returns the value or values of a selected parameter.
@@ -2383,7 +2394,7 @@ public static partial class OpenGL32
     /// <param name="params">Specifies the value that parameter pname of light source light will be set to.</param>
     /// <remarks>The glLightfv function sets the value or values of individual light source parameters. The light parameter names the light and is a symbolic name of the form GL_LIGHTi, where 0 = i less than GL_MAX_LIGHTS. The pname parameter specifies one of the light source parameters, again by symbolic name.The params parameter is either a single value or a pointer to an array that contains the new values. Lighting calculation is enabled and disabled using glEnable and glDisable with argument GL_LIGHTING.When lighting is enabled, light sources that are enabled contribute to the lighting calculation.Light source i is enabled and disabled using glEnable and glDisable with argument GL_LIGHTi. It is always the case that GL_LIGHTi = GL_LIGHT0 + i.</remarks>
     [DllImport(Library)]
-    public static extern void glLightfv(LIGHT light, LIGHT_FLAG pname, float[] @params);
+    public static extern void glLightfv(LIGHT light, LIGHTSOURCE_NAME pname, float[] @params);
 
     /// <summary>
     /// specify the width of rasterized lines
@@ -2399,16 +2410,16 @@ public static partial class OpenGL32
     public static extern void glLoadIdentity();
 
     /// <summary>
-    /// The glMaterialfv function specifies material parameters for the lighting model.
+    /// The glMaterialfv function specifies material parameters for the lighting model. 
     /// </summary>
     /// <param name="face">The face or faces that are being updated. Must be one of the following: GL_FRONT, GL_BACK, or GL_FRONT and GL_BACK.</param>
     /// <param name="pname">The material parameter of the face or faces being updated.</param>
     /// <param name="params">The value to which parameter GL_SHININESS will be set.</param>
     [DllImport(Library)]
-    public static extern void glMaterialfv(POLYGON_FACE face, MATERIAL_FLAG pname, float[] @params);
+    public static extern void glMaterialfv(POLYGON_FACE face, MATERIAL_NAME pname, float[] @params);
 
     /// <summary>
-    /// specify which matrix is the current matrix
+    /// Specifies which matrix stack is the target for subsequent matrix operations. The initial value is GL_MODELVIEW.
     /// </summary>
     /// <param name="mode">Specifies which matrix stack is the target for subsequent matrix operations.</param>
     [DllImport(Library)]

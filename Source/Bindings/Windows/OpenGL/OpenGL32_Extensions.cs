@@ -23,7 +23,7 @@ public static partial class OpenGL32
     private delegate int Delegate_glCreateProgram();
     private delegate int Delegate_glCreateShader(SHADER_TYPE shaderType);
     private delegate void Delegate_glDebugMessageCallback(IntPtr callback, IntPtr userParam);
-    private delegate void Delegate_glDebugMessageControl(DEBUG_SOURCE source, DEBUG_TYPE type, DEBUG_SEVERITY severity, int count, int[] ids, bool enabled);
+    private delegate void Delegate_glDebugMessageControl(DEBUGMESSAGE_SOURCE source, DEBUGMESSAGE_TYPE type, DEBUGMESSAGE_SEVERITY severity, int count, int[] ids, bool enabled);
     private delegate void Delegate_glDeleteBuffers(int n, int[] buffers);
     private delegate void Delegate_glDeleteFramebuffers(int n, int[] framebuffers);
     private delegate void Delegate_glDeleteProgram(int program);
@@ -36,12 +36,12 @@ public static partial class OpenGL32
     private delegate void Delegate_glGenFrameBuffers(int n, int[] buffers);
     private delegate int Delegate_glGetAttribLocation(int programObj, string name);
     private unsafe delegate void Delegate_glGetProgramInfoLog(int program, int bufSize, out int length, StringBuilder infoLog);
-    private unsafe delegate void Delegate_glGetShaderiv(int shader, GETSHADER_FLAG pname, int* @params);
+    private unsafe delegate void Delegate_glGetShaderiv(int shader, GETSHADER_NAME pname, int* @params);
     private unsafe delegate void Delegate_glGetShaderInfoLog(int shader, int bufSize, out int length, StringBuilder infoLog);
     private delegate int Delegate_glGetUniformLocation(int program, string name);
     private delegate void Delegate_glLinkProgram(int program);
     private delegate void Delegate_glShaderSource(int shader, int count, string[] strings, int[]? lengths);
-    private delegate void Delegate_glTexImage2DMultisample(TEXTURE_TARGET target, MSAA_SAMPLES samples, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, bool fixedsamplelocations);
+    private delegate void Delegate_glTexImage2DMultisample(TEXTURE_TARGET target, int samples, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, bool fixedsamplelocations);
     private delegate void Delegate_glTexStorage2D(TEXTURE_TARGET target, int levels, TEXTURE_INTERNALFORMAT internalFormat, int width, int height);
     private delegate void Delegate_glUniform1f(int location, float v0);
     private delegate void Delegate_glUniform1i(int location, int v0);
@@ -68,7 +68,7 @@ public static partial class OpenGL32
     /// <param name="message"></param>
     /// <param name="userParam">will be set to the value passed in the userParam parameter to the most recent call to glDebugMessageCallback</param>
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate void DEBUGPROC(DEBUG_SOURCE source, DEBUG_TYPE type, int id, DEBUG_SEVERITY severity, int length, IntPtr message, IntPtr userParam);
+    public delegate void DEBUGPROC(DEBUGMESSAGE_SOURCE source, DEBUGMESSAGE_TYPE type, int id, DEBUGMESSAGE_SEVERITY severity, int length, IntPtr message, IntPtr userParam);
     #endregion
     
     #region Entry Points
@@ -210,7 +210,6 @@ public static partial class OpenGL32
         _glBindBuffer(target, buffer);
     }
 
-
     //----Fully Updated above this line----
 
     public static void glBindFramebuffer(FRAMEBUFFER_TARGET target, int frameBuffer)
@@ -277,7 +276,7 @@ public static partial class OpenGL32
         _glDebugMessageCallback(Marshal.GetFunctionPointerForDelegate(callbackFunction), userParam);
     }
 
-    public static void glDebugMessageControl(DEBUG_SOURCE source, DEBUG_TYPE type, DEBUG_SEVERITY severity, int count, int[] ids, bool enabled)
+    public static void glDebugMessageControl(DEBUGMESSAGE_SOURCE source, DEBUGMESSAGE_TYPE type, DEBUGMESSAGE_SEVERITY severity, int count, int[] ids, bool enabled)
     {
         if (_glDebugMessageControl is null)
             throw new EntryPointNotFoundException($"{nameof(_glDebugMessageControl)} was called but the entrypoint was not loaded.");
@@ -347,6 +346,15 @@ public static partial class OpenGL32
         _glEnableVertexAttribArray(index);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="attachment">Specifies whether the texture image should be attached to the framebuffer object's color, depth, or stencil buffer. A texture image may not be attached to the default framebuffer object name 0.</param>
+    /// <param name="texTarget"></param>
+    /// <param name="texture"></param>
+    /// <param name="level"></param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glFramebufferTexture2D(FRAMEBUFFER_TARGET target, FRAMEBUFFER_ATTACHMENT_POINT attachment, TEXTURE_TARGET texTarget, int texture, int level)
     {
         if (_glFramebufferTexture2D is null)
@@ -387,7 +395,7 @@ public static partial class OpenGL32
         _glGetProgramInfoLog(program, maxLength, out count, infoLog);
     }
 
-    public unsafe static void glGetShader(int shader, GETSHADER_FLAG pname, int* @params)
+    public unsafe static void glGetShader(int shader, GETSHADER_NAME pname, int* @params)
     {
         if (_glGetShaderiv is null)
             throw new EntryPointNotFoundException($"{nameof(_glGetShaderiv)} was called but the entrypoint was not loaded.");
@@ -427,7 +435,7 @@ public static partial class OpenGL32
         _glShaderSource(shader, count, strings, lengths);
     }
     
-    public static void glTexImage2DMultisample(TEXTURE_TARGET target, MSAA_SAMPLES samples, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, bool fixedSampleLocations)
+    public static void glTexImage2DMultisample(TEXTURE_TARGET target, int samples, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, bool fixedSampleLocations)
     {
         if (_glTexImage2DMultisample is null)
             throw new EntryPointNotFoundException($"{nameof(_glTexImage2DMultisample)} was called but the entrypoint was not loaded.");

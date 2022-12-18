@@ -3,7 +3,7 @@
 namespace HaighFramework.OpenGL;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming conventions but I'm keeping these APIs pure.")]
-public static class WGLExtensions
+public static partial class OpenGL32
 {
     private delegate bool Delegate_wglChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, float[] pfAttribFList, int nMaxFormats, [Out] int[] piFormats, out int nNumFormats);
     private delegate IntPtr Delegate_wglCreateContextAttribsARB(IntPtr hDc, IntPtr sharedContext, int[] attribList);
