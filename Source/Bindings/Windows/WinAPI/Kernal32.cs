@@ -3,6 +3,58 @@ using System.Security;
 
 namespace HaighFramework.WinAPI;
 
+#region Enums
+/// <summary>
+/// The standard device. https://learn.microsoft.com/en-us/windows/console/getstdhandle
+/// </summary>
+internal enum STDHANDLE
+{
+    /// <summary>
+    /// The standard input device. Initially, this is the console input buffer, CONIN$.
+    /// </summary>
+    STD_INPUT_HANDLE = -10,
+
+    /// <summary>
+    /// The standard output device. Initially, this is the active console screen buffer, CONOUT$.
+    /// </summary>
+    STD_OUTPUT_HANDLE = -11,
+
+    /// <summary>
+    /// The standard error device. Initially, this is the active console screen buffer, CONOUT$.
+    /// </summary>
+    STD_ERROR_HANDLE = -12
+}
+#endregion
+
+#region Structs
+/// <summary>
+/// Defines the coordinates of the upper left and lower right corners of a rectangle.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct SMALL_RECT
+{
+    /// <summary>
+    /// The x-coordinate of the upper left corner of the rectangle.
+    /// </summary>
+    public short Left;
+
+    /// <summary>
+    /// The y-coordinate of the upper left corner of the rectangle.
+    /// </summary>
+    public short Top;
+
+    /// <summary>
+    /// The x-coordinate of the lower right corner of the rectangle.
+    /// </summary>
+    public short Right;
+
+    /// <summary>
+    /// The y-coordinate of the lower right corner of the rectangle.
+    /// </summary>
+    public short Bottom;
+}
+#endregion
+
 /// <summary>
 /// Low-level operating system functions for memory management and resource handling.
 /// </summary>

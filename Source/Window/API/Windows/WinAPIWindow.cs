@@ -8,8 +8,14 @@ namespace HaighFramework.Window.Windows;
 
 public class WinAPIWindow : IWindow
 {
-    private const int XBUTTON1 = 0x0001;
-    private const int XBUTTON2 = 0x0002;
+    private const CLASSSTLYE DefaultClassStyle = 0;
+    private const WINDOWSTYLE WS_PARENT_SIZING_BORDER = WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_THICKFRAME | WINDOWSTYLE.WS_MAXIMIZEBOX | WINDOWSTYLE.WS_MINIMIZEBOX | WINDOWSTYLE.WS_CLIPCHILDREN;
+    private const WINDOWSTYLE WS_PARENT_BORDER = WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_MINIMIZEBOX | WINDOWSTYLE.WS_CLIPCHILDREN;
+    private const WINDOWSTYLE WS_PARENT_NO_BORDER = WINDOWSTYLE.WS_POPUP | WINDOWSTYLE.WS_CLIPCHILDREN;
+    private const WINDOWSTYLEEX EWS_PARENT = WINDOWSTYLEEX.WS_EX_APPWINDOW | WINDOWSTYLEEX.WS_EX_WINDOWEDGE;
+    private const WINDOWSTYLE WS_CHILD = WINDOWSTYLE.WS_VISIBLE | WINDOWSTYLE.WS_CHILD | WINDOWSTYLE.WS_CLIPSIBLINGS;
+    private const WINDOWSTYLEEX EWS_CHILD = 0;
+    private const int HTCLIENT = 1;
 
     private static float Clamp(float value, float min, float max)
     {
@@ -26,15 +32,6 @@ public class WinAPIWindow : IWindow
             return new string(OpenGL32.glGetString(name));
         }
     }
-
-    private const CLASSSTLYE DefaultClassStyle = 0;
-    private const WINDOWSTYLE WS_PARENT_SIZING_BORDER = WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_THICKFRAME | WINDOWSTYLE.WS_MAXIMIZEBOX | WINDOWSTYLE.WS_MINIMIZEBOX | WINDOWSTYLE.WS_CLIPCHILDREN;
-    private const WINDOWSTYLE WS_PARENT_BORDER = WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_MINIMIZEBOX | WINDOWSTYLE.WS_CLIPCHILDREN;
-    private const WINDOWSTYLE WS_PARENT_NO_BORDER = WINDOWSTYLE.WS_POPUP | WINDOWSTYLE.WS_CLIPCHILDREN;
-    private const WINDOWSTYLEEX EWS_PARENT = WINDOWSTYLEEX.WS_EX_APPWINDOW | WINDOWSTYLEEX.WS_EX_WINDOWEDGE;
-    private const WINDOWSTYLE WS_CHILD = WINDOWSTYLE.WS_VISIBLE | WINDOWSTYLE.WS_CHILD | WINDOWSTYLE.WS_CLIPSIBLINGS;
-    private const WINDOWSTYLEEX EWS_CHILD = 0;
-    private const int HTCLIENT = 1;
 
     private static RECT GetWindowPosition(IntPtr windowHandle)
     {
@@ -262,7 +259,7 @@ public class WinAPIWindow : IWindow
 
                 var plannedWindowR = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
 
-                var border = (WM_SIZING_wParam)wParam.ToUInt32();
+                var border = (WM_SIZING_WPARAM)wParam.ToUInt32();
 
                 RECT borderSize = new();
                 User32.AdjustWindowRectEx(ref borderSize, _parentStyle, false, _parentExStyle);
@@ -277,15 +274,15 @@ public class WinAPIWindow : IWindow
                     break;
 
                 if (plannedWindowR.Width != targetWindowSize.X)
-                    if (border == WM_SIZING_wParam.WMSZ_LEFT || border == WM_SIZING_wParam.WMSZ_TOPLEFT || border == WM_SIZING_wParam.WMSZ_BOTTOMLEFT)
+                    if (border == WM_SIZING_WPARAM.WMSZ_LEFT || border == WM_SIZING_WPARAM.WMSZ_TOPLEFT || border == WM_SIZING_WPARAM.WMSZ_BOTTOMLEFT)
                         plannedWindowR.left = plannedWindowR.right - (int)targetWindowSize.X;
-                    else if (border == WM_SIZING_wParam.WMSZ_RIGHT || border == WM_SIZING_wParam.WMSZ_TOPRIGHT || border == WM_SIZING_wParam.WMSZ_BOTTOMRIGHT)
+                    else if (border == WM_SIZING_WPARAM.WMSZ_RIGHT || border == WM_SIZING_WPARAM.WMSZ_TOPRIGHT || border == WM_SIZING_WPARAM.WMSZ_BOTTOMRIGHT)
                         plannedWindowR.right = plannedWindowR.left + (int)targetWindowSize.X;
 
                 if (plannedWindowR.Height != targetWindowSize.Y)
-                    if (border == WM_SIZING_wParam.WMSZ_TOP || border == WM_SIZING_wParam.WMSZ_TOPLEFT || border == WM_SIZING_wParam.WMSZ_TOPRIGHT)
+                    if (border == WM_SIZING_WPARAM.WMSZ_TOP || border == WM_SIZING_WPARAM.WMSZ_TOPLEFT || border == WM_SIZING_WPARAM.WMSZ_TOPRIGHT)
                         plannedWindowR.top = plannedWindowR.bottom - (int)targetWindowSize.Y;
-                    else if (border == WM_SIZING_wParam.WMSZ_BOTTOM || border == WM_SIZING_wParam.WMSZ_BOTTOMLEFT || border == WM_SIZING_wParam.WMSZ_BOTTOMRIGHT)
+                    else if (border == WM_SIZING_WPARAM.WMSZ_BOTTOM || border == WM_SIZING_WPARAM.WMSZ_BOTTOMLEFT || border == WM_SIZING_WPARAM.WMSZ_BOTTOMRIGHT)
                         plannedWindowR.bottom = plannedWindowR.top + (int)targetWindowSize.Y;
 
                 Marshal.StructureToPtr(plannedWindowR, lParam, true);

@@ -52,10 +52,10 @@ internal class WinAPIInputManager : IInputManager
 
     private void RegisterForRawInput()
     {
-        DevBroadcastHDR dbHdr = new();
-        dbHdr.Size = Marshal.SizeOf(dbHdr);
-        dbHdr.DeviceType = DeviceBroadcastType.INTERFACE;
-        dbHdr.ClassGuid = GUID_DEVINTERFACE_HID;
+        DEV_BROADCAST_DEVICEINTERFACE_A dbHdr = new();
+        dbHdr.dbcc_size = Marshal.SizeOf(dbHdr);
+        dbHdr.dbcc_devicetype = DEVBROADCASTTYPE.DBT_DEVTYP_DEVICEINTERFACE;
+        dbHdr.dbcc_classguid = GUID_DEVINTERFACE_HID;
 
         unsafe
         {

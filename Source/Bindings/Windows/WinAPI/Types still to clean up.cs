@@ -2,312 +2,6 @@
 
 namespace HaighFramework.WinAPI;
 
-/// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rid_device_info
-/// Defines the raw input data coming from any device.
-/// For use with GetRawInputDeviceInfo.
-/// </summary>
-[StructLayout(LayoutKind.Sequential)]
-internal class RID_DEVICE_INFO
-{
-    /// <summary>
-    /// The size, in bytes, of the RID_DEVICE_INFO structure.
-    /// </summary>
-    internal uint cbSize = (uint)Marshal.SizeOf(typeof(RID_DEVICE_INFO));
-    /// <summary>
-    /// The type of raw input data.
-    /// </summary>
-    internal RID_DEVICE_INFO_dwType dwType;
-    /// <summary>
-    /// Container for the relevant device info struct
-    /// </summary>
-    internal DeviceInfo DUMMYUNIONNAME;
-
-    [StructLayout(LayoutKind.Explicit)]
-    internal struct DeviceInfo
-    {
-        /// <summary>
-        /// If dwType is RIM_TYPEMOUSE, this is the RID_DEVICE_INFO_MOUSE structure that defines the mouse.
-        /// </summary>
-        [FieldOffset(0)]
-        internal RID_DEVICE_INFO_MOUSE mouse;
-        /// <summary>
-        /// If dwType is RIM_TYPEKEYBOARD, this is the RID_DEVICE_INFO_KEYBOARD structure that defines the keyboard.
-        /// </summary>
-        [FieldOffset(0)]
-        internal RID_DEVICE_INFO_KEYBOARD keyboard;
-        /// <summary>
-        /// If dwType is RIM_TYPEHID, this is the RID_DEVICE_INFO_HID structure that defines the HID device.
-        /// </summary>
-        [FieldOffset(0)]
-        internal RID_DEVICE_INFO_HID hid;
-    };
-}
-
-/// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rid_device_info
-/// For use with RID_DEVICE_INFO
-/// </summary>
-internal enum RID_DEVICE_INFO_dwType : uint
-{
-    /// <summary>
-    /// Data comes from a mouse.
-    /// </summary>
-    RIM_TYPEMOUSE = 0,
-    /// <summary>
-    /// Data comes from a keyboard.
-    /// </summary>
-    RIM_TYPEKEYBOARD = 1,
-    /// <summary>
-    /// Data comes from an HID that is not a keyboard or a mouse.
-    /// </summary>
-    RIM_TYPEHID = 2
-}
-
-/// <summary>
-/// Defines the raw input data coming from the specified Human Interface Device (HID).
-/// </summary>
-[StructLayout(LayoutKind.Sequential)]
-internal struct RID_DEVICE_INFO_HID
-{
-    /// <summary>
-    /// Vendor ID for the HID.
-    /// </summary>
-    internal int VendorId;
-    /// <summary>
-    /// Product ID for the HID.
-    /// </summary>
-    internal int ProductId;
-    /// <summary>
-    /// Version number for the HID.
-    /// </summary>
-    internal int VersionNumber;
-    /// <summary>
-    /// Top-level collection Usage Page for the device.
-    /// </summary>
-    //internal UInt16 UsagePage;
-    internal short UsagePage;
-    /// <summary>
-    /// Top-level collection Usage for the device.
-    /// </summary>
-    //internal UInt16 Usage;
-    internal short Usage;
-}
-
-/// <summary>
-/// Defines the raw input data coming from the specified keyboard.
-/// </summary>
-/// <remarks>
-/// For the keyboard, the Usage Page is 1 and the Usage is 6.
-/// </remarks>
-[StructLayout(LayoutKind.Sequential)]
-internal struct RID_DEVICE_INFO_KEYBOARD
-{
-    /// <summary>
-    /// Type of the keyboard.
-    /// </summary>
-    internal int Type;
-    /// <summary>
-    /// Subtype of the keyboard.
-    /// </summary>
-    internal int SubType;
-    /// <summary>
-    /// Scan code mode.
-    /// </summary>
-    internal int KeyboardMode;
-    /// <summary>
-    /// Number of function keys on the keyboard.
-    /// </summary>
-    internal int NumberOfFunctionKeys;
-    /// <summary>
-    /// Number of LED indicators on the keyboard.
-    /// </summary>
-    internal int NumberOfIndicators;
-    /// <summary>
-    /// Total number of keys on the keyboard.
-    /// </summary>
-    internal int NumberOfKeysTotal;
-}
-
-/// <summary>
-/// Defines the raw input data coming from the specified mouse.
-/// </summary>
-/// <remarks>
-/// For the keyboard, the Usage Page is 1 and the Usage is 2.
-/// </remarks>
-[StructLayout(LayoutKind.Sequential)]
-internal struct RID_DEVICE_INFO_MOUSE
-{
-    /// <summary>
-    /// ID for the mouse device.
-    /// </summary>
-    internal int Id;
-    /// <summary>
-    /// Number of buttons for the mouse.
-    /// </summary>
-    internal int NumberOfButtons;
-    /// <summary>
-    /// Number of data points per second. This information may not be applicable for every mouse device.
-    /// </summary>
-    internal int SampleRate;
-    /// <summary>
-    /// TRUE if the mouse has a wheel for horizontal scrolling; otherwise, FALSE.
-    /// </summary>
-    /// <remarks>
-    /// This member is only supported under Microsoft Windows Vista and later versions.
-    /// </remarks>
-    internal bool HasHorizontalWheel;
-}
-
-/// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-sizing
-/// The edge of the window that is being sized. Provided by wParam within a WM_SIZING message.
-/// </summary>
-internal enum WM_SIZING_wParam
-{
-    /// <summary>
-    /// Bottom edge
-    /// </summary>
-    WMSZ_BOTTOM = 6,
-    /// <summary>
-    ///Bottom-left corner
-    /// </summary>
-    WMSZ_BOTTOMLEFT = 7,
-    /// <summary>
-    /// Bottom-right corner
-    /// </summary>
-    WMSZ_BOTTOMRIGHT = 8,
-    /// <summary>
-    /// Left edge
-    /// </summary>
-    WMSZ_LEFT = 1,
-    /// <summary>
-    /// Right edge
-    /// </summary>
-    WMSZ_RIGHT = 2,
-    /// <summary>
-    /// Top edge
-    /// </summary>
-    WMSZ_TOP = 3,
-    /// <summary>
-    /// Top-left corner
-    /// </summary>
-    WMSZ_TOPLEFT = 4,
-    /// <summary>
-    /// Top-right corner
-    /// </summary>
-    WMSZ_TOPRIGHT = 5,
-    //9 seems to be generated if the window gets resized by dragging the title bar when maximised
-}
-
-/// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-wndclassexw
-/// Contains window class information. It is used with the RegisterClassEx and GetClassInfoEx  functions.
-/// The WNDCLASSEX structure is similar to the WNDCLASS structure.There are two differences.WNDCLASSEX includes the cbSize member, which specifies the size of the structure, and the hIconSm member, which contains a handle to a small icon associated with the window class.
-/// </summary>
-[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-internal struct WNDCLASSEX
-{
-    /// <summary>
-    /// The size, in bytes, of this structure. Set this member to sizeof(WNDCLASSEX). Be sure to set this member before calling the GetClassInfoEx function.
-    /// </summary>
-    internal uint cbSize;
-
-    /// <summary>
-    /// The class style(s). This member can be any combination of the Class Styles.
-    /// </summary>
-    internal CLASSSTLYE style;
-
-    /// <summary>
-    /// A pointer to the window procedure. You must use the CallWindowProc function to call the window procedure. For more information, see WindowProc.
-    /// </summary>
-    [MarshalAs(UnmanagedType.FunctionPtr)]
-    internal WNDPROC lpfnWndProc;
-
-    /// <summary>
-    /// The number of extra bytes to allocate following the window-class structure. The system initializes the bytes to zero.
-    /// </summary>
-    internal int cbClsExtra;
-
-    /// <summary>
-    /// The number of extra bytes to allocate following the window instance. The system initializes the bytes to zero. If an application uses WNDCLASSEX to register a dialog box created by using the CLASS directive in the resource file, it must set this member to DLGWINDOWEXTRA.
-    /// </summary>
-    internal int cbWndExtra;
-
-    /// <summary>
-    /// A handle to the instance that contains the window procedure for the class.
-    /// </summary>
-    internal IntPtr hInstance;
-
-    /// <summary>
-    /// A handle to the class icon. This member must be a handle to an icon resource. If this member is NULL, the system provides a default icon.
-    /// </summary>
-    internal IntPtr hIcon;
-
-    /// <summary>
-    /// A handle to the class cursor. This member must be a handle to a cursor resource. If this member is NULL, an application must explicitly set the cursor shape whenever the mouse moves into the application's window.
-    /// </summary>
-    internal IntPtr hCursor;
-
-    /// <summary>
-    /// A handle to the class background brush. This member can be a handle to the brush to be used for painting the background, or it can be a color value. A color value must be one of the following standard system colors (the value 1 must be added to the chosen color). The system automatically deletes class background brushes when the class is unregistered by using UnregisterClass. An application should not delete these brushes. When this member is NULL, an application must paint its own background whenever it is requested to paint in its client area.To determine whether the background must be painted, an application can either process the WM_ERASEBKGND message or test the fErase member of the PAINTSTRUCT structure filled by the BeginPaint function.
-    /// </summary>
-    internal IntPtr hbrBackground;
-
-    /// <summary>
-    /// Pointer to a null-terminated character string that specifies the resource name of the class menu, as the name appears in the resource file. If you use an integer to identify the menu, use the MAKEINTRESOURCE macro. If this member is NULL, windows belonging to this class have no default menu.
-    /// </summary>
-    internal IntPtr lpszMenuName;
-
-    /// <summary>
-    /// A pointer to a null-terminated string or is an atom. If this parameter is an atom, it must be a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpszClassName; the high-order word must be zero.
-    /// If lpszClassName is a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names.
-    /// The maximum length for lpszClassName is 256. If lpszClassName is greater than the maximum length, the RegisterClassEx function will fail.
-    /// </summary>
-    internal IntPtr lpszClassName;
-
-    /// <summary>
-    /// A handle to a small icon that is associated with the window class. If this member is NULL, the system searches the icon resource specified by the hIcon member for an icon of the appropriate size to use as the small icon.
-    /// </summary>
-    internal IntPtr hIconSm;
-}
-
-/// <summary>
-/// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms633573(v=vs.85)
-/// An application-defined function that processes messages sent to a window. The WNDPROC type defines a pointer to this callback function.
-/// </summary>
-/// <param name="hwnd"></param>
-/// <param name="uMsg"></param>
-/// <param name="wParam"></param>
-/// <param name="lParam"></param>
-/// <returns></returns>
-[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-internal delegate IntPtr WNDPROC(IntPtr hwnd, WINDOWMESSAGE uMsg, IntPtr wParam, IntPtr lParam);
-
-[Flags]
-public enum ABS : int
-{
-    Autohide = 0x0000001,
-    AlwaysOnTop = 0x0000002
-}
-
-internal struct DevBroadcastHDR
-{
-    internal int Size;
-    internal DeviceBroadcastType DeviceType;
-    int dbcc_reserved;
-    internal Guid ClassGuid;
-    internal char dbcc_name;
-}
-
-internal enum DeviceBroadcastType
-{
-    OEM = 0,
-    VOLUME = 2,
-    PORT = 3,
-    INTERFACE = 5,
-    HANDLE = 6,
-}
 
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -417,8 +111,6 @@ internal enum DisplayModeSettingsEnum
     RegistrySettings = -2
 }
 
-
-
 [StructLayout(LayoutKind.Sequential)]
 internal struct ICONINFO
 {
@@ -428,8 +120,6 @@ internal struct ICONINFO
     public IntPtr MaskBitmap;
     public IntPtr ColorBitmap;
 };
-
-
 
 internal struct MONITORINFO
 {
@@ -442,7 +132,7 @@ internal struct MONITORINFO
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public struct MOUSEMOVEPOINT
+internal struct MOUSEMOVEPOINT
 {
     /// <summary>
     /// The x-coordinate of the mouse.
@@ -469,8 +159,6 @@ public struct MOUSEMOVEPOINT
     /// </summary>
     public static readonly int SizeInBytes = Marshal.SizeOf(default(MOUSEMOVEPOINT));
 }
-
-
 
 [StructLayout(LayoutKind.Explicit)]
 internal struct RawHID
@@ -520,8 +208,6 @@ internal class RawInputDeviceInfo
         internal RawInputHIDDeviceInfo HID;
     };
 }
-
-
 
 /// <summary>
 /// Contains information about a raw input device.
@@ -906,9 +592,6 @@ internal enum SystemErrorCode : uint
     /// </summary>
     ERROR_INVALID_PIXEL_FORMAT = 2000
 }
-
-[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-internal delegate void TimerProc(IntPtr hwnd, WINDOWMESSAGE uMsg, UIntPtr idEvent, int dwTime);
 
 internal enum VIRTUALKEYCODE : short
 {

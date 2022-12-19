@@ -27,10 +27,10 @@ internal class Win32TaskbarManager : ITaskbarManager
 
         data.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA));
         result = Shell32.SHAppBarMessage(APPBARMESSAGE.ABM_GETSTATE, ref data);
-        ABS state = (ABS)result.ToInt32();
+        ABM_GETSTATE_VALUE state = (ABM_GETSTATE_VALUE)result.ToInt32();
 
-        AlwaysOnTop = state.HasFlag(ABS.AlwaysOnTop);
-        AutoHide = state.HasFlag(ABS.Autohide);
+        AlwaysOnTop = state.HasFlag(ABM_GETSTATE_VALUE.ABS_ALWAYSONTOP);
+        AutoHide = state.HasFlag(ABM_GETSTATE_VALUE.ABS_AUTOHIDE);
     }
 
     public bool AlwaysOnTop { get; }
