@@ -1,6 +1,4 @@
-﻿using HaighFramework.Displays;
-using HaighFramework.OpenGL;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace HaighFramework;
 
