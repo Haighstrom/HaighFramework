@@ -208,13 +208,13 @@ public class WinAPIWindow : IWindow
         CursorVisible = settings.CursorVisible;
         CursorLockedToWindow = settings.CursorLockedToWindow;
 
-        DeviceContext = User32.GetDC(_childWindowHandle);
+        DeviceContextHandle = User32.GetDC(_childWindowHandle);
 
-        SetPixelFormat(DeviceContext);
+        SetPixelFormat(DeviceContextHandle);
 
-        RenderContext = new WinAPIOpenGLRenderContext(DeviceContext, settings.OpenGLVersion.major, settings.OpenGLVersion.minor);
+        RenderContext = new WinAPIOpenGLRenderContext(DeviceContextHandle, settings.OpenGLVersion.major, settings.OpenGLVersion.minor);
 
-        OpenGL32.wglMakeCurrent(DeviceContext, RenderContext.Handle);
+        OpenGL32.wglMakeCurrent(DeviceContextHandle, RenderContext.Handle);
 
         string version = GetString(GETSTRING_NAME.GL_VERSION).Remove(9);
         Log.Information($"Successfully set up OpenGL v:{version}, GLSL: {GetString(GETSTRING_NAME.GL_SHADING_LANGUAGE_VERSION)}");
@@ -543,7 +543,7 @@ public class WinAPIWindow : IWindow
         }
     }
 
-    public void SwapBuffers() => GDI32.SwapBuffers(DeviceContext);
+    public void SwapBuffers() => GDI32.SwapBuffers(DeviceContextHandle);
 
     public bool ExitOnClose { get; set; }
 
@@ -810,11 +810,11 @@ public class WinAPIWindow : IWindow
         }
     }
 
-    public IntPtr DeviceContext { get; }
+    public IntPtr DeviceContextHandle { get; }
 
     internal WinAPIOpenGLRenderContext RenderContext { get; }
 
-
+    public IntPtr RenderContextHandle => RenderContext.Handle;
 
 
     /// <summary>

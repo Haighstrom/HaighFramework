@@ -30,6 +30,8 @@ public interface IWindow : IDisposable
     /// </summary>
     bool CursorVisible { get; set; }
 
+    IntPtr DeviceContextHandle { get; }
+
     /// <summary>
     /// The DPI scaling currently applicable to the window
     /// </summary>
@@ -76,6 +78,8 @@ public interface IWindow : IDisposable
     /// Gets or sets the position of the overall window (including borders and title bar)
     /// </summary>
     Rect Position { get; set; }
+
+    IntPtr RenderContextHandle { get; }
 
     /// <summary>
     /// Gets or sets the state of the window
