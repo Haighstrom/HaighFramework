@@ -31,6 +31,12 @@ internal class WinAPIInputManager : IInputManager
         _inputWindowThreadReadyCheck.WaitOne();
     }
 
+    public int DoubleClickTime => User32.GetDoubleClickTime();
+
+    public MouseState MouseState => _mouseManager!.GetAggregateState();
+
+    public KeyboardState KeyboardState => _keyboardManager!.GetAggregateState;
+
     private void ProcessInputData()
     {
         _inputWindow = new InputProcessingWindow(WindowProcedure);
@@ -108,10 +114,6 @@ internal class WinAPIInputManager : IInputManager
         }
         return IntPtr.Zero;
     }
-
-    public MouseState MouseState => _mouseManager!.GetAggregateState();
-
-    public KeyboardState KeyboardState => _keyboardManager!.GetAggregateState;
 
 
     private bool _disposed;

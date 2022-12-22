@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using HaighFramework.WinAPI;
+using System.Runtime.InteropServices;
 
 namespace HaighFramework.Input;
 
@@ -17,6 +18,11 @@ public class InputManager : IInputManager
         else
             throw new PlatformNotSupportedException();
     }
+
+    /// <summary>
+    /// The default time for double clicking based on the OS settings.
+    /// </summary>
+    public int DoubleClickTime => _api.DoubleClickTime;
 
     /// <summary>
     /// The state of the mouse.

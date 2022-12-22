@@ -12,6 +12,11 @@ public interface IInputManager : IDisposable
     MouseState MouseState { get; }
 
     /// <summary>
+    /// The default time for double clicking based on the OS settings.
+    /// </summary>
+    int DoubleClickTime { get; }
+
+    /// <summary>
     /// The state of the keyboard.
     /// </summary>
     /// <remarks>If multiple keyboards are attached their states will be aggregated.</remarks>
