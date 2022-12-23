@@ -66,6 +66,11 @@ public class WindowSettings
     public (int major, int minor) OpenGLVersion = (4, 5);
 
     /// <summary>
+    /// Specifies whether VSync should be used. Vsync delays render frames until the monitor refreshes. It will avoid screen tearing, but will cause render frames to delay.
+    /// </summary>
+    public bool VSync = false;
+
+    /// <summary>
     /// The desired position of the window (X,Y are the top left of the window, W, H are the size of the client)
     /// </summary>
     public Rect Position

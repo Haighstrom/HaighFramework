@@ -90,6 +90,7 @@ public class WinAPIWindow : IWindow
     private bool _cursorLockedToWindow = false;
     private bool _resizingWindow = false;
     private int _leftInvisBorder, _topInvisBorder, _rightInvisBorder, _bottomInvisBorder;
+    private bool _vsync;
 
     public WinAPIWindow(WindowSettings settings)
     {
@@ -215,6 +216,8 @@ public class WinAPIWindow : IWindow
         RenderContext = new WinAPIOpenGLRenderContext(DeviceContextHandle, settings.OpenGLVersion.major, settings.OpenGLVersion.minor);
 
         OpenGL32.wglMakeCurrent(DeviceContextHandle, RenderContext.Handle);
+
+        VSync = settings.VSync;         
 
         string version = GetString(GETSTRING_NAME.GL_VERSION).Remove(9);
         Log.Information($"Successfully set up OpenGL v:{version}, GLSL: {GetString(GETSTRING_NAME.GL_SHADING_LANGUAGE_VERSION)}");
@@ -567,6 +570,17 @@ public class WinAPIWindow : IWindow
                 if (!User32.SetWindowText(_windowHandle, value))
                     Log.Error($"Failed to change window title, requested: {value}, error code: {Marshal.GetLastWin32Error()}");
             }
+        }
+    }
+
+    public bool VSync
+    {
+        get => _vsync;
+        set
+        {
+            OpenGL32.wglSwapIntervalEXT(value ? 1 : 0);
+
+            _vsync = value;
         }
     }
 

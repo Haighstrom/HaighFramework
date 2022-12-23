@@ -102,6 +102,11 @@ public interface IWindow : IDisposable
     bool Visible { get; set; }
 
     /// <summary>
+    /// Specifies whether VSync should be used. Vsync delays render frames until the monitor refreshes. It will avoid screen tearing, but will cause render frames to delay.
+    /// </summary>
+    bool VSync { get; set; }
+
+    /// <summary>
     /// Gets or sets the width of the window (including borders and title bar)
     /// </summary>
     int Width { get; set; }

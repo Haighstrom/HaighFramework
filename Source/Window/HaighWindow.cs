@@ -61,6 +61,15 @@ public class HaighWindow : IWindow
 
     public IntPtr RenderContextHandle => _api.RenderContextHandle;
 
+    /// <summary>
+    /// Specifies whether VSync should be used. Vsync delays render frames until the monitor refreshes. It will avoid screen tearing, but will cause render frames to delay.
+    /// </summary>
+    public bool VSync
+    {
+        get => _api.VSync;
+        set => _api.VSync = value;
+    }
+
     public void Centre() => _api.Centre();
 
     public void Close() => _api.Close();
