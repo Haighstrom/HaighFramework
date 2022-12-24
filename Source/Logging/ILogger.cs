@@ -34,8 +34,15 @@ public interface ILogger
     /// </summary>
     /// <param name="logLevel">The log level of the message.</param>
     /// <param name="thingToLog">The object to be logged.</param>
+    /// <param name="suppressMetaInfo">Specifies whether addition info (time stamp, log message level) should be suppressed for this message, if relevant.</param>
     /// <exception cref="ArgumentException">Throws an exception if <see cref="LogLevel.None"/> is used</exception>
-    void Write(LogLevel logLevel, object? thingToLog);
+    void Write(LogLevel logLevel, object? thingToLog, bool suppressMetaInfo = false);
+
+    void WriteSectionHeader(LogLevel logLevel, string headerName);
+    
+    void WriteNewLine(LogLevel logLevel);
+
+    void WriteSectionBreak(LogLevel logLevel);
 
     /// <summary>
     /// Write a Verbose level message to the logger's output stream(s).

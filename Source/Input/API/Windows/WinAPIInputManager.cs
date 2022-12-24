@@ -41,12 +41,13 @@ internal class WinAPIInputManager : IInputManager
     {
         _inputWindow = new InputProcessingWindow(WindowProcedure);
 
-        Log.Information("--------Input Devices--------");
+        Log.WriteSectionHeader(LogLevel.Information, "Input Devices");
 
         _mouseManager = new MouseAPI(_inputWindow.Handle);
         _keyboardManager = new KeyboardAPI(_inputWindow.Handle);
 
-        Log.Information("-----------------------------\n");
+        Log.WriteSectionBreak(LogLevel.Information);
+        Log.WriteNewLine(LogLevel.Information);
 
         RegisterForRawInput();
 

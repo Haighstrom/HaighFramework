@@ -7,6 +7,8 @@ namespace HaighFramework.Logging;
 /// </summary>
 public class Logger : ILogger
 {
+    private const int SectionBreakLength = 50;
+
     private readonly ILoggerMessageFormatter _messageFormatter = new LoggerMessageFormatter();
     private readonly IEnumerable<ILoggerOutputStream> _outputStreams;
     private readonly bool _includeLogLevelInMessages, _includeTimeStampInMessages;
@@ -89,8 +91,9 @@ public class Logger : ILogger
     /// </summary>
     /// <param name="logLevel">The log level of the message.</param>
     /// <param name="thingToLog">The object to be logged.</param>
+    /// <param name="suppressMetaInfo">Specifies whether addition info (time stamp, log message level) should be suppressed for this message, if relevant.</param>
     /// <exception cref="ArgumentException">Throws an exception if <see cref="LogLevel.None"/> is used</exception>
-    public void Write(LogLevel logLevel, object? thingToLog)
+    public void Write(LogLevel logLevel, object? thingToLog, bool suppressMetaInfo = false)
     {
         if (logLevel == LogLevel.None)
             throw new ArgumentException($"Cannot write log messages with {LogLevel.None}.", nameof(logLevel));
@@ -100,12 +103,12 @@ public class Logger : ILogger
             {
                 string logString = "";
 
-                if (_includeTimeStampInMessages)
+                if (_includeTimeStampInMessages && !suppressMetaInfo)
                 {
                     logString += $"{DateTime.Now} ";
                 }
 
-                if (_includeLogLevelInMessages)
+                if (_includeLogLevelInMessages && !suppressMetaInfo)
                 {
                     logString += logLevel switch
                     {
@@ -123,6 +126,22 @@ public class Logger : ILogger
 
                 stream.Write(logString);
             }
+    }
+
+    public void WriteSectionHeader(LogLevel logLevel, string headerName)
+    {
+        int charsEitherSide = Math.Max(1, (SectionBreakLength - headerName.Length) / 2);
+        Write(logLevel, new string('-', charsEitherSide) + headerName + new string('-', charsEitherSide), true);
+    }
+
+    public void WriteNewLine(LogLevel logLevel)
+    {
+        Write(logLevel, Environment.NewLine, true);
+    }
+
+    public void WriteSectionBreak(LogLevel logLevel)
+    {
+        Write(logLevel, new string('-', SectionBreakLength), true);
     }
 
     /// <summary>

@@ -22,10 +22,11 @@ public sealed class DisplayManager : IDisplayManager
         else
             throw new NotImplementedException();
 
-        Log.Information("-------Display Devices-------");
+        Log.WriteSectionHeader(LogLevel.Information, "Display Devices");
         foreach (DisplayInfo display in AvailableDisplays)
             Log.Information(display);
-        Log.Information("-----------------------------\n");
+        Log.WriteSectionBreak(LogLevel.Information);
+        Log.WriteNewLine(LogLevel.Information);
     }
 
     /// <summary>

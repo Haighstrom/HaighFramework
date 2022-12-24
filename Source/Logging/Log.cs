@@ -44,14 +44,21 @@ public static class Log
     /// </summary>
     /// <param name="logLevel">The log level of the message.</param>
     /// <param name="thingToLog">The object to be logged.</param>
+    /// <param name="suppressMetaInfo">Specifies whether addition info (time stamp, log message level) should be suppressed for this message, if relevant.</param>
     /// <exception cref="ArgumentException">Throws an exception if <see cref="LogLevel.None"/> is used</exception>
-    public static void Write(LogLevel logLevel, object? thingToLog)
+    public static void Write(LogLevel logLevel, object? thingToLog, bool suppressMetaInfo = false)
     {
-        Instance.Write(logLevel, thingToLog);
+        Instance.Write(logLevel, thingToLog, suppressMetaInfo);
 
         if (logLevel >= LogLevelToThrowErrors)
             throw new LoggingException(logLevel, thingToLog);
     }
+
+    public static void WriteSectionHeader(LogLevel logLevel, string headerName) => Instance.WriteSectionHeader(logLevel, headerName);
+
+    public static void WriteNewLine(LogLevel logLevel) => Instance.WriteNewLine(logLevel);
+
+    public static void WriteSectionBreak(LogLevel logLevel) => Instance.WriteSectionBreak(logLevel);
 
     /// <summary>
     /// Write a Verbose level message to the default logger.
