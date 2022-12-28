@@ -448,15 +448,6 @@ public class Rect
     /// <returns>Returns a list of four points.</returns>
     public List<Point> ToVertices() => new() { TopLeft, TopRight, BottomRight, BottomLeft };
 
-    public bool Equals(Rect? other) => X == other?.X && Y == other?.Y && W == other?.W && H == other?.H;
-
-    public override bool Equals(object? o) => o switch
-    {
-        null => false,
-        Rect r => r == this,
-        _ => false,
-    };
-
     public override int GetHashCode()
     {
         float hash = X;
@@ -470,9 +461,16 @@ public class Rect
         return (int)hash;
     }
 
-    public static bool operator ==(Rect r1, Rect r2) => r1.X == r2.X && r1.Y == r2.Y && r1.W == r2.W && r1.H == r2.H;
+    public override bool Equals(object? o) => o switch
+    {
+        null => false,
+        Rect r => X == r.X && Y == r.Y && W == r.W && H == r.H,
+        _ => false,
+    };
 
-    public static bool operator !=(Rect r1, Rect r2) => r1.X != r2.X || r1.Y != r2.Y || r1.W != r2.W || r1.H != r2.H;
+    public static bool operator ==(Rect r1, Rect? r2) => r1.Equals(r2);
+
+    public static bool operator !=(Rect r1, Rect? r2) => !r1.Equals(r2);
 
     public static Rect operator +(Rect r, Point p) => new(r.X + p.X, r.Y + p.Y, r.W, r.H);
 
