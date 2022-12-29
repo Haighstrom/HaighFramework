@@ -68,8 +68,8 @@ public class HaighWindow : IWindow
         get => _api.VSync;
         set => _api.VSync = value;
     }
-    public float ClientWidth { get => _api.ClientWidth; set => _api.ClientWidth = value; }
-    public float ClientHeight { get => _api.ClientHeight; set => _api.ClientHeight = value; }
+    public int ClientWidth { get => _api.ClientWidth; set => _api.ClientWidth = value; }
+    public int ClientHeight { get => _api.ClientHeight; set => _api.ClientHeight = value; }
 
     public void Centre() => _api.Centre();
 

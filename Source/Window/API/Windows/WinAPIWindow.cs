@@ -731,15 +731,15 @@ public class WinAPIWindow : IWindow
         }
     }
 
-    public float ClientWidth
+    public int ClientWidth
     {
-        get => ClientSize.X;
+        get => (int)ClientSize.X;
         set => ClientSize = new(value, ClientSize.Y);
     }
 
-    public float ClientHeight
+    public int ClientHeight
     {
-        get => ClientSize.Y;
+        get => (int)ClientSize.Y;
         set => ClientSize = new(ClientSize.X, value);
     }
 

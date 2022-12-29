@@ -18,12 +18,12 @@ public interface IWindow : IDisposable
     /// <summary>
     /// Gets or sets the width of the drawing area (excluding borders and title bar)
     /// </summary>
-    float ClientWidth { get; set; }
+    int ClientWidth { get; set; }
 
     /// <summary>
     /// Gets or sets the height of the drawing area (excluding borders and title bar)
     /// </summary>
-    float ClientHeight { get; set; }
+    int ClientHeight { get; set; }
 
     /// <summary>
     /// Gets or sets the current mouse cursor
