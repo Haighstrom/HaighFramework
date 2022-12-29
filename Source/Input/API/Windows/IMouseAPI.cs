@@ -1,5 +1,4 @@
-﻿using HaighFramework.Input;
-using HaighFramework.WinAPI;
+﻿using HaighFramework.WinAPI;
 
 namespace HaighFramework.Input.Windows;
 

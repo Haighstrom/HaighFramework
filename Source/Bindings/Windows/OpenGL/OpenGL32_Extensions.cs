@@ -1,9 +1,6 @@
 ﻿using System.Security;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Drawing;
-using System.ComponentModel;
-using HaighFramework.WinAPI;
 
 namespace HaighFramework.OpenGL;
 

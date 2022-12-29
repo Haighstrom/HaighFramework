@@ -1,7 +1,6 @@
 ﻿using HaighFramework.WinAPI;
 using Microsoft.Win32;
 using System.Collections.Immutable;
-using System.Threading;
 
 namespace HaighFramework.Displays.Windows;
 

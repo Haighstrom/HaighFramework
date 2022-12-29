@@ -16,6 +16,16 @@ public interface IWindow : IDisposable
     Point ClientSize { get; set; }
 
     /// <summary>
+    /// Gets or sets the width of the drawing area (excluding borders and title bar)
+    /// </summary>
+    float ClientWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the height of the drawing area (excluding borders and title bar)
+    /// </summary>
+    float ClientHeight { get; set; }
+
+    /// <summary>
     /// Gets or sets the current mouse cursor
     /// </summary>
     Cursor Cursor { get; set; }
@@ -51,7 +61,7 @@ public interface IWindow : IDisposable
     /// <summary>
     /// Gets or sets the height of the window (including borders and title bar)
     /// </summary>
-    int Height { get; set; }
+    int WindowHeight { get; set; }
 
     /// <summary>
     /// Gets or sets the Window Icon (on the window and taskbar)
@@ -109,7 +119,7 @@ public interface IWindow : IDisposable
     /// <summary>
     /// Gets or sets the width of the window (including borders and title bar)
     /// </summary>
-    int Width { get; set; }
+    int WindowWidth { get; set; }
 
     /// <summary>
     /// Gets or sets the X position of the top left point of the window (including borders and title bar)

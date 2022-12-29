@@ -699,25 +699,25 @@ public class WinAPIWindow : IWindow
     public int X
     {
         get => (int)Position.X;
-        set => Position = new Rect(value, Y, Width, Height);
+        set => Position = new Rect(value, Y, WindowWidth, WindowHeight);
     }
 
     public int Y
     {
         get => (int)Position.Y;
-        set => Position = new Rect(X, value, Width, Height);
+        set => Position = new Rect(X, value, WindowWidth, WindowHeight);
     }
 
-    public int Width
+    public int WindowWidth
     {
         get => (int)Position.W;
-        set => Position = new Rect(X, Y, value, Height);
+        set => Position = new Rect(X, Y, value, WindowHeight);
     }
 
-    public int Height
+    public int WindowHeight
     {
         get => (int)Position.H;
-        set => Position = new Rect(X, Y, Width, value);
+        set => Position = new Rect(X, Y, WindowWidth, value);
     }
 
     public Point ClientSize
@@ -729,6 +729,18 @@ public class WinAPIWindow : IWindow
             User32.AdjustWindowRectEx(ref r, _parentStyle, false, _parentExStyle);
             User32.SetWindowPos(_windowHandle, new IntPtr(0), X, Y, r.Width, r.Height, SETWINDOWPOSFLAGS.NOREDRAW);
         }
+    }
+
+    public float ClientWidth
+    {
+        get => ClientSize.X;
+        set => ClientSize = new(value, ClientSize.Y);
+    }
+
+    public float ClientHeight
+    {
+        get => ClientSize.Y;
+        set => ClientSize = new(ClientSize.X, value);
     }
 
     public Rect Viewport => new Rect(0, 0, _actualClientPosition.Width, _actualClientPosition.Height);
@@ -759,6 +771,7 @@ public class WinAPIWindow : IWindow
         User32.SetWindowPos(_windowHandle, IntPtr.Zero, rect.left, rect.top, rect.Width, rect.Height, SETWINDOWPOSFLAGS.NOREDRAW);
     }
 
+    //todo: fix this
     public Point ScreenToClient(Point screenPosition) => new((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));
 
 

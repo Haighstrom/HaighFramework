@@ -1,5 +1,4 @@
-﻿using HaighFramework.Input;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace HaighFramework.Window;
 
@@ -37,9 +36,9 @@ public class HaighWindow : IWindow
     
     public int Y { get => _api.Y; set => _api.Y = value; }
     
-    public int Width { get => _api.Width; set => _api.Width = value; }
+    public int WindowWidth { get => _api.WindowWidth; set => _api.WindowWidth = value; }
     
-    public int Height { get => _api.Height; set => _api.Height = value; }
+    public int WindowHeight { get => _api.WindowHeight; set => _api.WindowHeight = value; }
     
     public Point ClientSize { get => _api.ClientSize; set => _api.ClientSize = value; }
 
@@ -69,6 +68,8 @@ public class HaighWindow : IWindow
         get => _api.VSync;
         set => _api.VSync = value;
     }
+    public float ClientWidth { get => _api.ClientWidth; set => _api.ClientWidth = value; }
+    public float ClientHeight { get => _api.ClientHeight; set => _api.ClientHeight = value; }
 
     public void Centre() => _api.Centre();
 

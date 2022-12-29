@@ -1,5 +1,4 @@
 ﻿using HaighFramework.Console.Windows;
-using HaighFramework.WinAPI;
 using System.Runtime.InteropServices;
 
 namespace HaighFramework.Console;
