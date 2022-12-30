@@ -771,9 +771,7 @@ public class WinAPIWindow : IWindow
         User32.SetWindowPos(_windowHandle, IntPtr.Zero, rect.left, rect.top, rect.Width, rect.Height, SETWINDOWPOSFLAGS.NOREDRAW);
     }
 
-    //todo: fix this
     public Point ScreenToClient(Point screenPosition) => new((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));
-
 
     public bool Focussed { get; private set; }
 
