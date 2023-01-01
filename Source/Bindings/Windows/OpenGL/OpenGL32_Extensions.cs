@@ -207,8 +207,12 @@ public static partial class OpenGL32
         _glBindBuffer(target, buffer);
     }
 
-    //----Fully Updated above this line----
-
+    /// <summary>
+    /// Bind a framebuffer to a framebuffer target. Requires an OpenGL4 context and extension entrypoints to have been loaded.
+    /// </summary>
+    /// <param name="target">Specifies the framebuffer target of the binding operation.</param>
+    /// <param name="frameBuffer">Specifies the name of the framebuffer object to bind.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glBindFramebuffer(FRAMEBUFFER_TARGET target, int frameBuffer)
     {
         if (_glBindFramebuffer is null)
@@ -217,6 +221,12 @@ public static partial class OpenGL32
         _glBindFramebuffer(target, frameBuffer);
     }
 
+    /// <summary>
+    /// Bind a named sampler to a texturing target. Requires an OpenGL4 context and extension entrypoints to have been loaded.
+    /// </summary>
+    /// <param name="unit">Specifies the index of the texture unit to which the sampler is bound.</param>
+    /// <param name="sampler">Specifies the name of a sampler. Sampler must be zero or the name of a sampler object previously returned from a call to glGenSamplers.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glBindSampler(TEXTURE_UNIT unit, int sampler)
     {
         if (_glBindSampler is null)
@@ -224,6 +234,9 @@ public static partial class OpenGL32
 
         _glBindSampler(unit, sampler);
     }
+
+    //----Fully Updated above this line----
+
 
     public static void glBlendFuncSeperate(BLEND_SCALE_FACTOR srcRGB, BLEND_SCALE_FACTOR dstRGB, BLEND_SCALE_FACTOR srcAlpha, BLEND_SCALE_FACTOR dstAlpha)
     {
