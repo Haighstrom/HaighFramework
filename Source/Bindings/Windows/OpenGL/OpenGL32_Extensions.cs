@@ -235,9 +235,14 @@ public static partial class OpenGL32
         _glBindSampler(unit, sampler);
     }
 
-    //----Fully Updated above this line----
-
-
+    /// <summary>
+    /// Specify pixel arithmetic for RGB and alpha components separately
+    /// </summary>
+    /// <param name="srcRGB">Specifies how the red, green, and blue blending factors are computed. The initial value is GL_ONE.</param>
+    /// <param name="dstRGB">Specifies how the red, green, and blue destination blending factors are computed. The initial value is GL_ZERO.</param>
+    /// <param name="srcAlpha">Specified how the alpha source blending factor is computed. The initial value is GL_ONE.</param>
+    /// <param name="dstAlpha">Specified how the alpha destination blending factor is computed. The initial value is GL_ZERO.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glBlendFuncSeperate(BLEND_SCALE_FACTOR srcRGB, BLEND_SCALE_FACTOR dstRGB, BLEND_SCALE_FACTOR srcAlpha, BLEND_SCALE_FACTOR dstAlpha)
     {
         if (_glBlendFuncSeparate is null)
@@ -245,6 +250,8 @@ public static partial class OpenGL32
 
         _glBlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
     }
+
+    //----Fully Updated above this line----
 
     public static void glBufferData(BUFFER_TARGET target, IntPtr size, IntPtr data, USAGE_PATTERN usage)
     {
