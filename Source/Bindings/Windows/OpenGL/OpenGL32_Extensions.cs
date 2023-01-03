@@ -251,8 +251,14 @@ public static partial class OpenGL32
         _glBlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
     }
 
-    //----Fully Updated above this line----
-
+    /// <summary>
+    /// Creates and initializes a buffer object's data store.
+    /// </summary>
+    /// <param name="target">Specifies the target to which the buffer object is bound.</param>
+    /// <param name="size">Specifies the size in bytes of the buffer object's new data store.</param>
+    /// <param name="data">Specifies a pointer to data that will be copied into the data store for initialization, or NULL if no data is to be copied.</param>
+    /// <param name="usage">Specifies the expected usage pattern of the data store.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glBufferData(BUFFER_TARGET target, IntPtr size, IntPtr data, USAGE_PATTERN usage)
     {
         if (_glBufferData is null)
@@ -261,14 +267,24 @@ public static partial class OpenGL32
         _glBufferData(target, size, data, usage);
     }
 
-    public static void glCompileShader(int program)
+    /// <summary>
+    /// Compiles the source code strings that have been stored in the shader object specified by shader.
+    /// </summary>
+    /// <param name="shader">Specifies the shader object to be compiled.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
+    public static void glCompileShader(int shader)
     {
         if (_glCompileShader is null)
             throw new EntryPointNotFoundException($"{nameof(_glCompileShader)} was called but the entrypoint was not loaded.");
 
-        _glCompileShader(program);
+        _glCompileShader(shader);
     }
 
+    /// <summary>
+    /// Creates an empty program object. A program object is an object to which shader objects can be attached. This provides a mechanism to specify the shader objects that will be linked to create a program. It also provides a means for checking the compatibility of the shaders that will be used to create a program (for instance, checking the compatibility between a vertex shader and a fragment shader).
+    /// </summary>
+    /// <returns>Returns a non-zero value which by which the program object can be referenced. Returns 0 if an error occurs creating the program object.</returns>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static int glCreateProgram()
     {
         if (_glCreateProgram is null)
@@ -277,6 +293,12 @@ public static partial class OpenGL32
         return _glCreateProgram();
     }
 
+    /// <summary>
+    /// Creates an empty shader object. A shader object is used to maintain the source code strings that define a shader.
+    /// </summary>
+    /// <param name="shaderType">Specifies the type of shader to be created.</param>
+    /// <returns>Returns a non-zero value by which the shader object can be referenced. This function returns 0 if an error occurs creating the shader object. GL_INVALID_ENUM is generated if shaderType is not an accepted value.</returns>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static int glCreateShader(SHADER_TYPE shaderType)
     {
         if (_glCreateShader is null)
@@ -284,6 +306,8 @@ public static partial class OpenGL32
 
         return _glCreateShader(shaderType);
     }
+
+    //----Fully Updated above this line----
 
     public static void glDebugMessageCallback(DEBUGPROC callbackFunction, IntPtr userParam)
     {
