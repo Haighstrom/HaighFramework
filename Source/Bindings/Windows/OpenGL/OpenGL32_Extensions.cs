@@ -307,16 +307,30 @@ public static partial class OpenGL32
         return _glCreateShader(shaderType);
     }
 
-    //----Fully Updated above this line----
-
-    public static void glDebugMessageCallback(DEBUGPROC callbackFunction, IntPtr userParam)
+    /// <summary>
+    /// Specify a callback to receive debugging messages from the GL.
+    /// </summary>
+    /// <param name="callback">The address of a callback function that will be called when a debug message is generated.</param>
+    /// <param name="userParam">A user supplied pointer that will be passed on each invocation of callback.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
+    public static void glDebugMessageCallback(DEBUGPROC callback, IntPtr userParam)
     {
         if (_glDebugMessageCallback is null)
             throw new EntryPointNotFoundException($"{nameof(_glDebugMessageCallback)} was called but the entrypoint was not loaded.");
 
-        _glDebugMessageCallback(Marshal.GetFunctionPointerForDelegate(callbackFunction), userParam);
+        _glDebugMessageCallback(Marshal.GetFunctionPointerForDelegate(callback), userParam);
     }
 
+    /// <summary>
+    /// Control the reporting of debug messages in a debug context
+    /// </summary>
+    /// <param name="source">The source of debug messages to enable or disable.</param>
+    /// <param name="type">The type of debug messages to enable or disable.</param>
+    /// <param name="severity">The severity of debug messages to enable or disable.</param>
+    /// <param name="count">The length of the array ids.</param>
+    /// <param name="ids">The address of an array of unsigned integers contianing the ids of the messages to enable or disable.</param>
+    /// <param name="enabled">A Boolean flag determining whether the selected messages should be enabled or disabled.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glDebugMessageControl(DEBUGMESSAGE_SOURCE source, DEBUGMESSAGE_TYPE type, DEBUGMESSAGE_SEVERITY severity, int count, int[] ids, bool enabled)
     {
         if (_glDebugMessageControl is null)
@@ -338,6 +352,8 @@ public static partial class OpenGL32
 
         _glDeleteBuffers(n, buffers);
     }
+
+    //----Fully Updated above this line----
 
     public static void glDeleteShader(int shader)
     {
