@@ -353,8 +353,11 @@ public static partial class OpenGL32
         _glDeleteBuffers(n, buffers);
     }
 
-    //----Fully Updated above this line----
-
+    /// <summary>
+    /// Deletes a shader object.
+    /// </summary>
+    /// <param name="shader">Specifies the shader object to be deleted.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glDeleteShader(int shader)
     {
         if (_glDeleteShader is null)
@@ -363,6 +366,11 @@ public static partial class OpenGL32
         _glDeleteShader(shader);
     }
 
+    /// <summary>
+    /// Deletes a program object.
+    /// </summary>
+    /// <param name="program">Specifies the program object to be deleted.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glDeleteProgram(int program)
     {
         if (_glDeleteProgram is null)
@@ -371,6 +379,12 @@ public static partial class OpenGL32
         _glDeleteProgram(program);
     }
 
+    /// <summary>
+    /// Delete named framebuffer objects.
+    /// </summary>
+    /// <param name="n">Specifies the number of framebuffer objects to be deleted.</param>
+    /// <param name="framebuffers">Specifies an array of framebuffer objects to be deleted.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glDeleteFramebuffers(int n, int[] framebuffers)
     {
         if (_glDeleteFramebuffers is null)
