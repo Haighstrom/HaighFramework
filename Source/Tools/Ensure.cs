@@ -26,11 +26,25 @@ public static class Ensure
     /// <param name="argumentName">Name of the argument.</param>
     /// <exception cref="ArgumentNullException"></exception>
     [DebuggerStepThrough]
-    public static void ArgumentNotNull(object argument, string argumentName)
+    public static void ArgumentNotNull(object? argument, string argumentName)
     {
-        if (argument == null)
+        if (argument is null)
         {
             throw new ArgumentNullException(argumentName);
+        }
+    }
+
+    /// <summary>
+    /// Ensures that the specified value is not null.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <exception cref="NullReferenceException"></exception>
+    [DebuggerStepThrough]
+    public static void NotNull(object? value)
+    {
+        if (value is null)
+        {
+            throw new NullReferenceException();
         }
     }
 }
