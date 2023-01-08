@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
 
 namespace HaighFramework;
 
@@ -32,6 +33,19 @@ public static class Ensure
         {
             throw new ArgumentNullException(argumentName);
         }
+    }
+
+    /// <summary>
+    /// Ensures that the specified collection is not null or empty.
+    /// </summary>
+    /// <typeparam name="T">The type of element in the collection.</typeparam>
+    /// <param name="collection">The collection.</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    [DebuggerStepThrough]
+    public static void CollectionNotEmpty<T>(IEnumerable<T> collection)
+    {
+        if (collection is null || !collection.Any())
+            throw new InvalidOperationException();
     }
 
     /// <summary>
