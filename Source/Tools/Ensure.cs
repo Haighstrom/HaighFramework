@@ -61,4 +61,18 @@ public static class Ensure
             throw new NullReferenceException();
         }
     }
+
+    /// <summary>
+    /// Ensures that the specified value is null.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <exception cref="NullReferenceException"></exception>
+    [DebuggerStepThrough]
+    public static void IsNull(object? value)
+    {
+        if (value is not null)
+        {
+            throw new InvalidOperationException();
+        }
+    }
 }
