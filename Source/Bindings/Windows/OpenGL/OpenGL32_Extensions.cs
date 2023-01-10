@@ -393,6 +393,12 @@ public static partial class OpenGL32
         _glDeleteFramebuffers(n, framebuffers);
     }
 
+    /// <summary>
+    /// Detaches a shader object from a program object to which it is attached. This command can be used to undo the effect of the command <see cref="glAttachShader"/>.
+    /// </summary>
+    /// <param name="program">Specifies the program object from which to detach the shader object.</param>
+    /// <param name="shader">Specifies the shader object to be detached.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glDetachShader(int program, int shader)
     {
         if (_glDetachShader is null)
@@ -400,7 +406,12 @@ public static partial class OpenGL32
 
         _glDetachShader(program, shader);
     }
-    
+
+    /// <summary>
+    /// Disable a generic vertex attribute array, using the currently bound vertex array object for the operation.
+    /// </summary>
+    /// <param name="index">Specifies the index of the generic vertex attribute to be disabled.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glDisableVertexAttribArray(int index)
     {
         if (_glDisableVertexAttribArray is null)
@@ -409,6 +420,11 @@ public static partial class OpenGL32
         _glDisableVertexAttribArray(index);
     }
 
+    /// <summary>
+    /// Enable a generic vertex attribute array, using the currently bound vertex array object for the operation.
+    /// </summary>
+    /// <param name="index">Specifies the index of the generic vertex attribute to be enabled.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glEnableVertexAttribArray(int index)
     {
         if (_glEnableVertexAttribArray is null)
