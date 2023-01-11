@@ -434,22 +434,28 @@ public static partial class OpenGL32
     }
 
     /// <summary>
-    /// 
+    /// Attach a texture image to a framebuffer object.
     /// </summary>
-    /// <param name="target"></param>
+    /// <param name="target">Specifies the framebuffer target. The symbolic constant must be GL_FRAMEBUFFER.</param>
     /// <param name="attachment">Specifies whether the texture image should be attached to the framebuffer object's color, depth, or stencil buffer. A texture image may not be attached to the default framebuffer object name 0.</param>
-    /// <param name="texTarget"></param>
-    /// <param name="texture"></param>
-    /// <param name="level"></param>
+    /// <param name="textarget">Specifies the texture target. Must be one of the following symbolic constants: GL_TEXTURE_2D, GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_X, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, GL_TEXTURE_CUBE_MAP_POSITIVE_Z, or GL_TEXTURE_CUBE_MAP_NEGATIVE_Z.</param>
+    /// <param name="texture">Specifies the texture object whose image is to be attached.</param>
+    /// <param name="level">Specifies the mipmap level of the texture image to be attached, which must be 0.</param>
     /// <exception cref="EntryPointNotFoundException"></exception>
-    public static void glFramebufferTexture2D(FRAMEBUFFER_TARGET target, FRAMEBUFFER_ATTACHMENT_POINT attachment, TEXTURE_TARGET texTarget, int texture, int level)
+    public static void glFramebufferTexture2D(FRAMEBUFFER_TARGET target, FRAMEBUFFER_ATTACHMENT_POINT attachment, TEXTURE_TARGET textarget, int texture, int level)
     {
         if (_glFramebufferTexture2D is null)
             throw new EntryPointNotFoundException($"{nameof(_glFramebufferTexture2D)} was called but the entrypoint was not loaded.");
 
-        _glFramebufferTexture2D(target, attachment, texTarget, texture, level);
+        _glFramebufferTexture2D(target, attachment, textarget, texture, level);
     }
 
+    /// <summary>
+    /// Generate buffer object names.
+    /// </summary>
+    /// <param name="n">Specifies the number of buffer object names to be generated.</param>
+    /// <param name="buffers">Specifies an array in which the generated buffer object names are stored.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glGenBuffers(int n, int[] buffers)
     {
         if (_glGenBuffers is null)
@@ -458,6 +464,12 @@ public static partial class OpenGL32
         _glGenBuffers(n, buffers);
     }
 
+    /// <summary>
+    /// Generate framebuffer object names.
+    /// </summary>
+    /// <param name="n">Specifies the number of framebuffer object names to generate.</param>
+    /// <param name="buffers">Specifies an array in which the generated framebuffer object names are stored.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glGenFramebuffers(int n, int[] buffers)
     {
         if (_glGenFramebuffers is null)
@@ -466,6 +478,13 @@ public static partial class OpenGL32
         _glGenFramebuffers(n, buffers);
     }
 
+    /// <summary>
+    /// Returns the location of an attribute variable.
+    /// </summary>
+    /// <param name="program">Specifies the program object to be queried.</param>
+    /// <param name="name">Points to a null terminated string containing the name of the attribute variable whose location is to be queried.</param>
+    /// <returns>Returns the index of the generic vertex attribute that is bound to the attribute variable specified by name.</returns>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static int glGetAttribLocation(int program, string name)
     {
         if (_glGetAttribLocation is null)
