@@ -493,14 +493,29 @@ public static partial class OpenGL32
         return _glGetAttribLocation(program, name);
     }
 
-    public static void glGetProgramInfoLog(int program, int maxLength, out int count, StringBuilder infoLog)
+    /// <summary>
+    /// Returns the information log for a program object
+    /// </summary>
+    /// <param name="program">Specifies the program object whose information log is to be queried.</param>
+    /// <param name="maxLength">Specifies the size of the character buffer for storing the returned information log.</param>
+    /// <param name="length">Returns the length of the string returned in infoLog (excluding the null terminator).</param>
+    /// <param name="infoLog">Specifies an array of characters that is used to return the information log.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
+    public static void glGetProgramInfoLog(int program, int maxLength, out int length, StringBuilder infoLog)
     {
         if (_glGetProgramInfoLog is null)
             throw new EntryPointNotFoundException($"{nameof(_glGetProgramInfoLog)} was called but the entrypoint was not loaded.");
 
-        _glGetProgramInfoLog(program, maxLength, out count, infoLog);
+        _glGetProgramInfoLog(program, maxLength, out length, infoLog);
     }
 
+    /// <summary>
+    /// Returns a parameter from a shader object
+    /// </summary>
+    /// <param name="shader">Specifies the shader object to be queried.</param>
+    /// <param name="pname">Specifies the object parameter. Accepted symbolic names are GL_SHADER_TYPE, GL_DELETE_STATUS, GL_COMPILE_STATUS, GL_INFO_LOG_LENGTH, GL_SHADER_SOURCE_LENGTH.</param>
+    /// <param name="params">Returns the requested object parameter.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public unsafe static void glGetShader(int shader, GETSHADER_NAME pname, int* @params)
     {
         if (_glGetShaderiv is null)
@@ -509,14 +524,29 @@ public static partial class OpenGL32
         _glGetShaderiv(shader, pname, @params);
     }
 
-    public static void glGetShaderInfoLog(int shader, int bufSize, out int length, StringBuilder infoLog)
+    /// <summary>
+    /// Returns the information log for a shader object.
+    /// </summary>
+    /// <param name="shader">Specifies the shader object whose information log is to be queried.</param>
+    /// <param name="maxLength">Specifies the size of the character buffer for storing the returned information log.</param>
+    /// <param name="length">Returns the length of the string returned in infoLog (excluding the null terminator).</param>
+    /// <param name="infoLog">Specifies an array of characters that is used to return the information log.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
+    public static void glGetShaderInfoLog(int shader, int maxLength, out int length, StringBuilder infoLog)
     {
         if (_glGetShaderInfoLog is null)
             throw new EntryPointNotFoundException($"{nameof(_glGetShaderInfoLog)} was called but the entrypoint was not loaded.");
 
-        _glGetShaderInfoLog(shader, bufSize, out length, infoLog);
+        _glGetShaderInfoLog(shader, maxLength, out length, infoLog);
     }
 
+    /// <summary>
+    /// Returns the location of a uniform variable.
+    /// </summary>
+    /// <param name="program">Specifies the program object to be queried.</param>
+    /// <param name="name">Points to a null terminated string containing the name of the uniform variable whose location is to be queried.</param>
+    /// <returns>Returns an integer that represents the location of a specific uniform variable within a program object.</returns>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static int glGetUniformLocation(int program, string name)
     {
         if (_glGetUniformLocation is null)
