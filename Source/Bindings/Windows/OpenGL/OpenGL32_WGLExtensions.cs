@@ -5,19 +5,23 @@ namespace HaighFramework.OpenGL;
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming conventions but I'm keeping these APIs pure.")]
 public static partial class OpenGL32
 {
+    #region Delegates
     private delegate bool Delegate_wglChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, float[] pfAttribFList, int nMaxFormats, [Out] int[] piFormats, out int nNumFormats);
     private delegate IntPtr Delegate_wglCreateContextAttribsARB(IntPtr hDc, IntPtr sharedContext, int[] attribList);
     private delegate string Delegate_wglGetExtensionsStringARB(IntPtr hDc);
     private delegate bool Delegate_wglGetPixelFormatAttribivARB(IntPtr hdc, int iPixelFormat, int iLayerPlane, int nAttributes, int[] piAttributes, [Out] int[] piValues);
     private delegate int Delegate_wglGetSwapIntervalEXT();
     private delegate bool Delegate_wglSwapIntervalEXT(int value);
+    #endregion
 
+    #region Entry Points
     private static Delegate_wglChoosePixelFormatARB? _wglChoosePixelFormatARB;
     private static Delegate_wglCreateContextAttribsARB? _wglCreateContextAttribsARB;
     private static Delegate_wglGetExtensionsStringARB? _wglGetExtensionsStringARB;
     private static Delegate_wglGetPixelFormatAttribivARB? _wglGetPixelFormatAttribivARB;
     private static Delegate_wglGetSwapIntervalEXT? _wglGetSwapIntervalEXT;
     private static Delegate_wglSwapIntervalEXT? _wglSwapIntervalEXT;
+    #endregion
 
     internal static void LoadWGLExtensions()
     {

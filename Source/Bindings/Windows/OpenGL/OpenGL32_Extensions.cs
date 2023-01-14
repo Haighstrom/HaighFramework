@@ -1,6 +1,8 @@
 ﻿using System.Security;
 using System.Runtime.InteropServices;
 using System.Text;
+using HaighFramework.WinAPI;
+using System;
 
 namespace HaighFramework.OpenGL;
 
@@ -555,6 +557,14 @@ public static partial class OpenGL32
         return _glGetUniformLocation(program, name);
     }
 
+    /// <summary>
+    /// Links a program object.
+    /// </summary>
+    /// <param name="program">Specifies the handle of the program object to be linked.</param>
+    /// <remarks>glLinkProgram links the program object specified by program. If any shader objects of type GL_VERTEX_SHADER are attached to program, they will be used to create an executable that will run on the programmable vertex processor. If any shader objects of type GL_GEOMETRY_SHADER are attached to program, they will be used to create an executable that will run on the programmable geometry processor. If any shader objects of type GL_FRAGMENT_SHADER are attached to program, they will be used to create an executable that will run on the programmable fragment processor.
+    /// <para>The status of the link operation will be stored as part of the program object's state. This value will be set to GL_TRUE if the program object was linked without errors and is ready for use, and GL_FALSE otherwise. It can be queried by calling glGetProgram with arguments program and GL_LINK_STATUS.</para>
+    /// <para>As a result of a successful link operation, all active user-defined uniform variables belonging to program will be initialized to 0, and each of the program object's active uniform variables will be assigned a location that can be queried by calling glGetUniformLocation. Also, any active user-defined attribute variables that have not been bound to a generic vertex attribute index will be bound to one at this time.</para></remarks>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glLinkProgram(int program)
     {
         if (_glLinkProgram is null)
@@ -563,6 +573,14 @@ public static partial class OpenGL32
         _glLinkProgram(program);
     }
 
+    /// <summary>
+    /// Sets or replaces the source code in a shader object.
+    /// </summary>
+    /// <param name="shader">Specifies the handle of the shader object whose source code is to be replaced.</param>
+    /// <param name="count">Specifies the number of elements in the string and length arrays.</param>
+    /// <param name="strings">Specifies an array of pointers to strings containing the source code to be loaded into the shader.</param>
+    /// <param name="lengths">Specifies an array of string lengths.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glShaderSource(int shader, int count, string[] strings, int[]? lengths)
     {
         if (_glShaderSource is null)
@@ -570,7 +588,17 @@ public static partial class OpenGL32
 
         _glShaderSource(shader, count, strings, lengths);
     }
-    
+
+    /// <summary>
+    /// Establish the data storage, format, dimensions, and number of samples of a multisample texture's image
+    /// </summary>
+    /// <param name="target">Specifies the target of the operation. target must be GL_TEXTURE_2D_MULTISAMPLE or GL_PROXY_TEXTURE_2D_MULTISAMPLE.</param>
+    /// <param name="samples">The number of samples in the multisample texture's image.</param>
+    /// <param name="internalFormat">The internal format to be used to store the multisample texture's image. internalformat must specify a color-renderable, depth-renderable, or stencil-renderable format.</param>
+    /// <param name="width">The width of the multisample texture's image, in texels.</param>
+    /// <param name="height">The height of the multisample texture's image, in texels.</param>
+    /// <param name="fixedSampleLocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glTexImage2DMultisample(TEXTURE_TARGET target, int samples, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, bool fixedSampleLocations)
     {
         if (_glTexImage2DMultisample is null)
@@ -578,7 +606,16 @@ public static partial class OpenGL32
 
         _glTexImage2DMultisample(target, samples, internalFormat, width, height, fixedSampleLocations);
     }
-    
+
+    /// <summary>
+    /// Simultaneously specify storage for all levels of a two-dimensional or one-dimensional array texture.
+    /// </summary>
+    /// <param name="target">Specifies the target to which the texture object is bound for glTexStorage2D. Must be one of GL_TEXTURE_2D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_CUBE_MAP, GL_PROXY_TEXTURE_2D, GL_PROXY_TEXTURE_1D_ARRAY, GL_PROXY_TEXTURE_RECTANGLE, or GL_PROXY_TEXTURE_CUBE_MAP.</param>
+    /// <param name="levels">Specify the number of texture levels.</param>
+    /// <param name="internalFormat">Specifies the sized internal format to be used to store texture image data.</param>
+    /// <param name="width">Specifies the width of the texture, in texels.</param>
+    /// <param name="height">Specifies the height of the texture, in texels.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glTexStorage2D(TEXTURE_TARGET target, int levels, TEXTURE_INTERNALFORMAT internalFormat, int width, int height)
     {
         if (_glTexStorage2D is null)
