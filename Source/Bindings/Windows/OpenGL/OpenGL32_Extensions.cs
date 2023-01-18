@@ -623,23 +623,42 @@ public static partial class OpenGL32
 
         _glTexStorage2D(target, levels, internalFormat, width, height);
     }
-    
-    public static void glUniform1f(int location, float value)
+
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="v0">Specifies the new value to be used.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
+    public static void glUniform1f(int location, float v0)
     {
         if (_glUniform1f is null)
             throw new EntryPointNotFoundException($"{nameof(_glUniform1f)} was called but the entrypoint was not loaded.");
 
-        _glUniform1f(location, value);
+        _glUniform1f(location, v0);
     }
 
-    public static void glUniform1i(int location, int value)
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="v0">Specifies the new value to be used.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
+    public static void glUniform1i(int location, int v0)
     {
         if (_glUniform1i is null)
             throw new EntryPointNotFoundException($"{nameof(_glUniform1i)} was called but the entrypoint was not loaded.");
 
-        _glUniform1i(location, value);
+        _glUniform1i(location, v0);
     }
 
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="v0">Specifies the new value to be used.</param>
+    /// <param name="v1">Specifies the new value to be used.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glUniform2f(int location, float v0, float v1)
     {
         if (_glUniform2f is null)
@@ -648,6 +667,13 @@ public static partial class OpenGL32
         _glUniform2f(location, v0, v1);
     }
 
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="v0">Specifies the new value to be used.</param>
+    /// <param name="v1">Specifies the new value to be used.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glUniform2i(int location, int v0, int v1)
     {
         if (_glUniform2i is null)
@@ -656,6 +682,14 @@ public static partial class OpenGL32
         _glUniform2i(location, v0, v1);
     }
 
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="v0">Specifies the new value to be used.</param>
+    /// <param name="v1">Specifies the new value to be used.</param>
+    /// <param name="v2">Specifies the new value to be used.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glUniform3f(int location, float v0, float v1, float v2)
     {
         if (_glUniform3f is null)
@@ -664,6 +698,14 @@ public static partial class OpenGL32
         _glUniform3f(location, v0, v1, v2);
     }
 
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="v0">Specifies the new value to be used.</param>
+    /// <param name="v1">Specifies the new value to be used.</param>
+    /// <param name="v2">Specifies the new value to be used.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glUniform3i(int location, int v0, int v1, int v2)
     {
         if (_glUniform3i is null)
@@ -672,6 +714,15 @@ public static partial class OpenGL32
         _glUniform3i(location, v0, v1, v2);
     }
 
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="v0">Specifies the new value to be used.</param>
+    /// <param name="v1">Specifies the new value to be used.</param>
+    /// <param name="v2">Specifies the new value to be used.</param>
+    /// <param name="v3">Specifies the new value to be used.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glUniform4f(int location, float v0, float v1, float v2, float v3)
     {
         if (_glUniform4f is null)
@@ -679,7 +730,16 @@ public static partial class OpenGL32
 
         _glUniform4f(location, v0, v1, v2, v3);
     }
-    
+
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="v0">Specifies the new value to be used.</param>
+    /// <param name="v1">Specifies the new value to be used.</param>
+    /// <param name="v2">Specifies the new value to be used.</param>
+    /// <param name="v3">Specifies the new value to be used.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glUniform4i(int location, int v0, int v1, int v2, int v3)
     {
         if (_glUniform4i is null)
@@ -688,6 +748,14 @@ public static partial class OpenGL32
         _glUniform4i(location, v0, v1, v2, v3);
     }
 
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="count">Specifies the number of matrices that are to be modified. This should be 1 if the targeted uniform variable is not an array of matrices, and 1 or more if it is an array of matrices.</param>
+    /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
+    /// <param name="value">Specifies a pointer to an array of count values that will be used to update the specified uniform variable.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public unsafe static void glUniformMatrix3fv(int location, int count, bool transpose, float* value)
     {
         if (_glUniformMatrix3fv is null)
@@ -696,6 +764,14 @@ public static partial class OpenGL32
         _glUniformMatrix3fv(location, count, transpose, value);
     }
 
+    /// <summary>
+    /// Specify the value of a uniform variable for the current program object.
+    /// </summary>
+    /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
+    /// <param name="count">Specifies the number of matrices that are to be modified. This should be 1 if the targeted uniform variable is not an array of matrices, and 1 or more if it is an array of matrices.</param>
+    /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
+    /// <param name="value">Specifies a pointer to an array of count values that will be used to update the specified uniform variable.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public unsafe static void glUniformMatrix4fv(int location, int count, bool transpose, float* value)
     {
         if (_glUniformMatrix4fv is null)
