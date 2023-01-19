@@ -780,6 +780,11 @@ public static partial class OpenGL32
         _glUniformMatrix4fv(location, count, transpose, value);
     }
 
+    /// <summary>
+    /// Installs a program object as part of current rendering state
+    /// </summary>
+    /// <param name="program">Specifies the handle of the program object whose executables are to be used as part of current rendering state.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glUseProgram(int program)
     {
         if (_glUseProgram is null)
@@ -788,6 +793,12 @@ public static partial class OpenGL32
         _glUseProgram(program);
     }
 
+    /// <summary>
+    /// Validates a program object.
+    /// </summary>
+    /// <param name="program">Specifies the handle of the program object to be validated.</param>
+    /// <remarks>The status of the validation operation will be stored as part of the program object's state. This value will be set to GL_TRUE if the validation succeeded, and GL_FALSE otherwise. It can be queried by calling glGetProgram with arguments program and GL_VALIDATE_STATUS. If validation is successful, program is guaranteed to execute given the current state. Otherwise, program is guaranteed to not execute.</remarks>
+    /// <exception cref="EntryPointNotFoundException"></exception>
     public static void glValidateProgram(int program)
     {
         if (_glValidateProgram is null)
@@ -795,12 +806,22 @@ public static partial class OpenGL32
 
         _glValidateProgram(program);
     }
-    
-    public static void glVertexAttribPointer(int index, int size, VERTEX_DATA_TYPE type, bool normalised, int stride, int offset)
+
+    /// <summary>
+    /// Define an array of generic vertex attribute data.
+    /// </summary>
+    /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+    /// <param name="size">Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4. Additionally, the symbolic constant GL_BGRA is accepted by glVertexAttribPointer. The initial value is 4.</param>
+    /// <param name="type">Specifies the data type of each component in the array. The symbolic constants GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, and GL_UNSIGNED_INT are accepted by glVertexAttribPointer and glVertexAttribIPointer. Additionally GL_HALF_FLOAT, GL_FLOAT, GL_DOUBLE, GL_FIXED, GL_INT_2_10_10_10_REV, GL_UNSIGNED_INT_2_10_10_10_REV and GL_UNSIGNED_INT_10F_11F_11F_REV are accepted by glVertexAttribPointer. GL_DOUBLE is also accepted by glVertexAttribLPointer and is the only token accepted by the type parameter for that function. The initial value is GL_FLOAT.</param>
+    /// <param name="normalised">For glVertexAttribPointer, specifies whether fixed-point data values should be normalized (GL_TRUE) or converted directly as fixed-point values (GL_FALSE) when they are accessed.</param>
+    /// <param name="stride">Specifies the byte offset between consecutive generic vertex attributes. If stride is 0, the generic vertex attributes are understood to be tightly packed in the array. The initial value is 0.</param>
+    /// <param name="pointer">Specifies a offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the GL_ARRAY_BUFFER target. The initial value is 0.</param>
+    /// <exception cref="EntryPointNotFoundException"></exception>
+    public static void glVertexAttribPointer(int index, int size, VERTEX_DATA_TYPE type, bool normalised, int stride, int pointer)
     {
         if (_glVertexAttribPointer is null)
             throw new EntryPointNotFoundException($"{nameof(_glVertexAttribPointer)} was called but the entrypoint was not loaded.");
 
-        _glVertexAttribPointer(index, size, (int)type, normalised, stride, new IntPtr(offset));
+        _glVertexAttribPointer(index, size, (int)type, normalised, stride, new IntPtr(pointer));
     }
 }
