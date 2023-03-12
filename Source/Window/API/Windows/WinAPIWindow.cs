@@ -269,8 +269,8 @@ public class WinAPIWindow : IWindow
 
                 Point targetWindowSize = new()
                 {
-                    X = Clamp(plannedWindowR.Width - borderSize.Width, (int)Math.Round(MinClientSize.X * DPI), MaxClientSize.X == 0 ? plannedWindowR.Width : (int)Math.Round(MaxClientSize.X * DPI)) + borderSize.Width,
-                    Y = Clamp(plannedWindowR.Height - borderSize.Height, (int)Math.Round(MinClientSize.Y * DPI), MaxClientSize.Y == 0 ? plannedWindowR.Height : (int)Math.Round(MaxClientSize.Y * DPI)) + borderSize.Height,
+                    X = Clamp(plannedWindowR.Width - borderSize.Width, (int)Math.Round(MinClientSize.X * DPI), MaxClientSize.X == 0 ? int.MaxValue : (int)Math.Round(MaxClientSize.X * DPI)) + borderSize.Width,
+                    Y = Clamp(plannedWindowR.Height - borderSize.Height, (int)Math.Round(MinClientSize.Y * DPI), MaxClientSize.Y == 0 ? int.MaxValue : (int)Math.Round(MaxClientSize.Y * DPI)) + borderSize.Height,
                 };
 
                 if (plannedWindowR.Width == targetWindowSize.X && plannedWindowR.Height == targetWindowSize.Y)
