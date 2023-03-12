@@ -296,8 +296,8 @@ public class WinAPIWindow : IWindow
 
                 Point desiredUserClientSize = new()
                 {
-                    X = Clamp(_userClientSize.X, MinClientSize.X, MaxClientSize.X == 0 ? _userClientSize.X : MaxClientSize.X),
-                    Y = Clamp(_userClientSize.Y, MinClientSize.Y, MaxClientSize.Y == 0 ? _userClientSize.Y : MaxClientSize.Y)
+                    X = Clamp(_userClientSize.X, MinClientSize.X, MaxClientSize.X == 0 ? int.MaxValue : MaxClientSize.X),
+                    Y = Clamp(_userClientSize.Y, MinClientSize.Y, MaxClientSize.Y == 0 ? int.MaxValue : MaxClientSize.Y)
                 };
 
                 if (!_userClientSize.Equals(desiredUserClientSize))
