@@ -36,6 +36,21 @@ public static class Ensure
     }
 
     /// <summary>
+    /// Ensures that the specified string argument is not null or empty.
+    /// </summary>
+    /// <param name="argument">The argument.</param>
+    /// <param name="argumentName">Name of the argument.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    [DebuggerStepThrough]
+    public static void ArgumentNotNullOrEmpty(string? argument, string argumentName)
+    {
+        if (string.IsNullOrEmpty(argument))
+        {
+            throw new ArgumentException("Argument is null or empty", argumentName);
+        }
+    }
+
+    /// <summary>
     /// Ensures that the specified collection is not null or empty.
     /// </summary>
     /// <typeparam name="T">The type of element in the collection.</typeparam>
