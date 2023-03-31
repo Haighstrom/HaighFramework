@@ -78,6 +78,38 @@ public static class Ensure
     }
 
     /// <summary>
+    /// Tests a value to ensure it's within a permitted range
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="min">The minimum value acceptable (inclusively).</param>
+    /// <param name="max">The maximum value acceptable (inclusively).</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    [DebuggerStepThrough]
+    public static void IsInRange(int value, int minAllowed, int maxAllowed)
+    {
+        if (value < minAllowed || value > maxAllowed)
+        {
+            throw new InvalidOperationException($"Value {value} was out of accepted range ({minAllowed}-{maxAllowed})");
+        }
+    }
+
+    /// <summary>
+    /// Tests a value to ensure it's within a permitted range
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="min">The minimum value acceptable (inclusively).</param>
+    /// <param name="max">The maximum value acceptable (inclusively).</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    [DebuggerStepThrough]
+    public static void IsInRange(float value, float minAllowed, float maxAllowed)
+    {
+        if (value < minAllowed || value > maxAllowed)
+        {
+            throw new InvalidOperationException($"Value {value} was out of accepted range ({minAllowed}-{maxAllowed})");
+        }
+    }
+
+    /// <summary>
     /// Ensures that the specified value is null.
     /// </summary>
     /// <param name="value">The value.</param>
