@@ -137,7 +137,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			//goto err_out;
 			clear();
-			return(-1);
+			return-1;
 		}
 		vendor=new byte[vendorlen+1];
 		opb.read(vendor,vendorlen);
@@ -146,7 +146,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			//goto err_out;
 			clear();
-			return(-1);
+			return-1;
 		}
 		user_comments=new byte[comments+1][];
 		comment_lengths=new int[comments+1];
@@ -158,7 +158,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 			comment_lengths[i]=len;
 			user_comments[i]=new byte[len+1];
@@ -168,10 +168,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			//goto err_out; // EOP check
 			clear();
-			return(-1);
+			return-1;
 
 		}
-		return(0);
+		return 0;
 		//  err_out:
 		//    comment_clear(vc);
 		//    return(-1);
@@ -212,7 +212,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			}
 		}
 		opb.write(1,1);
-		return(0);
+		return 0;
 	}
 
 	internal int header_out(Packet op)

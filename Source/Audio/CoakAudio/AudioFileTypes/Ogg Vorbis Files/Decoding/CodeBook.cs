@@ -19,7 +19,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	internal int encode(int a, csBuffer b)
 	{
 		b.write(codelist[a], c.lengthlist[a]);
-		return(c.lengthlist[a]);
+		return c.lengthlist[a];
 	}
 
 	// One the encode side, our vector writers are each designed for a
@@ -44,7 +44,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			a[k]=valuelist[bestt*dim+k];
 		}
-		return(bestt);
+		return bestt;
 	}
 
 	// returns the number of bits and *modifies a* to the quantization value
@@ -54,7 +54,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			a[k]=valuelist[best*dim+k];
 		}
-		return(encode(best,b));
+		return encode(best,b);
 	}
 
 	// res0 (multistage, interleave, lattice)
@@ -62,7 +62,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	internal int encodevs(float[] a, csBuffer b, int step,int addmul)
 	{
 		int best=besterror(a,step,addmul);
-		return(encode(best,b));
+		return encode(best,b);
 	}
 
 	internal int[] t=new int[15];  // decodevs_add is synchronized for re-using t.
@@ -82,7 +82,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		for(i = 0; i < step; i++)
 		{
 			entry=decode(b);
-			if(entry==-1)return(-1);
+			if(entry==-1)return-1;
 			t[i]=entry*dim;
 		}
 		for(i=0,o=0;i<dim;i++,o+=step)
@@ -93,7 +93,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			}
 		}
 
-		return(0);
+		return 0;
 	}
 
 	internal int decodev_add(float[]a, int offset, csBuffer b,int n)
@@ -106,11 +106,11 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			for(i=0;i<n;)
 			{
 				entry = decode(b);
-				if(entry==-1)return(-1);
+				if(entry==-1)return-1;
 				t=entry*dim;
 				for(j=0;j<dim;)
 				{
-					a[offset+(i++)]+=valuelist[t+(j++)];
+					a[offset+i++]+=valuelist[t+j++];
 				}
 			}
 		}
@@ -119,16 +119,16 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			for(i=0;i<n;)
 			{
 				entry=decode(b);
-				if(entry==-1)return(-1);
+				if(entry==-1)return-1;
 				t=entry*dim;
 				j=0;
 				for(k=0; k < dim; k++)
 				{
-					a[offset+(i++)]+=valuelist[t+(j++)];
+					a[offset+i++]+=valuelist[t+j++];
 				}
 			}
 		}    
-		return(0);
+		return 0;
 	}
 
 	internal int decodev_set(float[] a,int offset, csBuffer b, int n)
@@ -139,14 +139,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		for(i=0;i<n;)
 		{
 			entry = decode(b);
-			if(entry==-1)return(-1);
+			if(entry==-1)return-1;
 			t=entry*dim;
 			for(j=0;j<dim;)
 			{
-				a[offset+i++]=valuelist[t+(j++)];
+				a[offset+i++]=valuelist[t+j++];
 			}
 		}
-		return(0);
+		return 0;
 	}
 
 	internal int decodevv_add(float[][] a, int offset,int ch, csBuffer b,int n)
@@ -158,7 +158,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		for(i=offset/ch;i<(offset+n)/ch;)
 		{
 			entry = decode(b);
-			if(entry==-1)return(-1);
+			if(entry==-1)return-1;
 
 			int t = entry*dim;
 			for(j=0;j<dim;j++)
@@ -172,7 +172,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				}
 			}
 		}
-		return(0);
+		return 0;
 	}
 
 
@@ -219,18 +219,18 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					break;
 				case -1:
 				default:
-					return(-1);
+					return-1;
 			}
 		}
 		while(ptr>0);
-		return(-ptr);
+		return-ptr;
 	}
 
 	// returns the entry number or -1 on eof
 	internal int decodevs(float[] a, int index, csBuffer b, int step,int addmul)
 	{
 		int entry=decode(b);
-		if(entry==-1)return(-1);
+		if(entry==-1)return-1;
 		switch(addmul)
 		{
 			case -1:
@@ -249,7 +249,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			//nothing
 				break;
 		}
-		return(entry);
+		return entry;
 	}
 
 	internal int best(float[] a, int step)
@@ -284,7 +284,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				// is this unused?  If so, we'll
 				// use a decision tree after all
 				// and fall through
-				return(index);
+				return index;
 			}
 		}
 		if(nt!=null)
@@ -310,7 +310,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				}
 				if(ptr<=0)break;
 			}
-			return(-ptr);
+			return-ptr;
 		}
 
 		// brute force it!
@@ -331,7 +331,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			}
 			e+=dim;
 		}
-		return(besti);
+		return besti;
 	}
 	}
 
@@ -360,7 +360,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				}
 				break;
 		}
-		return(bestt);
+		return bestt;
 	}
 
 	internal void clear()
@@ -383,10 +383,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		float acc=(float)0.0;
 		for(int i=0; i<el; i++)
 		{
-			float val=(rref[index+i]-b[i*step]);
+			float val=rref[index+i]-b[i*step];
 			acc+=val*val;
 		}
-		return(acc);
+		return acc;
 	}
 
 	/*
@@ -414,9 +414,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			//goto err_out;
 			clear();
-			return(-1);
+			return-1;
 		}
-		return(0);
+		return 0;
 		//  err_out:
 		//    vorbis_book_clear(c);
 		//    return(-1);
@@ -448,7 +448,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				{
 					// error condition; the lengths must specify an overpopulated tree
 					//free(r);
-					return(null);
+					return null;
 				}
 				r[i]=entry;
     
@@ -500,7 +500,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			r[i]=temp;
 		}
 
-		return(r);
+		return r;
 	}
 
 	// build the decode helper tree from the codewords 
@@ -512,7 +512,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		int[] ptr1=t.ptr1=new int[entries*2];
 		int[] codelist=make_words(c.lengthlist, c.entries);
 
-		if(codelist==null)return(null);
+		if(codelist==null)return null;
 		t.aux=entries*2;
 
 		for(int i=0;i<entries;i++)
@@ -574,7 +574,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			t.tabl[i]=j; // length 
 		}
 
-		return(t);
+		return t;
 	}
 
 	internal static int ilog(int v)
@@ -585,7 +585,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v = (int)((uint)v >> 1);
 		}
-		return(ret);
+		return ret;
 	}
 
 }

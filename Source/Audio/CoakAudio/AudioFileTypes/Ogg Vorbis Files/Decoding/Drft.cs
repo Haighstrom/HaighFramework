@@ -117,7 +117,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		int t0,t1,t2,t3,t4,t5,t6;
 
 		t1=0;
-		t0=(t2=l1*ido);
+		t0=t2=l1*ido;
 		t3=ido<<1;
 		for(k=0;k<l1;k++)
 		{
@@ -157,7 +157,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		}
 		if(ido%2==1)return;
     
-		L105: t3=(t2=(t1=ido)-1);
+		L105: t3=t2=(t1=ido)-1;
 		t2+=t0;
 		for(k=0;k<l1;k++)
 		{
@@ -190,7 +190,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 			ch[t5=t3<<2]=tr1+tr2;
 			ch[(ido<<2)+t5-1]=tr2-tr1;
-			ch[(t5+=(ido<<1))-1]=cc[t3]-cc[t4];
+			ch[(t5+=ido<<1)-1]=cc[t3]-cc[t4];
 			ch[t5]=cc[t2]-cc[t1];
       
 			t1+=ido;
@@ -210,7 +210,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			t5=(t6=ido<<1)+t4;
 			for(i=2;i<ido;i+=2)
 			{
-				t3=(t2+=2);
+				t3=t2+=2;
 				t4+=2;
 				t5-=2;
 
@@ -755,7 +755,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		for(k=0;k<l1;k++)
 		{
 			t7=t1+(t1<<1);
-			t6=(t5=t7+t3);
+			t6=t5=t7+t3;
 			t8=t1;
 			t10=(t9=t1+t0)+t0;
 
@@ -823,7 +823,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		t1=0;
 		for(k=0;k<l1;k++)
 		{
-			t5=(t4=(t3=(t2=t1<<2)+t6))+t6;
+			t5=(t4=t3=(t2=t1<<2)+t6)+t6;
 			t7=t1;
 			for(i=2;i<ido;i+=2)
 			{
@@ -936,7 +936,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		}
 		L106: t1=0;
 		t2=ipp2*t0;
-		t7=(t5=ido<<1);
+		t7=t5=ido<<1;
 		for(j=1;j<ipph;j++)
 		{
 			t1+=t0;
@@ -967,7 +967,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			t3=t1;
 			t4=t2;
 
-			t7+=(ido<<1);
+			t7+=ido<<1;
 			t8=t7;
 			for(k=0;k<l1;k++)
 			{
@@ -1002,7 +1002,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			t2-=t0;
 			t3=t1;
 			t4=t2;
-			t7+=(ido<<1);
+			t7+=ido<<1;
 			t8=t7;
 			t9=t7;
 			for(i=2;i<ido;i+=2)
@@ -1031,7 +1031,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		L116: ar1=1.0f;
 		ai1=0.0f;
 		t1=0;
-		t9=(t2=ipp2*idl1);
+		t9=t2=ipp2*idl1;
 		t3=(ip-1)*idl1;
 		for(l=1;l<ipph;l++)
 		{
@@ -1166,7 +1166,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		t1=0;
 		for(j=1;j<ip;j++)
 		{
-			t2=(t1+=t0);
+			t2=t1+=t0;
 			for(k=0;k<l1;k++)
 			{
 				c1[t2]=ch[t2];

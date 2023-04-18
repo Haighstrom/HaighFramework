@@ -17,7 +17,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	internal int clear()
 	{
 		data=null;
-		return(0);
+		return 0;
 	}
 
 	// !!!!!!!!!!!!
@@ -55,14 +55,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		// expose a segment at least as large as requested at the fill mark
 		//    return((char *)oy->data+oy->fill);
 		//    return(data);
-		return(fill);
+		return fill;
 	}
 
 	internal int wrote(int bytes)
 	{
-		if(fill+bytes>storage)return(-1);
+		if(fill+bytes>storage)return-1;
 		fill+=bytes;
-		return(0);
+		return 0;
 	}
 
 	// sync the stream.  This is meant to be useful for finding page
@@ -83,7 +83,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		if(headerbytes==0)
 		{
 			int _headerbytes,i;
-			if(bytes<27)return(0); // not enough for a header
+			if(bytes<27)return 0; // not enough for a header
     
 			/* verify capture pattern */
 			//!!!!!!!!!!!
@@ -105,21 +105,21 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				if(next==0) next=fill;
 
 				returned=next;
-				return(-(next-page));
+				return-(next-page);
 			}
 			_headerbytes=(data[page+26]&0xff)+27;
-			if(bytes<_headerbytes)return(0); // not enough for header + seg table
+			if(bytes<_headerbytes)return 0; // not enough for header + seg table
     
 			// count up body length in the segment table
     
 			for(i=0;i<(data[page+26]&0xff);i++)
 			{
-				bodybytes+=(data[page+27+i]&0xff);
+				bodybytes+=data[page+27+i]&0xff;
 			}
 			headerbytes=_headerbytes;
 		}
   
-		if(bodybytes+headerbytes>bytes)return(0);
+		if(bodybytes+headerbytes>bytes)return 0;
   
 		// The whole test page is buffered.  Verify the checksum
 		lock(chksum)
@@ -165,7 +165,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				//next=memchr(page+1,'O',bytes-1);
 				if(next==0) next=fill;
 				returned=next;
-				return(-(next-page));
+				return-(next-page);
 			}
 		}
   
@@ -184,10 +184,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		}
 
 		unsynced=0;
-		returned+=(bytes=headerbytes+bodybytes);
+		returned+=bytes=headerbytes+bodybytes;
 		headerbytes=0;
 		bodybytes=0;
-		return(bytes);
+		return bytes;
 	}
 		//  headerbytes=0;
 		//  bodybytes=0;
@@ -225,19 +225,19 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			if(ret>0)
 			{
 				// have a page
-				return(1);
+				return 1;
 			}
 			if(ret==0)
 			{
 				// need more data
-				return(0);
+				return 0;
 			}
     
 			// head did not start a synced page... skipped some bytes
 			if(unsynced==0)
 			{
 				unsynced=1;
-				return(-1);
+				return-1;
 			}
 			// loop. keep looking
 		}
@@ -251,7 +251,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		unsynced=0;
 		headerbytes=0;
 		bodybytes=0;
-		return(0);
+		return 0;
 	}
 	internal void init(){}
 

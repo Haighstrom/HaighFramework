@@ -66,7 +66,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v = (int)((uint)v >> 1);
 		}
-		return(ret);
+		return ret;
 	}
 
 	internal static float[] window(int type, int wnd, int left, int right)
@@ -108,9 +108,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				break;
 			default:
 				//free(ret);
-				return(null);
+				return null;
 		}
-		return(ret);
+		return ret;
 	}
 
 	// Analysis side code, but directly related to blocking.  Thus it's
@@ -213,7 +213,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				vi.map_param[mapnum]);
 
 		}
-		return(0);
+		return 0;
 	}
 
 	internal int synthesis_init(Info vi)
@@ -224,7 +224,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		centerW-= vi.blocksizes[W]/4+vi.blocksizes[lW]/4;
 		granulepos=-1;
 		sequence=-1;
-		return(0);
+		return 0;
 	}
 
 	DspState(Info vi) : this()
@@ -251,7 +251,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			// 1/2 long block
 
 			int shiftPCM=centerW-vi.blocksizes[1]/2;
-			shiftPCM=(pcm_returned<shiftPCM?pcm_returned:shiftPCM);
+			shiftPCM=pcm_returned<shiftPCM?pcm_returned:shiftPCM;
 
 			pcm_current-=shiftPCM;
 			centerW-=shiftPCM;
@@ -344,7 +344,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		}
 		else
 		{
-			granulepos+=(_centerW-centerW);
+			granulepos+=_centerW-centerW;
 			if(vb.granulepos!=-1 && granulepos!=vb.granulepos)
 			{
 				if(granulepos>vb.granulepos && vb.eofflag!=0)
@@ -362,7 +362,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		centerW=_centerW;
 		pcm_current=endW;
 	}
-		return(0);
+		return 0;
 	}
 
 	// pcm==NULL indicates we just want the pending samples, no more
@@ -380,16 +380,16 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				}
 				_pcm[0]=pcm;
 			}
-			return(centerW-pcm_returned);
+			return centerW - pcm_returned;
 		}
-		return(0);
+		return 0;
 	}
 
 	internal int synthesis_read(int bytes)
 	{
-		if(bytes!=0 && pcm_returned+bytes>centerW)return(-1);
+		if(bytes!=0 && pcm_returned+bytes>centerW)return-1;
 		pcm_returned+=bytes;
-		return(0);
+		return 0;
 	}
 
 	internal void clear()

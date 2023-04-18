@@ -327,7 +327,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				{
                     // this should not be possible
                     System.Console.Error.WriteLine("Could not find last page of logical "+
-						"bitstream #"+(i)+"\n");
+						"bitstream #"+i+"\n");
 					vi[i].clear();
 					vc[i].clear();
 					break;
@@ -358,7 +358,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		serialno=foo[0];
 		dataoffset=(int)offset; //!!
 		instance.os.clear();
-		if(ret==-1)return(-1);
+		if(ret==-1)return-1;
 		// we can seek, so set out learning all about this file
 		skable=true;
 		//(callbacks.seek_func)(datasource, 0, SEEK_END);
@@ -443,7 +443,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		//oy.clear();
 		//if(datasource!=null)(vf->callbacks.close_func)(vf->datasource);
 		//memset(vf,0,sizeof(OggVorbis_File));
-		return(0);
+		return 0;
 	}
 
         internal static int fseek(Stream? fis,
@@ -491,7 +491,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
         {
             if (fis.CanSeek == true)
             {
-                return (fis.Position);
+                return fis.Position;
             }
             return 0;
         }
@@ -543,7 +543,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			datasource=null;
 			clear();
 		}
-		return(ret);
+		return ret;
 	}
 
 	// How many logical bitstreams in this physical bitstream?
@@ -569,8 +569,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
         internal int bitrate(int i)
 	{
-		if(i>=links)return(-1);
-		if(!skable && i!=0)return(bitrate(0));
+		if(i>=links)return-1;
+		if(!skable && i!=0)return bitrate(0);
 		if(i<0)
 		{
 			long bits=0;
@@ -578,14 +578,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				bits+=(offsets[j+1]-dataoffsets[j])*8;
 			}
-			return((int)Math.Round(bits/time_total(-1)));
+			return(int)Math.Round(bits/time_total(-1));
 		}
 		else
 		{
 			if(skable)
 			{
 				// return the actual bitrate
-				return((int)Math.Round((offsets[i+1]-dataoffsets[i])*8/time_total(i)));
+				return(int)Math.Round((offsets[i+1]-dataoffsets[i])*8/time_total(i));
 			}
 			else
 			{
@@ -607,7 +607,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 							return vi[i].bitrate_upper;
 						}
 					}
-					return(-1);
+					return-1;
 				}
 			}
 		}
@@ -619,7 +619,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
         internal long raw_total(int i)
 	{
-		if(!skable || i>=links)return(-1);
+		if(!skable || i>=links)return-1;
 		if(i<0)
 		{
 			long acc=0;               // bug?
@@ -627,11 +627,11 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				acc+=raw_total(j);
 			}
-			return(acc);
+			return acc;
 		}
 		else
 		{
-			return(offsets[i+1]-offsets[i]);
+			return offsets[i+1]-offsets[i];
 		}
 	}
 
@@ -640,7 +640,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	//          -1 if the stream is not seekable (we can't know the length)
         internal long pcm_total(int i)
 	{
-		if(!skable || i>=links)return(-1);
+		if(!skable || i>=links)return-1;
 		if(i<0)
 		{
 			long acc=0;
@@ -648,11 +648,11 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				acc+=pcm_total(j);
 			}
-			return(acc);
+			return acc;
 		}
 		else
 		{
-			return(pcmlengths[i]);
+			return pcmlengths[i];
 		}
 	}
 
@@ -661,7 +661,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	//          -1 if the stream is not seekable (we can't know the length)
         internal float time_total(int i)
 	{
-		if(!skable || i>=links)return(-1);
+		if(!skable || i>=links)return-1;
 		if(i<0)
 		{
 			float acc=0;
@@ -669,11 +669,11 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				acc+=time_total(j);
 			}
-			return(acc);
+			return acc;
 		}
 		else
 		{
-			return((float)(pcmlengths[i])/vi[i].rate);
+			return(float)pcmlengths[i]/vi[i].rate;
 		}
 	}
 
@@ -681,7 +681,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	// tell will likely not give the set offset due to caching
         internal long raw_tell()
 	{
-		return(offset);
+		return offset;
 	}       
 
         internal Info[]? getInfo() { return vi; }

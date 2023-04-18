@@ -48,7 +48,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 		looks.ch=vi.channels;
 
-		return(looks);
+		return looks;
 	}
 
 	override internal void pack(Info vi, object imap, csBuffer opb)
@@ -135,7 +135,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				{
 					//goto err_out;
 					info.free();
-					return(null);
+					return null;
 				}
 			}
 		}
@@ -144,7 +144,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{ /* 2,3:reserved */
 			//goto err_out;
 			info.free();
-			return(null);
+			return null;
 		}
 
 		if(info.submaps>1)
@@ -156,7 +156,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				{
 					//goto err_out;
 					info.free();
-					return(null);
+					return null;
 				}
 			}
 		}
@@ -168,21 +168,21 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//goto err_out;
 				info.free();
-				return(null);
+				return null;
 			}
 			info.floorsubmap[i]=opb.read(8);
 			if(info.floorsubmap[i]>=vi.floors)
 			{
 				//goto err_out;
 				info.free();
-				return(null);
+				return null;
 			}
 			info.residuesubmap[i]=opb.read(8);
 			if(info.residuesubmap[i]>=vi.residues)
 			{
 				//goto err_out;
 				info.free();
-				return(null);
+				return null;
 			}
 		}
 		return info;
@@ -370,7 +370,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			// now apply the decoded post-window time information
 			// NOT IMPLEMENTED
 			// all done!
-			return(0);
+			return 0;
 		}
 	}
 
@@ -383,7 +383,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v = (int)((uint)v >> 1);
 		}
-		return(ret);
+		return ret;
 	}
 }
 

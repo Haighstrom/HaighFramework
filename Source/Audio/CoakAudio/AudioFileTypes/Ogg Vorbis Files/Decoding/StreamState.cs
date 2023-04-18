@@ -82,7 +82,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	{
 		if(body_storage<=body_fill+needed)
 		{
-			body_storage+=(needed+1024);
+			body_storage+=needed+1024;
 			byte[] foo=new byte[body_storage];
 			Array.Copy(body_data, 0, foo, 0, body_data.Length);
 			body_data=foo;
@@ -92,7 +92,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	{
 		if(lacing_storage<=lacing_fill+needed)
 		{
-			lacing_storage+=(needed+32);
+			lacing_storage+=needed+32;
 			int[] foo=new int[lacing_storage];
 			Array.Copy(lacing_vals, 0, foo, 0, lacing_vals.Length);
 			lacing_vals=foo;
@@ -142,7 +142,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			lacing_vals[lacing_fill+j]=255;
 			granule_vals[lacing_fill+j]=granulepos;
 		}
-		lacing_vals[lacing_fill+j]=(op.bytes)%255;
+		lacing_vals[lacing_fill+j]=op.bytes%255;
 		granulepos=granule_vals[lacing_fill+j]=op.granulepos;
 
 		/* flag the first segment as the beginning of the packet */
@@ -154,7 +154,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		packetno++;
 
 		if(op.e_o_s!=0)e_o_s=1;
-		return(0);
+		return 0;
 	}
 
 	internal int packetout(Packet op)
@@ -168,7 +168,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 		if(lacing_packet<=ptr)
 		{
-			return(0);
+			return 0;
 		}
 
 		if((lacing_vals[ptr]&0x400)!=0)
@@ -179,7 +179,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			/* we need to tell the codec there's a gap; it might need to
 				   handle previous packet dependencies. */
 			packetno++;
-			return(-1);
+			return-1;
 		}
 
 		/* Gather the whole packet. We'll have no holes or a partial packet */
@@ -212,7 +212,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		lacing_returned=ptr+1;
 	}
 		packetno++;
-		return(1);
+		return 1;
 	}
 
 
@@ -273,8 +273,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	}
 
 		// check the serial number
-		if(_serialno!=serialno)return(-1);
-		if(version>0)return(-1);
+		if(_serialno!=serialno)return-1;
+		if(version>0)return-1;
 
 		lacing_expand(segments+1);
 
@@ -305,7 +305,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				bos=0;
 				for(;segptr<segments;segptr++)
 				{
-					int val=(header_base[header+27+segptr]&0xff);
+					int val=header_base[header+27+segptr]&0xff;
 					body+=val;
 					bodysize-=val;
 					if(val<255)
@@ -332,7 +332,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		int saved=-1;
 		while(segptr<segments)
 		{
-			int val=(header_base[header+27+segptr]&0xff);
+			int val=header_base[header+27+segptr]&0xff;
 			lacing_vals[lacing_fill]=val;
 			granule_vals[lacing_fill]=-1;
       
@@ -365,7 +365,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		}
 
 		pageno=_pageno+1;
-		return(0);
+		return 0;
 	}
 
 
@@ -390,12 +390,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 		int i;
 		int vals=0;
-		int maxvals=(lacing_fill>255?255:lacing_fill);
+		int maxvals=lacing_fill>255?255:lacing_fill;
 		int bytes=0;
 		int acc=0;
 		long granule_pos=granule_vals[0];
 
-		if(maxvals==0)return(0);
+		if(maxvals==0)return 0;
   
 		/* construct a page */
 		/* decide how many segments to include */
@@ -419,7 +419,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			for(vals=0;vals<maxvals;vals++)
 			{
 				if(acc>4096)break;
-				acc+=(lacing_vals[vals]&0x0ff);
+				acc+=lacing_vals[vals]&0x0ff;
 				granule_pos=granule_vals[vals];
 			}
 		}
@@ -487,7 +487,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		for(i=0;i<vals;i++)
 		{
 			header[i+27]=(byte)lacing_vals[i];
-			bytes+=(header[i+27]&0xff);
+			bytes+=header[i+27]&0xff;
 		}
   
 		/* set pointers in the ogg_page struct */
@@ -510,7 +510,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		og.checksum();
 
 		/* done */
-		return(1);
+		return 1;
 	}
 
 
@@ -550,6 +550,6 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		pageno=-1;
 		packetno=0;
 		granulepos=0;
-		return(0);
+		return 0;
 	}
 }

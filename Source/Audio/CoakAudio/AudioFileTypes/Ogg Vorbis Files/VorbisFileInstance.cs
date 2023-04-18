@@ -94,7 +94,7 @@ internal class VorbisFileInstance : AudioFile
                         // update the pcm vorbisFile.offset.
                         if (granulepos != -1 && op.e_o_s == 0)
                         {
-                            int link = (vorbisFile.skable ? current_link : 0);
+                            int link = vorbisFile.skable ? current_link : 0;
                             int samples;
                             // this packet has a pcm_offset on it (the last packet
                             // completed on a page carries the vorbisFile.offset) After processing
@@ -116,13 +116,13 @@ internal class VorbisFileInstance : AudioFile
                             }
                             pcm_offset = granulepos;
                         }
-                        return (1);
+                        return 1;
                     }
                 }
             }
 
-            if (readp == 0) return (0);
-            if (vorbisFile.get_next_page(og, -1, this) < 0) return (0); // eof. leave unitialized
+            if (readp == 0) return 0;
+            if (vorbisFile.get_next_page(og, -1, this) < 0) return 0; // eof. leave unitialized
 
             // bitrate tracking; add the header's bytes here, the body bytes
             // are done by packet above
@@ -162,7 +162,7 @@ internal class VorbisFileInstance : AudioFile
                     {
                         if (vorbisFile!.serialnos![i] == current_serialno) break;
                     }
-                    if (i == vorbisFile.links) return (-1); // sign of a bogus stream.  error out,
+                    if (i == vorbisFile.links) return -1; // sign of a bogus stream.  error out,
                     // leave machine uninitialized
                     current_link = i;
 
@@ -191,25 +191,25 @@ internal class VorbisFileInstance : AudioFile
     // additional data to offer since last call (or at beginning of stream)
     internal int bitrate_instant()
     {
-        int _link = (vorbisFile.skable ? current_link : 0);
-        if (samptrack == 0) return (-1);
+        int _link = vorbisFile.skable ? current_link : 0;
+        if (samptrack == 0) return -1;
         int ret = (int)(bittrack / samptrack * vorbisFile.vi![_link].rate + .5);
         bittrack = 0.0f;
         samptrack = 0.0f;
-        return (ret);
+        return ret;
     }
 
     internal int serialnumber(int i)
     {
-        if (i >= vorbisFile.links) return (-1);
-        if (!vorbisFile.skable && i >= 0) return (serialnumber(-1));
+        if (i >= vorbisFile.links) return -1;
+        if (!vorbisFile.skable && i >= 0) return serialnumber(-1);
         if (i < 0)
         {
-            return (current_serialno);
+            return current_serialno;
         }
         else
         {
-            return (vorbisFile.serialnos![i]);
+            return vorbisFile.serialnos![i];
         }
     }
 
@@ -223,7 +223,7 @@ internal class VorbisFileInstance : AudioFile
         vd.synthesis_init(vorbisFile.vi![0]);
         vb.init(vd);
         decode_ready = true;
-        return (0);
+        return 0;
     }
 
     // clear out the current logical bitstream decoder
@@ -247,7 +247,7 @@ internal class VorbisFileInstance : AudioFile
 
     internal int raw_seek(int pos)
     {
-        if (!vorbisFile.skable) return (-1); // don't dump machine if we can't seek
+        if (!vorbisFile.skable) return -1; // don't dump machine if we can't seek
         if (pos < 0 || pos > vorbisFile.offsets![vorbisFile.links])
         {
             //goto seek_error;
@@ -275,7 +275,7 @@ internal class VorbisFileInstance : AudioFile
                 // oh, eof. There are no packets remaining.  Set the pcm vorbisFile.offset to
                 // the end of file
                 pcm_offset = vorbisFile.pcm_total(-1);
-                return (0);
+                return 0;
             case -1:
                 // error! missing data or invalid bitstream structure
                 //goto seek_error;
@@ -294,7 +294,7 @@ internal class VorbisFileInstance : AudioFile
                     // the vorbisFile.offset is set.  If it's a bogus bitstream with no vorbisFile.offset
                     // information, it's not but that's not our fault.  We still run
                     // gracefully, we're just missing the vorbisFile.offset
-                    return (0);
+                    return 0;
                 case -1:
                     // error! missing data or invalid bitstream structure
                     //goto seek_error;
@@ -316,7 +316,7 @@ internal class VorbisFileInstance : AudioFile
         int link = -1;
         long total = vorbisFile.pcm_total(-1);
 
-        if (!vorbisFile.skable) return (-1); // don't dump machine if we can't seek
+        if (!vorbisFile.skable) return -1; // don't dump machine if we can't seek
         if (pos < 0 || pos > total)
         {
             //goto seek_error;
@@ -445,7 +445,7 @@ internal class VorbisFileInstance : AudioFile
         long pcm_tot = vorbisFile.pcm_total(-1);
         float time_tot = vorbisFile.time_total(-1);
 
-        if (!vorbisFile.skable) return (-1); // don't dump machine if we can't seek
+        if (!vorbisFile.skable) return -1; // don't dump machine if we can't seek
         if (seconds < 0 || seconds > time_tot)
         {
             //goto seek_error;
@@ -465,14 +465,14 @@ internal class VorbisFileInstance : AudioFile
         // enough information to convert time vorbisFile.offset to pcm vorbisFile.offset
         {
             long target = (long)(pcm_tot + (seconds - time_tot) * vorbisFile.vi[link].rate);
-            return (pcm_seek(target));
+            return pcm_seek(target);
         }
     }
 
     // return PCM vorbisFile.offset (sample) of next PCM sample to be read
     internal long pcm_tell()
     {
-        return (pcm_offset);
+        return pcm_offset;
     }
 
     // return time vorbisFile.offset (seconds) of next PCM sample to be read
@@ -498,7 +498,7 @@ internal class VorbisFileInstance : AudioFile
             }
         }
 
-        return ((float)time_tot + (float)(pcm_offset - pcm_tot) / vorbisFile.vi[link].rate);
+        return (float)time_tot + (float)(pcm_offset - pcm_tot) / vorbisFile.vi[link].rate;
     }
 
     //  link:   -1) return the vorbis_info struct for the bitstream section
@@ -630,7 +630,7 @@ internal class VorbisFileInstance : AudioFile
                         int val;
                         if (word == 1)
                         {
-                            int off = (sgned != 0 ? 0 : 128);
+                            int off = sgned != 0 ? 0 : 128;
                             for (int j = 0; j < samples; j++)
                             {
                                 for (int i = 0; i < channels; i++)
@@ -644,7 +644,7 @@ internal class VorbisFileInstance : AudioFile
                         }
                         else
                         {
-                            int off = (sgned != 0 ? 0 : 32768);
+                            int off = sgned != 0 ? 0 : 32768;
 
                             if (host_endian == bigendianp)
                             {
@@ -659,7 +659,7 @@ internal class VorbisFileInstance : AudioFile
                                             val = (int)(pcm[i][src + j] * 32767.0);
                                             if (val > 32767) val = 32767;
                                             else if (val < -32768) val = -32768;
-                                            buffer[dest] = (byte)(val);
+                                            buffer[dest] = (byte)val;
                                             buffer[dest + 1] = (byte)((uint)val >> 8);
                                             dest += bytespersample;
                                         }
@@ -720,7 +720,7 @@ internal class VorbisFileInstance : AudioFile
                     pcm_offset += samples;
                     if (bitstream != null) bitstream[0] = current_link;
                     lastStreamPosition = vorbisFile.datasource.Position;
-                    return (samples * bytespersample);
+                    return samples * bytespersample;
                 }
             }
 
@@ -729,7 +729,7 @@ internal class VorbisFileInstance : AudioFile
             {
                 case 0:
                     lastStreamPosition = vorbisFile.datasource.Position;
-                    return (0);
+                    return 0;
                 case -1:
                     lastStreamPosition = vorbisFile.datasource.Position;
                     return -1;

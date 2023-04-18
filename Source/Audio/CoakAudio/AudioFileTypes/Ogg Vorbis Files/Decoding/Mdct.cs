@@ -32,15 +32,15 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		// trig lookups...
 		for(int i=0;i<n/4;i++)
 		{
-			trig[AE+i*2]=(float)Math.Cos((Math.PI/n)*(4*i));
-			trig[AO+i*2]=(float)-Math.Sin((Math.PI/n)*(4*i));
-			trig[BE+i*2]=(float)Math.Cos((Math.PI/(2*n))*(2*i+1));
-			trig[BO+i*2]=(float)Math.Sin((Math.PI/(2*n))*(2*i+1));
+			trig[AE+i*2]=(float)Math.Cos(Math.PI/n*(4*i));
+			trig[AO+i*2]=(float)-Math.Sin(Math.PI/n*(4*i));
+			trig[BE+i*2]=(float)Math.Cos(Math.PI/(2*n)*(2*i+1));
+			trig[BO+i*2]=(float)Math.Sin(Math.PI/(2*n)*(2*i+1));
 		}
 		for(int i=0;i<n/8;i++)
 		{
-			trig[CE+i*2]=(float)Math.Cos((Math.PI/n)*(4*i+2));
-			trig[CO+i*2]=(float)-Math.Sin((Math.PI/n)*(4*i+2));
+			trig[CE+i*2]=(float)Math.Cos(Math.PI/n*(4*i+2));
+			trig[CO+i*2]=(float)-Math.Sin(Math.PI/n*(4*i+2));
 		}
 
 	{
@@ -50,9 +50,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			int acc=0;
 			for(int j=0; (((uint)msb) >> j) != 0; j++)
-				if(((((uint)msb>>j))&i) != 0) 
+				if((((uint)msb>>j)&i) != 0) 
 					acc |= 1 << j;
-			bitrev[i*2]=((~acc)&mask);
+			bitrev[i*2]=(~acc)&mask;
 			//	bitrev[i*2]=((~acc)&mask)-1;
 			bitrev[i*2+1]=acc;
 		}
@@ -121,7 +121,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
     
 			for(int i=0;i<n4;i++)
 			{
-				float temp1= (xxx[xx] * trig[B+1] - xxx[xx+1] * trig[B]);
+				float temp1= xxx[xx] * trig[B+1] - xxx[xx+1] * trig[B];
 				float temp2=-(xxx[xx] * trig[B] + xxx[xx+1] * trig[B+1]);
     
 				fout[o1]=-temp1;
@@ -237,6 +237,6 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			x[x2--]=( wC-wACO-wBCE)*.5f;
 		}
 	}
-		return(x);
+		return x;
 	}
 }

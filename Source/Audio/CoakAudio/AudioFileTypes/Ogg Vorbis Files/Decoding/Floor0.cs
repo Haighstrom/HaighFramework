@@ -32,7 +32,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			(info.numbooks<1))
 		{
 			//free_info(info);
-			return(null);
+			return null;
 		}
 
 		for(int j=0;j<info.numbooks;j++)
@@ -41,10 +41,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			if(info.books[j]<0 || info.books[j]>=vi.books)
 			{
 				//free_info(info);
-				return(null);
+				return null;
 			}
 		}
-		return(info);  
+		return info;  
 		//  err_out:
 		//    free_info(info);
 		//    return(NULL);
@@ -77,7 +77,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 		for(int j=0; j<look.n; j++)
 		{
-			int val=(int)Math.Floor(toBARK((float)((info.rate/2.0)/look.n*j)) 
+			int val=(int)Math.Floor(toBARK((float)(info.rate/2.0/look.n*j)) 
 				*scale); // bark numbers represent band edges
 			if(val>=look.ln) val=look.ln; // guard against the approximation
 			look.linearmap[j]=val;
@@ -92,7 +92,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		b = 2.24 * Math.Atan(f * f * 1.85e-8);
 		c = 1.0e-4 * f;
 
-		return (a + b + c);
+		return a + b + c;
 	}
 
 	private object state(object i)
@@ -104,7 +104,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		state.codewords=new int[info.order];
 		state.curve=new float[info.barkmap];
 		state.frameno=-1;
-		return(state);
+		return state;
 	}
 	override internal void free_info(object i){}
 	override internal void free_look(object i){}
@@ -151,7 +151,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 							//goto eop;
 							// memset(out,0,sizeof(float)*look->n);
 							for(int k=0; k<look.n; k++)fout[k]=0.0f;
-							return(0);
+							return 0;
 						}
 					}
 					for(int j=0;j<look.m;)
@@ -170,13 +170,13 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					Lsp.lsp_to_curve(fout,look.linearmap,look.n,look.ln,                 
 						lsp,look.m,amp,info.ampdB);    
 
-					return(1);
+					return 1;
 				}
 			}
 		}
 		//  eop:
 		//    memset(out,0,sizeof(float)*look->n);
-		return(0);
+		return 0;
 	}
 
 	override internal object inverse1(Block vb, object i, object memo)
@@ -216,7 +216,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					if(b.decodev_set(lsp, j, vb.opb, b.dim)==-1)
 					{
 						//goto eop;
-						return(null);
+						return null;
 					}
 				}
 
@@ -226,11 +226,11 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					last=lsp[j-1];
 				}
 				lsp[look.m]=amp;
-				return(lsp);
+				return lsp;
 			}
 		}
 		//  eop:
-		return(null);
+		return null;
 	}
 
 	override internal int inverse2(Block vb, object i, object memo, float[] fout)
@@ -246,7 +246,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 			Lsp.lsp_to_curve(fout,look.linearmap,look.n,look.ln,                 
 				lsp,look.m,amp,info.ampdB);    
-			return(1);
+			return 1;
 		}
 		//  eop:
 		//    memset(out,0,sizeof(float)*look->n);
@@ -254,12 +254,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			fout[j]=0.0f;
 		} 
-		return(0);
+		return 0;
 	}
 
 	static float fromdB(float x)
 	{
-		return (float)(Math.Exp((x)*.11512925));
+		return (float)Math.Exp(x*.11512925);
 	}
 	private static int ilog(int v)
 	{
@@ -269,7 +269,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v = (int)((uint)v >> 1);
 		}
-		return(ret);
+		return ret;
 	}
 
 	static void lsp_to_lpc(float[] lsp, float[] lpc, int m)

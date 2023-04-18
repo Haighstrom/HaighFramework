@@ -22,7 +22,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		[FieldOffset(0)] public float fh_float;
 		[FieldOffset(0)] public int fh_int;
 	}
-	static float M_PI=(float)(3.1415926539);
+	static float M_PI=(float)3.1415926539;
 
 	internal static void lsp_to_curve(float[] curve,
 		int[] map, int n, int ln,
@@ -32,7 +32,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		int i;
 		float wdel=M_PI/ln;
 		for(i=0;i<m;i++)lsp[i]=Lookup.coslook(lsp[i]);
-		int m2=(m/2)*2;
+		int m2=m/2*2;
 
 		i=0;
 		while(i<n)

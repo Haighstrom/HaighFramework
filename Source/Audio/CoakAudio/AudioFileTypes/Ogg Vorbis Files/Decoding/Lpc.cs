@@ -109,7 +109,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			work[j++]=temp;
 		}
   
-		return(lpc_from_data(work,lpc,n,m));
+		return lpc_from_data(work,lpc,n,m);
 	}
 
 	internal void init(int mapped, int m)
@@ -130,7 +130,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 
 	static float FAST_HYPOT(float a, float b)
 	{
-		return (float)Math.Sqrt((a)*(a) + (b)*(b));
+		return (float)Math.Sqrt(a*a + b*b);
 	}
 
 	// One can do this the long way by generating the transfer function in
@@ -161,8 +161,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		curve[0]=(float)(1.0/(curve[0]*2+unit));
 		for(int i=1;i<ln;i++)
 		{
-			float real=(curve[i]+curve[l2-i]);
-			float imag=(curve[i]-curve[l2-i]);
+			float real=curve[i]+curve[l2-i];
+			float imag=curve[i]-curve[l2-i];
 
 			float a = real + unit;
 			curve[i] = (float)(1.0 / FAST_HYPOT(a, imag));

@@ -44,7 +44,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		int i = 0;
 		while(bytes--!=0) 
 		{
-			s[i++]=(byte)(read(8));
+			s[i++]=(byte)read(8);
 		}
 	}
 
@@ -117,7 +117,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		if(endbyte + 4 >= storage)
 		{
 			if(endbyte+(bits-1)/8 >= storage)
-				return (-1);
+				return -1;
 		}
 
 		ret = ((buffer[ptr]) & 0xff) >> endbit;
@@ -139,14 +139,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			}
 		}
 		ret = (int)(m & ret);
-		return (ret);
+		return ret;
 	}
 
 	internal int look1()
 	{
 		if(endbyte >= storage)
-			return(-1);
-		return((buffer[ptr] >> endbit) & 1);
+			return-1;
+		return(buffer[ptr] >> endbit) & 1;
 	}
 
 	internal void adv(int bits)
@@ -183,7 +183,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				ptr += bits/8;
 				endbyte += bits/8;
 				endbit = bits&7;
-				return(ret);
+				return ret;
 			}
 		}
 
@@ -211,7 +211,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		ptr += bits/8;
 		endbyte += bits/8;
 		endbit = bits&7;
-		return(ret);
+		return ret;
 	}
 
 	internal int read1()
@@ -227,7 +227,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				ptr++;
 				endbyte++;
 			}
-			return(ret);
+			return ret;
 		}
 
 		ret=(buffer[ptr] >> endbit) & 1;
@@ -239,17 +239,17 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ptr++;
 			endbyte++;
 		}
-		return(ret);
+		return ret;
 	}
 
 	internal int bytes()
 	{
-		return(endbyte+(endbit+7)/8);
+		return endbyte + (endbit+7)/8;
 	}
 
 	internal int bits()
 	{
-		return(endbyte*8+endbit);
+		return endbyte * 8+endbit;
 	}
 
 	internal static int ilog(int v)
@@ -260,12 +260,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v >>= 1;
 		}
-		return(ret);
+		return ret;
 	}
 
 	internal byte[] buf()
 	{
-		return(buffer);
+		return buffer;
 	}
 
 	internal csBuffer()

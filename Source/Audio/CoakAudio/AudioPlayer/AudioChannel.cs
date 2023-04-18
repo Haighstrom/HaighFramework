@@ -296,7 +296,7 @@ internal class AudioChannel : IDisposable
                 }
 
                 // Detect buffer under-runs
-                bool underRun = (processedBuffers >= BufferCount);
+                bool underRun = processedBuffers >= BufferCount;
 
                 // Remove processed buffers
                 while (processedBuffers > 0)

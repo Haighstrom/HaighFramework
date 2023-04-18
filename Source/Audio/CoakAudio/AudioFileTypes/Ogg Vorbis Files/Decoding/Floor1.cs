@@ -75,7 +75,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//goto err_out;
 				info.free();
-				return(null);
+				return null;
 			}
 			if(info.class_subs[j]!=0)
 			{
@@ -85,7 +85,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//goto err_out;
 				info.free();
-				return(null);
+				return null;
 			}
 			for(int k=0;k<(1<<info.class_subs[j]);k++)
 			{
@@ -94,7 +94,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				{
 					//goto err_out;
 					info.free();
-					return(null);
+					return null;
 				}
 			}
 		}
@@ -113,14 +113,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				{
 					//goto err_out;
 					info.free();
-					return(null);
+					return null;
 				}
 			}
 		}
 		info.postlist[0]=0;
 		info.postlist[1]=1<<rangebits;
 
-		return(info);
+		return info;
 		//  err_out:
 		//    info.free();
 		//    return(null);
@@ -290,7 +290,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					if(cval==-1)
 					{
 						//goto eop;
-						return(null);
+						return null;
 					}
 				}
 
@@ -302,7 +302,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					{
 						if((fit_value[j+k]=books[book].decode(vb.opb))==-1)
 						{
-							return(null);
+							return null;
 						}
 					}
 					else
@@ -343,7 +343,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					{
 						if((val&1)!=0)
 						{
-							val= (int)(-((uint)(val+1) >> 1));
+							val= (int)-((uint)(val+1) >> 1);
 						}
 						else
 						{
@@ -360,12 +360,12 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					fit_value[i]=predicted|0x8000;
 				}
 			}
-			return(fit_value);
+			return fit_value;
 		}
 
 		//  eop:
 		//    return(NULL);
-		return(null);
+		return null;
 	}
 
 	private static int render_point(int x0,int x1,int y0,int y1,int x)
@@ -380,8 +380,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		int err=ady*(x-x0);
     
 		int off= err / adx;
-		if(dy<0)return(y0-off);
-		return(y0+off);
+		if(dy<0)return y0 - off;
+		return y0 + off;
 	}
 	}
 
@@ -417,13 +417,13 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				fout[j]*=fout[j-1]; /* be certain */
 			}
-			return(1);
+			return 1;
 		}
 		for(int j=0; j<n; j++)
 		{
 			fout[j]=0.0f;
 		} 
-		return(0);
+		return 0;
 	}
 
 
@@ -500,7 +500,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		int adx=x1-x0;
 		int ady=Math.Abs(dy);
 		int bbase=dy/adx;
-		int sy=( (dy < 0) ? bbase-1 : bbase+1);
+		int sy= (dy < 0) ? bbase-1 : bbase+1;
 		int x=x0;
 		int y=y0;
 		int err=0;
@@ -532,7 +532,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v = (int)((uint)v >> 1);
 		}
-		return(ret);
+		return ret;
 	}
 
 	private static int ilog2(int v)
@@ -543,7 +543,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v = (int)((uint)v >> 1);
 		}
-		return(ret);
+		return ret;
 	}
 }
 
@@ -631,7 +631,7 @@ class InfoFloor1
 
 		ret.n=info.n;
 
-		return(ret);
+		return ret;
 	}
 
 }

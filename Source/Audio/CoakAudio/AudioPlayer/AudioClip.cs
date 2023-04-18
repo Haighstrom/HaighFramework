@@ -26,11 +26,11 @@ public abstract class AudioClip
 
         switch (ext)
         {
-            case (".ogg"):
+            case ".ogg":
                 rawClip = new VorbisFile(filePath);
                 Cache(64 * 1024);
                 break;
-            case(".wav"):
+            case".wav":
                 rawClip = new WavFile(filePath);
                 break;
             default:

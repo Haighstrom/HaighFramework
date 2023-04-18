@@ -24,7 +24,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				r <<= 1;
 			}
 		}
-		return (r & 0xffffffff);
+		return r & 0xffffffff;
 	}
 
 	internal byte[] header_base;
@@ -40,15 +40,15 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	}
 	internal int continued()
 	{
-		return (header_base[header+5]&0x01);
+		return header_base[header+5]&0x01;
 	}
 	internal int bos()
 	{
-		return (header_base[header+5]&0x02);
+		return header_base[header+5]&0x02;
 	}
 	internal int eos()
 	{
-		return (header_base[header+5]&0x04);
+		return header_base[header+5]&0x04;
 	}
 	internal long granulepos()
 	{
@@ -60,7 +60,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		foo = (foo<<8) | (uint)(header_base[header+8]&0xff);
 		foo = (foo<<8) | (uint)(header_base[header+7]&0xff);
 		foo = (foo<<8) | (uint)(header_base[header+6]&0xff);
-		return(foo);
+		return foo;
 	}
 	internal int serialno()
 	{

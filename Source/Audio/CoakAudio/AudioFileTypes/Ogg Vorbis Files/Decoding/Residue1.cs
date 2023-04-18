@@ -19,7 +19,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		}
 		if(used!=0)
 		{
-			return(_01inverse(vb, vl, fin, used, 1));
+			return _01inverse(vb, vl, fin, used, 1);
 		}
 		else
 		{

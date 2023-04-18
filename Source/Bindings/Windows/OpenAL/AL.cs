@@ -630,7 +630,7 @@ internal static class AL
     /// <param name="value">The value to set the attribute to.</param>
     internal static void Source(uint sid, ALSourceb param, bool value)
     {
-        Source(sid, (ALSourcei)param, (value) ? 1 : 0);
+        Source(sid, (ALSourcei)param, value ? 1 : 0);
     }
 
     /// <summary>This function sets 3 integer properties of a source. This property is used to establish connections between Sources and Auxiliary Effect Slots.</summary>

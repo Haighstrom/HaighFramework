@@ -11,8 +11,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	{
 		int i=0;
 		for(i=0;i<ch;i++)if(nonzero[i]!=0)break;
-		if(i==ch)return(0); /* no nonzero vectors */
+		if(i==ch)return 0; /* no nonzero vectors */
 
-		return(_2inverse(vb, vl, fin, ch));
+		return _2inverse(vb, vl, fin, ch);
 	}
 }

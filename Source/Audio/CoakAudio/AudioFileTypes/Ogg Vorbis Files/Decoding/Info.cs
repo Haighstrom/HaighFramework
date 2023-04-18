@@ -138,7 +138,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	int unpack_info(csBuffer opb)
 	{
 		version=opb.read(32);
-		if(version!=0)return(-1);
+		if(version!=0)return-1;
 
 		channels=opb.read(8);
 		rate=opb.read(32);
@@ -157,9 +157,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			(opb.read(1)!=1))
 		{
 			clear();
-			return(-1);
+			return-1;
 		}
-		return(0);
+		return 0;
 	}
 
 	// all of the real encoding details are here.  The modes, books,
@@ -179,7 +179,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 		}
 
@@ -195,14 +195,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 			time_param[i]=FuncTime.time_P[time_type[i]].unpack(this, opb);
 			if(time_param[i]==null)
 			{
 				//goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 		}
 
@@ -220,7 +220,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 
 			floor_param[i]=FuncFloor.floor_P[floor_type[i]].unpack(this,opb);
@@ -228,7 +228,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 		}
 
@@ -248,14 +248,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//	goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 			residue_param[i]=FuncResidue.residue_P[residue_type[i]].unpack(this,opb);
 			if(residue_param[i]==null)
 			{
 				//	goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 		}
 
@@ -270,14 +270,14 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//	goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 			map_param[i]=FuncMapping.mapping_P[map_type[i]].unpack(this,opb);
 			if(map_param[i]==null)
 			{
 				//    goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 		}
 
@@ -299,7 +299,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			{
 				//      goto err_out;
 				clear();
-				return(-1);
+				return-1;
 			}
 		}
 
@@ -307,10 +307,10 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			//goto err_out; // top level EOP check
 			clear();
-			return(-1);
+			return-1;
 		}
 
-		return(0);
+		return 0;
 		// err_out:
 		//  vorbis_info_clear(vi);
 		//  return(-1);
@@ -340,7 +340,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				buffer[3]!='b' || buffer[4]!='i' || buffer[5]!='s')
 			{
 				// not a vorbis header
-				return(-1);
+				return-1;
 			}
 			switch(packtype)
 			{
@@ -348,28 +348,28 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					if(op.b_o_s==0)
 					{
 						// Not the initial packet
-						return(-1);
+						return-1;
 					}
 					if(rate!=0)
 					{
 						// previously initialized info header
-						return(-1);
+						return-1;
 					}
-					return(unpack_info(opb));
+					return unpack_info(opb);
 				case 0x03: // least significant *bit* is read first
 					if(rate==0)
 					{
 						// um... we didn't get the initial header
-						return(-1);
+						return-1;
 					}
-					return(vc.unpack(opb));
+					return vc.unpack(opb);
 				case 0x05: // least significant *bit* is read first
 					if(rate==0 || vc.vendor==null)
 					{
 						// um... we didn;t get the initial header or comments yet
-						return(-1);
+						return-1;
 					}
-					return(unpack_books(opb));
+					return unpack_books(opb);
 				default:
 					// Not a valid vorbis header type
 					//return(-1);
@@ -377,7 +377,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			}
 		}
 		}
-		return(-1);
+		return-1;
 	}
 
 	// pack side
@@ -402,7 +402,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		opb.write(ilog2(blocksizes[0]),4);
 		opb.write(ilog2(blocksizes[1]),4);
 		opb.write(1,1);
-		return(0);
+		return 0;
 	}
 
 	int pack_books(csBuffer opb)
@@ -420,7 +420,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			if(book_param[i].pack(opb)!=0)
 			{
 				//goto err_out;
-				return(-1);
+				return-1;
 			}
 		}
 
@@ -466,7 +466,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			opb.write(mode_param[i].mapping,8);
 		}
 		opb.write(1,1);
-		return(0);
+		return 0;
 		//err_out:
 		//return(-1);
 	} 
@@ -499,7 +499,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		if(opb.read(1)!=0)
 		{
 			/* Oops.  This is not an audio data packet */
-			return(OV_ENOTAUDIO);
+			return OV_ENOTAUDIO;
 		}
 	{  
 		int modebits=0;
@@ -513,8 +513,8 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		/* read our mode and pre/post windowsize */
 		mode=opb.read(modebits);
 	}
-		if(mode==-1)return(OV_EBADPACKET);
-		return(blocksizes[mode_param[mode].blockflag]);
+		if(mode==-1)return OV_EBADPACKET;
+		return blocksizes[mode_param[mode].blockflag];
 		//    }
 	}
 
@@ -526,7 +526,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v = (int)((uint)v >> 1);
 		}
-		return(ret);
+		return ret;
 	}
 
 	internal string toString()

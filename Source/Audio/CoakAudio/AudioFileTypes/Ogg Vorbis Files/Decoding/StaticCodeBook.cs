@@ -147,7 +147,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				if(quantlist==null)
 				{
 					// no quantlist?  error
-					return(-1);
+					return-1;
 				}
     
 				// values that define the dequantization
@@ -180,9 +180,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				break;
 			default:
 				// error case; we don't have any other map types now
-				return(-1);
+				return-1;
 		}
-		return(0);
+		return 0;
 	}
 	/*
 	*/
@@ -199,7 +199,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			//    goto _eofout;
 			clear();
-			return(-1); 
+			return-1; 
 		}
 
 		// first the basic parameters
@@ -209,7 +209,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		{
 			//    goto _eofout;
 			clear();
-			return(-1); 
+			return-1; 
 		}
 
 		// codeword ordering.... length ordered or unordered?
@@ -233,7 +233,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 							{
 								//            goto _eofout;
 								clear();
-								return(-1); 
+								return-1; 
 							}
 							lengthlist[i]=num+1;
 						}
@@ -253,7 +253,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 						{
 							//          goto _eofout;
 							clear();
-							return(-1); 
+							return-1; 
 						}
 						lengthlist[i]=num+1;
 					}
@@ -272,7 +272,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 					{
 						//          goto _eofout;
 						clear();
-						return(-1); 
+						return-1; 
 					}
 					for(int j=0;j<num;j++,i++)
 					{
@@ -284,11 +284,11 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				break;
 			default:
 				// EOF
-				return(-1);
+				return-1;
 		}
   
 		// Do we have a mapping to unpack?
-		switch((maptype=opb.read(4)))
+		switch(maptype=opb.read(4))
 		{
 			case 0:
 				// no mapping
@@ -324,17 +324,17 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				{
 					//        goto _eofout;
 					clear();
-					return(-1); 
+					return-1; 
 				}
 			}
 				break;
 			default:
 				//    goto _eofout;
 				clear();
-				return(-1); 
+				return-1; 
 		}
 		// all set
-		return(0);
+		return 0;
 		//    _errout:
 		//    _eofout:
 		//    vorbis_staticbook_clear(s);
@@ -346,7 +346,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 	// thought of it.  Therefore, we opt on the side of caution
 	internal int maptype1_quantvals()
 	{
-		int vals=(int)(Math.Floor(Math.Pow(entries,1.0/dim)));
+		int vals=(int)Math.Floor(Math.Pow(entries,1.0/dim));
 
 		// the above *should* be reliable, but we'll not assume that FP is
 		// ever reliable when bitstream sync is at stake; verify via integer
@@ -362,7 +362,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				acc*=vals;
 				acc1*=vals+1;
 			}
-			if(acc<=entries && acc1>entries){	return(vals); }
+			if(acc<=entries && acc1>entries){	return vals; }
 			else
 			{
 				if(acc>entries){ vals--; }
@@ -427,7 +427,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 						int indexdiv=1;
 						for(int k=0;k<dim;k++)
 						{
-							int index=(j/indexdiv)%quantvals;
+							int index=j/indexdiv%quantvals;
 							float val=quantlist[index];
 							val=Math.Abs(val)*delta+mindel+last;
 							if(q_sequencep!=0)last=val;	  
@@ -455,9 +455,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 				default:
 					break;
 			}
-			return(r);
+			return r;
 		}
-		return(null);
+		return null;
 	}
 
 	internal static int ilog(int v)
@@ -468,7 +468,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			ret++;
 			v = (int)((uint)v >> 1);
 		}
-		return(ret);
+		return ret;
 	}
 
 	// 32 bit float (not IEEE; nonnormalized mantissa +
@@ -491,9 +491,9 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 			val = -val;
 		}
 		exp=(int)Math.Floor(Math.Log(val)/Math.Log(2));
-		mant=(int)Math.Round(Math.Pow(val,(VQ_FMAN-1)-exp));
+		mant=(int)Math.Round(Math.Pow(val,VQ_FMAN-1-exp));
 		exp=(exp+VQ_FEXP_BIAS)<<VQ_FMAN;
-		return((int)sign | exp | mant);
+		return(int)sign | exp | mant;
 	}
 
 	internal static float float32_unpack(int val)
@@ -505,7 +505,7 @@ namespace HaighFramework.Audio.OpenAL.OggVorbis;
 		//if(sign!=0.0)mant= -mant;
 		if((val&0x80000000)!=0)mant= -mant;
 		//System.err.println("mant="+mant);
-		return(ldexp(mant,((int)exp)-(VQ_FMAN-1)-VQ_FEXP_BIAS));
+		return ldexp(mant,((int)exp)-(VQ_FMAN-1)-VQ_FEXP_BIAS);
 	}
 
 	internal static float ldexp(float foo, int e)
