@@ -57,10 +57,37 @@ public static class Ensure
     /// <param name="collection">The collection.</param>
     /// <exception cref="InvalidOperationException"></exception>
     [DebuggerStepThrough]
-    public static void CollectionNotEmpty<T>(IEnumerable<T> collection)
+    public static void ArgumentCollectionNotNullOrEmpty<T>(IEnumerable<T> collection, string argumentName)
     {
-        if (collection is null || !collection.Any())
+        if (collection is null)
+        {
+            throw new ArgumentNullException(argumentName);
+        }
+
+        if (!collection.Any())
+        {
+            throw new ArgumentException("Collection was empty", argumentName);
+        }
+    }
+
+    /// <summary>
+    /// Ensures that the specified collection is not null or empty.
+    /// </summary>
+    /// <typeparam name="T">The type of element in the collection.</typeparam>
+    /// <param name="collection">The collection.</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    [DebuggerStepThrough]
+    public static void CollectionNotNullOrEmpty<T>(IEnumerable<T> collection)
+    {
+        if (collection is null)
+        {
+            throw new NullReferenceException();
+        }
+
+        if (!collection.Any())
+        {
             throw new InvalidOperationException();
+        }
     }
 
     /// <summary>
