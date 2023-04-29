@@ -6,6 +6,21 @@ namespace HaighFramework;
 public static class Ensure
 {
     /// <summary>
+    /// Ensures that the specified argument is greater than zero.
+    /// </summary>
+    /// <param name="argument">The argument.</param>
+    /// <param name="argumentName">Name of the argument.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    [DebuggerStepThrough]
+    public static void ArgumentPositive(float argument, string argumentName)
+    {
+        if (argument <= 0)
+        {
+            throw new ArgumentOutOfRangeException(argumentName);
+        }
+    }
+
+    /// <summary>
     /// Ensures that the specified argument is not less than zero.
     /// </summary>
     /// <param name="argument">The argument.</param>
