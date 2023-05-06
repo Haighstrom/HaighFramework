@@ -92,6 +92,7 @@ public class WinAPIWindow : IWindow
     private int _leftInvisBorder, _topInvisBorder, _rightInvisBorder, _bottomInvisBorder;
     private bool _vsync;
 
+    //todo: use [MemberNotNull(nameof(_texts))] to separate this into private functions at least...
     public WinAPIWindow(WindowSettings settings)
     {
         _userPosition = new Rect();//just to shut up the nullable warnings
