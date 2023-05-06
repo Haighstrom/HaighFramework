@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace HaighFramework;
 
@@ -104,6 +105,33 @@ public static class Ensure
         {
             throw new InvalidOperationException();
         }
+    }
+
+    /// <summary>
+    /// Ensures that the specified key is available in the specified dictionary
+    /// </summary>
+    /// <param name="dictionary">The dictionary</param>
+    /// <param name="key">The key</param>
+    /// <exception cref="KeyNotFoundException"></exception>
+    [DebuggerStepThrough]
+    public static void DictionaryKeyExists<TKey,TValue>(IDictionary<TKey,TValue> dictionary, TKey key)
+    {
+        NotNull(dictionary);
+        NotNull(key);
+
+        if (!dictionary.ContainsKey(key))
+            throw new KeyNotFoundException(key!.ToString());
+    }
+
+    /// <summary>
+    /// Ensures the specified file exists
+    /// </summary>
+    /// <param name="fileName">The file path, including the extension.</param>
+    [DebuggerStepThrough]
+    public static void FileExists(string fileName)
+    {
+        if (!File.Exists(fileName))
+            throw new FileNotFoundException(fileName);
     }
 
     /// <summary>
