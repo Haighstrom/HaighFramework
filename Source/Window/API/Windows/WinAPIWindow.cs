@@ -80,7 +80,7 @@ public class WinAPIWindow : IWindow
     private RECT _reportedPosition; //The position SetWindowRect/GetWindowRect uses - includes invisible borders on Win10 (FU Win10)
     private Point _userClientSize; //100% DPI visible Client Size
     private RECT _actualClientPosition; //DPI-adjusted visible Client Position
-    private BorderStyle _border = BorderStyle.SizingBorder;
+    private BorderStyle _border = BorderStyle.Resizable;
     private BorderStyle _prevBorder; //used when de-fullscreening
     private RECT _prevPosition; //used when restoring a borderless full screen window
     private WindowState _windowState = WindowState.Normal;
@@ -100,7 +100,7 @@ public class WinAPIWindow : IWindow
 
         ExitOnClose = settings.ExitOnClose;
         _cursor = settings.Cursor;
-        _prevBorder = _border = BorderStyle.SizingBorder; //do this initially else WM_Resize screws up due to clientrect being empty
+        _prevBorder = _border = BorderStyle.Resizable; //do this initially else WM_Resize screws up due to clientrect being empty
         _icon = settings.Icon;
         _wndProc = StandardWindowProcedure;
 
@@ -612,9 +612,9 @@ public class WinAPIWindow : IWindow
 
             WINDOWSTYLE newStyle = value switch
             {
-                BorderStyle.SizingBorder => WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_THICKFRAME | WINDOWSTYLE.WS_MAXIMIZEBOX | WINDOWSTYLE.WS_MINIMIZEBOX,
-                BorderStyle.Border => WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_MINIMIZEBOX,
-                BorderStyle.NoBorder => WINDOWSTYLE.WS_POPUP,
+                BorderStyle.Resizable => WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_THICKFRAME | WINDOWSTYLE.WS_MAXIMIZEBOX | WINDOWSTYLE.WS_MINIMIZEBOX,
+                BorderStyle.NonResizable => WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_MINIMIZEBOX,
+                BorderStyle.None => WINDOWSTYLE.WS_POPUP,
                 _ => throw new NotImplementedException(),
             };
             if (Visible)
@@ -646,7 +646,7 @@ public class WinAPIWindow : IWindow
             switch (value)
             {
                 case WindowState.Normal:
-                    if (_border != BorderStyle.SizingBorder && (State == WindowState.Maximized || State == WindowState.Fullscreen))
+                    if (_border != BorderStyle.Resizable && (State == WindowState.Maximized || State == WindowState.Fullscreen))
                         User32.SetWindowPos(_windowHandle, IntPtr.Zero, _prevPosition.left, _prevPosition.top, _prevPosition.Width, _prevPosition.Height, 0);
                     else
                         User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_RESTORE);
@@ -655,7 +655,7 @@ public class WinAPIWindow : IWindow
                     User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_MINIMIZE);
                     break;
                 case WindowState.Maximized:
-                    if (Border == BorderStyle.SizingBorder)
+                    if (Border == BorderStyle.Resizable)
                         User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_MAXIMIZE);
                     else //avoid putting it on top of the taskbar (that's what Fullscreen is for)
                     {
@@ -675,7 +675,7 @@ public class WinAPIWindow : IWindow
                 case WindowState.Fullscreen:
                     _prevBorder = _border;
                     _prevPosition = _reportedPosition;
-                    Border = BorderStyle.NoBorder;
+                    Border = BorderStyle.None;
                     User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_MAXIMIZE);
                     break;
             }

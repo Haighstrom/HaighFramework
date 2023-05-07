@@ -12,7 +12,7 @@ public class WindowSettings
     /// <summary>
     /// Type of border for the window. Defaults to a sizing border.
     /// </summary>
-    public BorderStyle Border { get; set; } = BorderStyle.SizingBorder;
+    public BorderStyle Border { get; set; } = BorderStyle.Resizable;
 
     /// <summary>
     /// Whether the window should be created centred on the screen on creation - ignores X,Y

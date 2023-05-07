@@ -5,13 +5,13 @@ public enum BorderStyle
     /// <summary>
     /// Window without a border. Will be used when making an application full screen.
     /// </summary>
-    NoBorder,
+    None,
     /// <summary>
     /// Window with a border which cannot be resized
     /// </summary>
-    Border,
+    NonResizable,
     /// <summary>
     /// Window with a border that can be resized.
     /// </summary>
-    SizingBorder,
+    Resizable,
 }
