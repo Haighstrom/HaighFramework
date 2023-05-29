@@ -61,7 +61,7 @@ public static class Ensure
     /// <param name="argumentName">Name of the argument.</param>
     /// <exception cref="ArgumentNullException"></exception>
     [DebuggerStepThrough]
-    public static void ArgumentNotNull(object? argument, string argumentName)
+    public static void ArgumentNotNull([NotNull]object? argument, string argumentName)
     {
         if (argument is null)
         {
@@ -76,7 +76,7 @@ public static class Ensure
     /// <param name="argumentName">Name of the argument.</param>
     /// <exception cref="ArgumentNullException"></exception>
     [DebuggerStepThrough]
-    public static void ArgumentNotNullOrEmpty(string? argument, string argumentName)
+    public static void ArgumentNotNullOrEmpty([NotNull]string? argument, string argumentName)
     {
         if (string.IsNullOrEmpty(argument))
         {
@@ -157,7 +157,7 @@ public static class Ensure
     /// <param name="value">The value.</param>
     /// <exception cref="NullReferenceException"></exception>
     [DebuggerStepThrough]
-    public static void NotNull(object? value)
+    public static void NotNull([NotNull]object? value)
     {
         if (value is null)
         {
