@@ -111,7 +111,7 @@ public static class Ensure
     /// <param name="collection">The collection.</param>
     /// <exception cref="InvalidOperationException"></exception>
     [DebuggerStepThrough]
-    public static void CollectionNotNullOrEmpty<T>(IEnumerable<T> collection)
+    public static void CollectionNotNullOrEmpty<T>([NotNull] IEnumerable<T> collection)
     {
         if (collection is null)
         {
