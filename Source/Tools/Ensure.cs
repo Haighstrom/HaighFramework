@@ -210,4 +210,16 @@ public static class Ensure
             throw new InvalidOperationException();
         }
     }
+
+    /// <summary>
+    /// Ensures that the specified value or expression is true
+    /// </summary>
+    [DebuggerStepThrough]
+    public static void That(bool value)
+    {
+        if (!value)
+        {
+            throw new InvalidOperationException();
+        }
+    }
 }
